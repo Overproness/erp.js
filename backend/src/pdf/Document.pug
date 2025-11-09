@@ -1,0 +1,120 @@
+doctype html
+html
+  head
+    link(rel="shortcut icon" type="image/png" href="/images/icons/favicon.png")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      .sheet {
+        margin: 0;
+        width: 100%; 
+        height: 297mm;
+      }
+
+      body{
+        width: 100%; 
+        margin: 0;
+        padding: 0px ;
+        background: #ffffff;
+        font-family: sans-serif;
+        font-size:12px;
+        color:#222
+      }
+      *, *:before, *:after {
+        box-sizing: inherit;
+        color:#222
+      }
+
+      .clearfix {
+        display: block; }
+      
+      .left{
+        float:left;
+      }
+      .right{
+        float:right;
+      }
+      .top-area {    
+        display: block;
+        width:100%;
+      }
+      .logo {
+        width: 150px;
+      }
+      .company-info{
+        text-align: right;
+        font-size:12px;
+      }
+      h1.invoice{
+        font-size:32px;
+        color:#52008c;
+        margin-top:0;
+      }
+      p.strong{
+        font-weight:700;
+      }
+      .col {
+        float:left;
+      }
+      .col-12 {
+        width: 50%; }
+      .col-24 {
+        width: 100%; }
+      
+      .space {
+        margin-top: 30px;
+        margin-bottom: 40px;
+        width:100%;
+      }
+      .document-info {
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+      .document-info p {
+        margin: 5px 0;
+      }
+      .document-content {
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+      }
+      .footer-document {
+        margin-top: 50px;
+        color: #5d6975;
+        width: 100%;
+        padding: 20px 0;
+        text-align: center;
+      }
+ 
+  body
+    header.clearfix
+      .top-area
+        img.logo.left(src=settings.public_server_file+settings.company_logo)
+        .right.company-info
+            p.strong #{settings.company_name}
+            p #{settings.company_address}
+            p #{settings.company_reg_number}
+            
+      .col.col-24
+        .space  
+      .left.col-24
+          h1.invoice
+            | #{model.name}
+          .document-info
+            p.strong #{translate('Document Type')}: #{model.documentType}
+            if model.description
+              p.strong #{translate('Description')}: #{model.description}
+            p.strong #{translate('Date')}: #{moment(model.uploaded).format(dateFormat)}
+            if model.tags && model.tags.length > 0
+              p.strong #{translate('Tags')}: #{model.tags.join(', ')}
+      
+      .col.col-24
+        .space
+        .document-content
+          p #{translate('This document is available for download from the system.')}
+          p #{translate('File name')}: #{model.originalFilename}
+          p #{translate('File type')}: #{model.fileType}
+          p #{translate('File size')}: #{Math.round(model.fileSize / 1024)} KB
+      
+    .col.col-24
+        .space     
+    footer.footer-document
+      | #{translate('This document summary was generated automatically.')}

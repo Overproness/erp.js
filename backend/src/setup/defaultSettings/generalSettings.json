@@ -1,0 +1,50 @@
+[
+  {
+    "settingCategory": "general",
+    "settingKey": "site_name",
+    "settingValue": "ERP System",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "site_description",
+    "settingValue": "Enterprise Resource Planning System",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "site_email",
+    "settingValue": "support@erp-system.com",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "site_address",
+    "settingValue": "123 Business Ave, Suite 100",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "site_phone",
+    "settingValue": "+1-555-555-5555",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "maintenance_mode",
+    "settingValue": false,
+    "valueType": "boolean"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "allow_registration",
+    "settingValue": true,
+    "valueType": "boolean"
+  },
+  {
+    "settingCategory": "general",
+    "settingKey": "allow_reset_password",
+    "settingValue": true,
+    "valueType": "boolean"
+  }
+]

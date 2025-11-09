@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        
+        .header {
+            background-color: #4a86e8;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header img {
+            max-height: 60px;
+            max-width: 200px;
+        }
+        
+        .content {
+            padding: 30px;
+            text-align: left;
+        }
+        
+        .footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666666;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #4a86e8;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        h1, h2, h3 {
+            color: #333333;
+        }
+        
+        /* Content slot for template inheritance */
+        .content-slot {
+            /* This will be filled by inheriting templates */
+        }
+        
+        /* Media queries for responsive design */
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+            .content {
+                padding: 20px;
+            }
+        }
+
+        /* Custom theme colors that can be overridden */
+        :root {
+            --primary-color: #4a86e8;
+            --secondary-color: #34a853;
+            --accent-color: #fbbc05;
+            --text-color: #333333;
+            --background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="{{company.logoUrl}}" alt="{{company.name}}">
+        </div>
+        
+        <!-- Main Content Section -->
+        <div class="content">
+            <!-- Greeting -->
+            <div class="section">
+                <h1>{{greeting}}</h1>
+                <p>{{introText}}</p>
+            </div>
+            
+            <!-- Content slot that will be filled by child templates -->
+            <div class="content-slot">
+                <!-- Child template content will go here -->
+                {{> content}}
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="section" style="text-align: center;">
+                <a href="{{cta.url}}" class="button">{{cta.text}}</a>
+            </div>
+        </div>
+        
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>&copy; {{currentYear}} {{company.name}}. All rights reserved.</p>
+            <p>
+                <a href="{{unsubscribeUrl}}">Unsubscribe</a> | 
+                <a href="{{preferencesUrl}}">Email Preferences</a> | 
+                <a href="{{privacyPolicyUrl}}">Privacy Policy</a>
+            </p>
+            <p>{{company.address}}</p>
+            <p>
+                <small>You're receiving this email because you signed up for updates from {{company.name}}.</small>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

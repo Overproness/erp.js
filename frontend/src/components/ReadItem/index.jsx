@@ -1,0 +1,80 @@
+import { useEffect, useState } from 'react';
+import { Row, Col } from 'antd';
+import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import { dataForRead } from '@/utils/dataStructure';
+import { useCrudContext } from '@/context/crud';
+import { selectCurrentItem } from '@/redux/crud/selectors';
+import { valueByString } from '@/utils/helpers';
+import useLanguage from '@/locale/useLanguage';
+import { useDate } from '@/settings';
+
+export default function ReadItem({ config }) {
+  const { dateFormat } = useDate();
+  const translate = useLanguage();
+  const { result: currentResult = {} } = useSelector(selectCurrentItem);
+  const { state } = useCrudContext();
+  const { isReadBoxOpen } = state;
+  const [listState, setListState] = useState([]);
+
+  let { readColumns, fields } = config;
+
+  if (fields) {
+    readColumns = [...dataForRead({ fields: fields, translate: translate })];
+  }
+
+  useEffect(() => {
+    if (!currentResult) return;
+
+    const list = readColumns.map((props) => {
+      const propsKey = props.dataIndex;
+      const propsTitle = props.title;
+      const isDate = props.isDate || false;
+
+      // Handle nested properties safely
+      let value = '';
+      if (Array.isArray(propsKey)) {
+        // Handle nested object paths like ['assignedTo', 'name']
+        let temp = currentResult;
+        for (const key of propsKey) {
+          temp = temp?.[key];
+        }
+        value = temp;
+      } else {
+        value = valueByString(currentResult, propsKey);
+      }
+
+      // Format value based on type
+      if (isDate && value) {
+        value = dayjs(value).format(dateFormat);
+      }
+
+      return {
+        propsKey: Array.isArray(propsKey) ? propsKey.join('.') : propsKey,
+        label: propsTitle,
+        value: value || '-',
+      };
+    });
+
+    setListState(list);
+  }, [currentResult]);
+
+  if (!isReadBoxOpen) return null;
+
+  return (
+    <Row gutter={[12, 0]}>
+      {listState.map((item) => (
+        <Col key={item.propsKey} span={24}>
+          <Row gutter={[12, 0]}>
+            <Col span={8}>
+              <p>{item.label}</p>
+            </Col>
+            <Col span={16}>
+              <p>{item.value}</p>
+            </Col>
+          </Row>
+        </Col>
+      ))}
+    </Row>
+  );
+}

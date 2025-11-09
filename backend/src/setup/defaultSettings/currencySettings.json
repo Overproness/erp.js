@@ -1,0 +1,32 @@
+[
+  {
+    "settingCategory": "currency",
+    "settingKey": "default",
+    "settingValue": "USD",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "currency",
+    "settingKey": "position",
+    "settingValue": "before",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "currency",
+    "settingKey": "thousand_separator",
+    "settingValue": ",",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "currency",
+    "settingKey": "decimal_separator",
+    "settingValue": ".",
+    "valueType": "string"
+  },
+  {
+    "settingCategory": "currency",
+    "settingKey": "precision",
+    "settingValue": 2,
+    "valueType": "number"
+  }
+]

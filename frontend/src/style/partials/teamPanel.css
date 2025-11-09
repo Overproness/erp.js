@@ -1,0 +1,16 @@
+.erp-panel-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 450px;
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  padding: 20px;
+  overflow: auto;
+}
+
+.erp-panel-container .ant-typography + .ant-typography {
+  margin-top: 16px;
+}

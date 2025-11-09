@@ -1,0 +1,23 @@
+import { ErpContextProvider } from '@/context/erp';
+import { Layout } from 'antd';
+
+const { Content } = Layout;
+
+export default function ErpLayout({ children }) {
+  return (
+    <ErpContextProvider>
+      <Content
+        className="content-card"
+        style={{
+          margin: '20px auto',
+          width: '100%',
+          maxWidth: '1200px',
+          minHeight: '600px',
+          padding: '32px',
+        }}
+      >
+        {children}
+      </Content>
+    </ErpContextProvider>
+  );
+}

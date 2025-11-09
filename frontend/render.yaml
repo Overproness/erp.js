@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: odoo-project-frontend
+    env: static
+    buildCommand: npm install && npm run build:render
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=8192

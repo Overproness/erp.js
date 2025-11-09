@@ -1,0 +1,23 @@
+[
+  {
+    "settingCategory": "ai_settings",
+    "settingKey": "use_openai_for_document_analysis",
+    "settingValue": false,
+    "valueType": "Boolean",
+    "isPrivate": false
+  },
+  {
+    "settingCategory": "ai_settings",
+    "settingKey": "openai_model_for_document_analysis",
+    "settingValue": "gpt-3.5-turbo",
+    "valueType": "String",
+    "isPrivate": false
+  },
+  {
+    "settingCategory": "ai_settings",
+    "settingKey": "ai_analysis_enabled",
+    "settingValue": true,
+    "valueType": "Boolean",
+    "isPrivate": false
+  }
+]

@@ -1,0 +1,17 @@
+@import './partials/rest.css';
+@import './partials/customAntd.css';
+@import './partials/layout.css';
+@import './partials/core.css';
+@import './partials/auth.css';
+@import './partials/header.css';
+@import './partials/sidePanel.css';
+@import './partials/collapseBox.css';
+@import './partials/erp.css';
+@import './partials/documents.css';
+@import './partials/teamPanel.css';
+@import './partials/dashboard.css';
+@import './partials/reputation.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,0 +1,147 @@
+/* Reputation Module Styles */
+
+/* Common card styles */
+.reputation-dashboard .stat-card,
+.reputation-dashboard .chart-card,
+.reputation-dashboard .rating-card,
+.reputation-dashboard .recent-reviews-card,
+.reputation-dashboard .platform-status-card,
+.review-detail-view .review-card,
+.review-detail-view .responses-card,
+.review-detail-view .response-form-card,
+.review-detail-view .review-details-card,
+.review-detail-view .activity-timeline-card,
+.review-detail-view .quick-actions-card,
+.platform-integration-status .platform-card,
+.platform-connections .header-card,
+.platform-connections .platforms-card,
+.platform-connections .platform-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+  transition: all 0.3s;
+}
+
+/* Hover effects */
+.reputation-dashboard .stat-card:hover,
+.reputation-dashboard .chart-card:hover,
+.platform-integration-status .platform-card:hover,
+.platform-connections .platform-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Card headers */
+.reputation-dashboard .ant-card-head,
+.review-detail-view .ant-card-head,
+.platform-integration-status .ant-card-head,
+.platform-connections .ant-card-head {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 24px;
+}
+
+/* Progress bars */
+.reputation-dashboard .ant-progress-bg,
+.review-detail-view .ant-progress-bg,
+.platform-integration-status .ant-progress-bg {
+  height: 8px !important;
+}
+
+/* Platform connection cards */
+.platform-connections .platform-card {
+  height: 100%;
+  border-radius: 8px;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.platform-connections .ant-card-actions {
+  border-top: none;
+  padding: 0 12px 12px 12px;
+  background: transparent;
+}
+
+.platform-connections .ant-steps-item-title {
+  font-size: 14px;
+}
+
+/* Review detail styles */
+.review-detail-view .review-content {
+  padding: 0 8px;
+}
+
+.review-detail-view .review-metadata {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.review-detail-view .detail-item {
+  margin-bottom: 16px;
+}
+
+.review-detail-view .detail-item > div {
+  margin-top: 4px;
+}
+
+.review-detail-view .ant-timeline {
+  padding: 8px;
+}
+
+.review-detail-view .ant-timeline-item {
+  padding-bottom: 20px;
+}
+
+/* Platform integration status */
+.platform-integration-status .ant-statistic-title {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* Custom scrollbar for webkit browsers */
+.reputation-dashboard div::-webkit-scrollbar,
+.review-detail-view div::-webkit-scrollbar,
+.platform-integration-status div::-webkit-scrollbar,
+.platform-connections div::-webkit-scrollbar {
+  width: 4px;
+}
+
+.reputation-dashboard div::-webkit-scrollbar-track,
+.review-detail-view div::-webkit-scrollbar-track,
+.platform-integration-status div::-webkit-scrollbar-track,
+.platform-connections div::-webkit-scrollbar-track {
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 2px;
+}
+
+.reputation-dashboard div::-webkit-scrollbar-thumb,
+.review-detail-view div::-webkit-scrollbar-thumb,
+.platform-integration-status div::-webkit-scrollbar-thumb,
+.platform-connections div::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b5cf6 0%, #7c3aed 100%);
+  border-radius: 2px;
+}
+
+.reputation-dashboard div::-webkit-scrollbar-thumb:hover,
+.review-detail-view div::-webkit-scrollbar-thumb:hover,
+.platform-integration-status div::-webkit-scrollbar-thumb:hover,
+.platform-connections div::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);
+}
+
+/* Rating stars */
+.ant-rate-star:not(:last-child) {
+  margin-right: 4px;
+}
+
+/* Response quality indicators */
+.response-quality-high {
+  color: #52c41a;
+}
+
+.response-quality-medium {
+  color: #faad14;
+}
+
+.response-quality-low {
+  color: #f5222d;
+}

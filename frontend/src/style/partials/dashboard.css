@@ -1,0 +1,207 @@
+/* Dashboard specific styling */
+.dashboard-container {
+  background: transparent;
+  padding: 0;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+  padding: 0;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.dashboard-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Dashboard stats cards */
+.dashboard-stats-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dashboard-stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.dashboard-stats-card.invoices {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dashboard-stats-card.quotes {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.dashboard-stats-card.paid {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.dashboard-stats-card.unpaid {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.dashboard-stats-content {
+  padding: 24px;
+  text-align: center;
+  color: white;
+}
+
+.dashboard-stats-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-stats-subtitle {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 16px;
+}
+
+.dashboard-stats-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+}
+
+/* Performance cards */
+.dashboard-performance-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  height: 100%;
+}
+
+.dashboard-performance-header {
+  padding: 20px 24px 16px;
+  background: linear-gradient(135deg, #8b45ff 0%, #7c3aed 100%);
+  color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.dashboard-performance-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dashboard-performance-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 4px 0 0;
+}
+
+.dashboard-performance-body {
+  padding: 24px;
+}
+
+/* Customer analytics card */
+.dashboard-customer-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  height: 100%;
+}
+
+.dashboard-customer-header {
+  padding: 20px 24px 16px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.dashboard-customer-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dashboard-customer-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 4px 0 0;
+}
+
+.dashboard-customer-body {
+  padding: 24px;
+  text-align: center;
+}
+
+/* Recent activities cards */
+.dashboard-recent-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  height: 100%;
+}
+
+.dashboard-recent-header {
+  padding: 20px 24px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.dashboard-recent-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dashboard-recent-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 4px 0 0;
+}
+
+.dashboard-recent-body {
+  padding: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-title {
+    font-size: 24px;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 14px;
+  }
+  
+  .dashboard-stats-value {
+    font-size: 24px;
+  }
+  
+  .dashboard-stats-content {
+    padding: 20px;
+  }
+}

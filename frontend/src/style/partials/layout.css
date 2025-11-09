@@ -1,0 +1,54 @@
+.wideAppContainer {
+  max-width: 1150px;
+}
+
+.appContainer {
+  max-width: 1050px;
+}
+
+.smallNavigation {
+  margin-left: 80px;
+}
+
+.wideNavigation {
+  margin-left: 280px;
+}
+
+/* Main layout adjustments for fixed sidebar */
+.ant-layout {
+  margin-left: 280px;
+  min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ant-layout.collapsed {
+  margin-left: 80px;
+}
+
+/* Header adjustments */
+.ant-layout-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+/* Content area improvements */
+.ant-layout-content {
+  background: #f8f9fa;
+  min-height: calc(100vh - 64px);
+  padding: 24px;
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 768px) {
+  .ant-layout {
+    margin-left: 0;
+  }
+  
+  .ant-layout.collapsed {
+    margin-left: 0;
+  }
+}

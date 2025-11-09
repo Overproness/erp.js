@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        /* Import base styles */
+        @import url('./campaignBase.html');
+        
+        /* Behavior trigger specific styles */
+        .trigger-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .activity-summary {
+            background-color: #eaf4fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .activity-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 10px 0;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            color: #6c757d;
+            font-size: 12px;
+        }
+        
+        .recommendations {
+            margin-top: 25px;
+        }
+        
+        .recommendation-item {
+            display: inline-block;
+            width: 45%;
+            margin: 10px 2%;
+            vertical-align: top;
+            text-align: center;
+        }
+        
+        .recommendation-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        
+        .recommendation-title {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .recommendation-price {
+            color: #28a745;
+        }
+
+        /* For personalized content highlighting */
+        .personalized {
+            background-color: #fff8e1;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* Urgency indicator */
+        .urgency {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        /* Timer display */
+        .countdown {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 15px 0;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="{{company.logoUrl}}" alt="{{company.name}}">
+        </div>
+        
+        <!-- Main Content Section -->
+        <div class="content">
+            <!-- Greeting -->
+            <div class="section">
+                <h1>Hi {{customer.firstName}},</h1>
+                <p>We noticed you recently {{triggerAction}} on our website, and wanted to follow up.</p>
+            </div>
+            
+            <!-- Activity Summary -->
+            <div class="activity-summary">
+                <h3>Your Recent Activity</h3>
+                {{#each customerActivity}}
+                <div class="activity-item">
+                    <div><strong>{{this.actionName}}</strong></div>
+                    <div>{{this.itemName}}</div>
+                    <div class="activity-time">{{this.time}}</div>
+                </div>
+                {{/each}}
+            </div>
+            
+            <!-- Personalized Message Based on Behavior -->
+            <div class="trigger-box">
+                {{#if abandonedCart}}
+                <h2>You left items in your cart!</h2>
+                <p>We're holding onto the items in your cart, but they might not be available for long.</p>
+                {{#if discountCode}}
+                <p>Use code <span class="personalized">{{discountCode}}</span> for an extra {{discountAmount}}% off your purchase.</p>
+                {{/if}}
+                <div class="countdown">Offer expires in {{expiryTime}}</div>
+                {{/if}}
+                
+                {{#if viewedItems}}
+                <h2>Still thinking about these?</h2>
+                <p>We noticed you were checking out these items. Here's a quick way to find them again!</p>
+                {{/if}}
+                
+                {{#if searchHistory}}
+                <h2>Finding what you're looking for</h2>
+                <p>Based on your recent searches for <span class="personalized">{{searchTerms}}</span>, we thought you might be interested in these options:</p>
+                {{/if}}
+            </div>
+            
+            <!-- Recommendations -->
+            <div class="recommendations">
+                <h3>You might also like</h3>
+                <div style="overflow: auto;">
+                    {{#each recommendations}}
+                    <div class="recommendation-item">
+                        <a href="{{this.url}}?utm_source=behavior_email&utm_medium=email&utm_campaign={{campaignId}}&utm_content={{this.id}}">
+                            <img src="{{this.imageUrl}}" alt="{{this.name}}">
+                            <div class="recommendation-title">{{this.name}}</div>
+                            <div class="recommendation-price">{{this.price}}</div>
+                        </a>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="section" style="text-align: center;">
+                <a href="{{cta.url}}" class="button">{{cta.text}}</a>
+            </div>
+            
+            <!-- Urgency Message -->
+            {{#if urgencyMessage}}
+            <p class="urgency">{{urgencyMessage}}</p>
+            {{/if}}
+        </div>
+        
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>&copy; {{currentYear}} {{company.name}}. All rights reserved.</p>
+            <p>
+                <a href="{{unsubscribeUrl}}">Unsubscribe</a> | 
+                <a href="{{preferencesUrl}}">Email Preferences</a> | 
+                <a href="{{privacyPolicyUrl}}">Privacy Policy</a>
+            </p>
+            <p>{{company.address}}</p>
+            <p>
+                <small>You're receiving this email because you signed up for updates from {{company.name}}.</small>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
