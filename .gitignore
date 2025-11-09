@@ -12,3 +12,8 @@ frontend/.env
 backend/.env
 frontend/.env.production
 backend/.env.example
+
+coverage/
+logs/
+docs/
+tmp/
