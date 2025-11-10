@@ -21,7 +21,14 @@ jobs:
           script: |
             cd /root/quickmation
             git pull origin main
+
+            # Backend
             npm install --prefix backend --omit=dev
-            pm2 restart backend || pm2 start backend/server.js --name backend
+            pm2 restart backend || pm2 start backend/src/server.js --name backend
+
+            # Frontend
+            npm install --prefix frontend --omit=dev
             npm run build --prefix frontend
+
+            # Reload Nginx for new build
             sudo systemctl reload nginx
