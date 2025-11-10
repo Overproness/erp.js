@@ -3,7 +3,7 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main # or your deployment branch
+      - main
 
 jobs:
   deploy:
@@ -23,12 +23,16 @@ jobs:
             git pull origin main
 
             # Backend
-            npm install --prefix backend --omit=dev
-            pm2 restart backend || pm2 start backend/src/server.js --name backend
+            cd backend
+            npm install --omit=dev
+            pm2 restart backend || pm2 start src/server.js --name backend
+            cd ..
 
             # Frontend
-            npm install --prefix frontend --omit=dev
-            npm run build --prefix frontend
+            cd frontend
+            npm install --omit=dev
+            npm run build
+            cd ..
 
             # Reload Nginx for new build
             sudo systemctl reload nginx
