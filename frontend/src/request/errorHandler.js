@@ -3,7 +3,7 @@ import { message } from 'antd';
 // Helper function to show error messages
 const showErrorMessage = (errorMsg, duration = 4.5) => {
   console.error(errorMsg);
-  
+
   try {
     message.error(errorMsg, duration);
   } catch (err) {
@@ -17,11 +17,12 @@ const errorHandler = (error) => {
 
   // Handle 403 Forbidden - Permission errors
   if (response && response.status === 403) {
-    const errorMessage = response.data?.message || 'Access denied. You do not have permission to perform this action.';
-    
+    const errorMessage =
+      response.data?.message || 'Access denied. You do not have permission to perform this action.';
+
     // Show permission errors for API calls (not route access)
     showErrorMessage(`Permission Error: ${errorMessage}`, 6);
-    
+
     return {
       success: false,
       result: null,
@@ -35,7 +36,7 @@ const errorHandler = (error) => {
   if (response && response.status === 401) {
     const errorMessage = response.data?.message || 'Authentication required. Please login again.';
     showErrorMessage(`Authentication Error: ${errorMessage}`, 5);
-    
+
     return {
       success: false,
       result: null,
@@ -48,12 +49,14 @@ const errorHandler = (error) => {
   // Handle 400 Bad Request
   if (response && response.status === 400) {
     const errorMessage = response.data?.message || 'Validation error';
-    
+
     // Check if it's a permission-related 400 error (ensure errorMessage is a string)
-    if (typeof errorMessage === 'string' && (
-        errorMessage.toLowerCase().includes('permission') || 
+    if (
+      typeof errorMessage === 'string' &&
+      (errorMessage.toLowerCase().includes('permission') ||
         errorMessage.toLowerCase().includes('access') ||
-        errorMessage.toLowerCase().includes('not authorized'))) {
+        errorMessage.toLowerCase().includes('not authorized'))
+    ) {
       showErrorMessage(`Permission Error: ${errorMessage}`, 5);
       return {
         success: false,
@@ -63,7 +66,7 @@ const errorHandler = (error) => {
         statusCode: 400,
       };
     }
-    
+
     showErrorMessage(errorMessage);
     return {
       success: false,
@@ -76,13 +79,15 @@ const errorHandler = (error) => {
   // Handle other HTTP status codes
   if (response && response.status) {
     const errorMessage = response.data?.message || `Server error (${response.status})`;
-    
+
     // Check for permission-related messages in any status code (ensure errorMessage is a string)
-    if (typeof errorMessage === 'string' && (
-        errorMessage.toLowerCase().includes('permission') || 
+    if (
+      typeof errorMessage === 'string' &&
+      (errorMessage.toLowerCase().includes('permission') ||
         errorMessage.toLowerCase().includes('access denied') ||
         errorMessage.toLowerCase().includes('insufficient permissions') ||
-        errorMessage.toLowerCase().includes('not authorized'))) {
+        errorMessage.toLowerCase().includes('not authorized'))
+    ) {
       showErrorMessage(`Access Denied: ${errorMessage}`, 6);
       return {
         success: false,
@@ -92,7 +97,7 @@ const errorHandler = (error) => {
         statusCode: response.status,
       };
     }
-    
+
     showErrorMessage(errorMessage);
     return {
       success: false,

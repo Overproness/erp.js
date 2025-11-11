@@ -1,20 +1,18 @@
 import useLanguage from '@/locale/useLanguage';
-import request from '@/request/request';
-// import request from '@/request';
 import {
   CheckCircleOutlined,
-  CodeOutlined,
-  FieldTimeOutlined,
+  CloudServerOutlined,
+  DesktopOutlined,
   InfoCircleOutlined,
 } from '@ant-design/icons';
-import { Card, Descriptions, Space, Spin, Tag, Typography } from 'antd';
+import { Card, Col, Row, Space, Spin, Statistic, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const VersionInfo = () => {
   const translate = useLanguage();
-  const [versionData, setVersionData] = useState(null);
+  const [frontendVersion, setFrontendVersion] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,49 +21,15 @@ const VersionInfo = () => {
 
   const fetchVersionInfo = async () => {
     try {
-      const response = await request.get({ entity: '/version' });
-
-      // Handle the response structure
-      if (response && response.success && response.result) {
-        setVersionData(response.result);
-      } else if (response && response.version) {
-        // Fallback if response is returned directly
-        setVersionData(response);
-      } else {
-        console.error('Unexpected response format:', response);
-        // Don't show error message, just fail silently in development
-      }
+      // Fetch frontend version from public folder
+      const frontendResponse = await fetch('/version.json');
+      const frontendData = await frontendResponse.json();
+      setFrontendVersion(frontendData.buildNumber);
     } catch (error) {
       console.error('Error fetching version info:', error);
       // Silently fail - version info is not critical
     } finally {
       setLoading(false);
-    }
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString || dateString === 'local-dev') return 'Development Build';
-    const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZoneName: 'short',
-    });
-  };
-
-  const getEnvironmentColor = (env) => {
-    switch (env) {
-      case 'production':
-        return 'green';
-      case 'development':
-        return 'blue';
-      case 'test':
-        return 'orange';
-      default:
-        return 'default';
     }
   };
 
@@ -79,7 +43,7 @@ const VersionInfo = () => {
     );
   }
 
-  if (!versionData) {
+  if (!frontendVersion) {
     return null;
   }
 
@@ -88,89 +52,54 @@ const VersionInfo = () => {
       title={
         <Space>
           <InfoCircleOutlined />
-          <span>{translate('Application Version Information')}</span>
+          <span>{translate('Build Information')}</span>
         </Space>
       }
       bordered={false}
       style={{ marginBottom: 24 }}
     >
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        {/* Version Badge */}
-        <div style={{ textAlign: 'center', padding: '20px 0' }}>
-          <Title level={2} style={{ marginBottom: 8 }}>
-            v{versionData.version}
-          </Title>
-          <Tag color={getEnvironmentColor(versionData.environment)} style={{ fontSize: 14 }}>
-            {versionData.environment?.toUpperCase()}
-          </Tag>
-        </div>
-
-        {/* Version Details */}
-        <Descriptions bordered column={1} size="middle">
-          <Descriptions.Item
-            label={
-              <Space>
-                <CheckCircleOutlined />
-                <Text strong>{translate('Version')}</Text>
-              </Space>
-            }
+      <Row gutter={[24, 24]}>
+        {/* Frontend Build Number */}
+        <Col xs={24} sm={12}>
+          <Card
+            style={{
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              border: 'none',
+            }}
           >
-            <Text code style={{ fontSize: 16 }}>
-              {versionData.version}
-            </Text>
-          </Descriptions.Item>
+            <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+              <DesktopOutlined style={{ fontSize: 48, color: '#fff' }} />
+              <Statistic
+                title={
+                  <Text strong style={{ color: '#fff', fontSize: 16 }}>
+                    {translate('Frontend Build')}
+                  </Text>
+                }
+                value={frontendVersion || 'N/A'}
+                valueStyle={{ color: '#fff', fontSize: 36, fontWeight: 'bold' }}
+              />
+            </Space>
+          </Card>
+        </Col>
+      </Row>
 
-          <Descriptions.Item
-            label={
-              <Space>
-                <CodeOutlined />
-                <Text strong>{translate('Commit Hash')}</Text>
-              </Space>
-            }
-          >
-            {versionData.commit === 'local-dev' ? (
-              <Tag color="blue">{translate('Local Development')}</Tag>
-            ) : (
-              <Text code copyable={{ text: versionData.commit }}>
-                {versionData.commit?.substring(0, 8)}
-              </Text>
-            )}
-          </Descriptions.Item>
-
-          <Descriptions.Item
-            label={
-              <Space>
-                <FieldTimeOutlined />
-                <Text strong>{translate('Build Date')}</Text>
-              </Space>
-            }
-          >
-            <Text>{formatDate(versionData.buildDate)}</Text>
-          </Descriptions.Item>
-
-          <Descriptions.Item
-            label={
-              <Space>
-                <InfoCircleOutlined />
-                <Text strong>{translate('Branch')}</Text>
-              </Space>
-            }
-          >
-            <Tag color={versionData.branch === 'main' ? 'green' : 'blue'}>{versionData.branch}</Tag>
-          </Descriptions.Item>
-
-          <Descriptions.Item
-            label={
-              <Space>
-                <CodeOutlined />
-                <Text strong>{translate('Node Version')}</Text>
-              </Space>
-            }
-          >
-            <Text code>{versionData.nodeVersion}</Text>
-          </Descriptions.Item>
-        </Descriptions>
-      </Space>
+      {/* Helper Text */}
+      <div
+        style={{
+          background: '#f0f2f5',
+          padding: '12px 16px',
+          borderRadius: 4,
+          marginTop: 24,
+        }}
+      >
+        <Text type="secondary" style={{ fontSize: 13 }}>
+          <CheckCircleOutlined style={{ marginRight: 8, color: '#52c41a' }} />
+          {translate(
+            'Build numbers increment with each deployment. Use them to verify successful deployments on production.'
+          )}
+        </Text>
+      </div>
     </Card>
   );
 };

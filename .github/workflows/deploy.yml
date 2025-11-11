@@ -11,38 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.9.0'
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
-
-      - name: Bump version
-        id: version
-        run: |
-          cd frontend
-          npm version patch -m "chore: bump version to %s [skip ci]"
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          cd ../backend
-          npm version $NEW_VERSION --no-git-tag-version --allow-same-version
-          cd ..
-          git add backend/package.json
-          git commit -m "chore: sync backend version to $NEW_VERSION [skip ci]" || echo "No changes to commit"
-          git push origin main
-
-      - name: Create version metadata
-        run: |
-          echo "{\"version\":\"${{ steps.version.outputs.version }}\",\"commit\":\"${{ github.sha }}\",\"buildDate\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"branch\":\"${{ github.ref_name }}\"}" > version.json
-          cat version.json
 
       - name: SSH into VPS and deploy
         uses: appleboy/ssh-action@v1.2.0
@@ -54,12 +22,8 @@ jobs:
             cd /root/quickmation
             git pull origin main
 
-            # Create version.json with build metadata
-            echo '{"version":"${{ steps.version.outputs.version }}","commit":"${{ github.sha }}","buildDate":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","branch":"${{ github.ref_name }}"}' > version.json
-
             # Backend
             cd backend
-            cp ../version.json ./public/version.json
             npm install --omit=dev
             pm2 restart backend || pm2 start src/server.js --name backend
             cd ..
@@ -68,9 +32,6 @@ jobs:
             cd frontend
             npm install
             npm run build
-            
-            # Copy version.json to frontend build
-            cp ../version.json ./dist/version.json
             cd ..
 
             # Deploy frontend to /var/www/erp
@@ -83,4 +44,3 @@ jobs:
             # Reload Nginx
             sudo nginx -t
             sudo systemctl reload nginx
-
