@@ -1,3 +1,4 @@
+import { N8N_URL } from '@/config/serverApiConfig';
 import { usePermissions } from '@/hooks/usePermissions';
 import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
@@ -289,7 +290,7 @@ export default function IconSidebar() {
     if (item.isExternal && item.key === 'workflow') {
       const companyId = currentAdmin?._id;
       if (companyId) {
-        window.open(`http://n8n-${companyId}.localhost`, '_blank');
+        window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
       }
     } else {
       navigate(item.path);

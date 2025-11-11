@@ -127,7 +127,7 @@ Items to test: CRM, Marketing, Workflows & Tasks, Team & Settings
 
 1. Open Workflows & Tasks submenu
 2. Click green "Workflows" button
-3. Should open `http://n8n-{companyId}.localhost` in new tab
+3. Should open `http://n8n-{companyId}.${N8N_URL}` in new tab
 
 ---
 

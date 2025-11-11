@@ -22,6 +22,7 @@ import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import PreviewCard from './components/PreviewCard';
 import SummaryCard from './components/SummaryCard';
 
+import { N8N_URL } from '@/config/serverApiConfig';
 import { selectMoneyFormat } from '@/redux/settings/selectors';
 import { useSelector } from 'react-redux';
 const { Title, Text } = Typography;
@@ -328,7 +329,7 @@ export default function DashboardModule() {
               onClick={() => {
                 const companyId = currentAdmin?._id;
                 if (companyId) {
-                  window.open(`http://n8n-${companyId}.localhost`, '_blank');
+                  window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
                 }
               }}
               style={{

@@ -49,10 +49,11 @@ const errorHandler = (error) => {
   if (response && response.status === 400) {
     const errorMessage = response.data?.message || 'Validation error';
     
-    // Check if it's a permission-related 400 error
-    if (errorMessage.toLowerCase().includes('permission') || 
+    // Check if it's a permission-related 400 error (ensure errorMessage is a string)
+    if (typeof errorMessage === 'string' && (
+        errorMessage.toLowerCase().includes('permission') || 
         errorMessage.toLowerCase().includes('access') ||
-        errorMessage.toLowerCase().includes('not authorized')) {
+        errorMessage.toLowerCase().includes('not authorized'))) {
       showErrorMessage(`Permission Error: ${errorMessage}`, 5);
       return {
         success: false,
@@ -76,11 +77,12 @@ const errorHandler = (error) => {
   if (response && response.status) {
     const errorMessage = response.data?.message || `Server error (${response.status})`;
     
-    // Check for permission-related messages in any status code
-    if (errorMessage.toLowerCase().includes('permission') || 
+    // Check for permission-related messages in any status code (ensure errorMessage is a string)
+    if (typeof errorMessage === 'string' && (
+        errorMessage.toLowerCase().includes('permission') || 
         errorMessage.toLowerCase().includes('access denied') ||
         errorMessage.toLowerCase().includes('insufficient permissions') ||
-        errorMessage.toLowerCase().includes('not authorized')) {
+        errorMessage.toLowerCase().includes('not authorized'))) {
       showErrorMessage(`Access Denied: ${errorMessage}`, 6);
       return {
         success: false,

@@ -14,6 +14,7 @@ import { selectCurrentAdmin } from '@/redux/auth/selectors';
 
 import IconSidebar from './IconSidebar';
 
+import { N8N_URL } from '@/config/serverApiConfig';
 import {
   BankOutlined,
   CaretDownOutlined,
@@ -643,7 +644,7 @@ function Sidebar({ collapsible, isMobile = false }) {
               onClick={() => {
                 const companyId = currentAdmin?._id;
                 if (companyId) {
-                  window.open(`http://n8n-${companyId}.localhost`, '_blank');
+                  window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
                 }
               }}
               style={{

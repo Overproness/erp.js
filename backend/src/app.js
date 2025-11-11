@@ -69,6 +69,7 @@ const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
 const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
 const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
+const versionRouter = require('./routes/versionRoutes');
 
 // App Routes
 const erpApiRouter = require('./routes/appRoutes/appApi');
@@ -297,6 +298,7 @@ app.use('/api', behaviorTracking.trackApiInteraction);
 // Register Routes (Order Matters!)
 // ─────────────────────────────────────────────────────────────
 // Public Routes
+app.use('/api', versionRouter); // Version endpoint - public, no auth required
 app.use('/api', coreAuthRouter);
 app.use(
   '/api/public/social-media',

@@ -1,6 +1,7 @@
 import useLanguage from '@/locale/useLanguage';
 
 import GeneralSettingsModule from './SettingModule/GeneralSettingsModule';
+import VersionInfo from '@/components/VersionInfo/VersionInfo';
 
 export default function GeneralSettings() {
   const translate = useLanguage();
@@ -21,5 +22,11 @@ export default function GeneralSettings() {
     settingsCategory: 'app_settings',
     ...Labels,
   };
-  return <GeneralSettingsModule config={configPage} />;
+  
+  return (
+    <>
+      <VersionInfo />
+      <GeneralSettingsModule config={configPage} />
+    </>
+  );
 }
