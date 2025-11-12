@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useMarketing } from '@/context/useMarketing';
+import useLanguage from '@/locale/useLanguage';
+import { fetchCampaigns, fetchSegments } from '@/redux/marketing/marketingSlice';
+import {
+  selectActiveCampaigns,
+  selectCampaigns,
+  selectCampaignsLoading,
+  selectCompletedCampaigns,
+  selectDraftCampaigns,
+} from '@/redux/marketing/selectors';
+import {
+  AimOutlined,
+  BarChartOutlined,
+  BellOutlined,
+  FundOutlined,
+  PlusOutlined,
+  RiseOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Button, Card, Col, Row, Space, Statistic, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Card, Col, Row, Statistic, Typography, Space, Button } from 'antd';
-import { 
-  PlusOutlined, 
-  BarChartOutlined, 
-  RiseOutlined, 
-  AimOutlined, 
-  FundOutlined,
-  UserOutlined,
-  BellOutlined
-} from '@ant-design/icons';
-import useLanguage from '@/locale/useLanguage';
-import { useMarketing } from '@/context/MarketingContext';
-import { fetchCampaigns, fetchSegments } from '@/redux/marketing/marketingSlice';
-import { 
-  selectCampaigns, 
-  selectCampaignsLoading, 
-  selectActiveCampaigns, 
-  selectDraftCampaigns,
-  selectCompletedCampaigns
-} from '@/redux/marketing/selectors';
 import MarketingDataTableModule from './MarketingModule/MarketingDataTableModule';
 
 const { Title, Text } = Typography;
@@ -30,7 +30,7 @@ export default function Marketing() {
   const navigate = useNavigate();
   const translate = useLanguage();
   const { openModal, updateFilters } = useMarketing();
-  
+
   // Campaign data from Redux store
   const campaigns = useSelector(selectCampaigns);
   const isLoading = useSelector(selectCampaignsLoading);
@@ -90,14 +90,14 @@ export default function Marketing() {
   const dummyAudiences = [
     { _id: 'aud_1', name: 'High-Intent Website Visitors', size: 8420 },
     { _id: 'aud_2', name: 'Engaged Email Subscribers', size: 5310 },
-    { _id: 'aud_3', name: 'All Customers', size: 15000 }
+    { _id: 'aud_3', name: 'All Customers', size: 15000 },
   ];
 
   // Prefer store data; fallback to dummy data for metrics and table section
   const campaignsSource = campaigns && campaigns.length ? campaigns : dummyCampaigns;
-  const derivedActiveCampaigns = campaignsSource.filter(c => c.status === 'active');
-  const derivedCompletedCampaigns = campaignsSource.filter(c => c.status === 'completed');
-  const derivedDraftCampaigns = campaignsSource.filter(c => c.status === 'draft');
+  const derivedActiveCampaigns = campaignsSource.filter((c) => c.status === 'active');
+  const derivedCompletedCampaigns = campaignsSource.filter((c) => c.status === 'completed');
+  const derivedDraftCampaigns = campaignsSource.filter((c) => c.status === 'draft');
 
   useEffect(() => {
     dispatch(fetchCampaigns());
@@ -131,7 +131,14 @@ export default function Marketing() {
     <div style={{ padding: '0' }}>
       {/* Header Section */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div
+          style={{
+            marginBottom: '24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
           <div>
             <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
               {translate('Marketing Campaigns')}
@@ -141,23 +148,13 @@ export default function Marketing() {
             </Text>
           </div>
           <Space>
-            <Button 
-              icon={<BarChartOutlined />} 
-              onClick={handleViewAnalytics}
-            >
+            <Button icon={<BarChartOutlined />} onClick={handleViewAnalytics}>
               {translate('Analytics')}
             </Button>
-            <Button 
-              icon={<BellOutlined />} 
-              onClick={handleManageTriggers}
-            >
+            <Button icon={<BellOutlined />} onClick={handleManageTriggers}>
               {translate('Behavior Triggers')}
             </Button>
-            <Button 
-              type="primary" 
-              icon={<PlusOutlined />} 
-              onClick={handleCreateCampaign}
-            >
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateCampaign}>
               {translate('Create Campaign')}
             </Button>
           </Space>

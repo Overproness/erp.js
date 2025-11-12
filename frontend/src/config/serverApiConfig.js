@@ -18,7 +18,8 @@ const ACCESS_TOKEN_NAME = 'x-auth-token';
 
 export const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
 
-export const N8N_URL = import.meta.env.N8N_URL;
+export const N8N_URL = import.meta.env.VITE_N8N_URL;
 console.log('🚀 ~ N8N_URL:', N8N_URL);
+console.log('🚀 ~ N8N_URL:', import.meta.env.PROD);
 
 export { ACCESS_TOKEN_NAME, API_BASE_URL };

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Steps, Card, Typography, Button, Space, message } from 'antd';
-import { ArrowLeftOutlined, SaveOutlined, SendOutlined } from '@ant-design/icons';
+import { useMarketing } from '@/context/useMarketing';
 import useLanguage from '@/locale/useLanguage';
+import { ArrowLeftOutlined, SaveOutlined, SendOutlined } from '@ant-design/icons';
+import { Button, Card, Space, Steps, Typography, message } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CreateCampaignModule from './MarketingModule/CreateCampaignModule';
-import { useMarketing } from '@/context/MarketingContext';
 
 const { Title, Text } = Typography;
 const { Step } = Steps;
@@ -13,10 +13,10 @@ export default function CampaignBuilder() {
   const navigate = useNavigate();
   const translate = useLanguage();
   const { setFormData, formData } = useMarketing();
-  
+
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  
+
   // Define steps for campaign creation
   const steps = [
     {
@@ -38,7 +38,7 @@ export default function CampaignBuilder() {
     {
       title: translate('Review'),
       description: translate('Review and launch'),
-    }
+    },
   ];
 
   const handleBack = () => {
@@ -55,7 +55,7 @@ export default function CampaignBuilder() {
 
   const handleFinish = () => {
     setLoading(true);
-    
+
     // Mock submission - in reality this would call a Redux action
     setTimeout(() => {
       setLoading(false);
@@ -73,7 +73,7 @@ export default function CampaignBuilder() {
             {translate('Back to Marketing')}
           </Button>
         </Space>
-        
+
         <div>
           <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
             {translate('Create Campaign')}
@@ -85,15 +85,15 @@ export default function CampaignBuilder() {
       </div>
 
       {/* Steps Progress */}
-      <Card 
-        style={{ 
+      <Card
+        style={{
           marginBottom: '24px',
           borderRadius: '12px',
-          boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)'
+          boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)',
         }}
       >
         <Steps current={currentStep} size="small">
-          {steps.map(item => (
+          {steps.map((item) => (
             <Step key={item.title} title={item.title} description={item.description} />
           ))}
         </Steps>
@@ -105,49 +105,43 @@ export default function CampaignBuilder() {
           borderRadius: '12px',
           border: '1px solid #e8e8e8',
           boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)',
-          minHeight: '500px'
+          minHeight: '500px',
         }}
       >
-        <CreateCampaignModule 
+        <CreateCampaignModule
           currentStep={currentStep}
           formData={formData}
           onUpdateFormData={setFormData}
         />
-        
+
         {/* Navigation Buttons */}
-        <div 
-          style={{ 
-            marginTop: '40px', 
-            display: 'flex', 
-            justifyContent: 'space-between' 
+        <div
+          style={{
+            marginTop: '40px',
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
-          <Button 
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-          >
+          <Button onClick={handlePrevious} disabled={currentStep === 0}>
             {translate('Previous')}
           </Button>
-          
+
           <Space>
             {currentStep < steps.length - 1 ? (
-              <Button 
-                type="primary" 
-                onClick={handleNext}
-              >
+              <Button type="primary" onClick={handleNext}>
                 {translate('Next')}
               </Button>
             ) : (
               <>
-                <Button 
-                  icon={<SaveOutlined />} 
+                <Button
+                  icon={<SaveOutlined />}
                   onClick={() => message.info(translate('Campaign saved as draft'))}
                 >
                   {translate('Save as Draft')}
                 </Button>
-                <Button 
-                  type="primary" 
-                  icon={<SendOutlined />} 
+                <Button
+                  type="primary"
+                  icon={<SendOutlined />}
                   loading={loading}
                   onClick={handleFinish}
                 >
