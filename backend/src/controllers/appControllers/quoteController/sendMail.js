@@ -7,11 +7,11 @@ const quoteDeliveryService = require('@/services/quoteDeliveryService');
 const sendQuote = async (req, res) => {
   try {
     const { id } = req.params;
-    const { 
-      channels = ['email'], 
-      attachPdf = true, 
+    const {
+      channels = ['email'],
+      attachPdf = true,
       customMessage = null,
-      quoteUrl = null 
+      quoteUrl = null,
     } = req.body;
 
     const result = await quoteDeliveryService.sendQuote(id, {
@@ -19,22 +19,22 @@ const sendQuote = async (req, res) => {
       attachPdf,
       customMessage,
       quoteUrl,
-      sentBy: req.user?.id || req.user?._id
+      sentBy: req.user?.id || req.user?._id,
     });
 
     return res.status(200).json({
       success: true,
       result,
-      message: result.allChannelsSuccessful 
+      message: result.allChannelsSuccessful
         ? 'Quote sent successfully via all channels'
-        : 'Quote sent with some delivery issues'
+        : 'Quote sent with some delivery issues',
     });
   } catch (error) {
     console.error('Error sending quote:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message || 'Failed to send quote'
+      message: error.message || 'Failed to send quote',
     });
   }
 };
@@ -46,30 +46,26 @@ const sendQuote = async (req, res) => {
 const resendQuote = async (req, res) => {
   try {
     const { id } = req.params;
-    const { 
-      channels = ['email'], 
-      attachPdf = true,
-      quoteUrl = null 
-    } = req.body;
+    const { channels = ['email'], attachPdf = true, quoteUrl = null } = req.body;
 
     const result = await quoteDeliveryService.resendQuote(id, {
       channels,
       attachPdf,
       quoteUrl,
-      sentBy: req.user?.id || req.user?._id
+      sentBy: req.user?.id || req.user?._id,
     });
 
     return res.status(200).json({
       success: true,
       result,
-      message: 'Quote resent successfully'
+      message: 'Quote resent successfully',
     });
   } catch (error) {
     console.error('Error resending quote:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message || 'Failed to resend quote'
+      message: error.message || 'Failed to resend quote',
     });
   }
 };
@@ -81,28 +77,25 @@ const resendQuote = async (req, res) => {
 const sendReminder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { 
-      channels = ['email'],
-      quoteUrl = null 
-    } = req.body;
+    const { channels = ['email'], quoteUrl = null } = req.body;
 
     const result = await quoteDeliveryService.sendReminder(id, {
       channels,
       quoteUrl,
-      sentBy: req.user?.id || req.user?._id
+      sentBy: req.user?.id || req.user?._id,
     });
 
     return res.status(200).json({
       success: true,
       result,
-      message: 'Quote reminder sent successfully'
+      message: 'Quote reminder sent successfully',
     });
   } catch (error) {
     console.error('Error sending quote reminder:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message || 'Failed to send quote reminder'
+      message: error.message || 'Failed to send quote reminder',
     });
   }
 };
@@ -120,14 +113,14 @@ const getDeliveryHistory = async (req, res) => {
     return res.status(200).json({
       success: true,
       result,
-      message: 'Delivery history retrieved successfully'
+      message: 'Delivery history retrieved successfully',
     });
   } catch (error) {
     console.error('Error getting delivery history:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message || 'Failed to get delivery history'
+      message: error.message || 'Failed to get delivery history',
     });
   }
 };
@@ -145,14 +138,14 @@ const checkDeliveryStatus = async (req, res) => {
     return res.status(200).json({
       success: true,
       result,
-      message: 'Delivery status retrieved successfully'
+      message: 'Delivery status retrieved successfully',
     });
   } catch (error) {
     console.error('Error checking delivery status:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message || 'Failed to check delivery status'
+      message: error.message || 'Failed to check delivery status',
     });
   }
 };
@@ -163,37 +156,33 @@ const checkDeliveryStatus = async (req, res) => {
  */
 const sendBulkQuotes = async (req, res) => {
   try {
-    const { 
-      quoteIds = [], 
-      channels = ['email'], 
-      attachPdf = true 
-    } = req.body;
+    const { quoteIds = [], channels = ['email'], attachPdf = true } = req.body;
 
     if (!Array.isArray(quoteIds) || quoteIds.length === 0) {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Quote IDs array is required'
+        message: 'Quote IDs array is required',
       });
     }
 
     const result = await quoteDeliveryService.sendBulkQuotes(quoteIds, {
       channels,
       attachPdf,
-      sentBy: req.user?.id || req.user?._id
+      sentBy: req.user?.id || req.user?._id,
     });
 
     return res.status(200).json({
       success: true,
       result,
-      message: `Processed ${result.totalProcessed} quotes: ${result.successfulDeliveries} successful, ${result.failedDeliveries} failed`
+      message: `Processed ${result.totalProcessed} quotes: ${result.successfulDeliveries} successful, ${result.failedDeliveries} failed`,
     });
   } catch (error) {
     console.error('Error sending bulk quotes:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message || 'Failed to send bulk quotes'
+      message: error.message || 'Failed to send bulk quotes',
     });
   }
 };
@@ -214,6 +203,5 @@ module.exports = {
   sendReminder,
   getDeliveryHistory,
   checkDeliveryStatus,
-  sendBulkQuotes
+  sendBulkQuotes,
 };
-

@@ -167,7 +167,7 @@ export default function CreateItem({ config, CreateForm }) {
           navigate(`/${entity.toLowerCase()}`);
         }}
         backIcon={<ArrowLeftOutlined />}
-        title={translate('New')}
+        title={config.CREATE_PAGE_TITLE || translate('New')}
         ghost={false}
         tags={<Tag>{translate('Draft')}</Tag>}
         // subTitle="This is create page"

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Row, Col } from 'antd';
+import { Col, Form, Input, InputNumber, Row } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { DeleteOutlined } from '@ant-design/icons';
-import { useMoneyOld, useDate } from '@/settings';
+import { useMoneyOld } from '@/settings';
 import calculate from '@/utils/calculate';
+import { DeleteOutlined } from '@ant-design/icons';
 
 export default function ItemRow({ field, remove, current = null }) {
   const [totalState, setTotal] = useState(undefined);
@@ -59,7 +59,7 @@ export default function ItemRow({ field, remove, current = null }) {
           rules={[
             {
               required: true,
-              message: 'Missing itemName name',
+              message: 'Please enter Item Name',
             },
             {
               pattern: /^(?!\s*$)[\s\S]+$/, // Regular expression to allow spaces, alphanumeric, and special characters, but not just spaces
@@ -76,12 +76,18 @@ export default function ItemRow({ field, remove, current = null }) {
         </Form.Item>
       </Col>
       <Col className="gutter-row" span={3}>
-        <Form.Item name={[field.name, 'quantity']} rules={[{ required: true }]}>
+        <Form.Item
+          name={[field.name, 'quantity']}
+          rules={[{ required: true, message: 'Please enter quantity' }]}
+        >
           <InputNumber style={{ width: '100%' }} min={0} onChange={updateQt} />
         </Form.Item>
       </Col>
       <Col className="gutter-row" span={4}>
-        <Form.Item name={[field.name, 'price']} rules={[{ required: true }]}>
+        <Form.Item
+          name={[field.name, 'price']}
+          rules={[{ required: true, message: 'Please enter price' }]}
+        >
           <InputNumber
             className="moneyInput"
             onChange={updatePrice}

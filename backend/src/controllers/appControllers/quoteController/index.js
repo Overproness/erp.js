@@ -8,7 +8,7 @@ const {
   sendReminder,
   getDeliveryHistory,
   checkDeliveryStatus,
-  sendBulkQuotes
+  sendBulkQuotes,
 } = require('./sendMail');
 const create = require('./create');
 const summary = require('./summary');

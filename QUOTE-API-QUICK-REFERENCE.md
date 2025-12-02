@@ -3,12 +3,15 @@
 ## 🚀 Quick Start
 
 ### Base URL
+
 ```
 http://localhost:8888/api
 ```
 
 ### Authentication
+
 All endpoints require Bearer token:
+
 ```
 Authorization: Bearer YOUR_JWT_TOKEN
 ```
@@ -18,6 +21,7 @@ Authorization: Bearer YOUR_JWT_TOKEN
 ## 📌 API Endpoints
 
 ### 1. Send Quote
+
 **Send a quote to a customer via email/SMS**
 
 ```http
@@ -25,6 +29,7 @@ POST /quote/send/:id
 ```
 
 **Request Body:**
+
 ```json
 {
   "channels": ["email", "sms"],
@@ -35,6 +40,7 @@ POST /quote/send/:id
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -63,6 +69,7 @@ POST /quote/send/:id
 ---
 
 ### 2. Resend Quote
+
 **Resend an existing quote**
 
 ```http
@@ -70,6 +77,7 @@ POST /quote/resend/:id
 ```
 
 **Request Body:**
+
 ```json
 {
   "channels": ["email"],
@@ -81,6 +89,7 @@ POST /quote/resend/:id
 ---
 
 ### 3. Send Reminder
+
 **Send a reminder for an expiring quote**
 
 ```http
@@ -88,6 +97,7 @@ POST /quote/reminder/:id
 ```
 
 **Request Body:**
+
 ```json
 {
   "channels": ["email", "sms"],
@@ -98,6 +108,7 @@ POST /quote/reminder/:id
 ---
 
 ### 4. Get Delivery History
+
 **Retrieve complete delivery history for a quote**
 
 ```http
@@ -105,6 +116,7 @@ GET /quote/delivery-history/:id
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -129,6 +141,7 @@ GET /quote/delivery-history/:id
 ---
 
 ### 5. Check Delivery Status
+
 **Get current delivery status and summary**
 
 ```http
@@ -136,6 +149,7 @@ GET /quote/delivery-status/:id
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -166,6 +180,7 @@ GET /quote/delivery-status/:id
 ---
 
 ### 6. Send Bulk Quotes
+
 **Send multiple quotes at once**
 
 ```http
@@ -173,18 +188,17 @@ POST /quote/send-bulk
 ```
 
 **Request Body:**
+
 ```json
 {
-  "quoteIds": [
-    "507f1f77bcf86cd799439011",
-    "507f1f77bcf86cd799439012"
-  ],
+  "quoteIds": ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439012"],
   "channels": ["email"],
   "attachPdf": true
 }
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -205,63 +219,67 @@ POST /quote/send-bulk
 ## 🎯 Common Use Cases
 
 ### Use Case 1: Send Quote via Email Only
+
 ```javascript
-const response = await fetch('/api/quote/send/QUOTE_ID', {
-  method: 'POST',
+const response = await fetch("/api/quote/send/QUOTE_ID", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer TOKEN'
+    "Content-Type": "application/json",
+    Authorization: "Bearer TOKEN",
   },
   body: JSON.stringify({
-    channels: ['email'],
-    attachPdf: true
-  })
+    channels: ["email"],
+    attachPdf: true,
+  }),
 });
 ```
 
 ### Use Case 2: Send Quote via Both Channels
+
 ```javascript
-const response = await fetch('/api/quote/send/QUOTE_ID', {
-  method: 'POST',
+const response = await fetch("/api/quote/send/QUOTE_ID", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer TOKEN'
+    "Content-Type": "application/json",
+    Authorization: "Bearer TOKEN",
   },
   body: JSON.stringify({
-    channels: ['email', 'sms'],
+    channels: ["email", "sms"],
     attachPdf: true,
-    quoteUrl: 'https://mycompany.com/view-quote/123'
-  })
+    quoteUrl: "https://mycompany.com/view-quote/123",
+  }),
 });
 ```
 
 ### Use Case 3: Send Reminder Before Expiry
+
 ```javascript
-const response = await fetch('/api/quote/reminder/QUOTE_ID', {
-  method: 'POST',
+const response = await fetch("/api/quote/reminder/QUOTE_ID", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer TOKEN'
+    "Content-Type": "application/json",
+    Authorization: "Bearer TOKEN",
   },
   body: JSON.stringify({
-    channels: ['sms']
-  })
+    channels: ["sms"],
+  }),
 });
 ```
 
 ### Use Case 4: Check If Quote Was Sent
+
 ```javascript
-const response = await fetch('/api/quote/delivery-status/QUOTE_ID', {
-  method: 'GET',
+const response = await fetch("/api/quote/delivery-status/QUOTE_ID", {
+  method: "GET",
   headers: {
-    'Authorization': 'Bearer TOKEN'
-  }
+    Authorization: "Bearer TOKEN",
+  },
 });
 
 const data = await response.json();
 if (data.result.totalDeliveries > 0) {
-  console.log('Quote was sent!');
-  console.log('Last delivery:', data.result.lastDelivery);
+  console.log("Quote was sent!");
+  console.log("Last delivery:", data.result.lastDelivery);
 }
 ```
 
@@ -270,13 +288,15 @@ if (data.result.totalDeliveries > 0) {
 ## ⚙️ Request Parameters
 
 ### Channel Options
+
 ```javascript
-channels: ['email']        // Email only
-channels: ['sms']          // SMS only
-channels: ['email', 'sms'] // Both channels
+channels: ["email"]; // Email only
+channels: ["sms"]; // SMS only
+channels: ["email", "sms"]; // Both channels
 ```
 
 ### Optional Parameters
+
 ```javascript
 {
   attachPdf: true,           // Attach PDF to email (default: true)
@@ -290,6 +310,7 @@ channels: ['email', 'sms'] // Both channels
 ## ❌ Error Responses
 
 ### Quote Not Found
+
 ```json
 {
   "success": false,
@@ -298,6 +319,7 @@ channels: ['email', 'sms'] // Both channels
 ```
 
 ### Customer Email Missing
+
 ```json
 {
   "success": false,
@@ -306,6 +328,7 @@ channels: ['email', 'sms'] // Both channels
 ```
 
 ### Quote Expired
+
 ```json
 {
   "success": false,
@@ -314,6 +337,7 @@ channels: ['email', 'sms'] // Both channels
 ```
 
 ### Quote Cancelled
+
 ```json
 {
   "success": false,
@@ -326,6 +350,7 @@ channels: ['email', 'sms'] // Both channels
 ## 🔔 Email & SMS Message Formats
 
 ### Email Format
+
 - **Subject:** Quote #2025-1001 from Company Name
 - **Content:** Professional HTML template with:
   - Company logo and branding
@@ -337,14 +362,17 @@ channels: ['email', 'sms'] // Both channels
   - Contact information
 
 ### SMS Format
+
 **Quote Notification:**
+
 ```
-Hi John Doe, Tech Revisor has sent you a quote #2025-1001 for USD 1,500.00. 
+Hi John Doe, Tech Revisor has sent you a quote #2025-1001 for USD 1,500.00.
 View it here: https://example.com/quotes/123
 Valid until 12/17/2025.
 ```
 
 **Reminder:**
+
 ```
 Reminder: Your quote #2025-1001 from Tech Revisor (USD 1,500.00) expires in 3 days.
 Review it: https://example.com/quotes/123
@@ -355,6 +383,7 @@ Review it: https://example.com/quotes/123
 ## 🔒 Security & Validation
 
 **Automatic Validations:**
+
 - ✅ User authentication required
 - ✅ Quote existence check
 - ✅ Customer information validation
@@ -366,13 +395,13 @@ Review it: https://example.com/quotes/123
 
 ## 📊 Response Status Codes
 
-| Code | Meaning |
-|------|---------|
-| 200 | Success |
-| 400 | Bad Request (validation error) |
-| 401 | Unauthorized |
-| 404 | Quote not found |
-| 500 | Server error |
+| Code | Meaning                        |
+| ---- | ------------------------------ |
+| 200  | Success                        |
+| 400  | Bad Request (validation error) |
+| 401  | Unauthorized                   |
+| 404  | Quote not found                |
+| 500  | Server error                   |
 
 ---
 
@@ -391,6 +420,7 @@ Review it: https://example.com/quotes/123
 ## 🧪 Testing
 
 ### Test with cURL
+
 ```bash
 # Send quote via email
 curl -X POST http://localhost:8888/api/quote/send/QUOTE_ID \
@@ -404,6 +434,7 @@ curl -X GET http://localhost:8888/api/quote/delivery-status/QUOTE_ID \
 ```
 
 ### Test with Postman
+
 1. Create new POST request
 2. Set URL: `http://localhost:8888/api/quote/send/:id`
 3. Add Bearer token in Authorization

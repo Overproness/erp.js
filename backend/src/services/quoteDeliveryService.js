@@ -31,7 +31,7 @@ class QuoteDeliveryService {
       address: company.address,
       branding: company.branding,
       contact: company.contact,
-      socialLinks: company.socialLinks
+      socialLinks: company.socialLinks,
     };
   }
 
@@ -46,14 +46,14 @@ class QuoteDeliveryService {
   async sendViaEmail(quote, customer, business, options = {}) {
     try {
       const result = await emailService.sendQuote(customer, quote, business, options);
-      
+
       return {
         channel: 'email',
         success: true,
         sentAt: new Date(),
         recipient: customer.email,
         messageId: result.messageId,
-        details: result
+        details: result,
       };
     } catch (error) {
       console.error('Error sending quote via email:', error);
@@ -62,7 +62,7 @@ class QuoteDeliveryService {
         success: false,
         sentAt: new Date(),
         recipient: customer.email,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -82,7 +82,7 @@ class QuoteDeliveryService {
       }
 
       const result = await smsService.sendQuoteNotification(customer, quote, business, quoteUrl);
-      
+
       return {
         channel: 'sms',
         success: true,
@@ -90,7 +90,7 @@ class QuoteDeliveryService {
         recipient: customer.phone,
         messageId: result.messageId,
         simulated: result.simulated || false,
-        details: result
+        details: result,
       };
     } catch (error) {
       console.error('Error sending quote via SMS:', error);
@@ -99,7 +99,7 @@ class QuoteDeliveryService {
         success: false,
         sentAt: new Date(),
         recipient: customer.phone,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -115,7 +115,7 @@ class QuoteDeliveryService {
       channels = ['email'], // 'email', 'sms', or ['email', 'sms']
       attachPdf = true,
       customMessage = null,
-      quoteUrl = null
+      quoteUrl = null,
     } = options;
 
     // Normalize channels to array
@@ -144,15 +144,17 @@ class QuoteDeliveryService {
     const deliveryResults = [];
     const emailOptions = {
       quoteUrl,
-      customMessage
+      customMessage,
     };
 
     // Add PDF attachment if requested
     if (attachPdf && quote.pdf) {
-      emailOptions.attachments = [{
-        filename: `Quote-${quote.year}-${quote.number}.pdf`,
-        path: quote.pdf
-      }];
+      emailOptions.attachments = [
+        {
+          filename: `Quote-${quote.year}-${quote.number}.pdf`,
+          path: quote.pdf,
+        },
+      ];
     }
 
     // Send via requested channels
@@ -171,26 +173,26 @@ class QuoteDeliveryService {
       sentAt: new Date(),
       channels: channelArray,
       results: deliveryResults,
-      sentBy: options.sentBy || quote.owner
+      sentBy: options.sentBy || quote.owner,
     };
 
     await Quote.findByIdAndUpdate(quoteId, {
       $push: { deliveryHistory: deliveryRecord },
-      $set: { 
+      $set: {
         status: quote.status === 'draft' ? 'sent' : quote.status,
-        updated: new Date()
-      }
+        updated: new Date(),
+      },
     });
 
     return {
-      success: deliveryResults.some(r => r.success),
+      success: deliveryResults.some((r) => r.success),
       quote: {
         id: quote._id,
         number: `${quote.year}-${quote.number}`,
-        customer: customer.name || customer.company
+        customer: customer.name || customer.company,
       },
       deliveryResults,
-      allChannelsSuccessful: deliveryResults.every(r => r.success)
+      allChannelsSuccessful: deliveryResults.every((r) => r.success),
     };
   }
 
@@ -207,7 +209,9 @@ class QuoteDeliveryService {
     }
 
     if (quote.isExpired) {
-      throw new Error('Cannot resend expired quote. Please create a new quote or update the expiry date.');
+      throw new Error(
+        'Cannot resend expired quote. Please create a new quote or update the expiry date.'
+      );
     }
 
     return this.sendQuote(quoteId, options);
@@ -220,10 +224,7 @@ class QuoteDeliveryService {
    * @returns {Promise<Object>} Delivery results
    */
   async sendReminder(quoteId, options = {}) {
-    const {
-      channels = ['email'],
-      quoteUrl = null
-    } = options;
+    const { channels = ['email'], quoteUrl = null } = options;
 
     const channelArray = Array.isArray(channels) ? channels : [channels];
 
@@ -252,13 +253,15 @@ class QuoteDeliveryService {
     // Send email reminder
     if (channelArray.includes('email')) {
       try {
-        const result = await emailService.sendQuoteReminder(customer, quote, business, { quoteUrl });
+        const result = await emailService.sendQuoteReminder(customer, quote, business, {
+          quoteUrl,
+        });
         deliveryResults.push({
           channel: 'email',
           success: true,
           sentAt: new Date(),
           recipient: customer.email,
-          messageId: result.messageId
+          messageId: result.messageId,
         });
       } catch (error) {
         deliveryResults.push({
@@ -266,7 +269,7 @@ class QuoteDeliveryService {
           success: false,
           sentAt: new Date(),
           recipient: customer.email,
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -281,7 +284,7 @@ class QuoteDeliveryService {
           sentAt: new Date(),
           recipient: customer.phone,
           messageId: result.messageId,
-          simulated: result.simulated || false
+          simulated: result.simulated || false,
         });
       } catch (error) {
         deliveryResults.push({
@@ -289,32 +292,32 @@ class QuoteDeliveryService {
           success: false,
           sentAt: new Date(),
           recipient: customer.phone,
-          error: error.message
+          error: error.message,
         });
       }
     }
 
     // Update quote with reminder record
     await Quote.findByIdAndUpdate(quoteId, {
-      $push: { 
+      $push: {
         deliveryHistory: {
           sentAt: new Date(),
           channels: channelArray,
           results: deliveryResults,
           type: 'reminder',
-          sentBy: options.sentBy || quote.owner
-        }
-      }
+          sentBy: options.sentBy || quote.owner,
+        },
+      },
     });
 
     return {
-      success: deliveryResults.some(r => r.success),
+      success: deliveryResults.some((r) => r.success),
       type: 'reminder',
       quote: {
         id: quote._id,
-        number: `${quote.year}-${quote.number}`
+        number: `${quote.year}-${quote.number}`,
       },
-      deliveryResults
+      deliveryResults,
     };
   }
 
@@ -332,9 +335,9 @@ class QuoteDeliveryService {
     return {
       quote: {
         id: quote._id,
-        number: `${quote.year}-${quote.number}`
+        number: `${quote.year}-${quote.number}`,
       },
-      deliveryHistory: quote.deliveryHistory || []
+      deliveryHistory: quote.deliveryHistory || [],
     };
   }
 
@@ -347,7 +350,7 @@ class QuoteDeliveryService {
     const quote = await Quote.findById(quoteId)
       .select('deliveryHistory status number year expiredDate')
       .populate('client', 'name company email phone');
-    
+
     if (!quote) {
       throw new Error('Quote not found');
     }
@@ -361,21 +364,23 @@ class QuoteDeliveryService {
         number: `${quote.year}-${quote.number}`,
         status: quote.status,
         isExpired: quote.isExpired,
-        expiryDate: quote.expiredDate
+        expiryDate: quote.expiredDate,
       },
       customer: {
         name: quote.client.name || quote.client.company,
         email: quote.client.email,
-        phone: quote.client.phone
+        phone: quote.client.phone,
       },
       totalDeliveries: history.length,
-      lastDelivery: lastDelivery ? {
-        sentAt: lastDelivery.sentAt,
-        channels: lastDelivery.channels,
-        success: lastDelivery.results.some(r => r.success),
-        type: lastDelivery.type || 'quote'
-      } : null,
-      deliveryHistory: history
+      lastDelivery: lastDelivery
+        ? {
+            sentAt: lastDelivery.sentAt,
+            channels: lastDelivery.channels,
+            success: lastDelivery.results.some((r) => r.success),
+            type: lastDelivery.type || 'quote',
+          }
+        : null,
+      deliveryHistory: history,
     };
   }
 
@@ -396,7 +401,7 @@ class QuoteDeliveryService {
       } catch (error) {
         errors.push({
           quoteId,
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -407,7 +412,7 @@ class QuoteDeliveryService {
       successfulDeliveries: results.length,
       failedDeliveries: errors.length,
       results,
-      errors
+      errors,
     };
   }
 }

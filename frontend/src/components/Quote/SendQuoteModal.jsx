@@ -1,6 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Modal, Form, Button, Checkbox, Input, message, Space, Radio } from 'antd';
-import { MailOutlined, MessageOutlined, SendOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import {
+  ClockCircleOutlined,
+  MailOutlined,
+  MessageOutlined,
+  SendOutlined,
+} from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, message, Modal, Radio, Space } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 import request from '../../request';
 
 /**
@@ -15,11 +20,13 @@ const SendQuoteModal = ({ visible, onClose, quoteId, quoteNumber, onSuccess }) =
   const handleSend = async (values) => {
     try {
       setLoading(true);
-      
-      const endpoint = 
-        sendType === 'send' ? `/quote/send/${quoteId}` :
-        sendType === 'resend' ? `/quote/resend/${quoteId}` :
-        `/quote/reminder/${quoteId}`;
+
+      const endpoint =
+        sendType === 'send'
+          ? `/quote/send/${quoteId}`
+          : sendType === 'resend'
+            ? `/quote/resend/${quoteId}`
+            : `/quote/reminder/${quoteId}`;
 
       const response = await request.post(endpoint, values);
 
@@ -49,9 +56,11 @@ const SendQuoteModal = ({ visible, onClose, quoteId, quoteNumber, onSuccess }) =
       title={
         <Space>
           <SendOutlined />
-          {sendType === 'send' ? 'Send Quote' : 
-           sendType === 'resend' ? 'Resend Quote' : 
-           'Send Reminder'}
+          {sendType === 'send'
+            ? 'Send Quote'
+            : sendType === 'resend'
+              ? 'Resend Quote'
+              : 'Send Reminder'}
           {quoteNumber && <span style={{ color: '#888' }}>#{quoteNumber}</span>}
         </Space>
       }
@@ -69,10 +78,7 @@ const SendQuoteModal = ({ visible, onClose, quoteId, quoteNumber, onSuccess }) =
           attachPdf: true,
         }}
       >
-        <Form.Item
-          name="sendType"
-          label="Action Type"
-        >
+        <Form.Item name="sendType" label="Action Type">
           <Radio.Group onChange={(e) => setSendType(e.target.value)} value={sendType}>
             <Radio.Button value="send">
               <SendOutlined /> Send Quote
@@ -114,10 +120,7 @@ const SendQuoteModal = ({ visible, onClose, quoteId, quoteNumber, onSuccess }) =
           label="Quote URL (Optional)"
           help="Public link where customer can view the quote online"
         >
-          <Input
-            placeholder="https://example.com/quotes/view/..."
-            prefix={<SendOutlined />}
-          />
+          <Input placeholder="https://example.com/quotes/view/..." prefix={<SendOutlined />} />
         </Form.Item>
 
         {sendType === 'send' && (
@@ -126,10 +129,7 @@ const SendQuoteModal = ({ visible, onClose, quoteId, quoteNumber, onSuccess }) =
             label="Custom Message (Optional)"
             help="Add a personalized message to the email"
           >
-            <Input.TextArea
-              rows={3}
-              placeholder="Enter a custom message for the customer..."
-            />
+            <Input.TextArea rows={3} placeholder="Enter a custom message for the customer..." />
           </Form.Item>
         )}
 
@@ -137,9 +137,11 @@ const SendQuoteModal = ({ visible, onClose, quoteId, quoteNumber, onSuccess }) =
           <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
             <Button onClick={handleCancel}>Cancel</Button>
             <Button type="primary" htmlType="submit" loading={loading} icon={<SendOutlined />}>
-              {sendType === 'send' ? 'Send Quote' : 
-               sendType === 'resend' ? 'Resend Quote' : 
-               'Send Reminder'}
+              {sendType === 'send'
+                ? 'Send Quote'
+                : sendType === 'resend'
+                  ? 'Resend Quote'
+                  : 'Send Reminder'}
             </Button>
           </Space>
         </Form.Item>
@@ -160,7 +162,7 @@ const DeliveryHistoryModal = ({ visible, onClose, quoteId, quoteNumber }) => {
     try {
       setLoading(true);
       const response = await request.get(`/quote/delivery-history/${quoteId}`);
-      
+
       if (response.success) {
         setHistory(response.result.deliveryHistory || []);
       }
@@ -267,5 +269,5 @@ const DeliveryHistoryModal = ({ visible, onClose, quoteId, quoteNumber }) => {
   );
 };
 
-export { SendQuoteModal, DeliveryHistoryModal };
+export { DeliveryHistoryModal, SendQuoteModal };
 export default SendQuoteModal;

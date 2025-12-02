@@ -172,7 +172,7 @@ const quoteSchema = new mongoose.Schema({
 
 quoteSchema.plugin(require('mongoose-autopopulate'));
 
-quoteSchema.pre('save', async function(next) {
+quoteSchema.pre('save', async function (next) {
   if (this.isNew) {
     if (!this.owner) {
       throw new Error('Owner field is required');

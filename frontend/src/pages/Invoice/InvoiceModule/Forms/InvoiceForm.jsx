@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { Button, Col, Divider, Form, Input, InputNumber, Row, Select } from 'antd';
 import dayjs from 'dayjs';
-import { Form, Input, InputNumber, Button, Select, Divider, Row, Col } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -11,13 +11,13 @@ import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 import ItemRow from '@/pages/ErpPanelModule/ItemRow';
 
 import MoneyInputFormItem from '@/components/MoneyInputFormItem';
+import useLanguage from '@/locale/useLanguage';
 import { selectFinanceSettings } from '@/redux/settings/selectors';
 import { useDate } from '@/settings';
-import useLanguage from '@/locale/useLanguage';
 
+import TaxSelectionModal from '@/components/TaxSelectionModal';
 import calculate from '@/utils/calculate';
 import { useSelector } from 'react-redux';
-import SelectAsync from '@/components/SelectAsync';
 
 export default function InvoiceForm({ subTotal = 0, current = null }) {
   const { last_invoice_number } = useSelector(selectFinanceSettings);
@@ -38,9 +38,19 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
   const [taxTotal, setTaxTotal] = useState(0);
   const [currentYear, setCurrentYear] = useState(() => new Date().getFullYear());
   const [lastNumber, setLastNumber] = useState(() => last_invoice_number + 1);
+  const [isTaxModalVisible, setIsTaxModalVisible] = useState(false);
+  const [selectedTaxName, setSelectedTaxName] = useState('');
+  const form = Form.useFormInstance();
 
   const handelTaxChange = (value) => {
     setTaxRate(value / 100);
+  };
+
+  const handleTaxSelect = (tax) => {
+    setTaxRate(tax.taxRate / 100);
+    setSelectedTaxName(tax.name);
+    form.setFieldsValue({ taxRate: tax.taxRate });
+    setIsTaxModalVisible(false);
   };
 
   useEffect(() => {
@@ -175,16 +185,22 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
       <Divider dashed />
       <Row gutter={[12, 12]} style={{ position: 'relative' }}>
         <Col className="gutter-row" span={5}>
-          <p>{translate('Item')}</p>
+          <p>
+            {translate('Item')} <span style={{ color: 'red' }}>*</span>
+          </p>
         </Col>
         <Col className="gutter-row" span={7}>
           <p>{translate('Description')}</p>
         </Col>
         <Col className="gutter-row" span={3}>
-          <p>{translate('Quantity')}</p>{' '}
+          <p>
+            {translate('Quantity')} <span style={{ color: 'red' }}>*</span>
+          </p>{' '}
         </Col>
         <Col className="gutter-row" span={4}>
-          <p>{translate('Price')}</p>
+          <p>
+            {translate('Price')} <span style={{ color: 'red' }}>*</span>
+          </p>
         </Col>
         <Col className="gutter-row" span={5}>
           <p>{translate('Total')}</p>
@@ -247,17 +263,14 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
                 },
               ]}
             >
-              <SelectAsync
-                value={taxRate}
-                onChange={handelTaxChange}
-                entity={'taxes'}
-                outputValue={'taxRate'} // Changed from taxValue to taxRate
-                displayLabels={['name']} // Changed from taxName to name
-                withRedirect={true}
-                urlToRedirect="/taxes"
-                redirectLabel={translate('Add New Tax')}
-                placeholder={translate('Select Tax Rate')}
-              />
+              <Button
+                type="default"
+                onClick={() => setIsTaxModalVisible(true)}
+                block
+                style={{ textAlign: 'left' }}
+              >
+                {selectedTaxName || translate('Select Tax Rate')}
+              </Button>
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={5}>
@@ -282,6 +295,13 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           </Col>
         </Row>
       </div>
+
+      <TaxSelectionModal
+        visible={isTaxModalVisible}
+        onSelect={handleTaxSelect}
+        onCancel={() => setIsTaxModalVisible(false)}
+        currentTaxRate={taxRate * 100}
+      />
     </>
   );
 }

@@ -13,14 +13,15 @@ class EmailService {
       secure: config.email.secure || process.env.EMAIL_SECURE === 'true',
       auth: {
         user: config.email.user || process.env.EMAIL_USER,
-        pass: config.email.pass || process.env.EMAIL_PASS
-      }
+        pass: config.email.pass || process.env.EMAIL_PASS,
+      },
     });
-    
+
     this.templateDir = path.join(__dirname, '../../emailTemplate');
-    this.defaultSender = config.email.defaultSender || process.env.DEFAULT_SENDER || 'noreply@reviewsystem.com';
+    this.defaultSender =
+      config.email.defaultSender || process.env.DEFAULT_SENDER || 'noreply@reviewsystem.com';
   }
-  
+
   /**
    * Send email using template
    * @param {String|Array} to - Recipient email(s)
@@ -37,12 +38,12 @@ class EmailService {
       if (!fs.existsSync(templatePath)) {
         throw new Error(`Email template not found: ${templateName}`);
       }
-      
+
       // Read and render template
       const template = fs.readFileSync(templatePath, 'utf8');
       const html = ejs.render(template, data);
       const text = htmlToText(html);
-      
+
       // Setup email options
       const mailOptions = {
         from: options.sender || this.defaultSender,
@@ -51,27 +52,27 @@ class EmailService {
         html,
         text,
       };
-      
+
       // Add optional fields if provided
       if (options.cc) mailOptions.cc = options.cc;
       if (options.bcc) mailOptions.bcc = options.bcc;
       if (options.attachments) mailOptions.attachments = options.attachments;
-      
+
       // Send email
       const result = await this.transporter.sendMail(mailOptions);
-      
+
       return {
         success: true,
         messageId: result.messageId,
         recipient: to,
-        template: templateName
+        template: templateName,
       };
     } catch (error) {
       console.error('Email sending error:', error);
       throw error;
     }
   }
-  
+
   /**
    * Send review request email
    * @param {Object} customer - Customer information
@@ -90,9 +91,9 @@ class EmailService {
       reviewLink,
       businessSignature: business.contact?.name || business.name,
       businessPosition: business.contact?.title || 'Owner',
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
-    
+
     return this.sendTemplateEmail(
       customer.email,
       options.subject || `${business.name} values your feedback!`,
@@ -101,7 +102,7 @@ class EmailService {
       options
     );
   }
-  
+
   /**
    * Send review thank you email
    * @param {Object} review - Review information
@@ -121,9 +122,9 @@ class EmailService {
       businessSignature: business.contact?.name || business.name,
       businessPosition: business.contact?.title || 'Owner',
       socialLinks: business.socialLinks,
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
-    
+
     return this.sendTemplateEmail(
       review.client.email,
       options.subject || `Thank you for your feedback, ${review.client.name}!`,
@@ -132,7 +133,7 @@ class EmailService {
       options
     );
   }
-  
+
   /**
    * Send new review notification to business owner
    * @param {Object} review - Review information
@@ -149,18 +150,21 @@ class EmailService {
       reviewContent: review.comment,
       platform: review.platform,
       reviewDate: new Date(review.publishedAt).toLocaleString(),
-      dashboardUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/reviews/${review._id}`,
+      dashboardUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/reviews/${
+        review._id
+      }`,
       sentiment: review.sentiment?.category || 'neutral',
       isUrgent: review.rating <= 3,
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
-    
+
     // Determine template based on rating
     const template = review.rating <= 3 ? 'negativeReviewAlert' : 'reviewNotification';
-    const subject = review.rating <= 3 
-      ? `Urgent: ${review.rating}-star review from ${review.client.name}` 
-      : `New ${review.rating}-star review from ${review.client.name}`;
-    
+    const subject =
+      review.rating <= 3
+        ? `Urgent: ${review.rating}-star review from ${review.client.name}`
+        : `New ${review.rating}-star review from ${review.client.name}`;
+
     return this.sendTemplateEmail(
       recipient.email,
       options.subject || subject,
@@ -169,7 +173,7 @@ class EmailService {
       options
     );
   }
-  
+
   /**
    * Send response approval request to business owner
    * @param {Object} review - Review information
@@ -188,19 +192,22 @@ class EmailService {
       reviewContent: review.comment,
       platform: review.platform,
       responseText: response.responseText,
-      approvalUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/reviews/approval/${response._id}`,
-      currentYear: new Date().getFullYear()
+      approvalUrl: `${
+        process.env.FRONTEND_URL || 'http://localhost:3000'
+      }/dashboard/reviews/approval/${response._id}`,
+      currentYear: new Date().getFullYear(),
     };
-    
+
     return this.sendTemplateEmail(
       recipient.email,
-      options.subject || `Review Response Needs Approval: ${review.client.name}'s ${review.rating}-star review`,
+      options.subject ||
+        `Review Response Needs Approval: ${review.client.name}'s ${review.rating}-star review`,
       'reviewApproval',
       data,
       options
     );
   }
-  
+
   /**
    * Send response sent notification to business owner
    * @param {Object} review - Review information
@@ -219,10 +226,12 @@ class EmailService {
       platform: review.platform,
       responseText: response.responseText,
       responseDate: new Date(response.sentAt).toLocaleString(),
-      reviewUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/reviews/${review._id}`,
-      currentYear: new Date().getFullYear()
+      reviewUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/reviews/${
+        review._id
+      }`,
+      currentYear: new Date().getFullYear(),
     };
-    
+
     return this.sendTemplateEmail(
       recipient.email,
       options.subject || `Response sent to ${review.client.name}'s review`,
@@ -231,7 +240,7 @@ class EmailService {
       options
     );
   }
-  
+
   /**
    * Send quote to customer
    * @param {Object} customer - Customer information
@@ -258,16 +267,18 @@ class EmailService {
       total: quote.total,
       items: quote.items,
       notes: quote.notes,
-      quoteUrl: options.quoteUrl || `${process.env.FRONTEND_URL || 'http://localhost:3000'}/quote/${quote._id}`,
+      quoteUrl:
+        options.quoteUrl ||
+        `${process.env.FRONTEND_URL || 'http://localhost:3000'}/quote/${quote._id}`,
       businessContact: business.contact || {
         email: business.email,
         phone: business.phone,
-        address: business.address
+        address: business.address,
       },
       socialLinks: business.socialLinks,
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
-    
+
     return this.sendTemplateEmail(
       customer.email,
       options.subject || `Quote #${quote.year}-${quote.number} from ${business.name}`,
@@ -276,7 +287,7 @@ class EmailService {
       options
     );
   }
-  
+
   /**
    * Send quote reminder to customer
    * @param {Object} customer - Customer information
@@ -287,7 +298,7 @@ class EmailService {
    */
   async sendQuoteReminder(customer, quote, business, options = {}) {
     const daysLeft = Math.ceil((new Date(quote.expiredDate) - new Date()) / (1000 * 60 * 60 * 24));
-    
+
     const data = {
       customerName: customer.name || customer.company,
       businessName: business.name,
@@ -300,18 +311,23 @@ class EmailService {
       daysLeft,
       currency: quote.currency,
       total: quote.total,
-      quoteUrl: options.quoteUrl || `${process.env.FRONTEND_URL || 'http://localhost:3000'}/quote/${quote._id}`,
+      quoteUrl:
+        options.quoteUrl ||
+        `${process.env.FRONTEND_URL || 'http://localhost:3000'}/quote/${quote._id}`,
       businessContact: business.contact || {
         email: business.email,
-        phone: business.phone
+        phone: business.phone,
       },
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
-    
-    const subject = daysLeft <= 3 
-      ? `⏰ Urgent: Quote #${quote.year}-${quote.number} expires in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}!`
-      : `Reminder: Quote #${quote.year}-${quote.number} from ${business.name}`;
-    
+
+    const subject =
+      daysLeft <= 3
+        ? `⏰ Urgent: Quote #${quote.year}-${quote.number} expires in ${daysLeft} day${
+            daysLeft !== 1 ? 's' : ''
+          }!`
+        : `Reminder: Quote #${quote.year}-${quote.number} from ${business.name}`;
+
     return this.sendTemplateEmail(
       customer.email,
       options.subject || subject,
@@ -320,7 +336,7 @@ class EmailService {
       options
     );
   }
-  
+
   /**
    * Test email configuration
    * @returns {Promise<Object>} Test result
