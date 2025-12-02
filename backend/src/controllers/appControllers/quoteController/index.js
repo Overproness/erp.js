@@ -1,7 +1,15 @@
 const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
 const methods = createCRUDController('Quote');
 
-const sendMail = require('./sendMail');
+const {
+  mail,
+  sendQuote,
+  resendQuote,
+  sendReminder,
+  getDeliveryHistory,
+  checkDeliveryStatus,
+  sendBulkQuotes
+} = require('./sendMail');
 const create = require('./create');
 const summary = require('./summary');
 const update = require('./update');
@@ -12,7 +20,17 @@ const read = require('./read');
 methods.list = paginatedList;
 methods.read = read;
 
-methods.mail = sendMail;
+// Legacy mail endpoint
+methods.mail = mail;
+
+// Quote delivery endpoints
+methods.sendQuote = sendQuote;
+methods.resendQuote = resendQuote;
+methods.sendReminder = sendReminder;
+methods.getDeliveryHistory = getDeliveryHistory;
+methods.checkDeliveryStatus = checkDeliveryStatus;
+methods.sendBulkQuotes = sendBulkQuotes;
+
 methods.create = create;
 methods.update = update;
 methods.convert = convertQuoteToInvoice;

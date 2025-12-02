@@ -110,6 +110,60 @@ class SmsService {
   }
   
   /**
+   * Send quote notification SMS
+   * @param {Object} customer - Customer information
+   * @param {Object} quote - Quote information
+   * @param {Object} business - Business information
+   * @param {String} quoteUrl - Quote URL (optional)
+   * @param {Object} options - Additional options
+   * @returns {Promise<Object>} Send result
+   */
+  async sendQuoteNotification(customer, quote, business, quoteUrl = null, options = {}) {
+    if (!customer.phone) {
+      throw new Error('Customer phone number is required for SMS');
+    }
+    
+    const formattedTotal = `${quote.currency} ${quote.total.toFixed(2)}`;
+    let message = `Hi ${customer.name}, ${business.name} has sent you a quote #${quote.number} for ${formattedTotal}.`;
+    
+    if (quoteUrl) {
+      message += ` View it here: ${quoteUrl}`;
+    } else {
+      message += ` Please check your email for details.`;
+    }
+    
+    message += ` Valid until ${new Date(quote.expiredDate).toLocaleDateString()}.`;
+    
+    return this.sendSms(customer.phone, message, options);
+  }
+  
+  /**
+   * Send quote reminder SMS
+   * @param {Object} customer - Customer information
+   * @param {Object} quote - Quote information
+   * @param {Object} business - Business information
+   * @param {String} quoteUrl - Quote URL (optional)
+   * @param {Object} options - Additional options
+   * @returns {Promise<Object>} Send result
+   */
+  async sendQuoteReminder(customer, quote, business, quoteUrl = null, options = {}) {
+    if (!customer.phone) {
+      throw new Error('Customer phone number is required for SMS');
+    }
+    
+    const daysLeft = Math.ceil((new Date(quote.expiredDate) - new Date()) / (1000 * 60 * 60 * 24));
+    const formattedTotal = `${quote.currency} ${quote.total.toFixed(2)}`;
+    
+    let message = `Reminder: Your quote #${quote.number} from ${business.name} (${formattedTotal}) expires in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}.`;
+    
+    if (quoteUrl) {
+      message += ` Review it: ${quoteUrl}`;
+    }
+    
+    return this.sendSms(customer.phone, message, options);
+  }
+  
+  /**
    * Test SMS configuration
    * @returns {Promise<Object>} Test result
    */

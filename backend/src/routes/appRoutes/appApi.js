@@ -252,6 +252,14 @@ const routerApp = (entity, controller) => {
 
   if (entity === 'quote') {
     router.route(`/${entity}/convert/:id`).get(catchErrors(controller['convert']));
+    
+    // Quote delivery routes
+    router.route(`/${entity}/send/:id`).post(catchErrors(controller['sendQuote']));
+    router.route(`/${entity}/resend/:id`).post(catchErrors(controller['resendQuote']));
+    router.route(`/${entity}/reminder/:id`).post(catchErrors(controller['sendReminder']));
+    router.route(`/${entity}/delivery-history/:id`).get(catchErrors(controller['getDeliveryHistory']));
+    router.route(`/${entity}/delivery-status/:id`).get(catchErrors(controller['checkDeliveryStatus']));
+    router.route(`/${entity}/send-bulk`).post(catchErrors(controller['sendBulkQuotes']));
   }
 
   // Add direct ID route (e.g., GET /api/client/123) - MOVED TO END TO AVOID CONFLICTS WITH SPECIFIC ROUTES

@@ -125,6 +125,41 @@ const quoteSchema = new mongoose.Schema({
       },
     },
   ],
+  deliveryHistory: [
+    {
+      sentAt: {
+        type: Date,
+        default: Date.now,
+      },
+      channels: {
+        type: [String], // ['email', 'sms']
+        default: [],
+      },
+      type: {
+        type: String,
+        enum: ['quote', 'reminder'],
+        default: 'quote',
+      },
+      results: [
+        {
+          channel: String, // 'email' or 'sms'
+          success: Boolean,
+          sentAt: Date,
+          recipient: String, // email address or phone number
+          messageId: String,
+          simulated: {
+            type: Boolean,
+            default: false,
+          },
+          error: String,
+        },
+      ],
+      sentBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'CompanyOwner',
+      },
+    },
+  ],
   updated: {
     type: Date,
     default: Date.now,

@@ -233,6 +233,95 @@ class EmailService {
   }
   
   /**
+   * Send quote to customer
+   * @param {Object} customer - Customer information
+   * @param {Object} quote - Quote information
+   * @param {Object} business - Business information
+   * @param {Object} options - Additional options (attachments for PDF, etc.)
+   * @returns {Promise} Email sending result
+   */
+  async sendQuote(customer, quote, business, options = {}) {
+    const data = {
+      customerName: customer.name || customer.company,
+      businessName: business.name,
+      businessLogo: business.branding?.logoUrl,
+      primaryColor: business.branding?.primaryColor || '#4F46E5',
+      secondaryColor: business.branding?.secondaryColor || '#7C3AED',
+      quoteNumber: `${quote.year}-${quote.number}`,
+      quoteDate: new Date(quote.date).toLocaleDateString(),
+      expiryDate: new Date(quote.expiredDate).toLocaleDateString(),
+      currency: quote.currency,
+      subtotal: quote.subTotal,
+      taxRate: quote.taxRate,
+      taxTotal: quote.taxTotal,
+      discount: quote.discount,
+      total: quote.total,
+      items: quote.items,
+      notes: quote.notes,
+      quoteUrl: options.quoteUrl || `${process.env.FRONTEND_URL || 'http://localhost:3000'}/quote/${quote._id}`,
+      businessContact: business.contact || {
+        email: business.email,
+        phone: business.phone,
+        address: business.address
+      },
+      socialLinks: business.socialLinks,
+      currentYear: new Date().getFullYear()
+    };
+    
+    return this.sendTemplateEmail(
+      customer.email,
+      options.subject || `Quote #${quote.year}-${quote.number} from ${business.name}`,
+      'quoteNotification',
+      data,
+      options
+    );
+  }
+  
+  /**
+   * Send quote reminder to customer
+   * @param {Object} customer - Customer information
+   * @param {Object} quote - Quote information
+   * @param {Object} business - Business information
+   * @param {Object} options - Additional options
+   * @returns {Promise} Email sending result
+   */
+  async sendQuoteReminder(customer, quote, business, options = {}) {
+    const daysLeft = Math.ceil((new Date(quote.expiredDate) - new Date()) / (1000 * 60 * 60 * 24));
+    
+    const data = {
+      customerName: customer.name || customer.company,
+      businessName: business.name,
+      businessLogo: business.branding?.logoUrl,
+      primaryColor: business.branding?.primaryColor || '#4F46E5',
+      secondaryColor: business.branding?.secondaryColor || '#7C3AED',
+      quoteNumber: `${quote.year}-${quote.number}`,
+      quoteDate: new Date(quote.date).toLocaleDateString(),
+      expiryDate: new Date(quote.expiredDate).toLocaleDateString(),
+      daysLeft,
+      currency: quote.currency,
+      total: quote.total,
+      quoteUrl: options.quoteUrl || `${process.env.FRONTEND_URL || 'http://localhost:3000'}/quote/${quote._id}`,
+      businessContact: business.contact || {
+        email: business.email,
+        phone: business.phone
+      },
+      currentYear: new Date().getFullYear()
+    };
+    
+    const subject = daysLeft <= 3 
+      ? `⏰ Urgent: Quote #${quote.year}-${quote.number} expires in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}!`
+      : `Reminder: Quote #${quote.year}-${quote.number} from ${business.name}`;
+    
+    return this.sendTemplateEmail(
+      customer.email,
+      options.subject || subject,
+      'quoteNotification',
+      data,
+      options
+    );
+  }
+  
+  /**
    * Test email configuration
    * @returns {Promise<Object>} Test result
    */
