@@ -1,121 +1,168 @@
 const mongoose = require('mongoose');
 const commonFields = require('../utils/commonFields');
 
-const schema = new mongoose.Schema({
-  ...commonFields,
-  enabled: {
-    type: Boolean,
-    default: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  phone: { type: String, required: true },
-  country: String,
-  address: String,
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    validate: {
-      validator: function (v) {
-        return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v);
-      },
-      message: 'Please enter a valid email address',
+const schema = new mongoose.Schema(
+  {
+    ...commonFields,
+    enabled: {
+      type: Boolean,
+      default: true,
     },
-  },
-  companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
-
-  // New profile fields
-  customerType: {
-    type: String,
-    enum: ['individual', 'company'],
-    default: 'company',
-  },
-  industry: {
-    type: String,
-    default: '',
-  },
-  size: {
-    type: String,
-    enum: ['Small', 'Medium', 'Large'],
-    default: 'Small',
-  },
-  tags: [String],
-  demographics: {
-    age: Number,
-    gender: String,
-    location: String,
-    occupation: String,
-    income: Number,
-  },
-  behavior: {
-    lastPurchaseDate: Date,
-    purchaseFrequency: String,
-    preferredProducts: [String],
-    preferredPaymentMethod: String,
-    visitFrequency: Number,
-  },
-  customerValue: {
-    lifetimeValue: Number,
-    totalPurchases: Number,
-    averageOrderValue: Number,
-    loyaltyPoints: Number,
-    customerSince: Date,
-    segment: {
+    name: {
       type: String,
-      enum: ['platinum', 'gold', 'silver', 'bronze'],
-      default: 'bronze',
+      required: true,
     },
-  },
-  touchpoints: [
-    {
-      channel: {
+    phone: { type: String, required: true },
+    country: String,
+    address: String,
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      validate: {
+        validator: function (v) {
+          return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v);
+        },
+        message: 'Please enter a valid email address',
+      },
+    },
+    companyID: {
+      type: String,
+      index: true,
+      sparse: true,
+      // Used for list/summary methods
+    },
+
+    // New profile fields
+    customerType: {
+      type: String,
+      enum: ['individual', 'company'],
+      default: 'company',
+    },
+    industry: {
+      type: String,
+      default: '',
+    },
+    size: {
+      type: String,
+      enum: ['Small', 'Medium', 'Large'],
+      default: 'Small',
+    },
+    tags: [String],
+    demographics: {
+      age: Number,
+      gender: String,
+      location: String,
+      occupation: String,
+      income: Number,
+    },
+    behavior: {
+      lastPurchaseDate: Date,
+      purchaseFrequency: String,
+      preferredProducts: [String],
+      preferredPaymentMethod: String,
+      visitFrequency: Number,
+    },
+    customerValue: {
+      lifetimeValue: Number,
+      totalPurchases: Number,
+      averageOrderValue: Number,
+      loyaltyPoints: Number,
+      customerSince: Date,
+      segment: {
         type: String,
-        enum: ['email', 'phone', 'in_person', 'web', 'social'],
-        required: true,
+        enum: ['platinum', 'gold', 'silver', 'bronze'],
+        default: 'bronze',
       },
-      date: {
-        type: Date,
-        default: Date.now,
-        required: true,
+    },
+    touchpoints: [
+      {
+        channel: {
+          type: String,
+          enum: ['email', 'phone', 'in_person', 'web', 'social'],
+          required: true,
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+          required: true,
+        },
+        type: {
+          type: String,
+          enum: ['inquiry', 'complaint', 'purchase', 'support', 'meeting', 'follow_up'],
+          required: true,
+        },
+        notes: {
+          type: String,
+          maxlength: 1000,
+        },
+        outcome: {
+          type: String,
+          maxlength: 500,
+        },
+        createdBy: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'CompanyOwner',
+        },
       },
-      type: {
+    ],
+    assignedTeam: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Team',
+    },
+
+    // Lead Scoring and Qualification
+    leadScore: {
+      totalScore: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 100,
+      },
+      scoreBreakdown: {
+        demographicScore: { type: Number, default: 0 }, // Age, location, income match
+        behavioralScore: { type: Number, default: 0 }, // Purchase frequency, engagement
+        engagementScore: { type: Number, default: 0 }, // Touchpoints, interactions
+        valueScore: { type: Number, default: 0 }, // LTV, purchase amount
+        interestScore: { type: Number, default: 0 }, // Product views, inquiries
+      },
+      scoringFactors: [
+        {
+          factor: String, // e.g., "High income bracket", "Frequent visitor"
+          points: Number,
+          weight: Number,
+        },
+      ],
+      lastCalculated: Date,
+    },
+    qualification: {
+      status: {
         type: String,
-        enum: ['inquiry', 'complaint', 'purchase', 'support', 'meeting', 'follow_up'],
-        required: true,
+        enum: ['unqualified', 'marketing_qualified', 'sales_qualified', 'opportunity', 'customer'],
+        default: 'unqualified',
       },
-      notes: {
-        type: String,
-        maxlength: 1000,
-      },
-      outcome: {
-        type: String,
-        maxlength: 500,
-      },
-      createdBy: {
-        type: mongoose.Schema.ObjectId,
+      qualifiedDate: Date,
+      qualifiedBy: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'CompanyOwner',
       },
+      disqualificationReason: String,
+      qualificationNotes: String,
+      temperature: {
+        type: String,
+        enum: ['cold', 'warm', 'hot'],
+        default: 'cold',
+      },
     },
-  ],
-  assignedTeam: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Team',
-  },
 
-  // Note: Timestamps and owner fields are inherited from commonFields
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
-});
+    // Note: Timestamps and owner fields are inherited from commonFields
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 // Middleware to automatically set updatedBy on updates
 schema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], function () {

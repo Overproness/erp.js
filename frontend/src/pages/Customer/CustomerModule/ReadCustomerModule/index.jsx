@@ -30,7 +30,7 @@ export default function ReadCustomerModule({ config }) {
     return (
       <ErpLayout>
         {isSuccess ? (
-          <ReadItem config={config} selectedItem={currentResult} />
+          <ReadItem config={config} selectedItem={currentResult} clientId={id} />
         ) : (
           <NotFound entity={config.entity} />
         )}

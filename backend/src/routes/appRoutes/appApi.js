@@ -149,6 +149,21 @@ const routerApp = (entity, controller) => {
       .route(`/${entity}/search`)
       .get(rateLimitMiddleware.createRateLimit('search'), catchErrors(controller['search']));
     console.log(`Registered CLIENT search route: /${entity}/search`);
+
+    // Lead Scoring routes
+    router
+      .route(`/${entity}/:id/calculate-lead-score`)
+      .post(rateLimitMiddleware.apiRateLimit, catchErrors(controller['calculateLeadScore']));
+
+    router
+      .route(`/${entity}/recalculate-all-lead-scores`)
+      .post(rateLimitMiddleware.apiRateLimit, catchErrors(controller['recalculateAllLeadScores']));
+
+    router
+      .route(`/${entity}/:id/qualification`)
+      .patch(rateLimitMiddleware.apiRateLimit, catchErrors(controller['updateQualification']));
+
+    console.log('Registered CLIENT lead scoring routes');
   }
 
   // Register all specific routes FIRST before parameterized routes to avoid conflicts
@@ -171,53 +186,41 @@ const routerApp = (entity, controller) => {
   );
 
   // Add root-level list route (e.g., /api/client for listing clients)
-  router
-    .route(`/${entity}`)
-    .get(
-      rateLimitMiddleware.createRateLimit('search'),
-      
-      catchErrors(controller['list'])
-    );
-  // Add root-level create route (e.g., POST /api/invoice) that forwards to create controller
-  router
-    .route(`/${entity}`)
-    .post(
-      rateLimitMiddleware.createRateLimit('create'),
-      
-      catchErrors(controller['create'])
-    );
+  router.route(`/${entity}`).get(
+    rateLimitMiddleware.createRateLimit('search'),
 
-  router
-    .route(`/${entity}/create`)
-    .post(
-      rateLimitMiddleware.createRateLimit('create'),
-      
-      catchErrors(controller['create'])
-    );
+    catchErrors(controller['list'])
+  );
+  // Add root-level create route (e.g., POST /api/invoice) that forwards to create controller
+  router.route(`/${entity}`).post(
+    rateLimitMiddleware.createRateLimit('create'),
+
+    catchErrors(controller['create'])
+  );
+
+  router.route(`/${entity}/create`).post(
+    rateLimitMiddleware.createRateLimit('create'),
+
+    catchErrors(controller['create'])
+  );
 
   router
     .route(`/${entity}/read/:id`)
     .get(rateLimitMiddleware.apiRateLimit, catchErrors(controller['read']));
-  router
-    .route(`/${entity}/update/:id`)
-    .patch(
-      rateLimitMiddleware.apiRateLimit,
-      
-      catchErrors(controller['update'])
-    );
-  router
-    .route(`/${entity}/delete/:id`)
-    .delete(
-      rateLimitMiddleware.apiRateLimit,
-      
-      catchErrors(controller['delete'])
-    );
+  router.route(`/${entity}/update/:id`).patch(
+    rateLimitMiddleware.apiRateLimit,
+
+    catchErrors(controller['update'])
+  );
+  router.route(`/${entity}/delete/:id`).delete(
+    rateLimitMiddleware.apiRateLimit,
+
+    catchErrors(controller['delete'])
+  );
 
   // Special handling for summary routes - very important for tests!
   if (controller['summary']) {
-    router
-      .route(`/${entity}/summary`)
-      .get(catchErrors(controller['summary']));
+    router.route(`/${entity}/summary`).get(catchErrors(controller['summary']));
     console.log(
       `✅ Registered summary route: /${entity}/summary with controller:`,
       typeof controller['summary']
@@ -228,9 +231,7 @@ const routerApp = (entity, controller) => {
 
   // Add bulk update route for entities that support it
   if (controller['bulkUpdate']) {
-    router
-      .route(`/${entity}/bulk-update`)
-      .patch(catchErrors(controller['bulkUpdate']));
+    router.route(`/${entity}/bulk-update`).patch(catchErrors(controller['bulkUpdate']));
   }
 
   // Add export route for entities that support it
@@ -250,9 +251,7 @@ const routerApp = (entity, controller) => {
   }
 
   if (entity === 'quote') {
-    router
-      .route(`/${entity}/convert/:id`)
-      .get(catchErrors(controller['convert']));
+    router.route(`/${entity}/convert/:id`).get(catchErrors(controller['convert']));
   }
 
   // Add direct ID route (e.g., GET /api/client/123) - MOVED TO END TO AVOID CONFLICTS WITH SPECIFIC ROUTES
@@ -278,6 +277,82 @@ routesList.forEach(({ entity, controllerName }) => {
   }
   routerApp(entity, controller);
 });
+
+// Customer Journey Routes
+const { customerJourneyController, interactionController } = appControllers;
+
+console.log('=== CUSTOMER JOURNEY CONTROLLER DEBUG ===');
+console.log('customerJourneyController exists:', !!customerJourneyController);
+console.log(
+  'customerJourneyController methods:',
+  customerJourneyController ? Object.keys(customerJourneyController) : 'undefined'
+);
+console.log('==========================================');
+
+if (customerJourneyController) {
+  console.log('🚀 REGISTERING CUSTOMER JOURNEY ROUTES...');
+
+  // Test route to verify routing works
+  router.get('/customer-journey/test', (req, res) => {
+    res.json({ success: true, message: 'Customer journey routing is working!' });
+  });
+
+  router.get(
+    '/customer-journey/client/:clientId',
+    (req, res, next) => {
+      console.log('🔥 CUSTOMER JOURNEY ROUTE HIT! ClientId:', req.params.clientId);
+      next();
+    },
+    catchErrors(customerJourneyController.getClientJourney)
+  );
+  router.post(
+    '/customer-journey/client/:clientId/initialize',
+    catchErrors(customerJourneyController.initializeJourney)
+  );
+  router.post(
+    '/customer-journey/client/:clientId/transition',
+    catchErrors(customerJourneyController.transitionStage)
+  );
+  router.post(
+    '/customer-journey/client/:clientId/milestone',
+    catchErrors(customerJourneyController.addMilestone)
+  );
+  router.post(
+    '/customer-journey/client/:clientId/recommendation',
+    catchErrors(customerJourneyController.addRecommendation)
+  );
+  router.get(
+    '/customer-journey/analytics',
+    catchErrors(customerJourneyController.getJourneyAnalytics)
+  );
+  console.log('✅ Registered Customer Journey routes');
+} else {
+  console.error('❌ customerJourneyController is undefined - routes NOT registered');
+}
+
+if (interactionController) {
+  router.post(
+    '/interaction/create-with-journey',
+    catchErrors(interactionController.createWithJourney)
+  );
+  router.get(
+    '/interaction/client/:clientId',
+    catchErrors(interactionController.getClientInteractions)
+  );
+  router.get(
+    '/interaction/client/:clientId/analytics',
+    catchErrors(interactionController.getClientAnalytics)
+  );
+  router.get(
+    '/interaction/follow-ups/pending',
+    catchErrors(interactionController.getPendingFollowUps)
+  );
+  router.patch(
+    '/interaction/:id/complete-followup',
+    catchErrors(interactionController.completeFollowUp)
+  );
+  console.log('✅ Registered Interaction routes');
+}
 
 // Include statistics routes
 const statisticsRoutes = require('./statisticsRoutes');

@@ -50,6 +50,10 @@ const reviewPortalController = require('./reviewPortalController');
 // Marketing Controllers
 const campaignController = require('./campaignController');
 
+// Customer Management Controllers
+const customerJourneyController = require('./customerJourneyController');
+const interactionController = require('./interactionController');
+
 // Create missing controllers if they don't exist
 let auditTrailModelController, dataRetentionPolicyModelController, consentRecordModelController;
 let aiProcessingWorkflowController, aiConversationController;
@@ -143,4 +147,7 @@ module.exports = {
   reviewPortalController,
   // Marketing Controllers
   campaignController,
+  // Customer Management
+  customerJourneyController,
+  interactionController,
 };

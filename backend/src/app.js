@@ -48,6 +48,8 @@ require('./models/appModels/Campaign');
 require('./models/appModels/CustomerBehavior');
 require('./models/appModels/CustomerSegment');
 require('./models/appModels/TriggerRule');
+require('./models/appModels/CustomerJourney');
+require('./models/appModels/Interaction');
 require('./models/appModels/Review');
 require('./models/appModels/Business');
 require('./models/appModels/ReviewLink');

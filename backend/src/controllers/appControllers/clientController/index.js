@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
 const { calculateCustomerSegment } = require('@/helpers/customerSegmentation');
+const leadScoringService = require('@/services/leadScoringService');
 const summary = require('./summary');
 
 /**
@@ -190,8 +191,7 @@ function modelController() {
 
       // Get owner and companyID from context
       const companyID =
-        (req.user && req.user.companyID) ||
-        (req.companyOwner && req.companyOwner.companyID);
+        (req.user && req.user.companyID) || (req.companyOwner && req.companyOwner.companyID);
 
       if (!companyID) {
         return res.status(401).json({
@@ -291,8 +291,7 @@ function modelController() {
 
       // Get companyID from context
       const companyID =
-        (req.user && req.user.companyID) ||
-        (req.companyOwner && req.companyOwner.companyID);
+        (req.user && req.user.companyID) || (req.companyOwner && req.companyOwner.companyID);
 
       if (!companyID) {
         return res.status(401).json({
@@ -369,8 +368,7 @@ function modelController() {
 
       // Get companyID from context
       const companyID =
-        (req.user && req.user.companyID) ||
-        (req.companyOwner && req.companyOwner.companyID);
+        (req.user && req.user.companyID) || (req.companyOwner && req.companyOwner.companyID);
 
       if (!companyID) {
         return res.status(401).json({
@@ -481,15 +479,11 @@ function modelController() {
 
       // Process remaining updates
       console.log('Executing findOneAndUpdate for remaining fields...');
-      const result = await Model.findOneAndUpdate(
-        { _id: id, companyID, removed: false },
-        updates,
-        {
-          new: true,
-          runValidators: true,
-          upsert: false,
-        }
-      );
+      const result = await Model.findOneAndUpdate({ _id: id, companyID, removed: false }, updates, {
+        new: true,
+        runValidators: true,
+        upsert: false,
+      });
 
       console.log('Update result:', result ? 'Found' : 'Not found');
 
@@ -549,8 +543,7 @@ function modelController() {
 
       // Apply companyID-based filtering
       const companyID =
-        (req.user && req.user.companyID) ||
-        (req.companyOwner && req.companyOwner.companyID);
+        (req.user && req.user.companyID) || (req.companyOwner && req.companyOwner.companyID);
 
       if (!companyID) {
         return res.status(401).json({
@@ -613,8 +606,7 @@ function modelController() {
 
       // Get companyID from context
       const companyID =
-        (req.user && req.user.companyID) ||
-        (req.companyOwner && req.companyOwner.companyID);
+        (req.user && req.user.companyID) || (req.companyOwner && req.companyOwner.companyID);
 
       if (!companyID) {
         return res.status(401).json({
@@ -690,8 +682,7 @@ function modelController() {
 
       // Get companyID from context
       const companyID =
-        (req.user && req.user.companyID) ||
-        (req.companyOwner && req.companyOwner.companyID);
+        (req.user && req.user.companyID) || (req.companyOwner && req.companyOwner.companyID);
 
       if (!companyID) {
         return res.status(401).json({
@@ -747,6 +738,177 @@ function modelController() {
     }
   };
   methods.filter = filter;
+
+  /**
+   * Calculate lead score for a specific client
+   */
+  const calculateLeadScore = async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid client ID',
+        });
+      }
+
+      const client = await Model.findById(id);
+      if (!client || client.removed) {
+        return res.status(404).json({
+          success: false,
+          message: 'Client not found',
+        });
+      }
+
+      // Calculate score using async version with Interaction data
+      const scoreData = await leadScoringService.calculateScoreAsync(client, id);
+
+      // Determine qualification status
+      const qualificationData = leadScoringService.determineQualificationStatus(
+        scoreData.totalScore,
+        client.qualification?.status
+      );
+
+      // Update client with new score and qualification
+      client.leadScore = scoreData;
+      client.qualification = {
+        ...client.qualification,
+        status: qualificationData.status,
+        temperature: qualificationData.temperature,
+      };
+
+      await client.save();
+
+      return res.status(200).json({
+        success: true,
+        result: {
+          leadScore: client.leadScore,
+          qualification: client.qualification,
+        },
+        message: 'Lead score calculated successfully',
+      });
+    } catch (error) {
+      console.error('❌ CALCULATE LEAD SCORE ERROR:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+  methods.calculateLeadScore = calculateLeadScore;
+
+  /**
+   * Recalculate lead scores for all clients (or filtered subset)
+   */
+  const recalculateAllLeadScores = async (req, res) => {
+    try {
+      const { limit = 100 } = req.query;
+
+      const clients = await Model.find({ removed: false }).limit(parseInt(limit));
+
+      let updated = 0;
+      const results = [];
+
+      for (const client of clients) {
+        try {
+          const scoreData = leadScoringService.calculateScore(client);
+          const qualificationData = leadScoringService.determineQualificationStatus(
+            scoreData.totalScore,
+            client.qualification?.status
+          );
+
+          client.leadScore = scoreData;
+          client.qualification = {
+            ...client.qualification,
+            status: qualificationData.status,
+            temperature: qualificationData.temperature,
+          };
+
+          await client.save();
+          updated++;
+
+          results.push({
+            clientId: client._id,
+            name: client.name,
+            score: scoreData.totalScore,
+            status: qualificationData.status,
+          });
+        } catch (error) {
+          console.error(`Error updating client ${client._id}:`, error);
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        result: {
+          totalProcessed: clients.length,
+          updated,
+          results,
+        },
+        message: `Successfully recalculated ${updated} lead scores`,
+      });
+    } catch (error) {
+      console.error('❌ RECALCULATE ALL LEAD SCORES ERROR:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+  methods.recalculateAllLeadScores = recalculateAllLeadScores;
+
+  /**
+   * Update client qualification status manually
+   */
+  const updateQualification = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, temperature, qualificationNotes, disqualificationReason } = req.body;
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid client ID',
+        });
+      }
+
+      const client = await Model.findById(id);
+      if (!client || client.removed) {
+        return res.status(404).json({
+          success: false,
+          message: 'Client not found',
+        });
+      }
+
+      // Update qualification
+      client.qualification = {
+        ...client.qualification,
+        status: status || client.qualification?.status || 'unqualified',
+        temperature: temperature || client.qualification?.temperature || 'cold',
+        qualificationNotes: qualificationNotes || client.qualification?.qualificationNotes || '',
+        disqualificationReason:
+          disqualificationReason || client.qualification?.disqualificationReason || '',
+        qualifiedDate: new Date(),
+        qualifiedBy: req.owner?._id,
+      };
+
+      await client.save();
+
+      return res.status(200).json({
+        success: true,
+        result: client,
+        message: 'Qualification updated successfully',
+      });
+    } catch (error) {
+      console.error('❌ UPDATE QUALIFICATION ERROR:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+  methods.updateQualification = updateQualification;
 
   return methods;
 }
