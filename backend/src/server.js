@@ -47,12 +47,16 @@ for (const filePath of modelFiles) {
 // ─────────────────────────────────────────────────────────────
 const initDefaultSettings = require('./middlewares/settings/initDefaultSettings');
 const migrateSetting = require('./middlewares/settings/migrateSetting');
+const { initializeCopilotModules } = require('./setup/copilotSetup');
 
 mongoose.connection.once('open', async () => {
   try {
-    await migrateSetting();           // Migrate existing settings (if structure changed)
-    await initDefaultSettings();      // Set up default settings (if not present)
+    await migrateSetting(); // Migrate existing settings (if structure changed)
+    await initDefaultSettings(); // Set up default settings (if not present)
     console.log('⚙️ Settings initialization completed');
+
+    // Initialize copilot modules
+    initializeCopilotModules();
   } catch (error) {
     console.error('❌ Settings initialization failed:', error);
   }

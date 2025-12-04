@@ -91,6 +91,7 @@ const aiAssistantRoutes = require('./routes/appRoutes/aiAssistantRoutes');
 const aiDataProcessorRoutes = require('./routes/appRoutes/aiDataProcessorRoutes');
 const aiUserPreferenceRoutes = require('./routes/appRoutes/aiUserPreferenceRoutes');
 const aiKnowledgeBaseRoutes = require('./routes/appRoutes/aiKnowledgeBaseRoutes');
+const copilotRoutes = require('./routes/appRoutes/copilotRoutes');
 
 // Social Media Routes
 const socialMediaRoutes = require('./routes/appRoutes/socialMediaRoutes');
@@ -372,6 +373,7 @@ app.use('/api/workflows', adminAuth.isValidAuthToken, workflowRoutes);
 app.use('/api/aiAssistant', aiAssistantRoutes);
 app.use('/api/aiUserPreference', aiUserPreferenceRoutes);
 app.use('/api/aiKnowledgeBase', aiKnowledgeBaseRoutes);
+app.use('/api/copilot', copilotRoutes);
 app.use('/api/workflow-execution', workflowExecutionRoutes);
 app.use('/api/compliance', complianceRoutes);
 

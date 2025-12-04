@@ -1,20 +1,19 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { App as AntdApp } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectAuth } from '@/redux/auth/selectors';
+import ChatBubble from '@/components/ChatBubble';
+import PageLoader from '@/components/PageLoader';
 import { AppContextProvider } from '@/context/appContext';
 import { ErpContextProvider } from '@/context/erp';
-import PageLoader from '@/components/PageLoader';
+import Localization from '@/locale/Localization';
+import { selectAuth } from '@/redux/auth/selectors';
+import { settingsAction } from '@/redux/settings/actions';
 import AuthRouter from '@/router/AuthRouter';
 import ProtectedRoutes from '@/router/ProtectedRoutes';
-import Localization from '@/locale/Localization';
-import { notification } from 'antd';
-import { settingsAction } from '@/redux/settings/actions';
+import { App as AntdApp, notification } from 'antd';
+import { Suspense, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 export default function ErpOs() {
   const { isLoggedIn } = useSelector(selectAuth);
-
 
   // Online state
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -48,7 +47,7 @@ export default function ErpOs() {
       window.removeEventListener('online', handleStatusChange);
       window.removeEventListener('offline', handleStatusChange);
     };
-  }, [isOnline]);  // Use AntdApp to provide message, notification and modal global methods
+  }, [isOnline]); // Use AntdApp to provide message, notification and modal global methods
   // This resolves the context warning for message
   // Add a settings reload when user comes online
   const dispatch = useDispatch(); // Use the useDispatch hook from react-redux
@@ -57,7 +56,7 @@ export default function ErpOs() {
   useEffect(() => {
     if (isLoggedIn && isOnline) {
       // Dispatch settings reload when coming back online
-      
+
       try {
         // Use the imported settingsAction from the top of the file
         dispatch(settingsAction.list({ entity: 'setting' }));
@@ -67,7 +66,7 @@ export default function ErpOs() {
     }
   }, [isOnline, isLoggedIn, dispatch]);
 
-    // --- BEGIN: PUBLIC REDIRECT ROUTE HANDLING ---
+  // --- BEGIN: PUBLIC REDIRECT ROUTE HANDLING ---
   // If the current route is a public redirect route, render only the router outlet (children), no layout
   const isPublicRedirect =
     location.pathname.startsWith('/s/') &&
@@ -83,7 +82,6 @@ export default function ErpOs() {
   }
   // --- END: PUBLIC REDIRECT ROUTE HANDLING ---
 
-  
   return (
     <AntdApp>
       {!isLoggedIn ? (
@@ -97,6 +95,8 @@ export default function ErpOs() {
               <Suspense fallback={<PageLoader />}>
                 <ProtectedRoutes />
               </Suspense>
+              {/* AI Copilot - Available on all pages */}
+              <ChatBubble position="bottom-right" />
             </ErpContextProvider>
           </AppContextProvider>
         </Localization>
