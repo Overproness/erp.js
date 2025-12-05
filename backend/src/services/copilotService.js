@@ -1,6 +1,6 @@
 const AiAssistant = require('../models/appModels/AiAssistant');
 const AiConversation = require('../models/appModels/AiConversation');
-const OpenAIHelper = require('../helpers/openaiHelper');
+const UnifiedAIHelper = require('../helpers/unifiedAIHelper');
 const contextAwareService = require('./contextAwareService');
 
 /**
@@ -90,16 +90,16 @@ Be context-aware, proactive, and helpful. Always consider the current module and
       // Get or create assistant
       const assistant = await this.getAssistant(assistantId, userId);
 
-      // Create OpenAI helper
-      const openaiHelper = await OpenAIHelper.createForUser(userId);
-      if (!openaiHelper.apiKey) {
+      // Create Unified AI helper
+      const aiHelper = await UnifiedAIHelper.createForUser(userId);
+      if (!aiHelper.hasAnyApiKey()) {
         throw new Error(
-          'OpenAI API key not configured. Please add your API key in Settings > AI Settings.'
+          'No AI API keys configured. Please add at least one API key (OpenAI, Claude, or Gemini) in Settings > AI Settings.'
         );
       }
 
-      // Get or create conversation
-      const conversation = await this.getOrCreateConversation(assistantId, userId, context);
+      // Get or create conversation (use assistant._id instead of assistantId)
+      const conversation = await this.getOrCreateConversation(assistant._id, userId, context);
 
       // Build enhanced context
       const enhancedContext = await this.buildEnhancedContext(context, userId);
@@ -136,8 +136,8 @@ Be context-aware, proactive, and helpful. Always consider the current module and
       // Use model from context or fallback to assistant's model
       const selectedModel = context.model || assistant.model.modelName;
 
-      // Call OpenAI with selected model
-      const aiResponse = await openaiHelper.chatCompletion({
+      // Call AI provider with selected model (auto-detects provider)
+      const aiResponse = await aiHelper.chatCompletion({
         messages,
         model: selectedModel,
         parameters: {
@@ -312,21 +312,26 @@ Be context-aware, proactive, and helpful. Always consider the current module and
 
     // Find active conversation
     let conversation = await AiConversation.findOne({
-      assistant: assistantId,
+      aiAssistant: assistantId,
       user: userId,
-      active: true,
-      module: context.module || 'general',
+      status: 'active',
+      'context.module': context.module || 'general',
     }).sort({ updated: -1 });
 
     // Create new if doesn't exist
     if (!conversation) {
       conversation = await AiConversation.create({
-        assistant: assistantId,
+        aiAssistant: assistantId,
+        owner: userId,
         user: userId,
-        module: context.module || 'general',
-        context: context,
+        context: {
+          module: context.module || 'general',
+          entityType: context.entityType,
+          entityId: context.entityId,
+          additionalData: context,
+        },
         messages: [],
-        active: true,
+        status: 'active',
       });
     }
 

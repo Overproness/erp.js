@@ -18,9 +18,9 @@ const list = async (req, res) => {
       // If it's a regular User, get their company owner's settings
       const User = mongoose.model('User');
       const Team = mongoose.model('Team');
-      
+
       let companyOwnerId = null;
-      
+
       // Try to get company owner from user.companyOwner field first
       if (req.user.companyOwner) {
         companyOwnerId = req.user.companyOwner;
@@ -34,16 +34,16 @@ const list = async (req, res) => {
           console.log('Using companyOwner from team record:', companyOwnerId);
         }
       }
-      
+
       if (!companyOwnerId) {
         console.log('No company owner found for user:', req.user._id);
         return res.status(403).json({
           success: false,
           result: null,
-          message: 'Unable to determine company owner for settings access'
+          message: 'Unable to determine company owner for settings access',
         });
       }
-      
+
       settingsOwnerId = companyOwnerId;
       console.log('Fetching settings for User, using CompanyOwner:', settingsOwnerId);
     }
@@ -102,6 +102,8 @@ const list = async (req, res) => {
           };
         }
       });
+
+      // console.log('Processed settings categories:', settingsData);
     }
 
     // Format the result as an array for client-side compatibility

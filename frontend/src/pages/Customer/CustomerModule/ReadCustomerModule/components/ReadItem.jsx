@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  BulbOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   CloseCircleOutlined,
@@ -63,6 +64,8 @@ import useLanguage from '@/locale/useLanguage';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { generate as uniqueId } from 'shortid';
+import AISuggestionsModal from './AISuggestionsModal';
+import CustomerInsightsModal from './CustomerInsightsModal';
 
 import { selectCurrentItem } from '@/redux/erp/selectors';
 import { useMoney } from '@/settings';
@@ -105,6 +108,15 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
   const [loadingInteractions, setLoadingInteractions] = useState(false);
   const [showInteractionModal, setShowInteractionModal] = useState(false);
   const [interactionForm] = Form.useForm();
+
+  // AI Insights state
+  const [showInsightsModal, setShowInsightsModal] = useState(false);
+  const [loadingInsights, setLoadingInsights] = useState(false);
+  const [customerInsights, setCustomerInsights] = useState(null);
+  const [insightsError, setInsightsError] = useState(null);
+
+  // AI Suggestions state
+  const [showSuggestionsModal, setShowSuggestionsModal] = useState(false);
 
   // Helper function to safely extract ID string from potentially nested objects
   const getIdString = (id) => {
@@ -255,6 +267,38 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
       message.error('Error calculating lead score');
     } finally {
       setCalculatingScore(false);
+    }
+  };
+
+  const getAICustomerInsights = async () => {
+    const clientId = getIdString(currentCustomer._id);
+    if (!clientId) {
+      message.error('Customer ID is missing');
+      return;
+    }
+
+    setLoadingInsights(true);
+    setInsightsError(null);
+    setShowInsightsModal(true);
+
+    try {
+      const response = await axios.post(`copilot/customer-insights/${clientId}`);
+
+      if (response.data.success) {
+        setCustomerInsights(response.data.result);
+        message.success('Customer insights generated successfully!');
+      } else {
+        setInsightsError(response.data.message || 'Failed to generate insights');
+        message.error('Failed to generate customer insights');
+      }
+    } catch (error) {
+      console.error('Error generating customer insights:', error);
+      const errorMessage =
+        error.response?.data?.message || error.message || 'Error generating customer insights';
+      setInsightsError(errorMessage);
+      message.error(errorMessage);
+    } finally {
+      setLoadingInsights(false);
     }
   };
 
@@ -991,6 +1035,15 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         }
         extra={[
           <Button
+            key="ai-insights"
+            type="primary"
+            icon={<BulbOutlined />}
+            onClick={() => setShowSuggestionsModal(true)}
+            style={{ marginRight: 8 }}
+          >
+            {translate('AI Suggestions')}
+          </Button>,
+          <Button
             key={`${uniqueId()}`}
             onClick={() => {
               navigate(`/${entity.toLowerCase()}`);
@@ -1267,6 +1320,22 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
 
       {/* Interaction Modal */}
       <InteractionModal />
+
+      {/* AI Customer Insights Modal */}
+      <CustomerInsightsModal
+        visible={showInsightsModal}
+        onClose={() => setShowInsightsModal(false)}
+        loading={loadingInsights}
+        insights={customerInsights}
+        error={insightsError}
+      />
+
+      {/* AI Suggestions Modal */}
+      <AISuggestionsModal
+        visible={showSuggestionsModal}
+        onClose={() => setShowSuggestionsModal(false)}
+        customerData={currentCustomer}
+      />
     </>
   );
 }

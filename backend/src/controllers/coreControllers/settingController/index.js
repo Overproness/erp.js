@@ -12,6 +12,8 @@ const batchUpdate = require('./batchUpdate');
 const filter = require('./filter');
 const search = require('./search');
 const testOpenAIKey = require('./testOpenAIKey');
+const testGeminiKey = require('./testGeminiKey');
+const testClaudeKey = require('./testClaudeKey');
 
 // Combine all controller methods
 const settingMethods = {
@@ -34,6 +36,8 @@ const settingMethods = {
   updateManySetting,
   batchUpdate,
   testOpenAIKey,
+  testGeminiKey,
+  testClaudeKey,
 };
 
 module.exports = settingMethods;

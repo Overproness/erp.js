@@ -4,6 +4,8 @@ import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import {
   BankOutlined,
+  BulbOutlined,
+  CalendarOutlined,
   CheckSquareOutlined,
   ContainerOutlined,
   CreditCardOutlined,
@@ -127,6 +129,13 @@ export default function IconSidebar() {
           path: '/payment/mode',
           permissions: ['payment:read'],
         },
+        {
+          key: 'follow-ups',
+          icon: <CalendarOutlined />,
+          label: 'Follow-Up Management',
+          path: '/ai-enhanced/follow-ups',
+          permissions: ['ai:read'],
+        },
       ],
     },
     {
@@ -185,6 +194,22 @@ export default function IconSidebar() {
       label: 'AI Assistant',
       path: '/ai-assistant',
       permissions: ['ai:read'],
+      children: [
+        {
+          key: 'ai-chat',
+          icon: <MessageOutlined />,
+          label: 'AI Chat',
+          path: '/ai-assistant',
+          permissions: ['ai:read'],
+        },
+        {
+          key: 'ai-learning',
+          icon: <BulbOutlined />,
+          label: 'AI Learning',
+          path: '/ai-enhanced/learning',
+          permissions: ['ai:read'],
+        },
+      ],
     },
     {
       key: 'url',

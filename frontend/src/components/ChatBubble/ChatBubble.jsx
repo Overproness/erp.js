@@ -48,6 +48,8 @@ export default function ChatBubble({ module = 'general', context = {} }) {
     handleSuggestionClick,
     selectedModel,
     setSelectedModel,
+    availableModels,
+    availableProviders,
   } = useCopilot();
 
   const [inputValue, setInputValue] = useState('');
@@ -55,8 +57,34 @@ export default function ChatBubble({ module = 'general', context = {} }) {
   const inputRef = useRef(null);
   const moduleSetRef = useRef({ module: '', entityId: '' });
 
-  // AI Model options
-  const modelOptions = [
+  // AI Model options with icons and colors
+  const getModelIcon = (provider) => {
+    switch (provider) {
+      case 'openai':
+        return { icon: <ThunderboltOutlined />, color: '#10a37f' };
+      case 'claude':
+        return { icon: <ExperimentOutlined />, color: '#D97757' };
+      case 'gemini':
+        return { icon: <RobotOutlined />, color: '#4285f4' };
+      default:
+        return { icon: <RobotOutlined />, color: '#666' };
+    }
+  };
+
+  // Build model options from available models
+  const modelOptions = availableModels.map((model) => {
+    const { icon, color } = getModelIcon(model.provider);
+    return {
+      label: model.label,
+      value: model.value,
+      icon,
+      color,
+      description: model.description,
+    };
+  });
+
+  // Fallback to default models if none are loaded yet
+  const defaultModelOptions = [
     { label: 'GPT-4o', value: 'gpt-4o', icon: <ThunderboltOutlined />, color: '#10a37f' },
     { label: 'GPT-4o-mini', value: 'gpt-4o-mini', icon: <ThunderboltOutlined />, color: '#10a37f' },
     {
@@ -80,6 +108,15 @@ export default function ChatBubble({ module = 'general', context = {} }) {
     },
   ];
 
+  const displayModelOptions = modelOptions.length > 0 ? modelOptions : defaultModelOptions;
+
+  // console.log('🔍 ChatBubble Debug:', {
+  //   availableModels,
+  //   modelOptions,
+  //   displayModelOptions,
+  //   availableProviders,
+  // });
+
   const handleModelChange = (value) => {
     setSelectedModel(value);
     // Clear conversation when model changes
@@ -88,10 +125,10 @@ export default function ChatBubble({ module = 'general', context = {} }) {
 
   // Debug log to verify component renders
   useEffect(() => {
-    console.log('🤖 ChatBubble component mounted');
-    console.log('ChatBubble isOpen:', isOpen);
+    // console.log('🤖 ChatBubble component mounted');
+    // console.log('ChatBubble isOpen:', isOpen);
     return () => {
-      console.log('🤖 ChatBubble component unmounted');
+      // console.log('🤖 ChatBubble component unmounted');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -161,7 +198,7 @@ export default function ChatBubble({ module = 'general', context = {} }) {
             size="small"
             icon={isUser ? <UserOutlined /> : <RobotOutlined />}
             style={{
-              backgroundColor: isUser ? '#1890ff' : isError ? '#ff4d4f' : '#52c41a',
+              backgroundColor: isUser ? '#60a5fa' : isError ? '#ff4d4f' : '#10b981',
             }}
           />
         </div>
@@ -223,13 +260,9 @@ export default function ChatBubble({ module = 'general', context = {} }) {
             className="chat-bubble-button fixed bottom-4 right-4 w-14 h-14 z-50 cursor-pointer"
             style={{
               position: 'fixed',
-              // bottom: '24px',
-              // right: '24px',
-              // width: '60px',
-              // height: '60px',
-              boxShadow: '0 6px 16px rgba(102, 126, 234, 0.5)',
+              boxShadow: '0 6px 16px rgba(37, 99, 235, 0.5)',
               zIndex: 9999,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)',
               border: 'none',
               fontSize: '24px',
             }}
@@ -254,7 +287,7 @@ export default function ChatBubble({ module = 'general', context = {} }) {
             flexDirection: 'column',
             borderRadius: '16px',
             overflow: 'hidden',
-            border: '1px solid rgba(102, 126, 234, 0.2)',
+            border: '1px solid rgba(96, 165, 250, 0.2)',
           }}
           bodyStyle={{
             padding: 0,
@@ -268,7 +301,7 @@ export default function ChatBubble({ module = 'general', context = {} }) {
             className="chat-header"
             style={{
               padding: '18px 20px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)',
               color: 'white',
               borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             }}
@@ -320,16 +353,18 @@ export default function ChatBubble({ module = 'general', context = {} }) {
               onChange={handleModelChange}
               style={{ width: '100%' }}
               size="middle"
-              options={modelOptions.map((opt) => ({
-                label: (
+              disabled={availableProviders.length === 0}
+              popupClassName="copilot-model-select-dropdown"
+            >
+              {displayModelOptions.map((opt) => (
+                <Select.Option key={opt.value} value={opt.value}>
                   <Space>
                     <span style={{ color: opt.color }}>{opt.icon}</span>
                     {opt.label}
                   </Space>
-                ),
-                value: opt.value,
-              }))}
-            />
+                </Select.Option>
+              ))}
+            </Select>
           </div>
 
           {/* Messages */}
@@ -365,7 +400,7 @@ export default function ChatBubble({ module = 'general', context = {} }) {
                   <Avatar
                     size="small"
                     icon={<RobotOutlined />}
-                    style={{ backgroundColor: '#52c41a' }}
+                    style={{ backgroundColor: '#10b981' }}
                   />
                 </div>
                 <div className="message-content">
@@ -423,7 +458,7 @@ export default function ChatBubble({ module = 'general', context = {} }) {
                 style={{
                   height: 'auto',
                   minHeight: '32px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)',
                   border: 'none',
                   borderRadius: '8px',
                 }}

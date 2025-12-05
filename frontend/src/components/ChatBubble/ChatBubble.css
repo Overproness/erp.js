@@ -6,7 +6,7 @@
 
 .chat-bubble-button:hover {
   transform: scale(1.08) translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6) !important;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.6) !important;
 }
 
 .chat-bubble-window {
@@ -74,10 +74,10 @@
 }
 
 .user-message .message-content {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
   color: white;
   border-radius: 16px 16px 4px 16px;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .ai-message .message-content {
@@ -124,7 +124,7 @@
 
 .suggestions-container .ant-tag:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 /* Mobile Responsive */

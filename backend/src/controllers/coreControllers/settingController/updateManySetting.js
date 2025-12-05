@@ -14,9 +14,9 @@ const updateManySetting = async (req, res) => {
       // If it's a regular User, get their company owner's ID for settings
       const User = mongoose.model('User');
       const Team = mongoose.model('Team');
-      
+
       let companyOwnerId = null;
-      
+
       // Try to get company owner from user.companyOwner field first
       if (req.user.companyOwner) {
         companyOwnerId = req.user.companyOwner;
@@ -28,7 +28,7 @@ const updateManySetting = async (req, res) => {
           companyOwnerId = team.owner;
         }
       }
-      
+
       if (!companyOwnerId) {
         return res.status(403).json({
           success: false,
@@ -36,7 +36,7 @@ const updateManySetting = async (req, res) => {
           message: 'Unable to determine company owner for settings update.',
         });
       }
-      
+
       settingsOwnerId = companyOwnerId;
     } else if (req.admin) {
       // Legacy admin support

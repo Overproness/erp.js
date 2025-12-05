@@ -6,7 +6,7 @@ class OpenAIHelper {
     this.apiKey = userApiKey || process.env.OPENAI_API_KEY;
     this.baseURL = 'https://api.openai.com/v1';
     this.defaultModel = 'gpt-3.5-turbo';
-    
+
     if (!this.apiKey) {
       console.warn('OpenAI API key not found. AI features will be disabled.');
     }
@@ -18,9 +18,9 @@ class OpenAIHelper {
       const setting = await Setting.findOne({
         category: 'ai_settings',
         owner: userId,
-        removed: false
+        removed: false,
       });
-      
+
       return setting?.data?.openai_api_key || null;
     } catch (error) {
       console.error('Error fetching user API key:', error);
@@ -54,7 +54,7 @@ class OpenAIHelper {
         },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
           },
           timeout: 30000,
@@ -90,7 +90,7 @@ class OpenAIHelper {
         },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
           },
         }
@@ -113,16 +113,28 @@ class OpenAIHelper {
   calculateCost(usage, model) {
     // Pricing as of 2024 (update as needed)
     const pricing = {
+      'gpt-4o': {
+        input: 2.5 / 1000000, // per token
+        output: 10.0 / 1000000,
+      },
+      'gpt-4o-mini': {
+        input: 0.15 / 1000000,
+        output: 0.6 / 1000000,
+      },
+      'gpt-4-turbo': {
+        input: 10.0 / 1000000,
+        output: 30.0 / 1000000,
+      },
       'gpt-3.5-turbo': {
-        input: 0.0015 / 1000,  // per token
-        output: 0.002 / 1000,
+        input: 0.5 / 1000000,
+        output: 1.5 / 1000000,
       },
       'gpt-4': {
-        input: 0.03 / 1000,
-        output: 0.06 / 1000,
+        input: 30.0 / 1000000,
+        output: 60.0 / 1000000,
       },
       'text-embedding-ada-002': {
-        input: 0.0001 / 1000,
+        input: 0.1 / 1000000,
         output: 0,
       },
     };
@@ -130,7 +142,7 @@ class OpenAIHelper {
     const modelPricing = pricing[model] || pricing['gpt-3.5-turbo'];
     const inputCost = (usage.prompt_tokens || 0) * modelPricing.input;
     const outputCost = (usage.completion_tokens || 0) * modelPricing.output;
-    
+
     return inputCost + outputCost;
   }
 
@@ -145,7 +157,7 @@ class OpenAIHelper {
         { input: text },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
           },
         }
@@ -167,11 +179,14 @@ class OpenAIHelper {
     const messages = [
       {
         role: 'system',
-        content: 'You are an AI assistant that analyzes business documents and data. Provide structured analysis with insights, patterns, and recommendations.',
+        content:
+          'You are an AI assistant that analyzes business documents and data. Provide structured analysis with insights, patterns, and recommendations.',
       },
       {
         role: 'user',
-        content: `Analyze the following text in the context of ${context.module || 'business operations'}:\n\n${text}`,
+        content: `Analyze the following text in the context of ${
+          context.module || 'business operations'
+        }:\n\n${text}`,
       },
     ];
 
@@ -182,7 +197,9 @@ class OpenAIHelper {
     const messages = [
       {
         role: 'system',
-        content: `You are an AI assistant for an ERP system. Generate helpful suggestions based on user input. Context: ${JSON.stringify(context)}`,
+        content: `You are an AI assistant for an ERP system. Generate helpful suggestions based on user input. Context: ${JSON.stringify(
+          context
+        )}`,
       },
       {
         role: 'user',
@@ -210,11 +227,11 @@ class OpenAIHelper {
         {
           model: 'gpt-3.5-turbo',
           messages: [{ role: 'user', content: 'Hello' }],
-          max_tokens: 5
+          max_tokens: 5,
         },
         {
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
           },
           timeout: 10000,
@@ -225,7 +242,7 @@ class OpenAIHelper {
     } catch (error) {
       return {
         valid: false,
-        error: error.response?.data?.error?.message || 'Invalid API key'
+        error: error.response?.data?.error?.message || 'Invalid API key',
       };
     }
   }

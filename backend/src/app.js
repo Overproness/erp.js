@@ -41,6 +41,9 @@ require('./models/appModels/AiExtractionTemplate');
 require('./models/appModels/AiWorkflow');
 require('./models/appModels/AiUserPreference');
 require('./models/appModels/AiKnowledgeBase');
+require('./models/appModels/ChatQueue');
+require('./models/appModels/CustomerFollowUp');
+require('./models/appModels/AILearningData');
 require('./models/appModels/URL');
 require('./models/appModels/URLClick');
 require('./models/appModels/ABTest');
@@ -92,6 +95,7 @@ const aiDataProcessorRoutes = require('./routes/appRoutes/aiDataProcessorRoutes'
 const aiUserPreferenceRoutes = require('./routes/appRoutes/aiUserPreferenceRoutes');
 const aiKnowledgeBaseRoutes = require('./routes/appRoutes/aiKnowledgeBaseRoutes');
 const copilotRoutes = require('./routes/appRoutes/copilotRoutes');
+const aiEnhancedRoutes = require('./routes/appRoutes/aiEnhancedRoutes');
 
 // Social Media Routes
 const socialMediaRoutes = require('./routes/appRoutes/socialMediaRoutes');
@@ -374,6 +378,7 @@ app.use('/api/aiAssistant', aiAssistantRoutes);
 app.use('/api/aiUserPreference', aiUserPreferenceRoutes);
 app.use('/api/aiKnowledgeBase', aiKnowledgeBaseRoutes);
 app.use('/api/copilot', copilotRoutes);
+app.use('/api/ai-enhanced', adminAuth.isValidAuthToken, aiEnhancedRoutes);
 app.use('/api/workflow-execution', workflowExecutionRoutes);
 app.use('/api/compliance', complianceRoutes);
 

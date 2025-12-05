@@ -1,6 +1,6 @@
 /**
  * Behavior Tracking Middleware
- * 
+ *
  * Captures and logs customer behavior across all endpoints
  */
 const { CustomerBehavior } = require('../models');
@@ -16,7 +16,7 @@ const UAParser = require('ua-parser-js');
 const extractUtmParams = (url) => {
   try {
     if (!url) return {};
-    
+
     const params = new URLSearchParams(url.split('?')[1]);
     return {
       source: params.get('utm_source') || null,
@@ -39,15 +39,15 @@ const extractUtmParams = (url) => {
 const parseUserAgent = (userAgent) => {
   try {
     if (!userAgent) return {};
-    
+
     const parser = new UAParser(userAgent);
     const result = parser.getResult();
-    
+
     let deviceType = 'other';
     if (result.device.type === 'mobile') deviceType = 'mobile';
     else if (result.device.type === 'tablet') deviceType = 'tablet';
     else if (!result.device.type && result.os.name) deviceType = 'desktop';
-    
+
     return {
       device: deviceType,
       browser: result.browser.name,
@@ -64,8 +64,8 @@ const parseUserAgent = (userAgent) => {
  */
 const trackPageView = (req, res, next) => {
   // Skip for certain routes
-  const skipPaths = ['/api/health', '/api/metrics', '/static', '/favicon.ico'];
-  if (skipPaths.some(path => req.path.startsWith(path))) {
+  const skipPaths = ['/api/health', '/api/metrics', '/static', '/favicon.ico', '/api/'];
+  if (skipPaths.some((path) => req.path.startsWith(path))) {
     return next();
   }
 
@@ -74,22 +74,28 @@ const trackPageView = (req, res, next) => {
     try {
       // Skip non-successful responses
       if (res.statusCode >= 400) return;
-      
+
       // Get customer ID either from authenticated user or anonymous ID in cookies
-      const customerId = req.admin?._id || null;
+      const customerId = req.admin?._id || req.admin?.userId || null;
       const anonymousId = req.cookies?.anonymous_id || req.headers['x-anonymous-id'];
-      
+
       // Skip if we can't identify the visitor
       if (!customerId && !anonymousId) return;
-      
+
       // Extract relevant data
       const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
       const utmParams = extractUtmParams(req.originalUrl);
       const userAgentData = parseUserAgent(req.headers['user-agent']);
-      
+
+      // Get owner ID from admin
+      const ownerId = req.admin?._id || req.admin?.id || req.companyOwner?._id;
+
+      // Skip if no owner (required field)
+      if (!ownerId) return;
+
       // Create behavior event
       const eventData = {
-        customerId,
+        customer: customerId, // Use 'customer' not 'customerId'
         anonymousId,
         eventType: 'page_view',
         eventName: 'Page View',
@@ -109,19 +115,18 @@ const trackPageView = (req, res, next) => {
         properties: {
           method: req.method,
           statusCode: res.statusCode,
-          ...utmParams
+          ...utmParams,
         },
-        owner: req.admin?._id || process.env.SYSTEM_OWNER_ID,
+        owner: ownerId,
       };
-      
-      // Track event via behavior processor service
+
       await BehaviorProcessor.trackEvent(eventData);
     } catch (error) {
       console.error('Error tracking page view:', error);
       // Non-blocking - don't affect user experience with tracking errors
     }
   });
-  
+
   next();
 };
 
@@ -131,9 +136,11 @@ const trackPageView = (req, res, next) => {
 const trackApiInteraction = (req, res, next) => {
   // Skip for certain routes
   const skipPaths = ['/api/health', '/api/metrics', '/static'];
-  if (skipPaths.some(path => req.path.startsWith(path)) || 
-      req.method === 'OPTIONS' || 
-      req.method === 'HEAD') {
+  if (
+    skipPaths.some((path) => req.path.startsWith(path)) ||
+    req.method === 'OPTIONS' ||
+    req.method === 'HEAD'
+  ) {
     return next();
   }
 
@@ -142,14 +149,14 @@ const trackApiInteraction = (req, res, next) => {
     try {
       // Skip for non-successful API calls
       if (res.statusCode >= 400) return;
-      
+
       // Get customer ID either from authenticated user or anonymous ID
-      const customerId = req.admin?._id || null;
+      const customerId = req.admin?._id || req.admin?.userId || null;
       const anonymousId = req.cookies?.anonymous_id || req.headers['x-anonymous-id'];
-      
+
       // Skip if we can't identify the visitor
       if (!customerId && !anonymousId) return;
-      
+
       // Determine API event type
       let eventType;
       if (req.method === 'GET') {
@@ -163,10 +170,16 @@ const trackApiInteraction = (req, res, next) => {
       } else {
         eventType = 'api_other';
       }
-      
+
+      // Get owner ID from admin
+      const ownerId = req.admin?._id || req.admin?.id || req.companyOwner?._id;
+
+      // Skip if no owner (required field)
+      if (!ownerId) return;
+
       // Create behavior event
       const eventData = {
-        customerId,
+        customer: customerId, // Use 'customer' not 'customerId'
         anonymousId,
         eventType,
         eventName: `API ${req.method}`,
@@ -183,25 +196,24 @@ const trackApiInteraction = (req, res, next) => {
           statusCode: res.statusCode,
           endpoint: req.path,
           responseTime: res.locals.responseTime || 0,
-          contentType: req.headers['content-type']
+          contentType: req.headers['content-type'],
         },
-        owner: req.admin?._id || process.env.SYSTEM_OWNER_ID,
+        owner: ownerId,
       };
-      
-      // Track event via behavior processor service
+
       await BehaviorProcessor.trackEvent(eventData);
     } catch (error) {
       console.error('Error tracking API interaction:', error);
       // Non-blocking - don't affect user experience with tracking errors
     }
   });
-  
+
   // Measure response time
   const startTime = Date.now();
   res.on('finish', () => {
     res.locals.responseTime = Date.now() - startTime;
   });
-  
+
   next();
 };
 
@@ -210,8 +222,10 @@ const trackApiInteraction = (req, res, next) => {
  */
 const trackFormSubmission = (req, res, next) => {
   // Only track POST requests with content type application/x-www-form-urlencoded or multipart/form-data
-  if (req.method !== 'POST' || 
-      (!req.is('application/x-www-form-urlencoded') && !req.is('multipart/form-data'))) {
+  if (
+    req.method !== 'POST' ||
+    (!req.is('application/x-www-form-urlencoded') && !req.is('multipart/form-data'))
+  ) {
     return next();
   }
 
@@ -220,14 +234,14 @@ const trackFormSubmission = (req, res, next) => {
     try {
       // Skip for non-successful submissions
       if (res.statusCode >= 400) return;
-      
+
       // Get customer ID either from authenticated user or anonymous ID
       const customerId = req.admin?._id || null;
       const anonymousId = req.cookies?.anonymous_id || req.headers['x-anonymous-id'];
-      
+
       // Skip if we can't identify the visitor
       if (!customerId && !anonymousId) return;
-      
+
       // Create behavior event
       const eventData = {
         customerId,
@@ -245,14 +259,14 @@ const trackFormSubmission = (req, res, next) => {
         },
         properties: {
           formAction: req.path,
-          formFields: Object.keys(req.body).filter(key => 
-            !['password', 'token', 'secret'].includes(key.toLowerCase())
+          formFields: Object.keys(req.body).filter(
+            (key) => !['password', 'token', 'secret'].includes(key.toLowerCase())
           ),
-          hasFileUpload: !!req.files
+          hasFileUpload: !!req.files,
         },
         owner: req.admin?._id || process.env.SYSTEM_OWNER_ID,
       };
-      
+
       // Track event via behavior processor service
       await BehaviorProcessor.trackEvent(eventData);
     } catch (error) {
@@ -260,7 +274,7 @@ const trackFormSubmission = (req, res, next) => {
       // Non-blocking - don't affect user experience with tracking errors
     }
   });
-  
+
   next();
 };
 
@@ -271,24 +285,25 @@ const trackCustomEvent = (req, res) => {
   try {
     // Validate request
     if (!req.body.eventType) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Event type is required' 
+      return res.status(400).json({
+        success: false,
+        message: 'Event type is required',
       });
     }
-    
+
     // Get customer ID either from authenticated user or anonymous ID
     const customerId = req.admin?._id || null;
-    const anonymousId = req.body.anonymousId || req.cookies?.anonymous_id || req.headers['x-anonymous-id'];
-    
+    const anonymousId =
+      req.body.anonymousId || req.cookies?.anonymous_id || req.headers['x-anonymous-id'];
+
     // Ensure we have some way to identify the user
     if (!customerId && !anonymousId) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Customer ID or anonymous ID is required' 
+      return res.status(400).json({
+        success: false,
+        message: 'Customer ID or anonymous ID is required',
       });
     }
-    
+
     // Create event data
     const eventData = {
       customerId,
@@ -306,32 +321,32 @@ const trackCustomEvent = (req, res) => {
         ip: getClientIp(req),
         userAgent: req.headers['user-agent'],
         ...parseUserAgent(req.headers['user-agent']),
-        ...req.body.context
+        ...req.body.context,
       },
       properties: req.body.properties || {},
       metadata: req.body.metadata || {},
       owner: req.admin?._id || process.env.SYSTEM_OWNER_ID,
     };
-    
+
     // Track the event asynchronously
     BehaviorProcessor.trackEvent(eventData)
       .then(() => {
         console.log(`Tracked custom event: ${eventData.eventType}`);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error tracking custom event:', error);
       });
-    
+
     // Return immediate success to client
-    return res.status(200).json({ 
+    return res.status(200).json({
       success: true,
-      message: 'Event tracking initiated'
+      message: 'Event tracking initiated',
     });
   } catch (error) {
     console.error('Error in trackCustomEvent middleware:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
-      message: 'Error processing event tracking' 
+      message: 'Error processing event tracking',
     });
   }
 };
@@ -341,5 +356,5 @@ module.exports = {
   trackPageView,
   trackApiInteraction,
   trackFormSubmission,
-  trackCustomEvent
+  trackCustomEvent,
 };

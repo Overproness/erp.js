@@ -58,5 +58,7 @@ router
   .post(catchErrors(settingController.updateManySetting));
 router.route('/setting/batch').post(catchErrors(settingController.batchUpdate));
 router.route('/setting/testOpenAI').post(catchErrors(settingController.testOpenAIKey));
+router.route('/setting/testGemini').post(catchErrors(settingController.testGeminiKey));
+router.route('/setting/testClaude').post(catchErrors(settingController.testClaudeKey));
 router.route('/admin/list').get(catchErrors(adminController.list));
 module.exports = router;

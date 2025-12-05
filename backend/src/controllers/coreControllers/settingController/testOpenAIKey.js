@@ -14,7 +14,7 @@ const testOpenAIKey = async (req, res) => {
 
     // Create OpenAI helper with the provided API key
     const openaiHelper = new OpenAIHelper(apiKey);
-    
+
     // Test the API key
     const validation = await openaiHelper.validateApiKey();
 

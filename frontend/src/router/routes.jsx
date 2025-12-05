@@ -82,6 +82,11 @@ const TeamRead = lazy(() => import('@/pages/Team/TeamRead'));
 const TeamUpdate = lazy(() => import('@/pages/Team/TeamUpdate'));
 const AcceptInvitation = lazy(() => import('@/pages/Team/AcceptInvitation'));
 
+// AI Enhanced Features
+const FollowUpManagement = lazy(() => import('@/pages/AIEnhanced/FollowUpManagement'));
+const AutomationSuggestions = lazy(() => import('@/pages/AIEnhanced/AutomationSuggestions'));
+const AILearningDashboard = lazy(() => import('@/pages/AIEnhanced/AILearningDashboard'));
+
 // Chat component
 const Chat = lazy(() => import('@/pages/Chat'));
 
@@ -604,6 +609,34 @@ let routes = {
         </Suspense>
       ),
       permissions: ['reputation:analytics'],
+    },
+    // AI Enhanced Features Routes
+    {
+      path: '/ai-enhanced/follow-ups',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <FollowUpManagement />
+        </Suspense>
+      ),
+      permissions: ['ai:read'],
+    },
+    // {
+    //   path: '/ai-enhanced/automation',
+    //   element: (
+    //     <Suspense fallback={<LoadingComponent />}>
+    //       <AutomationSuggestions />
+    //     </Suspense>
+    //   ),
+    //   permissions: ['ai:read'],
+    // },
+    {
+      path: '/ai-enhanced/learning',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AILearningDashboard />
+        </Suspense>
+      ),
+      permissions: ['ai:read'],
     },
     // Marketing Management Routes
     {

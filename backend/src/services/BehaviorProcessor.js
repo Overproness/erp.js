@@ -1,6 +1,6 @@
 /**
  * Behavior Processor Service
- * 
+ *
  * Real-time processing of customer behavior events and trigger evaluation
  */
 const { CustomerBehavior, TriggerRule, Customer } = require('../models');
@@ -26,7 +26,7 @@ class BehaviorProcessor {
   start(options = {}) {
     const {
       processInterval = 1000, // Process queue every second
-      batchSize = 50
+      batchSize = 50,
     } = options;
 
     if (this.isRunning) {
@@ -36,25 +36,25 @@ class BehaviorProcessor {
 
     this.isRunning = true;
     this.batchSize = batchSize;
-    
+
     console.log('Starting behavior processor service...');
-    
+
     // Set up interval for processing queued events
     this.processingInterval = setInterval(() => {
-      this.processEventQueue().catch(error => {
+      this.processEventQueue().catch((error) => {
         console.error('Error in behavior processor queue:', error);
       });
     }, processInterval);
 
     // Refresh trigger cache periodically
     this.refreshTriggerCacheInterval = setInterval(() => {
-      this.refreshTriggerCache().catch(error => {
+      this.refreshTriggerCache().catch((error) => {
         console.error('Error refreshing trigger cache:', error);
       });
     }, this.triggerCacheExpiry / 2);
 
     // Initial trigger cache load
-    this.refreshTriggerCache().catch(error => {
+    this.refreshTriggerCache().catch((error) => {
       console.error('Error in initial trigger cache load:', error);
     });
   }
@@ -69,7 +69,7 @@ class BehaviorProcessor {
 
     clearInterval(this.processingInterval);
     clearInterval(this.refreshTriggerCacheInterval);
-    
+
     if (this.processQueueDebounce) {
       clearTimeout(this.processQueueDebounce);
     }
@@ -85,24 +85,41 @@ class BehaviorProcessor {
    */
   async trackEvent(event) {
     try {
-      if (!event.customerId) {
-        throw new Error('Customer ID is required');
+      // Validate required fields
+      if (!event.owner) {
+        throw new Error('Owner ID is required');
       }
-      
+
       if (!event.eventType) {
         throw new Error('Event type is required');
       }
 
-      // Create behavior record
+      if (!event.eventName) {
+        throw new Error('Event name is required');
+      }
+
+      // Must have either customer or anonymousId
+      if (!event.customer && !event.anonymousId) {
+        throw new Error('Either customer ID or anonymous ID is required');
+      }
+
+      // Create behavior record with correct field names
       const behaviorData = {
-        customerId: event.customerId,
+        customer: event.customer,
+        anonymousId: event.anonymousId,
         eventType: event.eventType,
+        eventName: event.eventName,
         timestamp: event.timestamp || new Date(),
         properties: event.properties || {},
         source: event.source || 'website',
-        session: event.session || {},
         url: event.url,
-        metadata: event.metadata || {}
+        urlPath: event.urlPath,
+        referrer: event.referrer,
+        campaign: event.campaign,
+        medium: event.medium,
+        context: event.context || {},
+        sessionId: event.sessionId,
+        owner: event.owner,
       };
 
       const behavior = await CustomerBehavior.create(behaviorData);
@@ -110,13 +127,15 @@ class BehaviorProcessor {
       // Queue for trigger evaluation
       this.queueEvent({
         ...behaviorData,
-        _id: behavior._id
+        _id: behavior._id,
       });
 
-      // Track analytics asynchronously
-      analyticsService.trackBehavior(behaviorData).catch(error => {
-        console.error('Error tracking behavior analytics:', error);
-      });
+      // Track analytics asynchronously (if needed)
+      if (analyticsService && analyticsService.trackBehavior) {
+        analyticsService.trackBehavior(behaviorData).catch((error) => {
+          console.error('Error tracking behavior analytics:', error);
+        });
+      }
 
       return behavior;
     } catch (error) {
@@ -131,14 +150,14 @@ class BehaviorProcessor {
    */
   queueEvent(event) {
     this.eventQueue.push(event);
-    
+
     // Debounce processing for efficiency with many events
     if (this.processQueueDebounce) {
       clearTimeout(this.processQueueDebounce);
     }
 
     this.processQueueDebounce = setTimeout(() => {
-      this.processEventQueue().catch(error => {
+      this.processEventQueue().catch((error) => {
         console.error('Error in debounced queue processing:', error);
       });
     }, 200);
@@ -154,18 +173,18 @@ class BehaviorProcessor {
 
     // Process events in batches
     const batch = this.eventQueue.splice(0, this.batchSize);
-    
+
     try {
       // Group events by customer for efficiency
       const eventsByCustomer = this.groupEventsByCustomer(batch);
-      
+
       // Process each customer's events
       for (const [customerId, events] of Object.entries(eventsByCustomer)) {
         await this.processCustomerEvents(customerId, events);
       }
     } catch (error) {
       console.error('Error processing behavior events:', error);
-      
+
       // Put failed events back in queue for retry
       this.eventQueue.unshift(...batch);
     }
@@ -203,35 +222,31 @@ class BehaviorProcessor {
 
       // Get active triggers
       const activeTriggers = await this.getActiveTriggers();
-      
+
       if (activeTriggers.length === 0) {
         return;
       }
 
       // Evaluate triggers against events
       const triggeredRules = [];
-      
+
       for (const trigger of activeTriggers) {
         // Skip if this trigger is currently in cooldown for this customer
         if (await this.isInCooldown(customerId, trigger._id)) {
           continue;
         }
-        
-        const isTriggered = await triggerEvaluator.evaluateTrigger(
-          trigger, 
-          events, 
-          customer
-        );
-        
+
+        const isTriggered = await triggerEvaluator.evaluateTrigger(trigger, events, customer);
+
         if (isTriggered) {
           triggeredRules.push(trigger);
         }
       }
-      
+
       // Execute actions for triggered rules
       for (const trigger of triggeredRules) {
         await this.executeTriggerActions(trigger, customer, events);
-        
+
         // Set cooldown for this trigger and customer
         await this.setCooldown(customerId, trigger._id, trigger.cooldownPeriod);
       }
@@ -249,11 +264,13 @@ class BehaviorProcessor {
    */
   async executeTriggerActions(trigger, customer, events) {
     try {
-      console.log(`Executing trigger ${trigger._id} (${trigger.name}) for customer ${customer._id}`);
-      
+      console.log(
+        `Executing trigger ${trigger._id} (${trigger.name}) for customer ${customer._id}`
+      );
+
       // Record trigger execution
       await this.recordTriggerExecution(trigger, customer, events);
-      
+
       // Execute each action
       for (const action of trigger.actions) {
         try {
@@ -279,35 +296,35 @@ class BehaviorProcessor {
       case 'sendEmail':
         await this.executeSendEmailAction(action, customer, trigger);
         break;
-        
+
       case 'sendSMS':
         await this.executeSendSMSAction(action, customer, trigger);
         break;
-        
+
       case 'addToSegment':
         await this.executeAddToSegmentAction(action, customer);
         break;
-        
+
       case 'removeFromSegment':
         await this.executeRemoveFromSegmentAction(action, customer);
         break;
-        
+
       case 'setCustomerProperty':
         await this.executeSetCustomerPropertyAction(action, customer);
         break;
-        
+
       case 'startCampaign':
         await this.executeStartCampaignAction(action, customer);
         break;
-        
+
       case 'notifyTeam':
         await this.executeNotifyTeamAction(action, customer, trigger, events);
         break;
-        
+
       case 'webhook':
         await this.executeWebhookAction(action, customer, trigger, events);
         break;
-        
+
       default:
         console.warn(`Unknown action type: ${action.type}`);
     }
@@ -322,7 +339,7 @@ class BehaviorProcessor {
   async executeSendEmailAction(action, customer, trigger) {
     try {
       const emailService = require('./emailService');
-      
+
       const emailData = {
         to: customer.email,
         subject: action.subject,
@@ -331,13 +348,13 @@ class BehaviorProcessor {
           customer,
           trigger: {
             id: trigger._id,
-            name: trigger.name
-          }
-        }
+            name: trigger.name,
+          },
+        },
       };
-      
+
       await emailService.sendEmail(emailData);
-      
+
       console.log(`Sent trigger email to ${customer.email} for trigger ${trigger._id}`);
     } catch (error) {
       console.error('Error sending trigger email:', error);
@@ -353,16 +370,16 @@ class BehaviorProcessor {
   async executeSendSMSAction(action, customer) {
     try {
       const smsService = require('./smsService');
-      
+
       if (!customer.phone) {
         throw new Error('Customer has no phone number');
       }
-      
+
       await smsService.sendSMS({
         to: customer.phone,
         message: action.message,
       });
-      
+
       console.log(`Sent trigger SMS to ${customer.phone}`);
     } catch (error) {
       console.error('Error sending trigger SMS:', error);
@@ -378,11 +395,11 @@ class BehaviorProcessor {
   async executeAddToSegmentAction(action, customer) {
     try {
       const segmentId = action.segmentId;
-      
+
       if (!segmentId) {
         throw new Error('Segment ID is required');
       }
-      
+
       await segmentMatcher.addToSegment(customer._id, segmentId);
       console.log(`Added customer ${customer._id} to segment ${segmentId}`);
     } catch (error) {
@@ -399,11 +416,11 @@ class BehaviorProcessor {
   async executeRemoveFromSegmentAction(action, customer) {
     try {
       const segmentId = action.segmentId;
-      
+
       if (!segmentId) {
         throw new Error('Segment ID is required');
       }
-      
+
       await segmentMatcher.removeFromSegment(customer._id, segmentId);
       console.log(`Removed customer ${customer._id} from segment ${segmentId}`);
     } catch (error) {
@@ -422,10 +439,10 @@ class BehaviorProcessor {
       if (!action.property) {
         throw new Error('Property name is required');
       }
-      
+
       // Update customer property
       customer[action.property] = action.value;
-      
+
       if (action.property === 'tags' && Array.isArray(customer.tags)) {
         // Special handling for tags
         const newTag = action.value;
@@ -433,7 +450,7 @@ class BehaviorProcessor {
           customer.tags.push(newTag);
         }
       }
-      
+
       await customer.save();
       console.log(`Updated property ${action.property} for customer ${customer._id}`);
     } catch (error) {
@@ -450,18 +467,18 @@ class BehaviorProcessor {
   async executeStartCampaignAction(action, customer) {
     try {
       const { Campaign } = require('../models');
-      
+
       const campaignId = action.campaignId;
       if (!campaignId) {
         throw new Error('Campaign ID is required');
       }
-      
+
       // Check if campaign exists
       const campaign = await Campaign.findById(campaignId);
       if (!campaign) {
         throw new Error(`Campaign ${campaignId} not found`);
       }
-      
+
       // Create a targeted campaign just for this customer
       const targetedCampaign = new Campaign({
         name: `Triggered: ${campaign.name}`,
@@ -477,16 +494,18 @@ class BehaviorProcessor {
         specificCustomers: [customer._id],
         triggerSource: {
           triggerId: action.triggerId,
-          timestamp: new Date()
-        }
+          timestamp: new Date(),
+        },
       });
-      
+
       await targetedCampaign.save();
-      
+
       // Immediately execute the campaign
       await campaignExecutor.executeCampaign(targetedCampaign);
-      
-      console.log(`Started triggered campaign ${targetedCampaign._id} for customer ${customer._id}`);
+
+      console.log(
+        `Started triggered campaign ${targetedCampaign._id} for customer ${customer._id}`
+      );
     } catch (error) {
       console.error('Error starting triggered campaign:', error);
       throw error;
@@ -504,7 +523,7 @@ class BehaviorProcessor {
     try {
       // Implementation depends on notification system
       console.log(`Team notification sent for customer ${customer._id} and trigger ${trigger._id}`);
-      
+
       // Example implementation for sending to Slack
       if (action.slackWebhook) {
         await this.sendSlackNotification(
@@ -515,11 +534,11 @@ class BehaviorProcessor {
           action.message || 'Customer behavior trigger activated'
         );
       }
-      
+
       // Email to team members
       if (action.teamEmails && action.teamEmails.length > 0) {
         const emailService = require('./emailService');
-        
+
         for (const email of action.teamEmails) {
           await emailService.sendEmail({
             to: email,
@@ -528,12 +547,12 @@ class BehaviorProcessor {
             templateData: {
               customer,
               trigger,
-              events: events.map(e => ({
+              events: events.map((e) => ({
                 type: e.eventType,
                 time: new Date(e.timestamp).toLocaleString(),
-                properties: e.properties
-              }))
-            }
+                properties: e.properties,
+              })),
+            },
           });
         }
       }
@@ -554,7 +573,7 @@ class BehaviorProcessor {
   async sendSlackNotification(webhookUrl, customer, trigger, events, message) {
     try {
       const axios = require('axios');
-      
+
       // Create Slack message
       const payload = {
         text: message,
@@ -564,43 +583,43 @@ class BehaviorProcessor {
             text: {
               type: 'plain_text',
               text: `Behavior Trigger: ${trigger.name}`,
-              emoji: true
-            }
+              emoji: true,
+            },
           },
           {
             type: 'section',
             fields: [
               {
                 type: 'mrkdwn',
-                text: `*Customer:*\n${customer.firstName} ${customer.lastName}`
+                text: `*Customer:*\n${customer.firstName} ${customer.lastName}`,
               },
               {
                 type: 'mrkdwn',
-                text: `*Email:*\n${customer.email}`
-              }
-            ]
+                text: `*Email:*\n${customer.email}`,
+              },
+            ],
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: '*Triggered by:*'
-            }
-          }
-        ]
+              text: '*Triggered by:*',
+            },
+          },
+        ],
       };
-      
+
       // Add events to message
-      events.forEach(event => {
+      events.forEach((event) => {
         payload.blocks.push({
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `• ${event.eventType} - ${new Date(event.timestamp).toLocaleString()}`
-          }
+            text: `• ${event.eventType} - ${new Date(event.timestamp).toLocaleString()}`,
+          },
         });
       });
-      
+
       // Send to Slack
       await axios.post(webhookUrl, payload);
     } catch (error) {
@@ -619,46 +638,46 @@ class BehaviorProcessor {
   async executeWebhookAction(action, customer, trigger, events) {
     try {
       const axios = require('axios');
-      
+
       if (!action.url) {
         throw new Error('Webhook URL is required');
       }
-      
+
       // Prepare webhook payload
       const payload = {
         customer: {
           id: customer._id,
           email: customer.email,
           firstName: customer.firstName,
-          lastName: customer.lastName
+          lastName: customer.lastName,
         },
         trigger: {
           id: trigger._id,
-          name: trigger.name
+          name: trigger.name,
         },
-        events: events.map(event => ({
+        events: events.map((event) => ({
           type: event.eventType,
           timestamp: event.timestamp,
-          properties: event.properties
+          properties: event.properties,
         })),
-        timestamp: new Date()
+        timestamp: new Date(),
       };
-      
+
       // Add custom data if provided
       if (action.data) {
         payload.data = action.data;
       }
-      
+
       // Send webhook
       const response = await axios({
         method: action.method || 'POST',
         url: action.url,
         data: payload,
         headers: action.headers || {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
-      
+
       console.log(`Webhook sent to ${action.url}, status: ${response.status}`);
     } catch (error) {
       console.error('Error sending webhook:', error);
@@ -675,18 +694,18 @@ class BehaviorProcessor {
   async recordTriggerExecution(trigger, customer, events) {
     try {
       const { TriggerExecution } = require('../models');
-      
+
       await TriggerExecution.create({
         triggerId: trigger._id,
         triggerName: trigger.name,
         customerId: customer._id,
         customerEmail: customer.email,
-        events: events.map(e => ({
+        events: events.map((e) => ({
           eventId: e._id,
           eventType: e.eventType,
-          timestamp: e.timestamp
+          timestamp: e.timestamp,
         })),
-        timestamp: new Date()
+        timestamp: new Date(),
       });
     } catch (error) {
       console.error('Error recording trigger execution:', error);
@@ -700,26 +719,26 @@ class BehaviorProcessor {
   async getActiveTriggers() {
     // Use cache if available and not expired
     const cacheKey = 'activeTriggers';
-    
+
     if (this.triggerCache.has(cacheKey)) {
       const cached = this.triggerCache.get(cacheKey);
       if (cached.timestamp > Date.now() - this.triggerCacheExpiry) {
         return cached.data;
       }
     }
-    
+
     // Fetch active triggers from DB
     const triggers = await TriggerRule.find({
       isActive: true,
-      removed: false
+      removed: false,
     });
-    
+
     // Update cache
     this.triggerCache.set(cacheKey, {
       data: triggers,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
-    
+
     return triggers;
   }
 
@@ -728,19 +747,19 @@ class BehaviorProcessor {
    */
   async refreshTriggerCache() {
     console.log('Refreshing trigger cache...');
-    
+
     try {
       const activeTriggers = await TriggerRule.find({
         isActive: true,
-        removed: false
+        removed: false,
       });
-      
+
       // Update cache
       this.triggerCache.set('activeTriggers', {
         data: activeTriggers,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
-      
+
       console.log(`Trigger cache refreshed with ${activeTriggers.length} active triggers`);
     } catch (error) {
       console.error('Error refreshing trigger cache:', error);
@@ -756,28 +775,28 @@ class BehaviorProcessor {
   async isInCooldown(customerId, triggerId) {
     try {
       const { TriggerExecution } = require('../models');
-      
+
       // Check for recent executions
       const recentExecution = await TriggerExecution.findOne({
         triggerId,
         customerId,
-        timestamp: { $gte: new Date(Date.now() - 1000 * 60 * 60 * 24) } // Last 24 hours
+        timestamp: { $gte: new Date(Date.now() - 1000 * 60 * 60 * 24) }, // Last 24 hours
       }).sort({ timestamp: -1 });
-      
+
       if (!recentExecution) {
         return false;
       }
-      
+
       // Get trigger to check cooldown period
       const trigger = await TriggerRule.findById(triggerId);
       if (!trigger || !trigger.cooldownPeriod) {
         return false;
       }
-      
+
       // Calculate if cooldown has expired
       const cooldownMs = trigger.cooldownPeriod * 60 * 1000; // Convert minutes to ms
       const timeSinceExecution = Date.now() - new Date(recentExecution.timestamp).getTime();
-      
+
       return timeSinceExecution < cooldownMs;
     } catch (error) {
       console.error('Error checking trigger cooldown:', error);
@@ -794,10 +813,12 @@ class BehaviorProcessor {
   async setCooldown(customerId, triggerId, cooldownMinutes) {
     // Implementation depends on system design
     // This could be a simple in-memory cache or database record
-    
+
     // For this example, we're not implementing explicit cooldown setting
     // since we're already checking execution history in isInCooldown
-    console.log(`Set cooldown for trigger ${triggerId} and customer ${customerId}: ${cooldownMinutes} minutes`);
+    console.log(
+      `Set cooldown for trigger ${triggerId} and customer ${customerId}: ${cooldownMinutes} minutes`
+    );
   }
 }
 

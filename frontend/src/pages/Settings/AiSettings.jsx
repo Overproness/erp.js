@@ -16,7 +16,7 @@ export default function AiSettings() {
 
   const configPage = {
     entity,
-    settingsCategory: 'ai_settings',
+    settingsCategory: 'general',
     ...Labels,
   };
 

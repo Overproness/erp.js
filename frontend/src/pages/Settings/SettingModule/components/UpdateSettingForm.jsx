@@ -39,7 +39,11 @@ export default function UpdateSettingForm({ config, children, withUpload, upload
       const settings = [];
 
       for (const [key, value] of Object.entries(fieldsValue)) {
-        settings.push({ settingKey: key, settingValue: value });
+        settings.push({
+          settingKey: key,
+          settingValue: value,
+          settingCategory: settingsCategory, // Include the category to ensure proper saving
+        });
       }
 
       dispatch(settingsAction.updateMany({ entity, jsonData: { settings } }));
@@ -53,7 +57,6 @@ export default function UpdateSettingForm({ config, children, withUpload, upload
     // Wait until component is mounted and result data is loaded
     const loadSettings = () => {
       try {
-
         // Check for possible locations where the data might be stored
         let current = {};
 
@@ -140,9 +143,17 @@ export default function UpdateSettingForm({ config, children, withUpload, upload
             };
           }
         }
+        // Special case for general settings (AI API keys, etc.)
+        else if (settingsCategory === 'general') {
+          if (result.general) {
+            current = result.general;
+          } else if (result.ai_settings) {
+            // Fallback to ai_settings if available
+            current = result.ai_settings;
+          }
+        }
 
         if (current && Object.keys(current).length > 0) {
-
           // Reset the form first to clear any previous values
           form.resetFields();
 
@@ -154,7 +165,6 @@ export default function UpdateSettingForm({ config, children, withUpload, upload
             form.validateFields().catch((e) => console.log('Validation error (expected):', e));
           }, 100);
         } else {
-
           // If no settings are found, reset the form to prevent stale data
           form.resetFields();
         }

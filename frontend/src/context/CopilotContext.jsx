@@ -1,5 +1,7 @@
+import { selectAppSettings } from '@/redux/settings/selectors';
 import { notification } from 'antd';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { request } from '../request';
 
 const CopilotContext = createContext();
@@ -9,6 +11,8 @@ const CopilotContext = createContext();
  * Manages AI chatbot state and functionality across modules
  */
 export const CopilotProvider = ({ children }) => {
+  const appSettings = useSelector(selectAppSettings);
+  // console.log('🚀 ~ CopilotProvider ~ appSettings:', appSettings);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,9 +22,77 @@ export const CopilotProvider = ({ children }) => {
   const [moduleContext, setModuleContext] = useState({});
   const [conversationId, setConversationId] = useState(null);
   const [selectedModel, setSelectedModel] = useState('gpt-4o'); // Default model
+  const [availableModels, setAvailableModels] = useState([]);
+  const [availableProviders, setAvailableProviders] = useState([]);
 
   // Ref to track the current conversation
   const conversationRef = useRef({ module: 'general', entityId: null });
+
+  /**
+   * Check if at least one AI API key is configured
+   */
+  const hasApiKeys = useCallback(() => {
+    if (!appSettings) return false;
+
+    const hasOpenAI = appSettings.openai_api_key && appSettings.openai_api_key.trim().length > 0;
+    const hasGemini = appSettings.gemini_api_key && appSettings.gemini_api_key.trim().length > 0;
+    const hasClaude = appSettings.claude_api_key && appSettings.claude_api_key.trim().length > 0;
+
+    return hasOpenAI || hasGemini || hasClaude;
+  }, [appSettings]);
+
+  /**
+   * Load available AI models from backend
+   */
+  const loadAvailableModels = useCallback(async () => {
+    try {
+      const response = await request.get({
+        entity: 'copilot',
+        endpoint: 'models',
+      });
+
+      // console.log('Models API response:', response);
+
+      if (response.success && response.result) {
+        const models = response.result.models || [];
+        const providers = response.result.availableProviders || [];
+
+        // console.log('Available models:', models);
+        // console.log('Available providers:', providers);
+
+        setAvailableModels(models);
+        setAvailableProviders(providers);
+
+        // Set default model to first available if current is not available
+        if (models.length > 0) {
+          const currentModelAvailable = models.some((m) => m.value === selectedModel);
+          if (!currentModelAvailable) {
+            console.log('Current model not available, switching to:', models[0].value);
+            setSelectedModel(models[0].value);
+          }
+        } else {
+          console.warn('No models available from API');
+        }
+      } else {
+        console.warn('Failed to load models:', response);
+      }
+    } catch (error) {
+      console.error('Load models error:', error);
+    }
+  }, [selectedModel]);
+
+  /**
+   * Load models when settings change
+   */
+  useEffect(() => {
+    // Always try to load models to show what's available
+    // Even if no API keys are configured yet
+    if (appSettings) {
+      // console.log('Loading available models, hasApiKeys:', hasApiKeys());
+      loadAvailableModels();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appSettings, loadAvailableModels]);
 
   /**
    * Reset conversation when module changes
@@ -74,8 +146,7 @@ export const CopilotProvider = ({ children }) => {
 
         // Send to API
         const response = await request.post({
-          entity: 'copilot',
-          subEntity: 'chat',
+          entity: 'copilot/chat',
           jsonData: {
             message,
             context,
@@ -141,8 +212,7 @@ export const CopilotProvider = ({ children }) => {
     async (module, context = {}) => {
       try {
         const response = await request.post({
-          entity: 'copilot',
-          subEntity: 'suggestions',
+          entity: 'copilot/suggestions',
           jsonData: {
             module: module || currentModule,
             context,
@@ -183,19 +253,37 @@ export const CopilotProvider = ({ children }) => {
    * Toggle copilot open/close
    */
   const toggleCopilot = useCallback(() => {
+    if (!isOpen && !hasApiKeys()) {
+      notification.warning({
+        message: 'AI Configuration Required',
+        description:
+          'Please configure at least one AI API key (OpenAI, Gemini, or Claude) in Settings before using the AI Copilot.',
+        duration: 6,
+      });
+      return;
+    }
     setIsOpen((prev) => !prev);
-  }, []);
+  }, [isOpen, hasApiKeys]);
 
   /**
    * Open copilot
    */
   const openCopilot = useCallback(() => {
+    if (!hasApiKeys()) {
+      notification.warning({
+        message: 'AI Configuration Required',
+        description:
+          'Please configure at least one AI API key (OpenAI, Gemini, or Claude) in Settings before using the AI Copilot.',
+        duration: 6,
+      });
+      return;
+    }
     setIsOpen(true);
     // Load suggestions when opening if we don't have any
     if (suggestions.length === 0) {
       loadSuggestions(currentModule, moduleContext);
     }
-  }, [suggestions.length, currentModule, moduleContext, loadSuggestions]);
+  }, [hasApiKeys, suggestions.length, currentModule, moduleContext, loadSuggestions]);
 
   /**
    * Close copilot
@@ -232,6 +320,8 @@ export const CopilotProvider = ({ children }) => {
     moduleContext,
     conversationId,
     selectedModel,
+    availableModels,
+    availableProviders,
 
     // Methods
     sendMessage,
@@ -243,6 +333,7 @@ export const CopilotProvider = ({ children }) => {
     closeCopilot,
     loadSuggestions,
     handleSuggestionClick,
+    loadAvailableModels,
   };
 
   return <CopilotContext.Provider value={value}>{children}</CopilotContext.Provider>;

@@ -35,7 +35,9 @@ export const selectDateFormat = createSelector(
 // App settings selector
 export const selectAppSettings = createSelector([selectCurrentSettings], (settings) => {
   // Get app settings from the new structure
-  const appSettings = settings?.app_settings || settings?.general || {};
+  const appSettings = settings?.app_settings || {};
+  const generalSettings = settings?.general || {};
+  const aiSettings = settings?.ai_settings || {};
 
   return {
     app_name: appSettings.site_name || appSettings.app_name || 'ERP System',
@@ -44,12 +46,15 @@ export const selectAppSettings = createSelector([selectCurrentSettings], (settin
     app_language: appSettings.language || appSettings.app_language || 'en',
     app_country: appSettings.country || appSettings.app_country || 'US',
     ...appSettings,
+    // Include general settings which contain AI API keys
+    ...generalSettings,
+    // Include AI settings so they're accessible in components
+    ...aiSettings,
   };
 });
 
 // Finance settings selector
 export const selectFinanceSettings = createSelector([selectCurrentSettings], (settings) => {
-
   // Get settings from the new structure
   const financeSettings = settings?.finance || {};
   const moneyFormatSettings = settings?.money_format_settings || {};

@@ -48,6 +48,7 @@ for (const filePath of modelFiles) {
 const initDefaultSettings = require('./middlewares/settings/initDefaultSettings');
 const migrateSetting = require('./middlewares/settings/migrateSetting');
 const { initializeCopilotModules } = require('./setup/copilotSetup');
+const { initializeAIServices } = require('./services/aiServicesInitializer');
 
 mongoose.connection.once('open', async () => {
   try {
@@ -57,6 +58,9 @@ mongoose.connection.once('open', async () => {
 
     // Initialize copilot modules
     initializeCopilotModules();
+
+    // Initialize AI services (24/7 chatbot, follow-ups, self-learning)
+    await initializeAIServices();
   } catch (error) {
     console.error('❌ Settings initialization failed:', error);
   }
