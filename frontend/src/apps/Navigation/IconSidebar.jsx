@@ -3,6 +3,7 @@ import { usePermissions } from '@/hooks/usePermissions';
 import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import {
+  ApartmentOutlined,
   BankOutlined,
   BulbOutlined,
   CalendarOutlined,
@@ -254,8 +255,38 @@ export default function IconSidebar() {
           path: '/tasks',
           permissions: ['task:read'],
         },
+        {
+          key: 'appointments',
+          icon: <CalendarOutlined />,
+          label: 'Appointments',
+          path: '/appointments',
+          permissions: ['workflow:read'],
+        },
       ],
     },
+    // {
+    //   key: 'business-process-automation',
+    //   icon: <ApartmentOutlined />,
+    //   label: 'Business Process Automation',
+    //   path: '/appointments',
+    //   permissions: ['workflow:read'],
+    //   children: [
+    //     // {
+    //     //   key: 'business-processes',
+    //     //   icon: <ApartmentOutlined />,
+    //     //   label: 'Business Processes',
+    //     //   path: '/business-processes',
+    //     //   permissions: ['workflow:read'],
+    //     // },
+    //     // {
+    //     //   key: 'task-tracking',
+    //     //   icon: <CheckSquareOutlined />,
+    //     //   label: 'Task Tracking',
+    //     //   path: '/task-tracking',
+    //     //   permissions: ['task:read'],
+    //     // },
+    //   ],
+    // },
     {
       key: 'team-settings',
       icon: <UsergroupAddOutlined />,

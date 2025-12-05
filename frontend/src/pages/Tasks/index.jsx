@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Button, 
-  Typography, 
-  Row, 
-  Col, 
-  Statistic, 
-  Card, 
-  Tag, 
-  Spin, 
-  Modal, 
+import {
+  Button,
+  Typography,
+  Row,
+  Col,
+  Statistic,
+  Card,
+  Tag,
+  Spin,
+  Modal,
   message,
   Alert,
-  Collapse
+  Collapse,
+  Space,
 } from 'antd';
-import { 
-  PlusOutlined, 
-  CheckCircleOutlined, 
-  ClockCircleOutlined, 
-  ExclamationCircleOutlined, 
-  UserOutlined, 
+import {
+  PlusOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  ExclamationCircleOutlined,
+  UserOutlined,
   AlertOutlined,
-  BugOutlined 
+  BugOutlined,
+  BulbOutlined,
 } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
 import { useTaskStats } from '@/hooks/useStatistics';
-// Import dummy data
-import dummyTasks, { getTaskStats } from '@/data/dummyTasksData';
+// Import task API request service
+import taskRequest from '@/request/taskRequest';
 // Import custom task modules
 import ViewTaskModule from './TaskModule/ViewTaskModule';
 import CreateTaskModule from './TaskModule/CreateTaskModule';
 import TaskDetailModule from './TaskModule/TaskDetailModule';
+import AISuggestionsModal from './TaskModule/AISuggestionsModal';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -39,7 +42,7 @@ const { Panel } = Collapse;
 export default function Tasks() {
   const translate = useLanguage();
   const navigate = useNavigate();
-  
+
   // State for tasks and UI
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -47,243 +50,212 @@ export default function Tasks() {
     totalTasks: 0,
     completedTasks: 0,
     inProgressTasks: 0,
-    overdueTasks: 0
+    overdueTasks: 0,
   });
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMode, setModalMode] = useState('create'); // 'create', 'edit', 'view'
   const [loading, setLoading] = useState(true);
-  const [statsLoading, setStatsLoading] = useState(true); // Add statsLoading state
-  const [debugState, setDebugState] = useState({
-    tasksLoaded: false,
-    loadError: null,
-    dummyTasksAvailable: Array.isArray(dummyTasks) ? dummyTasks.length : 'not an array',
-    lastAction: null,
-    timestamps: {
-      componentMounted: null,
-      dataLoaded: null
-    }
-  });
-  
-  // Record component mount time
-  useEffect(() => {
-    const timestamp = new Date().toISOString();
-    setDebugState(prev => ({
-      ...prev, 
-      timestamps: {
-        ...prev.timestamps,
-        componentMounted: timestamp
-      }
-    }));
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [aiModalVisible, setAiModalVisible] = useState(false);
 
-  }, []);
-  
-  // Load dummy data on component mount
+  // Load tasks from API on component mount
   useEffect(() => {
-    setLoading(true);
-    setStatsLoading(true); // Set stats loading to true
-    
-    // Check if dummyTasks is valid
-    if (!Array.isArray(dummyTasks)) {
-      console.error('dummyTasks is not an array:', dummyTasks);
-      setDebugState(prev => ({
-        ...prev,
-        loadError: 'dummyTasks is not an array',
-        tasksLoaded: false
-      }));
-      setLoading(false);
-      setStatsLoading(false); // Set stats loading to false
-      return;
-    }
-    
-    try {
-      // Simulate API delay
-      setTimeout(() => {
-        setTasks(dummyTasks);
-        setTaskStatistics(getTaskStats());
-        setLoading(false);
-        setStatsLoading(false); // Set stats loading to false
-        
-        // Update debug state
-        const timestamp = new Date().toISOString();
-        setDebugState(prev => ({
-          ...prev,
-          tasksLoaded: true,
-          tasksCount: dummyTasks.length,
-          timestamps: {
-            ...prev.timestamps,
-            dataLoaded: timestamp
-          }
-        }));
-        
-      }, 500);
-    } catch (error) {
-      console.error('Error loading dummy tasks:', error);
-      setDebugState(prev => ({
-        ...prev,
-        loadError: error.message,
-        tasksLoaded: false
-      }));
-      setLoading(false);
-      setStatsLoading(false); // Set stats loading to false
-    }
+    loadTasks();
+    loadTaskStats();
   }, []);
+
+  // Function to load tasks from API
+  const loadTasks = async () => {
+    setLoading(true);
+    try {
+      const response = await taskRequest.list();
+      console.log('Tasks API response:', response);
+
+      if (response.success) {
+        // Handle both paginated and non-paginated responses
+        const taskData = response.result?.items || response.result || [];
+        // console.log('Task data extracted:', taskData);
+        // console.log('First task assignedTo:', taskData[0]?.assignedTo);
+        // console.log('First task full object:', JSON.stringify(taskData[0], null, 2));
+        setTasks(Array.isArray(taskData) ? taskData : []);
+      } else if (response.message === 'Collection is Empty') {
+        // Collection is empty - not an error, just no tasks yet
+        console.log('No tasks found - collection is empty');
+        setTasks([]);
+      } else {
+        // Actual error
+        console.error('API returned success: false', response);
+        message.error(translate(response.message || 'Failed to load tasks'));
+        setTasks([]);
+      }
+    } catch (error) {
+      console.error('Error loading tasks:', error);
+      console.error('Error details:', error.response?.data || error.message);
+
+      // Check if it's an empty collection response
+      if (error.response?.data?.message === 'Collection is Empty') {
+        console.log('No tasks found - collection is empty (from error)');
+        setTasks([]);
+      } else {
+        // Show more specific error message for actual errors
+        const errorMsg = error.response?.data?.message || error.message || 'Failed to load tasks';
+        message.error(translate(errorMsg));
+        setTasks([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to load task statistics from API
+  const loadTaskStats = async () => {
+    setStatsLoading(true);
+    try {
+      const response = await taskRequest.statistics();
+      console.log('Task stats API response:', response);
+
+      if (response.success && response.result) {
+        setTaskStatistics({
+          totalTasks: response.result.totalTasks || 0,
+          completedTasks: response.result.completed || 0,
+          inProgressTasks: response.result.inProgress || 0,
+          overdueTasks: response.result.overdue || 0,
+        });
+      }
+    } catch (error) {
+      console.error('Error loading task stats:', error);
+      console.error('Stats error details:', error.response?.data || error.message);
+      // Use default stats on error (don't show error message for stats)
+      setTaskStatistics({
+        totalTasks: 0,
+        completedTasks: 0,
+        inProgressTasks: 0,
+        overdueTasks: 0,
+      });
+    } finally {
+      setStatsLoading(false);
+    }
+  };
 
   const handleCreateTask = () => {
     setSelectedTask(null);
     setModalMode('create');
     setModalVisible(true);
-    setDebugState(prev => ({
-      ...prev,
-      lastAction: 'create-task-clicked'
-    }));
+  };
+
+  const handleOpenAISuggestions = () => {
+    setAiModalVisible(true);
+  };
+
+  const handleAISuggestionsApply = async () => {
+    // Reload tasks and stats after applying AI suggestions
+    await loadTasks();
+    await loadTaskStats();
   };
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
     setModalMode('edit');
     setModalVisible(true);
-    setDebugState(prev => ({
-      ...prev,
-      lastAction: `edit-task-clicked:${task?._id}`
-    }));
   };
 
   const handleViewTask = (task) => {
     setSelectedTask(task);
     setModalMode('view');
     setModalVisible(true);
-    setDebugState(prev => ({
-      ...prev,
-      lastAction: `view-task-clicked:${task?._id}`
-    }));
   };
 
-  const handleDeleteTask = (task) => {
-    setDebugState(prev => ({
-      ...prev,
-      lastAction: `delete-task-clicked:${task?._id}`
-    }));
-    
+  const handleDeleteTask = async (task) => {
     Modal.confirm({
       title: translate('Delete Task'),
       content: translate('Are you sure you want to delete this task?'),
       okText: translate('Yes'),
       okType: 'danger',
       cancelText: translate('No'),
-      onOk() {
-        // In a real app, this would call an API
+      async onOk() {
         try {
-          const updatedTasks = tasks.filter(t => t._id !== task._id);
-          setTasks(updatedTasks);
-          
-          // Update stats after deletion
-          setTaskStatistics(prev => ({
-            ...prev,
-            totalTasks: prev.totalTasks - 1,
-            completedTasks: task.status === 'completed' ? prev.completedTasks - 1 : prev.completedTasks,
-            inProgressTasks: task.status === 'in_progress' ? prev.inProgressTasks - 1 : prev.inProgressTasks,
-            // Recalculate overdue
-            overdueTasks: updatedTasks.filter(
-              t => t.status !== 'completed' && dayjs(t.deadline).isBefore(dayjs())
-            ).length
-          }));
-          
-          setDebugState(prev => ({
-            ...prev,
-            lastAction: `delete-task-confirmed:${task?._id}`,
-            tasksCount: updatedTasks.length
-          }));
-          
-          message.success(translate('Task deleted successfully'));
-          
-          // If viewing the task that was deleted, close the modal
-          if (modalVisible && selectedTask && selectedTask._id === task._id) {
-            setModalVisible(false);
+          const response = await taskRequest.delete(task._id);
+          if (response.success) {
+            message.success(translate('Task deleted successfully'));
+            // Reload tasks and stats
+            await loadTasks();
+            await loadTaskStats();
+
+            // If viewing the task that was deleted, close the modal
+            if (modalVisible && selectedTask && selectedTask._id === task._id) {
+              setModalVisible(false);
+            }
+          } else {
+            message.error(translate('Failed to delete task'));
           }
         } catch (error) {
           console.error('Error deleting task:', error);
-          message.error('Failed to delete task: ' + error.message);
+          message.error(translate('Failed to delete task'));
         }
-      }
+      },
     });
   };
 
-  const handleSaveTask = (values, taskId) => {
-    setDebugState(prev => ({
-      ...prev,
-      lastAction: taskId ? `update-task:${taskId}` : 'create-new-task',
-      formValues: values
-    }));
-    
-    return new Promise((resolve, reject) => {
-      try {
-        // In a real app, this would call an API
-        if (taskId) {
-          // Update existing task
-          const updatedTasks = tasks.map(task => 
-            task._id === taskId ? { ...task, ...values, updatedAt: new Date().toISOString() } : task
-          );
-          setTasks(updatedTasks);
-          
-          setDebugState(prev => ({
-            ...prev,
-            lastAction: `update-task-success:${taskId}`,
-            tasksCount: updatedTasks.length
-          }));
-        } else {
-          // Create new task
-          const newTask = {
-            _id: `task-${Math.floor(Math.random() * 1000)}`,
-            ...values,
-            created: new Date().toISOString()
-          };
-          const updatedTasks = [...tasks, newTask];
-          setTasks(updatedTasks);
-          
-          // Update statistics
-          setTaskStatistics(prev => ({
-            ...prev,
-            totalTasks: prev.totalTasks + 1,
-            inProgressTasks: values.status === 'in_progress' ? prev.inProgressTasks + 1 : prev.inProgressTasks,
-            completedTasks: values.status === 'completed' ? prev.completedTasks + 1 : prev.completedTasks,
-            // Recalculate overdue if needed
-            overdueTasks: values.status !== 'completed' && dayjs(values.deadline).isBefore(dayjs()) 
-              ? prev.overdueTasks + 1 
-              : prev.overdueTasks
-          }));
-          
-          setDebugState(prev => ({
-            ...prev,
-            lastAction: 'create-task-success',
-            tasksCount: updatedTasks.length,
-            newTaskId: newTask._id
-          }));
-        }
-        
-        setModalVisible(false);
-        resolve();
-      } catch (error) {
-        console.error('Error saving task:', error);
-        setDebugState(prev => ({
-          ...prev,
-          lastAction: 'task-save-error',
-          error: error.message
-        }));
-        reject(error);
+  const handleMarkComplete = async (task) => {
+    try {
+      const response = await taskRequest.update(task._id, {
+        status: 'completed',
+        completed: new Date().toISOString(),
+      });
+
+      if (response.success) {
+        message.success(translate('Task marked as completed'));
+        // Reload tasks and stats
+        await loadTasks();
+        await loadTaskStats();
+      } else {
+        message.error(translate('Failed to mark task as completed'));
       }
-    });
+    } catch (error) {
+      console.error('Error marking task as complete:', error);
+      message.error(translate('Failed to mark task as completed'));
+    }
+  };
+
+  const handleSaveTask = async (values, taskId) => {
+    try {
+      if (taskId) {
+        // Update existing task
+        const response = await taskRequest.update(taskId, values);
+        if (response.success) {
+          message.success(translate('Task updated successfully'));
+          // Reload tasks and stats
+          await loadTasks();
+          await loadTaskStats();
+          setModalVisible(false);
+        } else {
+          message.error(translate('Failed to update task'));
+        }
+      } else {
+        // Create new task
+        const response = await taskRequest.create(values);
+        if (response.success) {
+          message.success(translate('Task created successfully'));
+          // Reload tasks and stats
+          await loadTasks();
+          await loadTaskStats();
+          setModalVisible(false);
+        } else {
+          message.error(translate('Failed to create task'));
+        }
+      }
+    } catch (error) {
+      console.error('Error saving task:', error);
+      message.error(translate('Failed to save task'));
+      throw error;
+    }
   };
 
   // Determine what to render in the modal
   const renderModalContent = () => {
     switch (modalMode) {
       case 'create':
-        return (
-          <CreateTaskModule
-            onSave={handleSaveTask}
-            onCancel={() => setModalVisible(false)}
-          />
-        );
+        return <CreateTaskModule onSave={handleSaveTask} onCancel={() => setModalVisible(false)} />;
       case 'edit':
         return (
           <CreateTaskModule
@@ -307,63 +279,34 @@ export default function Tasks() {
     }
   };
 
-  // Debug information about current state
-  const debugData = {
-    environment: process.env.NODE_ENV,
-    timestamp: new Date().toISOString(),
-    dummyTasksAvailable: Array.isArray(dummyTasks) ? dummyTasks.length : 'not an array',
-    currentState: {
-      tasksState: Array.isArray(tasks) ? tasks.length : 'not an array',
-      tasksStatistics: taskStatistics,
-      loading,
-      modalVisible,
-      modalMode,
-      selectedTaskId: selectedTask?._id
-    },
-    ...debugState
-  };
-
   return (
     <div style={{ padding: '0' }}>
-      {/* Debug Panel (only in development) */}
-
-      {/* Show error alert if there was an issue loading data */}
-      {debugState.loadError && (
-        <Alert
-          message="Error Loading Tasks"
-          description={`There was a problem loading the task data: ${debugState.loadError}`}
-          type="error"
-          showIcon
-          icon={<BugOutlined />}
-          style={{ marginBottom: '16px' }}
-        />
-      )}
-      
       {/* Header Section */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+        <div
+          style={{
+            marginBottom: '24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
           <div>
             <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
               {translate('Tasks')}
             </Title>
             <Text style={{ color: '#6b7280', fontSize: '16px' }}>
-              {translate('Organize and track your team\'s tasks and activities')}
+              {translate("Organize and track your team's tasks and activities")}
             </Text>
           </div>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleCreateTask}
-            style={{
-              background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-              border: 'none',
-              borderRadius: '8px',
-              height: '40px',
-              fontWeight: '500'
-            }}
-          >
-            {translate('Add New Task')}
-          </Button>
+          <Space>
+            <Button icon={<BulbOutlined />} onClick={handleOpenAISuggestions}>
+              {translate('AI Suggestions')}
+            </Button>
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateTask}>
+              {translate('Add New Task')}
+            </Button>
+          </Space>
         </div>
 
         {/* Statistics Cards */}
@@ -390,7 +333,7 @@ export default function Tasks() {
                 <Statistic
                   title={translate('Completed')}
                   value={taskStatistics.completedTasks || 0}
-                  valueStyle={{ color: '#52c41a', fontWeight: '700' }}
+                  valueStyle={{ color: '#3b851cff', fontWeight: '700' }}
                   prefix={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
                 />
               )}
@@ -419,7 +362,9 @@ export default function Tasks() {
                   title={
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       {translate('Overdue')}
-                      {(taskStatistics.overdueTasks || 0) > 0 && <AlertOutlined style={{ fontSize: '10px' }} />}
+                      {(taskStatistics.overdueTasks || 0) > 0 && (
+                        <AlertOutlined style={{ fontSize: '10px' }} />
+                      )}
                     </span>
                   }
                   value={taskStatistics.overdueTasks || 0}
@@ -445,15 +390,15 @@ export default function Tasks() {
           onEdit={handleEditTask}
           onView={handleViewTask}
           onDelete={handleDeleteTask}
+          onMarkComplete={handleMarkComplete}
         />
       )}
-      
+
       {/* Modal for Create/Edit/View Task */}
       <Modal
         visible={modalVisible}
         onCancel={() => {
           setModalVisible(false);
-          setDebugState(prev => ({...prev, lastAction: 'modal-closed'}));
         }}
         footer={null}
         width={modalMode === 'view' ? 1000 : 800}
@@ -462,6 +407,14 @@ export default function Tasks() {
       >
         {renderModalContent()}
       </Modal>
+
+      {/* AI Suggestions Modal */}
+      <AISuggestionsModal
+        visible={aiModalVisible}
+        onClose={() => setAiModalVisible(false)}
+        tasks={tasks}
+        onApply={handleAISuggestionsApply}
+      />
     </div>
   );
 }

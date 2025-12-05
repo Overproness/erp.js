@@ -684,7 +684,24 @@ const getTaskStats = async (req, res) => {
     const dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - daysAgo);
 
+    // Get companyID for filtering
+    const companyID = req.user?.companyID || req.companyOwner?.companyID;
+
+    if (!companyID) {
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Company context not found - authentication required',
+      });
+    }
+
     const stats = await Task.aggregate([
+      {
+        $match: {
+          removed: false,
+          companyID: companyID,
+        },
+      },
       {
         $facet: {
           total: [{ $count: 'count' }],
@@ -694,10 +711,12 @@ const getTaskStats = async (req, res) => {
           overdue: [
             {
               $match: {
-                dueDate: { $lt: new Date() },
+                deadline: { $lt: new Date() },
                 status: { $nin: ['completed', 'cancelled'] },
               },
             },
+            { $count: 'count' },
+          ],
             { $count: 'count' },
           ],
           byPriority: [

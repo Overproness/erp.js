@@ -25,6 +25,10 @@ router.route('/listAll').get(catchErrors(taskController.listAll));
 router.route('/filter').get(catchErrors(taskController.filter));
 router.route('/summary').get(catchErrors(taskController.summary));
 
+// AI-powered features
+router.route('/ai/prioritize').post(catchErrors(taskController.aiPrioritize));
+router.route('/batch/priorities').patch(catchErrors(taskController.batchUpdatePriorities));
+
 // Progress Monitoring
 router.route('/:taskId/progress').patch(catchErrors(updateProgress));
 router.route('/:taskId/watchers').patch(catchErrors(updateWatchers));

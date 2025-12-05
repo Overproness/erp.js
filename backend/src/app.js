@@ -56,6 +56,9 @@ require('./models/appModels/Interaction');
 require('./models/appModels/Review');
 require('./models/appModels/Business');
 require('./models/appModels/ReviewLink');
+require('./models/appModels/Appointment');
+require('./models/appModels/BusinessProcess');
+require('./models/appModels/AutomatedReminder');
 
 // ─────────────────────────────────────────────────────────────
 // Import Middleware and Handlers
@@ -88,6 +91,10 @@ const workflowRoutes = require('./routes/workflows-simple');
 const marketingRoutes = require('./routes/appRoutes/marketingRoutes');
 const taxesRoutes = require('./routes/appRoutes/taxesRoutes');
 const paymentModeRoutes = require('./routes/appRoutes/paymentModeRoutes');
+const appointmentRoutes = require('./routes/appRoutes/appointmentRoutes');
+const businessProcessRoutes = require('./routes/appRoutes/businessProcessRoutes');
+const reminderRoutes = require('./routes/appRoutes/reminderRoutes');
+const taskRoutes = require('./routes/appRoutes/taskRoutes');
 
 // AI Routes
 const aiAssistantRoutes = require('./routes/appRoutes/aiAssistantRoutes');
@@ -372,6 +379,10 @@ app.use('/api/reputation/analytics', adminAuth.isValidAuthToken, reputationAnaly
 app.use('/api/marketing', adminAuth.isValidAuthToken, marketingRoutes);
 app.use('/api/user', adminAuth.isValidAuthToken, userRoutes);
 app.use('/api/workflows', adminAuth.isValidAuthToken, workflowRoutes);
+app.use('/api/appointments', adminAuth.isValidAuthToken, appointmentRoutes);
+app.use('/api/business-processes', adminAuth.isValidAuthToken, businessProcessRoutes);
+app.use('/api/reminders', adminAuth.isValidAuthToken, reminderRoutes);
+app.use('/api/task', adminAuth.isValidAuthToken, taskRoutes);
 
 // AI + Other Unprotected APIs
 app.use('/api/aiAssistant', aiAssistantRoutes);

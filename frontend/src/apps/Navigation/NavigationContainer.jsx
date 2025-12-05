@@ -16,7 +16,9 @@ import IconSidebar from './IconSidebar';
 
 import { N8N_URL } from '@/config/serverApiConfig';
 import {
+  ApartmentOutlined,
   BankOutlined,
+  CalendarOutlined,
   CaretDownOutlined,
   CaretUpOutlined,
   CheckSquareOutlined,
@@ -122,6 +124,12 @@ function Sidebar({ collapsible, isMobile = false }) {
     <CheckSquareOutlined key="tasks" />,
   ];
 
+  const businessProcessSubIcons = [
+    <CalendarOutlined key="appointments" />,
+    <ApartmentOutlined key="processes" />,
+    <CheckSquareOutlined key="task-tracking" />,
+  ];
+
   const teamSettingsSubIcons = [<TeamOutlined key="team" />, <SettingOutlined key="settings" />];
 
   // Get submenu icons based on parent menu key
@@ -133,6 +141,8 @@ function Sidebar({ collapsible, isMobile = false }) {
         return marketingSubIcons;
       case 'workflows-tasks':
         return workflowSubIcons;
+      case 'business-process-automation':
+        return businessProcessSubIcons;
       case 'team-settings':
         return teamSettingsSubIcons;
       default:
@@ -670,6 +680,60 @@ function Sidebar({ collapsible, isMobile = false }) {
             </Link>
           ),
           linkpath: '/tasks',
+          permissions: ['task:read'],
+        },
+      ],
+    },
+    {
+      key: 'business-process-automation',
+      icon: <ApartmentOutlined />,
+      label: (
+        <span
+          className={getMenuItemClass(
+            currentPath === 'business-process-automation' ||
+              ['appointments', 'business-processes', 'task-tracking'].includes(currentPath)
+          )}
+        >
+          {translate('Business Process Automation')}
+        </span>
+      ),
+      linkpath: '/appointments',
+      permissions: ['workflow:read'],
+      children: [
+        {
+          key: 'appointments',
+          label: (
+            <Link to={'/appointments'} className={getMenuItemClass(currentPath === 'appointments')}>
+              {translate('Appointments')}
+            </Link>
+          ),
+          linkpath: '/appointments',
+          permissions: ['workflow:read'],
+        },
+        {
+          key: 'business-processes',
+          label: (
+            <Link
+              to={'/business-processes'}
+              className={getMenuItemClass(currentPath === 'business-processes')}
+            >
+              {translate('Business Processes')}
+            </Link>
+          ),
+          linkpath: '/business-processes',
+          permissions: ['workflow:read'],
+        },
+        {
+          key: 'task-tracking',
+          label: (
+            <Link
+              to={'/task-tracking'}
+              className={getMenuItemClass(currentPath === 'task-tracking')}
+            >
+              {translate('Task Tracking')}
+            </Link>
+          ),
+          linkpath: '/task-tracking',
           permissions: ['task:read'],
         },
       ],

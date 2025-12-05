@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Typography, 
-  Button, 
-  Space, 
-  Tag, 
-  Descriptions, 
-  Timeline, 
+import {
+  Card,
+  Typography,
+  Button,
+  Space,
+  Tag,
+  Descriptions,
+  Timeline,
   Divider,
-  Avatar, 
-  List, 
-  Input, 
+  Avatar,
+  List,
+  Input,
   Form,
   Empty,
   Tooltip,
   Modal,
   Alert,
   Row,
-  Col
+  Col,
 } from 'antd';
 import {
   EditOutlined,
@@ -37,7 +37,7 @@ import {
   FileOutlined,
   TeamOutlined,
   PlusOutlined,
-  BugOutlined
+  BugOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
@@ -55,7 +55,8 @@ const getFileIcon = (fileType) => {
 
 const getStatusIcon = (status) => {
   switch (status) {
-    case 'todo':
+    case 'pending':
+    case 'assigned':
       return <ClockCircleOutlined style={{ color: '#faad14' }} />;
     case 'in_progress':
       return <ExclamationCircleOutlined style={{ color: '#1890ff' }} />;
@@ -68,14 +69,20 @@ const getStatusIcon = (status) => {
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'todo':
+    case 'pending':
       return '#faad14';
+    case 'assigned':
+      return '#1890ff';
     case 'in_progress':
       return '#1890ff';
     case 'completed':
       return '#52c41a';
     case 'cancelled':
       return '#ff4d4f';
+    case 'pending_approval':
+      return '#722ed1';
+    case 'delegated':
+      return '#13c2c2';
     default:
       return '#faad14';
   }
@@ -83,16 +90,22 @@ const getStatusColor = (status) => {
 
 const getStatusText = (status) => {
   switch (status) {
-    case 'todo':
-      return 'To Do';
+    case 'pending':
+      return 'Pending';
+    case 'assigned':
+      return 'Assigned';
     case 'in_progress':
       return 'In Progress';
     case 'completed':
       return 'Completed';
     case 'cancelled':
       return 'Cancelled';
+    case 'pending_approval':
+      return 'Pending Approval';
+    case 'delegated':
+      return 'Delegated';
     default:
-      return 'To Do';
+      return 'Pending';
   }
 };
 
@@ -104,8 +117,6 @@ const getPriorityColor = (priority) => {
       return '#faad14';
     case 'high':
       return '#ff4d4f';
-    case 'urgent':
-      return '#722ed1';
     default:
       return '#52c41a';
   }
@@ -116,13 +127,14 @@ const dummyComments = [
   {
     author: 'Current User',
     avatar: null,
-    content: 'I\'ve started working on this task. Will update the progress soon.',
+    content: "I've started working on this task. Will update the progress soon.",
     datetime: dayjs().subtract(2, 'day').format('YYYY-MM-DD HH:mm:ss'),
   },
   {
     author: 'Jane Smith',
     avatar: null,
-    content: 'The client requested some changes to the initial requirements. Please check the attached document.',
+    content:
+      'The client requested some changes to the initial requirements. Please check the attached document.',
     datetime: dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
   },
 ];
@@ -157,16 +169,16 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
   const [comments, setComments] = useState(dummyComments);
   const [activityLogs, setActivityLogs] = useState(dummyActivityLogs);
   const [loading, setLoading] = useState(false);
-  
+
   // Add debugging
-  console.log('TaskDetailModule - props received:', { 
-    taskProvided: !!task, 
+  console.log('TaskDetailModule - props received:', {
+    taskProvided: !!task,
     taskId: task?._id,
     hasCallbacks: {
       onEdit: !!onEdit,
       onDelete: !!onDelete,
-      onBack: !!onBack
-    }
+      onBack: !!onBack,
+    },
   });
 
   useEffect(() => {
@@ -176,13 +188,13 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
         title: task.title,
         status: task.status,
         hasAssignee: !!task.assignedTo,
-        hasDeadline: !!task.deadline
+        hasDeadline: !!task.deadline,
       });
     } else {
       console.warn('TaskDetailModule - No task data provided!');
     }
   }, [task]);
-  
+
   const handleBack = () => {
     console.log('TaskDetailModule - back button clicked');
     if (onBack) {
@@ -191,7 +203,7 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
       navigate('/tasks');
     }
   };
-  
+
   const handleEdit = () => {
     console.log('TaskDetailModule - edit button clicked for task:', task?._id);
     if (onEdit) {
@@ -200,7 +212,7 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
       navigate(`/task/${task._id}/edit`);
     }
   };
-  
+
   const handleDelete = () => {
     console.log('TaskDetailModule - delete button clicked for task:', task?._id);
     Modal.confirm({
@@ -220,16 +232,16 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
       },
     });
   };
-  
+
   const handleMarkComplete = () => {
     // Placeholder for actual complete logic
     console.log('TaskDetailModule - Mark as complete for task:', task?._id);
   };
-  
+
   const handleAddComment = (values) => {
     console.log('TaskDetailModule - Adding comment:', values.comment);
     setLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       const newComment = {
@@ -238,20 +250,20 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
         content: values.comment,
         datetime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       };
-      
+
       setComments([...comments, newComment]);
       commentForm.resetFields();
       setLoading(false);
     }, 500);
   };
-  
+
   if (!task) {
     return (
       <Card>
-        <Alert 
-          message="Debug Info" 
-          description="No task data was provided to TaskDetailModule" 
-          type="warning" 
+        <Alert
+          message="Debug Info"
+          description="No task data was provided to TaskDetailModule"
+          type="warning"
           showIcon
           icon={<BugOutlined />}
         />
@@ -268,25 +280,34 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
   return (
     <Card style={{ borderRadius: '12px' }}>
       {/* Header */}
-      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div
+        style={{
+          marginBottom: '24px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}
+      >
         <div>
-          <Button 
-            icon={<ArrowLeftOutlined />} 
+          <Button
+            icon={<ArrowLeftOutlined />}
             onClick={handleBack}
             style={{ marginBottom: '16px' }}
           >
             {translate('Back to Tasks')}
           </Button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Title level={4} style={{ margin: 0 }}>{task.title}</Title>
-            <Tag 
-              color={getStatusColor(task.status)} 
-              style={{ 
-                borderRadius: '6px', 
+            <Title level={4} style={{ margin: 0 }}>
+              {task.title}
+            </Title>
+            <Tag
+              color={getStatusColor(task.status)}
+              style={{
+                borderRadius: '6px',
                 fontWeight: '500',
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '4px' 
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
               }}
             >
               {getStatusIcon(task.status)}
@@ -294,68 +315,49 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
             </Tag>
           </div>
         </div>
-        
+
         <Space>
           {task.status !== 'completed' && (
-            <Button 
-              type="primary"
-              icon={<CheckCircleOutlined />}
-              onClick={handleMarkComplete}
-            >
+            <Button type="primary" icon={<CheckCircleOutlined />} onClick={handleMarkComplete}>
               {translate('Mark Complete')}
             </Button>
           )}
-          <Button 
-            icon={<EditOutlined />}
-            onClick={handleEdit}
-          >
+          <Button icon={<EditOutlined />} onClick={handleEdit}>
             {translate('Edit')}
           </Button>
-          <Button 
-            danger
-            icon={<DeleteOutlined />}
-            onClick={handleDelete}
-          >
+          <Button danger icon={<DeleteOutlined />} onClick={handleDelete}>
             {translate('Delete')}
           </Button>
         </Space>
       </div>
-      
+
       <Divider style={{ margin: '0 0 24px 0' }} />
-      
+
       {/* Content */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Row gutter={[24, 24]}>
           <Col xs={24} lg={16}>
             {/* Description */}
-            <Card 
-              title={translate('Description')}
-              size="small"
-              style={{ marginBottom: '24px' }}
-            >
+            <Card title={translate('Description')} size="small" style={{ marginBottom: '24px' }}>
               {task.description ? (
                 <Paragraph>{task.description}</Paragraph>
               ) : (
                 <Text type="secondary">{translate('No description provided')}</Text>
               )}
             </Card>
-            
+
             {/* Attachments */}
-            <Card
-              title={translate('Attachments')}
-              size="small"
-              style={{ marginBottom: '24px' }}
-            >
+            <Card title={translate('Attachments')} size="small" style={{ marginBottom: '24px' }}>
               {task.attachments && task.attachments.length > 0 ? (
                 <List
                   size="small"
                   dataSource={task.attachments}
-                  renderItem={file => (
+                  renderItem={(file) => (
                     <List.Item
                       actions={[
                         <Button type="link" size="small">
                           {translate('Download')}
-                        </Button>
+                        </Button>,
                       ]}
                     >
                       <List.Item.Meta
@@ -370,25 +372,30 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                 <Text type="secondary">{translate('No attachments')}</Text>
               )}
             </Card>
-            
+
             {/* Comments */}
-            <Card
-              title={translate('Comments')}
-              size="small"
-            >
+            <Card title={translate('Comments')} size="small">
               {comments.length > 0 ? (
                 <List
                   dataSource={comments}
                   itemLayout="horizontal"
-                  renderItem={comment => (
+                  renderItem={(comment) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={comment.avatar ? <Avatar src={comment.avatar} /> : <Avatar icon={<UserOutlined />} />}
-                        title={<div style={{fontWeight: 'bold'}}>{comment.author}</div>}
+                        avatar={
+                          comment.avatar ? (
+                            <Avatar src={comment.avatar} />
+                          ) : (
+                            <Avatar icon={<UserOutlined />} />
+                          )
+                        }
+                        title={<div style={{ fontWeight: 'bold' }}>{comment.author}</div>}
                         description={
                           <div>
                             <div>{comment.content}</div>
-                            <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>{comment.datetime}</div>
+                            <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                              {comment.datetime}
+                            </div>
                           </div>
                         }
                       />
@@ -398,29 +405,24 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
               ) : (
                 <Text type="secondary">{translate('No comments yet')}</Text>
               )}
-              
+
               <Divider />
-              
-              <Form 
-                form={commentForm} 
-                onFinish={handleAddComment}
-              >
+
+              <Form form={commentForm} onFinish={handleAddComment}>
                 <Form.Item
                   name="comment"
-                  rules={[
-                    { required: true, message: translate('Please enter a comment') }
-                  ]}
+                  rules={[{ required: true, message: translate('Please enter a comment') }]}
                 >
-                  <TextArea 
-                    rows={3} 
+                  <TextArea
+                    rows={3}
                     placeholder={translate('Add a comment...')}
                     style={{ marginBottom: '12px' }}
                   />
                 </Form.Item>
                 <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-                  <Button 
-                    type="primary" 
-                    htmlType="submit" 
+                  <Button
+                    type="primary"
+                    htmlType="submit"
                     icon={<SendOutlined />}
                     loading={loading}
                   >
@@ -430,40 +432,30 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
               </Form>
             </Card>
           </Col>
-          
+
           <Col xs={24} lg={8}>
             {/* Task Details */}
-            <Card
-              title={translate('Task Details')}
-              size="small"
-              style={{ marginBottom: '24px' }}
-            >
+            <Card title={translate('Task Details')} size="small" style={{ marginBottom: '24px' }}>
               <Descriptions column={1} size="small" bordered>
                 <Descriptions.Item label={translate('Status')}>
-                  <Tag 
-                    color={getStatusColor(task.status)} 
-                    style={{ borderRadius: '4px' }}
-                  >
+                  <Tag color={getStatusColor(task.status)} style={{ borderRadius: '4px' }}>
                     {translate(getStatusText(task.status))}
                   </Tag>
                 </Descriptions.Item>
-                
+
                 <Descriptions.Item label={translate('Priority')}>
-                  <Tag 
-                    color={getPriorityColor(task.priority)} 
-                    style={{ borderRadius: '4px' }}
-                  >
+                  <Tag color={getPriorityColor(task.priority)} style={{ borderRadius: '4px' }}>
                     {translate(task.priority.charAt(0).toUpperCase() + task.priority.slice(1))}
                   </Tag>
                 </Descriptions.Item>
-                
+
                 <Descriptions.Item label={translate('Assigned To')}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Avatar size="small" icon={<UserOutlined />} />
                     <span>{task.assignedTo?.name || '-'}</span>
                   </div>
                 </Descriptions.Item>
-                
+
                 <Descriptions.Item label={translate('Deadline')}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <CalendarOutlined />
@@ -472,7 +464,7 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                     </span>
                   </div>
                 </Descriptions.Item>
-                
+
                 {task.project && (
                   <Descriptions.Item label={translate('Project')}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -481,27 +473,23 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                     </div>
                   </Descriptions.Item>
                 )}
-                
+
                 <Descriptions.Item label={translate('Created')}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <CalendarOutlined />
-                    <span>
-                      {task.created ? dayjs(task.created).format('YYYY-MM-DD') : '-'}
-                    </span>
+                    <span>{task.created ? dayjs(task.created).format('YYYY-MM-DD') : '-'}</span>
                   </div>
                 </Descriptions.Item>
-                
+
                 {task.completed && (
                   <Descriptions.Item label={translate('Completed')}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <CheckCircleOutlined style={{ color: '#52c41a' }} />
-                      <span>
-                        {dayjs(task.completed).format('YYYY-MM-DD')}
-                      </span>
+                      <span>{dayjs(task.completed).format('YYYY-MM-DD')}</span>
                     </div>
                   </Descriptions.Item>
                 )}
-                
+
                 {task.tags && task.tags.length > 0 && (
                   <Descriptions.Item label={translate('Tags')}>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
@@ -515,18 +503,15 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                 )}
               </Descriptions>
             </Card>
-            
+
             {/* Activity Log */}
-            <Card
-              title={translate('Activity Log')}
-              size="small"
-            >
+            <Card title={translate('Activity Log')} size="small">
               <Timeline>
                 {activityLogs.map((log, index) => {
                   let icon;
                   let color;
                   let content;
-                  
+
                   switch (log.action) {
                     case 'created':
                       icon = <PlusOutlined />;
@@ -536,30 +521,28 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                     case 'updated':
                       icon = <EditOutlined />;
                       color = 'blue';
-                      content = `${log.user} ${translate('changed')} ${log.field} ${translate('from')} "${log.oldValue}" ${translate('to')} "${log.newValue}"`;
+                      content = `${log.user} ${translate('changed')} ${log.field} ${translate(
+                        'from'
+                      )} "${log.oldValue}" ${translate('to')} "${log.newValue}"`;
                       break;
                     case 'added_attachment':
                       icon = <PaperClipOutlined />;
                       color = 'purple';
-                      content = `${log.user} ${translate('added attachment')}: ${log.attachmentName}`;
+                      content = `${log.user} ${translate('added attachment')}: ${
+                        log.attachmentName
+                      }`;
                       break;
                     default:
                       icon = <ClockCircleOutlined />;
                       color = 'gray';
                       content = `${log.action} ${translate('by')} ${log.user}`;
                   }
-                  
+
                   return (
-                    <Timeline.Item
-                      key={index}
-                      color={color}
-                      dot={icon}
-                    >
+                    <Timeline.Item key={index} color={color} dot={icon}>
                       <div>
                         <div>{content}</div>
-                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                          {log.timestamp}
-                        </div>
+                        <div style={{ fontSize: '12px', color: '#6b7280' }}>{log.timestamp}</div>
                       </div>
                     </Timeline.Item>
                   );

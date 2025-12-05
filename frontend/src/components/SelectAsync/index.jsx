@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { request } from '@/request';
 import useFetch from '@/hooks/useFetch';
+import useLanguage from '@/locale/useLanguage';
+import { request } from '@/request';
+import color from '@/utils/color';
 import { Select, Tag } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { generate as uniqueId } from 'shortid';
-import color from '@/utils/color';
-import useLanguage from '@/locale/useLanguage';
 
 const SelectAsync = ({
   entity,
@@ -29,11 +29,16 @@ const SelectAsync = ({
   };
   const { result, isLoading: fetchIsLoading, isSuccess } = useFetch(asyncList);
   useEffect(() => {
-    isSuccess && setOptions(result);
-  }, [isSuccess]);
+    if (isSuccess && Array.isArray(result)) {
+      setOptions(result);
+    } else if (isSuccess && result) {
+      // Handle case where result might be wrapped in an object
+      setOptions([]);
+    }
+  }, [isSuccess, result]);
 
   const labels = (optionField) => {
-    return optionField.name
+    return optionField.name;
   };
   useEffect(() => {
     if (value !== undefined) {
@@ -61,13 +66,15 @@ const SelectAsync = ({
     //   const label = `+ ${translate(redirectLabel)}`;
     //   list.push({ value, label });
     // }
-    selectOptions.map((optionField) => {
-      const value = optionField[outputValue] ?? optionField;
-      const label = labels(optionField);
-      const currentColor = optionField[outputValue]?.color ?? optionField?.color;
-      const labelColor = color.find((x) => x.color === currentColor);
-      list.push({ value, label, color: labelColor?.color });
-    });
+    if (Array.isArray(selectOptions)) {
+      selectOptions.map((optionField) => {
+        const value = optionField[outputValue] ?? optionField;
+        const label = labels(optionField);
+        const currentColor = optionField[outputValue]?.color ?? optionField?.color;
+        const labelColor = color.find((x) => x.color === currentColor);
+        list.push({ value, label, color: labelColor?.color });
+      });
+    }
 
     return list;
   };
