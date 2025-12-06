@@ -39,13 +39,13 @@ const batchUpdatePriorities = async (req, res) => {
       try {
         const result = await Task.findByIdAndUpdate(
           update.taskId,
-          { 
+          {
             priority: update.priority,
             updatedAt: Date.now(),
           },
           { new: true, runValidators: true }
         );
-        
+
         return {
           taskId: update.taskId,
           success: !!result,
@@ -64,7 +64,7 @@ const batchUpdatePriorities = async (req, res) => {
     const results = await Promise.all(updatePromises);
 
     // Count successful updates
-    const successCount = results.filter(r => r.success).length;
+    const successCount = results.filter((r) => r.success).length;
     const failCount = results.length - successCount;
 
     return res.status(200).json({
@@ -77,7 +77,6 @@ const batchUpdatePriorities = async (req, res) => {
       },
       message: `Successfully updated ${successCount} task priorities`,
     });
-
   } catch (error) {
     console.error('Error in batch update priorities:', error);
     return res.status(500).json({

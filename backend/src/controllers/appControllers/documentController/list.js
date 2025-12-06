@@ -14,12 +14,22 @@ const list = async (req, res) => {
 
     // Get companyID for filtering
     const companyID = req.user?.companyID || req.companyOwner?.companyID;
+    const userId = req.user?._id || req.companyOwner?._id;
 
-    if (!companyID) {
+    // Build filter - use companyID if available, otherwise filter by owner
+    let filter = { removed: false };
+
+    if (companyID) {
+      filter.companyID = companyID;
+    } else if (userId) {
+      // Fallback to filtering by owner if no companyID
+      filter.owner = userId;
+      console.log('Document list: Filtering by owner instead of companyID:', userId);
+    } else {
       return res.status(401).json({
         success: false,
         result: null,
-        message: 'Company context not found - authentication required',
+        message: 'Authentication context not found',
       });
     }
 
@@ -27,9 +37,6 @@ const list = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-
-    // Extract filter parameters - filter by companyID instead of owner
-    const filter = { companyID: companyID, removed: false };
 
     // Add optional filters if provided in query
     if (req.query.category) {

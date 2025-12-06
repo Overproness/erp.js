@@ -12,10 +12,21 @@ const getDocumentContent = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Get companyID for filtering
+    const companyID = req.user?.companyID || req.companyOwner?.companyID;
+
+    if (!companyID) {
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Company context not found - authentication required',
+      });
+    }
+
     // Find the document
     const document = await Document.findOne({
       _id: id,
-      owner: req.admin._id,
+      companyID: companyID,
       removed: false,
     }).exec();
 

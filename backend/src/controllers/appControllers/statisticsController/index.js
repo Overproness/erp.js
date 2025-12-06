@@ -778,32 +778,71 @@ const getDocumentStats = async (req, res) => {
     const dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - daysAgo);
 
+    // Get companyID from user or companyOwner context
+    const companyID = req.user?.companyID || req.companyOwner?.companyID;
+    
+    console.log('Document Stats Debug:', {
+      hasUser: !!req.user,
+      hasCompanyOwner: !!req.companyOwner,
+      companyID: companyID,
+      userCompanyID: req.user?.companyID,
+      ownerCompanyID: req.companyOwner?.companyID,
+      userId: req.user?._id,
+    });
+    
+    // Build match query based on available context
+    let matchQuery = { removed: false };
+    
+    if (companyID) {
+      // If companyID exists, filter by it
+      matchQuery.companyID = companyID;
+    } else if (req.user?._id) {
+      // If no companyID but user exists, filter by owner
+      matchQuery.owner = req.user._id;
+      console.log('Filtering by owner instead of companyID:', req.user._id);
+    } else {
+      console.log('No companyID or user found - checking total documents without filter...');
+      // Check if there are any documents at all
+      const totalDocs = await Document.countDocuments({ removed: false });
+      console.log('Total documents in DB (no filter):', totalDocs);
+      
+      // Return empty stats instead of error to avoid breaking the UI
+      return res.status(200).json({
+        success: true,
+        result: {
+          totalDocuments: 0,
+          byType: [],
+          newThisMonth: 0,
+          totalSize: 0,
+          timeframe: `${timeframe} days`,
+        },
+        message: 'No documents found for current context',
+      });
+    }
+
+    console.log('Match Query:', matchQuery);
+
     const stats = await Document.aggregate([
+      {
+        $match: matchQuery,
+      },
       {
         $facet: {
           total: [{ $count: 'count' }],
           byType: [
             {
               $group: {
-                _id: '$type',
+                _id: '$documentType',
                 count: { $sum: 1 },
               },
             },
           ],
-          byStatus: [
-            {
-              $group: {
-                _id: '$status',
-                count: { $sum: 1 },
-              },
-            },
-          ],
-          uploadedThisMonth: [{ $match: { created: { $gte: dateFrom } } }, { $count: 'count' }],
+          newThisMonth: [{ $match: { created: { $gte: dateFrom } } }, { $count: 'count' }],
           totalSize: [
             {
               $group: {
                 _id: null,
-                size: { $sum: '$size' },
+                size: { $sum: '$fileSize' },
               },
             },
           ],
@@ -811,14 +850,17 @@ const getDocumentStats = async (req, res) => {
       },
     ]);
 
+    console.log('Document Stats Aggregation Result:', JSON.stringify(stats, null, 2));
+
     const result = {
       totalDocuments: stats[0]?.total[0]?.count || 0,
       byType: stats[0]?.byType || [],
-      byStatus: stats[0]?.byStatus || [],
-      uploadedThisMonth: stats[0]?.uploadedThisMonth[0]?.count || 0,
+      newThisMonth: stats[0]?.newThisMonth[0]?.count || 0,
       totalSize: stats[0]?.totalSize[0]?.size || 0,
       timeframe: `${timeframe} days`,
     };
+
+    console.log('Document Stats Result:', result);
 
     return res.status(200).json({
       success: true,

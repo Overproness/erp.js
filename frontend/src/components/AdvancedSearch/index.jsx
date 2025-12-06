@@ -1,3 +1,4 @@
+import SearchResultsDisplay from '@/components/SearchResultsDisplay';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
 import { selectAdvancedSearchState } from '@/redux/erp/selectors';
@@ -84,8 +85,13 @@ const AdvancedSearch = ({
 
   // Update search results when Redux state changes
   useEffect(() => {
+    console.log('Advanced Search - Redux State Changed:', result);
+    console.log('Advanced Search - Result.result:', result?.result);
+    console.log('Advanced Search - Result.pagination:', result?.pagination);
+
     if (result && result.result) {
       const formattedResults = formatSearchResults(result.result, searchTerms);
+      console.log('Advanced Search - Formatted Results:', formattedResults);
       setSearchResults(formattedResults);
 
       if (onSearchResults && typeof onSearchResults === 'function') {
@@ -96,6 +102,8 @@ const AdvancedSearch = ({
 
   // Handle the advanced search submission
   const handleSearch = (values) => {
+    console.log('Advanced Search - Form Values:', values);
+
     // Extract search terms for highlighting
     const textTerms = values.text
       ? values.text.split(' ').filter((term) => term.trim() !== '')
@@ -118,16 +126,16 @@ const AdvancedSearch = ({
       delete searchParams.dateRange;
     }
 
-    // Set text as search parameter to ensure compatibility
-    if (values.text) {
-      searchParams.search = values.text;
-    }
+    console.log('Advanced Search - Search Params:', searchParams);
 
     // Build query and dispatch search action
+    const queryOptions = buildAdvancedSearchQuery(searchParams);
+    console.log('Advanced Search - Query Options:', queryOptions);
+
     dispatch(
       erp.advancedSearch({
         entity,
-        options: buildAdvancedSearchQuery(searchParams),
+        options: queryOptions,
       })
     );
 
@@ -196,214 +204,261 @@ const AdvancedSearch = ({
   };
 
   return (
-    <Card
-      className="advanced-search"
-      styles={{
-        body: { padding: '24px' }, // Using the new styles API instead of bodyStyle
-      }}
-    >
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Title level={4}>
-            <FileSearchOutlined /> {translate('Advanced Document Search')}
-          </Title>
-          <Divider />
-        </Col>
+    <div>
+      <Card
+        className="advanced-search"
+        styles={{
+          body: { padding: '24px' }, // Using the new styles API instead of bodyStyle
+        }}
+      >
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Title level={4}>
+              <FileSearchOutlined /> {translate('Advanced Document Search')}
+            </Title>
+            <Divider />
+          </Col>
 
-        <Col span={24}>
-          <Form form={form} name="advanced_search" layout="vertical" onFinish={handleSearch}>
-            <Row gutter={16}>
-              <Col xs={24} sm={24} md={12} lg={8}>
-                <Form.Item
-                  name="text"
-                  label={translate('Full-Text Search')}
-                  tooltip={translate('Search across all text content in documents')}
+          <Col span={24}>
+            <Form form={form} name="advanced_search" layout="vertical" onFinish={handleSearch}>
+              <Row gutter={16}>
+                <Col xs={24} sm={24} md={12} lg={8}>
+                  <Form.Item
+                    name="text"
+                    label={translate('Full-Text Search')}
+                    tooltip={translate('Search across all text content in documents')}
+                  >
+                    <Input
+                      placeholder={translate('Enter search terms...')}
+                      allowClear
+                      prefix={<SearchOutlined />}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} sm={24} md={12} lg={8}>
+                  <Form.Item name="title" label={translate('Document Title')}>
+                    <Input placeholder={translate('Search by title...')} allowClear />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} sm={24} md={12} lg={8}>
+                  <Form.Item name="documentType" label={translate('Document Type')}>
+                    <Select placeholder={translate('Select document type')} allowClear>
+                      {allowedDocumentTypes.map((type) => (
+                        <Option key={type} value={type}>
+                          {type}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} sm={24} md={12} lg={8}>
+                  <Form.Item name="fileType" label={translate('File Type')}>
+                    <Select placeholder={translate('Select file type')} allowClear>
+                      <Option value="pdf">PDF</Option>
+                      <Option value="doc">DOC/DOCX</Option>
+                      <Option value="xls">XLS/XLSX</Option>
+                      <Option value="txt">TXT</Option>
+                      <Option value="csv">CSV</Option>
+                      <Option value="img">Images (JPG/PNG)</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} sm={24} md={12} lg={8}>
+                  <Form.Item name="dateRange" label={translate('Date Range')}>
+                    <RangePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Collapse ghost>
+                <Panel
+                  header={
+                    <Text strong>
+                      <FilterOutlined /> {translate('Additional Filters')}
+                    </Text>
+                  }
+                  key="additional-filters"
                 >
-                  <Input
-                    placeholder={translate('Enter search terms...')}
-                    allowClear
-                    prefix={<SearchOutlined />}
-                  />
-                </Form.Item>
-              </Col>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Form.Item label={translate('Tags')} name="tags">
+                        <Space direction="vertical" style={{ width: '100%' }}>
+                          <Select
+                            mode="multiple"
+                            placeholder={translate('Select or create tags')}
+                            value={selectedTags}
+                            onChange={handleTagChange}
+                            style={{ width: '100%' }}
+                            allowClear
+                          >
+                            {availableTags.map((tag) => (
+                              <Option key={tag} value={tag}>
+                                {tag}
+                              </Option>
+                            ))}
+                          </Select>
 
-              <Col xs={24} sm={24} md={12} lg={8}>
-                <Form.Item name="title" label={translate('Document Title')}>
-                  <Input placeholder={translate('Search by title...')} allowClear />
-                </Form.Item>
-              </Col>
+                          <Space>
+                            <Input
+                              placeholder={translate('Add custom tag')}
+                              value={customTag}
+                              onChange={(e) => setCustomTag(e.target.value)}
+                              onPressEnter={handleAddTag}
+                            />
+                            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddTag}>
+                              {translate('Add')}
+                            </Button>
+                          </Space>
 
-              <Col xs={24} sm={24} md={12} lg={8}>
-                <Form.Item name="documentType" label={translate('Document Type')}>
-                  <Select placeholder={translate('Select document type')} allowClear>
-                    {allowedDocumentTypes.map((type) => (
-                      <Option key={type} value={type}>
-                        {type}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
+                          <div>
+                            {selectedTags.map((tag) => (
+                              <Tag
+                                key={tag}
+                                closable
+                                onClose={() => {
+                                  const newTags = selectedTags.filter((t) => t !== tag);
+                                  setSelectedTags(newTags);
+                                  form.setFieldsValue({ tags: newTags });
+                                }}
+                                style={{ margin: '5px 5px 0 0' }}
+                              >
+                                {tag}
+                              </Tag>
+                            ))}
+                          </div>
+                        </Space>
+                      </Form.Item>
+                    </Col>
 
-              <Col xs={24} sm={24} md={12} lg={8}>
-                <Form.Item name="fileType" label={translate('File Type')}>
-                  <Select placeholder={translate('Select file type')} allowClear>
-                    <Option value="pdf">PDF</Option>
-                    <Option value="doc">DOC/DOCX</Option>
-                    <Option value="xls">XLS/XLSX</Option>
-                    <Option value="txt">TXT</Option>
-                    <Option value="csv">CSV</Option>
-                    <Option value="img">Images (JPG/PNG)</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item name="description" label={translate('Description')}>
+                        <Input placeholder={translate('Search in description...')} allowClear />
+                      </Form.Item>
+                    </Col>
 
-              <Col xs={24} sm={24} md={12} lg={8}>
-                <Form.Item name="dateRange" label={translate('Date Range')}>
-                  <RangePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
-                </Form.Item>
-              </Col>
-            </Row>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item name="fileName" label={translate('File Name')}>
+                        <Input placeholder={translate('Search by file name...')} allowClear />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Panel>
 
-            <Collapse ghost>
-              <Panel
-                header={
-                  <Text strong>
-                    <FilterOutlined /> {translate('Additional Filters')}
-                  </Text>
-                }
-                key="additional-filters"
-              >
-                <Row gutter={16}>
-                  <Col span={24}>
-                    <Form.Item label={translate('Tags')} name="tags">
-                      <Space direction="vertical" style={{ width: '100%' }}>
+                <Panel
+                  header={
+                    <Text strong>
+                      <SearchOutlined /> {translate('Sort Options')}
+                    </Text>
+                  }
+                  key="sort-options"
+                >
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Space>
+                        <span>{translate('Sort by')}:</span>
                         <Select
-                          mode="multiple"
-                          placeholder={translate('Select or create tags')}
-                          value={selectedTags}
-                          onChange={handleTagChange}
-                          style={{ width: '100%' }}
-                          allowClear
+                          value={sortOptions.sortField}
+                          onChange={(value) => handleSortChange(value, sortOptions.sortOrder)}
+                          style={{ width: 150 }}
                         >
-                          {availableTags.map((tag) => (
-                            <Option key={tag} value={tag}>
-                              {tag}
-                            </Option>
-                          ))}
+                          <Option value="title">{translate('Title')}</Option>
+                          <Option value="created">{translate('Date Created')}</Option>
+                          <Option value="updated">{translate('Date Updated')}</Option>
+                          <Option value="documentType">{translate('Document Type')}</Option>
                         </Select>
 
-                        <Space>
-                          <Input
-                            placeholder={translate('Add custom tag')}
-                            value={customTag}
-                            onChange={(e) => setCustomTag(e.target.value)}
-                            onPressEnter={handleAddTag}
-                          />
-                          <Button type="primary" icon={<PlusOutlined />} onClick={handleAddTag}>
-                            {translate('Add')}
-                          </Button>
-                        </Space>
-
-                        <div>
-                          {selectedTags.map((tag) => (
-                            <Tag
-                              key={tag}
-                              closable
-                              onClose={() => {
-                                const newTags = selectedTags.filter((t) => t !== tag);
-                                setSelectedTags(newTags);
-                                form.setFieldsValue({ tags: newTags });
-                              }}
-                              style={{ margin: '5px 5px 0 0' }}
-                            >
-                              {tag}
-                            </Tag>
-                          ))}
-                        </div>
+                        <Select
+                          value={sortOptions.sortOrder}
+                          onChange={(value) => handleSortChange(sortOptions.sortField, value)}
+                          style={{ width: 120 }}
+                        >
+                          <Option value="asc">{translate('Ascending')}</Option>
+                          <Option value="desc">{translate('Descending')}</Option>
+                        </Select>
                       </Space>
-                    </Form.Item>
-                  </Col>
+                    </Col>
+                  </Row>
+                </Panel>
+              </Collapse>
 
-                  <Col xs={24} sm={24} md={12}>
-                    <Form.Item name="description" label={translate('Description')}>
-                      <Input placeholder={translate('Search in description...')} allowClear />
-                    </Form.Item>
-                  </Col>
+              <Divider />
 
-                  <Col xs={24} sm={24} md={12}>
-                    <Form.Item name="fileName" label={translate('File Name')}>
-                      <Input placeholder={translate('Search by file name...')} allowClear />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Panel>
+              <Form.Item>
+                <Space>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    icon={<SearchOutlined />}
+                    loading={isLoading}
+                  >
+                    {translate('Search')}
+                  </Button>
+                  <Button onClick={handleReset} icon={<UndoOutlined />}>
+                    {translate('Reset')}
+                  </Button>
+                  <Tooltip
+                    title={translate(
+                      'Advanced search supports full-text search across document contents and metadata'
+                    )}
+                  >
+                    <Button type="link">{translate('Search Tips')}</Button>
+                  </Tooltip>
+                </Space>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
+      </Card>
 
-              <Panel
-                header={
-                  <Text strong>
-                    <SearchOutlined /> {translate('Sort Options')}
-                  </Text>
-                }
-                key="sort-options"
-              >
-                <Row gutter={16}>
-                  <Col span={24}>
-                    <Space>
-                      <span>{translate('Sort by')}:</span>
-                      <Select
-                        value={sortOptions.sortField}
-                        onChange={(value) => handleSortChange(value, sortOptions.sortOrder)}
-                        style={{ width: 150 }}
-                      >
-                        <Option value="title">{translate('Title')}</Option>
-                        <Option value="created">{translate('Date Created')}</Option>
-                        <Option value="updated">{translate('Date Updated')}</Option>
-                        <Option value="documentType">{translate('Document Type')}</Option>
-                      </Select>
+      {/* Display Search Results */}
+      {isSearchPerformed && (
+        <Card
+          style={{ marginTop: '16px' }}
+          title={
+            <Space>
+              <FileSearchOutlined />
+              <span>
+                {translate('Search Results')} ({result?.pagination?.total || 0})
+              </span>
+            </Space>
+          }
+        >
+          <SearchResultsDisplay
+            results={searchResults}
+            loading={isLoading}
+            pagination={result?.pagination}
+            onPageChange={(page) => {
+              const values = form.getFieldsValue();
+              const searchParams = {
+                ...values,
+                tags: selectedTags.length > 0 ? selectedTags : undefined,
+                ...sortOptions,
+                page,
+                limit: 20,
+              };
 
-                      <Select
-                        value={sortOptions.sortOrder}
-                        onChange={(value) => handleSortChange(sortOptions.sortField, value)}
-                        style={{ width: 120 }}
-                      >
-                        <Option value="asc">{translate('Ascending')}</Option>
-                        <Option value="desc">{translate('Descending')}</Option>
-                      </Select>
-                    </Space>
-                  </Col>
-                </Row>
-              </Panel>
-            </Collapse>
+              if (values.dateRange && values.dateRange.length === 2) {
+                searchParams.dateFrom = values.dateRange[0].format('YYYY-MM-DD');
+                searchParams.dateTo = values.dateRange[1].format('YYYY-MM-DD');
+                delete searchParams.dateRange;
+              }
 
-            <Divider />
-
-            <Form.Item>
-              <Space>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  icon={<SearchOutlined />}
-                  loading={isLoading}
-                >
-                  {translate('Search')}
-                </Button>
-                <Button onClick={handleReset} icon={<UndoOutlined />}>
-                  {translate('Reset')}
-                </Button>
-                <Tooltip
-                  title={translate(
-                    'Advanced search supports full-text search across document contents and metadata'
-                  )}
-                >
-                  <Button type="link">{translate('Search Tips')}</Button>
-                </Tooltip>
-              </Space>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
-    </Card>
+              dispatch(
+                erp.advancedSearch({
+                  entity,
+                  options: buildAdvancedSearchQuery(searchParams),
+                })
+              );
+            }}
+            showEmptyResults={true}
+          />
+        </Card>
+      )}
+    </div>
   );
 };
 

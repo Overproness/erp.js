@@ -21,10 +21,22 @@ const annotateDocument = async (req, res) => {
       });
     }
 
+    // Get companyID for filtering
+    const companyID = req.user?.companyID || req.companyOwner?.companyID;
+    const userId = req.user?._id || req.companyOwner?._id;
+
+    if (!companyID) {
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Company context not found - authentication required',
+      });
+    }
+
     // Find the document
     const document = await Model.findOne({
       _id: id,
-      owner: req.admin._id,
+      companyID: companyID,
       removed: false,
     }).exec();
 
@@ -48,7 +60,7 @@ const annotateDocument = async (req, res) => {
     // Save annotations to the document
     document.annotations = annotations;
     document.updated = new Date();
-    document.updatedBy = req.admin._id;
+    document.updatedBy = userId;
 
     // Get the current version number
     const lastVersion = await DocumentVersion.findOne({ document: id })
@@ -63,6 +75,7 @@ const annotateDocument = async (req, res) => {
       document: id,
       versionNumber: nextVersionNumber,
       title: document.title,
+      content: JSON.stringify(annotations), // Store annotations as content
       documentType: document.documentType,
       description: document.description,
       tags: document.tags,
@@ -72,7 +85,8 @@ const annotateDocument = async (req, res) => {
       fileSize: document.fileSize,
       expiryDate: document.expiryDate,
       annotations: annotations,
-      createdBy: req.admin._id,
+      createdBy: userId,
+      author: userId, // Required field
       changeDescription: editSummary || 'Added annotations to document',
     };
 

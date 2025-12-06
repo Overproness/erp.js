@@ -60,7 +60,7 @@ Be context-aware, proactive, and helpful. Always consider the current module and
       ...handler,
     });
 
-    console.log(`✅ Registered copilot module: ${moduleName}`);
+    // console.log(`✅ Registered copilot module: ${moduleName}`);
   }
 
   /**

@@ -5,7 +5,7 @@ const migrateSetting = async () => {
   try {
     const Setting = mongoose.model('Setting');
 
-    console.log('Starting settings migration...');
+    // console.log('Starting settings migration...');
 
     // Find all settings with the old structure (settingKey, settingValue)
     const oldSettings = await Setting.find({
@@ -14,7 +14,7 @@ const migrateSetting = async () => {
     });
 
     if (oldSettings.length === 0) {
-      console.log('No old-format settings found. Migration not needed.');
+      // console.log('No old-format settings found. Migration not needed.');
       return;
     }
 

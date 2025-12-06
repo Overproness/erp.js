@@ -21,7 +21,7 @@ const aiPrioritize = async (req, res) => {
     const userId = req.admin?._id || req.user?._id;
 
     // Prepare task data for AI analysis
-    const taskAnalysisData = tasks.map(task => ({
+    const taskAnalysisData = tasks.map((task) => ({
       taskId: task._id,
       taskName: task.taskName || task.name || 'Untitled Task',
       currentPriority: task.priority || 'medium',
@@ -40,11 +40,11 @@ const aiPrioritize = async (req, res) => {
     // Try to get AI-powered suggestions
     let suggestions;
     let aiPowered = false;
-    
+
     try {
       // Create OpenAI helper
       const openaiHelper = await OpenAIHelper.createForUser(userId);
-      
+
       if (openaiHelper.hasApiKey()) {
         // Create AI prompt for task prioritization
         const prompt = `
@@ -93,7 +93,7 @@ Important:
 
         if (aiResponse.success) {
           const responseContent = aiResponse.data.choices[0].message.content;
-          
+
           // Parse JSON response
           const jsonMatch = responseContent.match(/\[[\s\S]*\]/);
           if (jsonMatch) {
@@ -120,12 +120,11 @@ Important:
         suggestions,
         aiPowered,
         timestamp: new Date().toISOString(),
-        message: aiPowered 
-          ? 'AI-powered suggestions generated' 
+        message: aiPowered
+          ? 'AI-powered suggestions generated'
           : 'Using rule-based prioritization (AI unavailable)',
       },
     });
-
   } catch (error) {
     console.error('Error in AI prioritize:', error);
     return res.status(500).json({
@@ -142,18 +141,18 @@ Important:
  */
 function generateRuleBasedPriorities(tasks) {
   const now = new Date();
-  
-  return tasks.map(task => {
+
+  return tasks.map((task) => {
     let suggestedPriority = task.currentPriority;
     let reasoning = 'Current priority maintained';
-    
+
     // Calculate days until due date
     let daysUntilDue = null;
     if (task.dueDate) {
       const dueDate = new Date(task.dueDate);
       daysUntilDue = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
     }
-    
+
     // Rule 1: Overdue tasks get high priority
     if (daysUntilDue !== null && daysUntilDue < 0) {
       suggestedPriority = 'high';
@@ -184,7 +183,7 @@ function generateRuleBasedPriorities(tasks) {
       suggestedPriority = 'medium';
       reasoning = 'Due date is far, priority can be lowered';
     }
-    
+
     return {
       taskId: task.taskId,
       taskName: task.taskName,

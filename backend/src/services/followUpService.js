@@ -19,13 +19,13 @@ class FollowUpService {
    * Initialize the follow-up service
    */
   async initialize() {
-    console.log('📧 Initializing Automated Follow-Up Service...');
+    // console.log('📧 Initializing Automated Follow-Up Service...');
 
     this.scheduleFollowUpProcessor();
 
     this.scheduleAutomatedFollowUpGeneration();
 
-    console.log('✅ Follow-Up Service initialized');
+    // console.log('✅ Follow-Up Service initialized');
   }
 
   /**
@@ -88,12 +88,22 @@ class FollowUpService {
    */
   scheduleFollowUpProcessor() {
     cron.schedule('*/5 * * * *', async () => {
-      if (!this.isProcessing) {
-        await this.processPendingFollowUps();
+      try {
+        if (!this.isProcessing) {
+          await Promise.race([
+            this.processPendingFollowUps(),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('Timeout')), 4 * 60 * 1000)
+            ),
+          ]);
+        }
+      } catch (error) {
+        console.error('⚠️ Error in follow-up processing (non-blocking):', error.message);
+        this.isProcessing = false;
       }
     });
 
-    console.log('⏰ Follow-up processor scheduled (every 5 minutes)');
+    // console.log('⏰ Follow-up processor scheduled (every 5 minutes)');
   }
 
   /**
@@ -377,14 +387,25 @@ class FollowUpService {
    */
   scheduleAutomatedFollowUpGeneration() {
     cron.schedule('0 9 * * *', async () => {
-      console.log('🤖 Generating automated follow-ups...');
+      try {
+        console.log('🤖 Generating automated follow-ups...');
 
-      await this.generateQuoteFollowUps();
-      await this.generateInvoiceFollowUps();
-      await this.generateInactiveCustomerFollowUps();
+        await Promise.race([
+          Promise.all([
+            this.generateQuoteFollowUps(),
+            this.generateInvoiceFollowUps(),
+            this.generateInactiveCustomerFollowUps(),
+          ]),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), 10 * 60 * 1000)
+          ),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in automated follow-up generation (non-blocking):', error.message);
+      }
     });
 
-    console.log('📅 Automated follow-up generation scheduled (daily at 9 AM)');
+    // console.log('📅 Automated follow-up generation scheduled (daily at 9 AM)');
   }
 
   /**

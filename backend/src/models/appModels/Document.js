@@ -136,6 +136,44 @@ const DocumentSchema = new Schema(
       sparse: true,
       // Used for list/summary methods
     },
+    extractedText: {
+      type: String,
+      // Stores extracted text content from the document for search and AI features
+    },
+    textExtractionStatus: {
+      type: String,
+      enum: ['pending', 'processing', 'completed', 'failed', 'not_supported'],
+      default: 'pending',
+    },
+    textExtractionError: {
+      type: String,
+    },
+    extractionMetadata: {
+      // Stores additional metadata from extraction process
+      type: Object,
+      default: {},
+      // For OCR: { method: 'tesseract'|'ai', confidence: number }
+      // For spreadsheets: { rowCount, columnCount, columns, errors, sheets }
+    },
+    spreadsheetData: {
+      // Stores structured spreadsheet data for CSV/XLSX files
+      type: Object,
+      default: null,
+      // Format: { data: Array, metadata: Object, errors: Array }
+    },
+    aiSuggestedTags: {
+      // AI-suggested tags for the document
+      type: [String],
+      default: [],
+    },
+    aiSummary: {
+      // AI-generated summary of the document
+      type: String,
+    },
+    aiAnalyzedAt: {
+      // Timestamp of last AI analysis
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -150,11 +188,13 @@ DocumentSchema.index(
     fileName: 'text',
     tags: 'text',
     documentType: 'text',
+    extractedText: 'text',
     'customFields.value': 'text',
   },
   {
     weights: {
       title: 10,
+      extractedText: 8,
       fileName: 5,
       tags: 3,
       documentType: 2,

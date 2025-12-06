@@ -16,8 +16,7 @@ const {
 
 router.route('/create').post(catchErrors(taskController.create));
 router.route('/read/:id').get(catchErrors(taskController.read));
-router.route('/update/:id')
-  .patch(catchErrors(taskController.update));
+router.route('/update/:id').patch(catchErrors(taskController.update));
 router.route('/delete/:id').delete(catchErrors(taskController.delete));
 router.route('/search').get(catchErrors(taskController.search));
 router.route('/list').get(catchErrors(taskController.list));
@@ -33,7 +32,7 @@ router.route('/batch/priorities').patch(catchErrors(taskController.batchUpdatePr
 router.route('/:taskId/progress').patch(catchErrors(updateProgress));
 router.route('/:taskId/watchers').patch(catchErrors(updateWatchers));
 
-// Team Collaboration 
+// Team Collaboration
 router.route('/:taskId/comments').post(catchErrors(addComment));
 router.route('/:taskId/comments/:commentId').patch(catchErrors(updateComment));
 router.route('/:taskId/comments/:commentId').delete(catchErrors(deleteComment));

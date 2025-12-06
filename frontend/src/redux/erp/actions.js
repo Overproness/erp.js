@@ -48,7 +48,7 @@ export const erp = {
       if (data.success === true) {
         // Check if pagination is in result or at root level
         const pagination = data.result?.pagination || data.pagination;
-        
+
         const result = {
           items: data.result?.items || data.result,
           pagination: {
@@ -281,13 +281,10 @@ export const erp = {
       });
 
       try {
-        // Change to use the list endpoint instead of search since that might be the issue
-        let data = await request.list({
+        // Use advancedSearch request method with POST
+        let data = await request.advancedSearch({
           entity,
-          options: {
-            ...options,
-            advanced: 'true',
-          },
+          options,
         });
 
         if (data.success === true) {
@@ -595,12 +592,12 @@ export const erp = {
         throw error;
       }
     },
-    
+
   custom:
     ({ entity, customAction, jsonData }) =>
     async (dispatch) => {
       const actionKey = customAction;
-      
+
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: actionKey,
@@ -616,12 +613,12 @@ export const erp = {
             keyState: actionKey,
             payload: data.result,
           });
-          
+
           // Refresh the list or current item after a successful operation
           if (jsonData.teamId) {
             dispatch(erp.read({ entity, id: jsonData.teamId }));
           }
-          
+
           return { success: true, result: data.result };
         } else {
           const errorMessage = data?.message || `Failed to execute ${customAction}`;

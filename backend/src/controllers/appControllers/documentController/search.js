@@ -2,16 +2,15 @@ const mongoose = require('mongoose');
 
 const search = async (req, res) => {
   try {
-    // Get owner from either user or companyOwner context
-    const owner =
-      (req.user && (req.user.companyOwner || req.user._id)) ||
-      (req.companyOwner && req.companyOwner._id);
+    // Get companyID for filtering
+    const companyID = req.user?.companyID || req.companyOwner?.companyID;
+    const userId = req.user?._id || req.companyOwner?._id;
 
-    if (!owner) {
+    if (!companyID && !userId) {
       return res.status(401).json({
         success: false,
         result: null,
-        message: 'Owner context not found - authentication required',
+        message: 'Authentication context not found',
       });
     }
 
@@ -27,19 +26,33 @@ const search = async (req, res) => {
 
     const AppDocument = mongoose.model('AppDocument');
 
-    // Build search criteria
+    // Build base filter - use companyID if available, otherwise filter by owner
+    let baseFilter = { removed: false };
+
+    if (companyID) {
+      baseFilter.companyID = companyID;
+    } else {
+      baseFilter.owner = userId;
+    }
+
+    // Build search criteria with text search
     const searchCriteria = {
-      owner: owner,
-      removed: false,
+      ...baseFilter,
       $or: [
         { title: { $regex: q, $options: 'i' } },
         { description: { $regex: q, $options: 'i' } },
         { fileName: { $regex: q, $options: 'i' } },
         { tags: { $in: [new RegExp(q, 'i')] } },
+        { documentType: { $regex: q, $options: 'i' } },
+        { extractedText: { $regex: q, $options: 'i' } },
       ],
     };
 
-    const documents = await AppDocument.find(searchCriteria).sort({ created: -1 }).limit(50);
+    const documents = await AppDocument.find(searchCriteria)
+      .sort({ created: -1 })
+      .limit(50)
+      .populate('owner', 'name email')
+      .lean();
 
     return res.status(200).json({
       success: true,

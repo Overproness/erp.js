@@ -55,18 +55,27 @@ mongoose.connection.once('open', async () => {
   try {
     await migrateSetting(); // Migrate existing settings (if structure changed)
     await initDefaultSettings(); // Set up default settings (if not present)
-    console.log('⚙️ Settings initialization completed');
+    // console.log('⚙️ Settings initialization completed');
 
     // Initialize copilot modules
-    initializeCopilotModules();
+    try {
+      initializeCopilotModules();
+    } catch (error) {
+      console.error('⚠️ Copilot modules initialization failed (non-fatal):', error.message);
+    }
 
     // Initialize AI services (24/7 chatbot, follow-ups, self-learning)
     await initializeAIServices();
 
     // Start reminder scheduler
-    reminderScheduler.start();
+    try {
+      reminderScheduler.start();
+    } catch (error) {
+      console.error('⚠️ Reminder scheduler start failed (non-fatal):', error.message);
+    }
   } catch (error) {
-    console.error('❌ Settings initialization failed:', error);
+    console.error('⚠️ Initialization warning (non-fatal):', error.message);
+    // Continue running server even if some initializations fail
   }
 });
 
@@ -80,4 +89,46 @@ app.set('port', PORT);
 
 const server = app.listen(PORT, () => {
   console.log(`🚀 Express server running → PORT: ${server.address().port}`);
+});
+
+// ─────────────────────────────────────────────────────────────
+// Global Error Handlers - Keep Server Running
+// ─────────────────────────────────────────────────────────────
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('⚠️ Uncaught Exception (non-fatal):', error.message);
+  console.error('Stack:', error.stack);
+  // Don't exit - keep the server running
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('⚠️ Unhandled Rejection (non-fatal) at:', promise);
+  console.error('Reason:', reason);
+  // Don't exit - keep the server running
+});
+
+// Handle SIGTERM gracefully
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    console.log('✅ HTTP server closed');
+    mongoose.connection.close(false, () => {
+      console.log('✅ MongoDB connection closed');
+      process.exit(0);
+    });
+  });
+});
+
+// Handle SIGINT gracefully (Ctrl+C)
+process.on('SIGINT', () => {
+  console.log('👋 SIGINT signal received: closing HTTP server');
+  server.close(() => {
+    console.log('✅ HTTP server closed');
+    mongoose.connection.close(false, () => {
+      console.log('✅ MongoDB connection closed');
+      process.exit(0);
+    });
+  });
 });

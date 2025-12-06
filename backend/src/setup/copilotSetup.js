@@ -10,7 +10,7 @@ const {
  */
 function initializeCopilotModules() {
   try {
-    console.log('🤖 Initializing Copilot modules...');
+    // console.log('🤖 Initializing Copilot modules...');
 
     // Register general handler
     copilotService.registerModule('general', generalModuleHandler);
@@ -28,10 +28,10 @@ function initializeCopilotModules() {
     // copilotService.registerModule('inventory', inventoryModuleHandler);
 
     const registeredModules = copilotService.getRegisteredModules();
-    console.log(
-      `✅ Copilot initialized with ${registeredModules.length} modules:`,
-      registeredModules
-    );
+    // console.log(
+    //   `✅ Copilot initialized with ${registeredModules.length} modules:`,
+    //   registeredModules
+    // );
   } catch (error) {
     console.error('❌ Failed to initialize copilot modules:', error);
   }

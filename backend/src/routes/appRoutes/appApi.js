@@ -293,16 +293,16 @@ routesList.forEach(({ entity, controllerName }) => {
 // Customer Journey Routes
 const { customerJourneyController, interactionController } = appControllers;
 
-console.log('=== CUSTOMER JOURNEY CONTROLLER DEBUG ===');
-console.log('customerJourneyController exists:', !!customerJourneyController);
-console.log(
-  'customerJourneyController methods:',
-  customerJourneyController ? Object.keys(customerJourneyController) : 'undefined'
-);
-console.log('==========================================');
+// console.log('=== CUSTOMER JOURNEY CONTROLLER DEBUG ===');
+// console.log('customerJourneyController exists:', !!customerJourneyController);
+// console.log(
+//   'customerJourneyController methods:',
+//   customerJourneyController ? Object.keys(customerJourneyController) : 'undefined'
+// );
+// console.log('==========================================');
 
 if (customerJourneyController) {
-  console.log('🚀 REGISTERING CUSTOMER JOURNEY ROUTES...');
+  // console.log('🚀 REGISTERING CUSTOMER JOURNEY ROUTES...');
 
   // Test route to verify routing works
   router.get('/customer-journey/test', (req, res) => {

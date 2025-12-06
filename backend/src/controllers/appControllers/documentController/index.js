@@ -8,6 +8,7 @@ const update = require('./update');
 const remove = require('./remove');
 const downloadDocument = require('./downloadDocument');
 const search = require('./search');
+const advancedSearch = require('./advancedSearch');
 const filter = require('./filter');
 const listVersions = require('./listVersions');
 const getVersion = require('./getVersion');
@@ -29,6 +30,18 @@ const share = require('./share');
 const generateShareLink = require('./generateShareLink');
 // Add the new AI document analysis controller
 const analyzeDocument = require('./analyzeDocument');
+// Add text extraction reprocessing
+const reprocessDocuments = require('./reprocessDocuments');
+// Add new Data Entry Automation features
+const { suggestTags, applySuggestedTags } = require('./suggestTags');
+const { summarizeDocument, summarizeDocuments } = require('./summarizeDocument');
+const bulkImportFromURLs = require('./bulkImportFromURLs');
+const {
+  generateDocumentShareURL,
+  accessSharedDocument,
+  downloadSharedDocument,
+  listDocumentShareURLs,
+} = require('./documentShareURL');
 
 // Override default methods with custom implementations
 methods.create = create;
@@ -40,6 +53,7 @@ methods.download = downloadDocument;
 
 // Add search and filter methods
 methods.search = search;
+methods.advancedSearch = advancedSearch;
 methods.filter = filter;
 
 // Add version control methods
@@ -69,5 +83,19 @@ methods.analyze = analyzeDocument;
 // Add sharing methods
 methods.share = share;
 methods.generateShareLink = generateShareLink;
+
+// Add text extraction reprocessing
+methods.reprocessDocuments = reprocessDocuments;
+
+// Add Data Entry Automation features
+methods.suggestTags = suggestTags;
+methods.applySuggestedTags = applySuggestedTags;
+methods.summarizeDocument = summarizeDocument;
+methods.summarizeDocuments = summarizeDocuments;
+methods.bulkImportFromURLs = bulkImportFromURLs;
+methods.generateDocumentShareURL = generateDocumentShareURL;
+methods.accessSharedDocument = accessSharedDocument;
+methods.downloadSharedDocument = downloadSharedDocument;
+methods.listDocumentShareURLs = listDocumentShareURLs;
 
 module.exports = methods;

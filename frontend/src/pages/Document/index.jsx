@@ -1,18 +1,18 @@
 import AdvancedSearch from '@/components/AdvancedSearch';
 import AiDocumentManagerModal from '@/components/AiAssist/AiDocumentManagerModal';
-import SearchResultsDisplay from '@/components/SearchResultsDisplay';
+import AITagSuggestions from '@/components/Document/AITagSuggestions';
+import BulkURLImport from '@/components/Document/BulkURLImport';
 import { useDocumentStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions'; // Change from crud to erp
 import {
+  DeleteOutlined,
   DownloadOutlined,
   EditOutlined,
-  ExportOutlined,
   EyeOutlined,
   FileOutlined,
   FileSearchOutlined,
   FileTextOutlined,
-  FilterOutlined,
   FormOutlined,
   PlusOutlined,
   RobotOutlined,
@@ -25,30 +25,31 @@ import {
   Input,
   Modal,
   Row,
-  Select,
   Space,
   Spin,
   Statistic,
   Table,
-  Tabs,
   Tag,
   Tooltip,
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { crud } from '../../redux/crud/actions';
+import { selectListItems } from '../../redux/crud/selectors';
 
 const { Title, Text } = Typography;
-const { Option } = Select;
-const { TabPane } = Tabs;
 const { Search } = Input;
 
 export default function Document() {
   const translate = useLanguage();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Get documents from Redux store
+  const listData = useSelector(selectListItems);
 
   // Use dynamic statistics from API
   const {
@@ -62,12 +63,18 @@ export default function Document() {
   });
 
   // State management
-  const [activeTab, setActiveTab] = useState('all');
-  const [searchValue, setSearchValue] = useState('');
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [aiModalVisible, setAiModalVisible] = useState(false);
   const [advancedSearchVisible, setAdvancedSearchVisible] = useState(false);
-  const [searchResults, setSearchResults] = useState(null);
+
+  const handleRefreshList = () => {
+    dispatch(
+      crud.list({
+        entity: 'document',
+        options: { page: 1, items: 10 },
+      })
+    );
+  };
 
   // Calculate stats from API data
   const stats = {
@@ -79,26 +86,57 @@ export default function Document() {
     categories: documentStats?.byType?.length || 0,
   };
 
-  // Sample document types for filtering
-  const documentTypes = ['PDF', 'Word', 'Excel', 'Image', 'Text', 'Other'];
-
   const handleCreateNew = () => {
     navigate('/document/create');
   };
 
   const handleSearch = (value) => {
-    setSearchValue(value);
-    // Implement search logic here
+    if (value) {
+      // Use list endpoint with search parameter
+      dispatch(
+        crud.list({
+          entity: 'document',
+          options: { page: 1, items: 10, search: value },
+        })
+      );
+    } else {
+      // Reset to normal list
+      dispatch(
+        crud.list({
+          entity: 'document',
+          options: { page: 1, items: 10 },
+        })
+      );
+    }
   };
 
-  // Sample data - replace with actual data from Redux
-  const [documentList, setDocumentList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 0,
-  });
+  // Fetch documents on mount
+  useEffect(() => {
+    dispatch(
+      crud.list({
+        entity: 'document',
+        options: { page: 1, items: 10 },
+      })
+    );
+  }, [dispatch]);
+
+  // Get document list and pagination from Redux
+  // Backend returns: result.items (array) and result.pagination (object)
+  const documentList = listData?.result?.items?.items || listData?.result?.items || [];
+  const backendPagination = listData?.result?.items?.pagination || listData?.result?.pagination;
+  const pagination = {
+    current: backendPagination?.page || backendPagination?.current || 1,
+    pageSize: backendPagination?.limit || backendPagination?.pageSize || 10,
+    total: backendPagination?.total || 0,
+  };
+  const isLoading = listData?.isLoading || false;
+
+  // console.log('=== FRONTEND DOCUMENT LIST DEBUG ===');
+  // console.log('listData:', listData);
+  // console.log('listData.result:', listData?.result);
+  // console.log('documentList:', documentList);
+  // console.log('pagination:', pagination);
+  // console.log('====================================');
 
   const columns = [
     {
@@ -166,6 +204,30 @@ export default function Document() {
               onClick={() => dispatch(erp.downloadDocument({ entity: 'document', id: record._id }))}
             />
           </Tooltip>
+          <Tooltip title={translate('Delete')}>
+            <Button
+              type="text"
+              icon={<DeleteOutlined />}
+              danger
+              onClick={() => {
+                Modal.confirm({
+                  title: translate('Delete Document'),
+                  content: translate('Are you sure you want to delete this document?'),
+                  okText: translate('Yes'),
+                  okType: 'danger',
+                  cancelText: translate('No'),
+                  onOk: () => {
+                    dispatch(
+                      crud.delete({
+                        entity: 'document',
+                        id: record._id,
+                      })
+                    );
+                  },
+                });
+              }}
+            />
+          </Tooltip>
         </Space>
       ),
     },
@@ -199,7 +261,29 @@ export default function Document() {
             </Text>
           </div>
           <Space>
-            <Button
+            {/* AI Tag Suggestions */}
+            <AITagSuggestions selectedDocuments={selectedDocuments} onSuccess={handleRefreshList} />
+
+            {/* Bulk URL Import */}
+            <BulkURLImport onSuccess={handleRefreshList} />
+
+            {/* <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleCreateNew}
+              style={{
+                borderRadius: '10px',
+                height: '48px',
+                paddingLeft: '20px',
+                paddingRight: '20px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                border: 'none',
+                fontWeight: '600',
+              }}
+            >
+              {translate('Upload Document')}
+            </Button> */}
+            {/* <Button
               icon={<RobotOutlined />}
               onClick={() => setAiModalVisible(true)}
               style={{
@@ -210,7 +294,7 @@ export default function Document() {
               }}
             >
               {translate('AI Assistant')}
-            </Button>
+            </Button> */}
           </Space>
         </div>
 
@@ -313,17 +397,19 @@ export default function Document() {
 
           <Space>
             <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleCreateNew}
+              style={{ borderRadius: '8px' }}
+            >
+              {translate('Upload')}
+            </Button>
+            <Button
               icon={<FileSearchOutlined />}
               onClick={() => setAdvancedSearchVisible(true)}
               style={{ borderRadius: '8px' }}
             >
               {translate('Advanced Search')}
-            </Button>
-            <Button icon={<FilterOutlined />} style={{ borderRadius: '8px' }}>
-              {translate('Filter')}
-            </Button>
-            <Button icon={<ExportOutlined />} style={{ borderRadius: '8px' }}>
-              {translate('Export')}
             </Button>
           </Space>
         </div>
@@ -343,7 +429,12 @@ export default function Document() {
               showQuickJumper: true,
               showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} documents`,
               onChange: (page, pageSize) => {
-                // Handle pagination
+                dispatch(
+                  crud.list({
+                    entity: 'document',
+                    options: { page, items: pageSize },
+                  })
+                );
               },
             }}
             rowKey="_id"
@@ -382,20 +473,18 @@ export default function Document() {
         open={advancedSearchVisible}
         onCancel={() => setAdvancedSearchVisible(false)}
         footer={null}
-        width={800}
+        width={1000}
+        centered
+        styles={{
+          body: {
+            maxHeight: 'calc(100vh - 200px)',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+          },
+        }}
       >
-        <AdvancedSearch
-          onSearch={(results) => {
-            setSearchResults(results);
-            setAdvancedSearchVisible(false);
-          }}
-        />
+        <AdvancedSearch entity="document" />
       </Modal>
-
-      {/* Search Results Display */}
-      {searchResults && (
-        <SearchResultsDisplay results={searchResults} onClose={() => setSearchResults(null)} />
-      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const Model = mongoose.model('AppDocument');
+const textExtractor = require('@/utils/textExtractor');
 
 const create = async (req, res) => {
   try {
@@ -84,6 +85,59 @@ const create = async (req, res) => {
     // Save file to disk
     await uploadedFile.mv(filePath);
 
+    // Extract text from the document
+    let extractedText = '';
+    let textExtractionStatus = 'pending';
+    let textExtractionError = null;
+    let extractionMetadata = {};
+    let spreadsheetData = null;
+
+    try {
+      const extractionResult = await textExtractor.extractText(filePath, fileExtension);
+      if (extractionResult.success) {
+        extractedText = textExtractor.truncateText(extractionResult.text, 100000); // Limit to 100KB
+        textExtractionStatus = 'completed';
+
+        // Store extraction metadata
+        if (extractionResult.metadata) {
+          extractionMetadata = extractionResult.metadata;
+        }
+
+        // If it's a spreadsheet, also store structured data
+        if (
+          extractionResult.metadata?.format === 'csv' ||
+          extractionResult.metadata?.format === 'excel'
+        ) {
+          const spreadsheetService = require('@/services/spreadsheetService');
+          const spreadsheetResult = await spreadsheetService.processSpreadsheet(
+            filePath,
+            fileExtension
+          );
+          if (spreadsheetResult.success) {
+            spreadsheetData = {
+              data: spreadsheetResult.data.slice(0, 1000), // Store first 1000 rows
+              metadata: spreadsheetResult.metadata,
+              errors: spreadsheetResult.errors,
+              sheets: spreadsheetResult.sheets ? Object.keys(spreadsheetResult.sheets) : undefined,
+            };
+          }
+        }
+      } else {
+        textExtractionStatus = extractionResult.error?.includes('not installed')
+          ? 'not_supported'
+          : 'failed';
+        textExtractionError = extractionResult.error;
+        console.log(
+          `Text extraction ${textExtractionStatus} for ${fileName}:`,
+          extractionResult.error
+        );
+      }
+    } catch (error) {
+      textExtractionStatus = 'failed';
+      textExtractionError = error.message;
+      console.error('Text extraction error:', error);
+    }
+
     // Get owner, createdBy, and companyID
     const owner = req.user ? req.user._id : req.companyOwner._id;
     const createdBy = req.user ? req.user._id : req.companyOwner._id;
@@ -111,6 +165,11 @@ const create = async (req, res) => {
       createdBy: createdBy,
       companyID: companyID,
       expiryDate: req.body.expiryDate,
+      extractedText: extractedText,
+      textExtractionStatus: textExtractionStatus,
+      textExtractionError: textExtractionError,
+      extractionMetadata: extractionMetadata,
+      spreadsheetData: spreadsheetData,
     });
 
     const result = await document.save();

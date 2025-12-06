@@ -21,25 +21,46 @@ class ReminderSchedulerService {
       return;
     }
 
-    console.log('🔔 Starting Reminder Scheduler Service...');
+    // console.log('🔔 Starting Reminder Scheduler Service...');
 
     // Check for due reminders every minute
     this.mainJob = cron.schedule('* * * * *', async () => {
-      await this.processDueReminders();
+      try {
+        await Promise.race([
+          this.processDueReminders(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 50000)),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in reminder processing (non-blocking):', error.message);
+      }
     });
 
     // Check for expired reminders every hour
     this.cleanupJob = cron.schedule('0 * * * *', async () => {
-      await this.cleanupExpiredReminders();
+      try {
+        await Promise.race([
+          this.cleanupExpiredReminders(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 50000)),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in reminder cleanup (non-blocking):', error.message);
+      }
     });
 
     // Check for appointments needing reminders every 5 minutes
     this.appointmentReminderJob = cron.schedule('*/5 * * * *', async () => {
-      await this.processAppointmentReminders();
+      try {
+        await Promise.race([
+          this.processAppointmentReminders(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 50000)),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in appointment reminders (non-blocking):', error.message);
+      }
     });
 
     this.isRunning = true;
-    console.log('✅ Reminder Scheduler Service started successfully');
+    // console.log('✅ Reminder Scheduler Service started successfully');
   }
 
   /**

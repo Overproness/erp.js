@@ -14,22 +14,31 @@ const read = async (req, res) => {
 
     // Get companyID for filtering
     const companyID = req.user?.companyID || req.companyOwner?.companyID;
+    const userId = req.user?._id || req.companyOwner?._id;
 
-    if (!companyID) {
+    if (!companyID && !userId) {
       return res.status(401).json({
         success: false,
         result: null,
-        message: 'Company context not found - authentication required',
+        message: 'Authentication context not found',
       });
     }
 
     const { id } = req.params;
 
-    const result = await Model.findOne({
+    // Build query - use companyID if available, otherwise check owner
+    let query = {
       _id: id,
-      companyID: companyID,
       removed: false,
-    }).exec();
+    };
+
+    if (companyID) {
+      query.companyID = companyID;
+    } else {
+      query.owner = userId;
+    }
+
+    const result = await Model.findOne(query).exec();
     // console.log('🚀 ~ read ~ result:', result);
 
     if (!result) {

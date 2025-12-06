@@ -22,10 +22,22 @@ const eSignDocument = async (req, res) => {
       });
     }
 
+    // Get companyID for filtering
+    const companyID = req.user?.companyID || req.companyOwner?.companyID;
+    const userId = req.user?._id || req.companyOwner?._id;
+
+    if (!companyID) {
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Company context not found - authentication required',
+      });
+    }
+
     // First get the current document
     const currentDocument = await Document.findOne({
       _id: id,
-      owner: req.admin._id,
+      companyID: companyID,
       removed: false,
     }).exec();
 
@@ -117,6 +129,7 @@ const eSignDocument = async (req, res) => {
       document: id,
       versionNumber: nextVersionNumber,
       title: currentDocument.title,
+      content: `Signed document - ${reason || 'No reason provided'}`, // Required field
       documentType: currentDocument.documentType,
       description: currentDocument.description,
       tags: currentDocument.tags,
@@ -125,7 +138,8 @@ const eSignDocument = async (req, res) => {
       filePath: currentDocument.filePath,
       fileSize: currentDocument.fileSize,
       expiryDate: currentDocument.expiryDate,
-      createdBy: req.admin._id,
+      createdBy: userId,
+      author: userId, // Required field
       changeDescription: reason || 'Document electronically signed',
     };
 
@@ -137,7 +151,7 @@ const eSignDocument = async (req, res) => {
       filePath: newFileName,
       fileSize: stats.size,
       updated: Date.now(),
-      updatedBy: req.admin._id,
+      updatedBy: userId,
       tags: [...new Set([...(currentDocument.tags || []), 'signed'])], // Add 'signed' tag if not present
     };
 

@@ -142,7 +142,7 @@ export const validatePhoneNumber = /^(?:[+\d()\-\s]+)$/;
  * @returns {Object} - Formatted query parameters for API request
  */
 export function buildAdvancedSearchQuery(searchParams) {
-  const query = { advanced: 'true' };
+  const query = {};
 
   // Process each valid search parameter
   Object.keys(searchParams).forEach((key) => {
@@ -150,10 +150,11 @@ export function buildAdvancedSearchQuery(searchParams) {
 
     // Only add parameters with valid values
     if (value !== undefined && value !== null && value !== '') {
-      // Handle arrays (like tags)
+      // Handle arrays (like tags, documentType)
       if (Array.isArray(value)) {
         if (value.length > 0) {
-          query[key] = value.join(',');
+          // Keep as array for POST request body
+          query[key] = value;
         }
       }
       // Handle date objects
@@ -162,7 +163,7 @@ export function buildAdvancedSearchQuery(searchParams) {
       }
       // Handle custom fields object
       else if (key === 'customFields' && typeof value === 'object') {
-        query[key] = JSON.stringify(value);
+        query[key] = value;
       }
       // Regular value
       else {
@@ -170,11 +171,6 @@ export function buildAdvancedSearchQuery(searchParams) {
       }
     }
   });
-
-  // Add search prefix to text search to make it compatible with list endpoint
-  if (query.text && !query.search) {
-    query.search = query.text;
-  }
 
   return query;
 }
@@ -239,7 +235,7 @@ export async function copyToClipboard(text) {
       document.body.appendChild(textArea);
       textArea.focus();
       textArea.select();
-      
+
       try {
         document.execCommand('copy');
         textArea.remove();
@@ -281,7 +277,7 @@ export function validateUrl(url) {
     }
 
     const urlObj = new URL(testUrl);
-    
+
     // Check for valid protocols
     if (!['http:', 'https:'].includes(urlObj.protocol)) {
       return { valid: false, message: 'URL must use HTTP or HTTPS protocol' };
@@ -295,7 +291,13 @@ export function validateUrl(url) {
     // Check for localhost or private IPs in production
     if (process.env.NODE_ENV === 'production') {
       const hostname = urlObj.hostname.toLowerCase();
-      if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.')) {
+      if (
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        hostname.startsWith('192.168.') ||
+        hostname.startsWith('10.') ||
+        hostname.startsWith('172.')
+      ) {
         return { valid: false, message: 'Private/local URLs are not allowed' };
       }
     }
@@ -318,11 +320,11 @@ export function validateUrl(url) {
  */
 export function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes';
-  
+
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 

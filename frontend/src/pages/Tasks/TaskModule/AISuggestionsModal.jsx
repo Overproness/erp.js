@@ -49,7 +49,7 @@ const AISuggestionsModal = ({ visible, onClose, tasks, onApply }) => {
     setLoading(true);
     try {
       const response = await taskRequest.getAIPrioritySuggestions(tasks);
-      
+
       if (response.success && response.result) {
         setAiSuggestions(response.result.suggestions || []);
       } else {
@@ -70,8 +70,8 @@ const AISuggestionsModal = ({ visible, onClose, tasks, onApply }) => {
     try {
       // Prepare updates for tasks with changed priorities
       const updates = aiSuggestions
-        .filter(suggestion => suggestion.currentPriority !== suggestion.suggestedPriority)
-        .map(suggestion => ({
+        .filter((suggestion) => suggestion.currentPriority !== suggestion.suggestedPriority)
+        .map((suggestion) => ({
           taskId: suggestion.taskId,
           priority: suggestion.suggestedPriority,
         }));
@@ -194,7 +194,7 @@ const AISuggestionsModal = ({ visible, onClose, tasks, onApply }) => {
 
   // Calculate statistics
   const changedCount = aiSuggestions.filter(
-    s => s.currentPriority !== s.suggestedPriority
+    (s) => s.currentPriority !== s.suggestedPriority
   ).length;
 
   return (
@@ -295,9 +295,7 @@ const AISuggestionsModal = ({ visible, onClose, tasks, onApply }) => {
               <InfoCircleOutlined style={{ color: '#8b5cf6' }} />
               <Text type="secondary">
                 {changedCount > 0
-                  ? translate(
-                      `${changedCount} task${changedCount > 1 ? 's' : ''} will be updated`
-                    )
+                  ? translate(`${changedCount} task${changedCount > 1 ? 's' : ''} will be updated`)
                   : translate('All tasks have optimal priorities')}
               </Text>
             </Space>
@@ -322,7 +320,9 @@ const AISuggestionsModal = ({ visible, onClose, tasks, onApply }) => {
       {!loading && aiSuggestions.length === 0 && tasks.length > 0 && (
         <Alert
           message={translate('No AI Suggestions Available')}
-          description={translate('Unable to generate AI suggestions at this time. Please try again later.')}
+          description={translate(
+            'Unable to generate AI suggestions at this time. Please try again later.'
+          )}
           type="warning"
           showIcon
           action={

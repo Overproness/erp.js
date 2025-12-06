@@ -18,13 +18,13 @@ class ChatQueueService {
    * Initialize the 24/7 service
    */
   async initialize() {
-    console.log('🤖 Initializing 24/7 Chat Queue Service...');
+    // console.log('🤖 Initializing 24/7 Chat Queue Service...');
 
     this.startQueueProcessor();
 
     this.scheduleMaintenance();
 
-    console.log('✅ Chat Queue Service initialized');
+    // console.log('✅ Chat Queue Service initialized');
   }
 
   /**
@@ -72,7 +72,7 @@ class ChatQueueService {
       }
     }, 5000);
 
-    console.log('⚙️  Queue processor started (every 5 seconds)');
+    // console.log('⚙️  Queue processor started (every 5 seconds)');
   }
 
   /**
@@ -252,13 +252,21 @@ class ChatQueueService {
    */
   scheduleMaintenance() {
     cron.schedule('0 */6 * * *', async () => {
-      console.log('🧹 Running queue maintenance...');
+      try {
+        console.log('🧹 Running queue maintenance...');
 
-      await this.cleanOldQueueItems();
-      await this.retryFailedItems();
+        await Promise.race([
+          Promise.all([this.cleanOldQueueItems(), this.retryFailedItems()]),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), 10 * 60 * 1000)
+          ),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in queue maintenance (non-blocking):', error.message);
+      }
     });
 
-    console.log('📅 Maintenance scheduled (every 6 hours)');
+    // console.log('📅 Maintenance scheduled (every 6 hours)');
   }
 
   /**

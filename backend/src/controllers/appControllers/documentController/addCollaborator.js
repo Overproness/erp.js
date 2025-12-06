@@ -7,6 +7,16 @@ const addCollaborator = async (req, res) => {
     const { id } = req.params;
     const { collaborators, userId, permissions, role } = req.body;
 
+    // Get current user ID
+    const currentUserId = req.user?._id || req.companyOwner?._id;
+
+    if (!currentUserId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
     // Support both formats: collaborators array or single userId
     const userIds = collaborators || [userId];
 
@@ -46,13 +56,14 @@ const addCollaborator = async (req, res) => {
 
     // Check if user has permission to add collaborators
     // Either document creator or someone with edit permissions can add collaborators
+    const userRole = req.user?.role || req.companyOwner?.role;
     const canModify =
-      document.createdBy.toString() === req.admin._id.toString() ||
+      document.createdBy?.toString() === currentUserId.toString() ||
       document.collaborators?.some(
-        (c) => c.user?.toString() === req.admin._id.toString() && c.permissions?.includes('edit')
+        (c) => c.user?.toString() === currentUserId.toString() && c.permissions?.includes('edit')
       ) ||
-      req.admin.role === 'admin' ||
-      req.admin.role === 'manager';
+      userRole === 'admin' ||
+      userRole === 'manager';
 
     if (!canModify) {
       return res.status(403).json({
@@ -90,7 +101,7 @@ const addCollaborator = async (req, res) => {
         permissions: Array.isArray(finalPermissions) ? finalPermissions : [finalPermissions],
         role: role || (Array.isArray(finalPermissions) ? finalPermissions[0] : finalPermissions), // Store role for compatibility
         addedAt: new Date(),
-        addedBy: req.admin._id,
+        addedBy: currentUserId,
       });
 
       results.push({

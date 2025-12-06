@@ -305,16 +305,8 @@ class Request {
     try {
       this.includeToken();
 
-      // Add the advanced flag
-      options.advanced = 'true';
-
-      // Handle special format needs for certain parameters
-      if (options.customFields && typeof options.customFields === 'object') {
-        options.customFields = JSON.stringify(options.customFields);
-      }
-
-      const optionsQuery = this.getOptionsQuery(options);
-      const response = await axios.get(`${entity}/search${optionsQuery}`);
+      // Use POST for advanced search to support complex query parameters
+      const response = await axios.post(`${entity}/advanced-search`, options);
       return response.data;
     } catch (error) {
       return this.handleError(error);
@@ -595,7 +587,13 @@ class Request {
    * @param {boolean} [params.includeRawClicks]
    * @returns {Promise<{blob: Blob, filename: string, format: string}>}
    */
-  async getAnalyticsExport({ urlId, format = 'csv', startDate, endDate, includeRawClicks = false }) {
+  async getAnalyticsExport({
+    urlId,
+    format = 'csv',
+    startDate,
+    endDate,
+    includeRawClicks = false,
+  }) {
     if (!urlId) throw new Error('urlId is required for getAnalyticsExport');
     const params = new URLSearchParams();
     if (format) params.append('format', format);
@@ -614,7 +612,7 @@ class Request {
     const response = await fetch(url, {
       method: 'GET',
       credentials: 'include',
-      headers
+      headers,
     });
     if (!response.ok) {
       const errorText = await response.text();

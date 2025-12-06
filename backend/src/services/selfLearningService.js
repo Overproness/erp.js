@@ -17,7 +17,7 @@ class SelfLearningService {
    * Initialize self-learning service
    */
   async initialize() {
-    console.log('🧠 Initializing AI Self-Learning Service...');
+    // console.log('🧠 Initializing AI Self-Learning Service...');
 
     await this.loadPatterns();
 
@@ -25,7 +25,7 @@ class SelfLearningService {
 
     this.scheduleModelOptimization();
 
-    console.log('✅ Self-Learning Service initialized');
+    // console.log('✅ Self-Learning Service initialized');
   }
 
   /**
@@ -387,7 +387,7 @@ class SelfLearningService {
         }
       });
 
-      console.log(`📚 Loaded ${this.patterns.size} learned patterns`);
+      // console.log(`📚 Loaded ${this.patterns.size} learned patterns`);
     } catch (error) {
       console.error('Load patterns error:', error);
     }
@@ -486,12 +486,21 @@ class SelfLearningService {
    */
   schedulePatternAnalysis() {
     cron.schedule('0 */6 * * *', async () => {
-      console.log('🔍 Running pattern analysis...');
+      try {
+        console.log('🔍 Running pattern analysis...');
 
-      await this.analyzeAllPatterns();
+        await Promise.race([
+          this.analyzeAllPatterns(),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), 10 * 60 * 1000)
+          ),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in pattern analysis (non-blocking):', error.message);
+      }
     });
 
-    console.log('📅 Pattern analysis scheduled (every 6 hours)');
+    // console.log('📅 Pattern analysis scheduled (every 6 hours)');
   }
 
   /**
@@ -557,12 +566,21 @@ class SelfLearningService {
    */
   scheduleModelOptimization() {
     cron.schedule('0 2 * * 0', async () => {
-      console.log('🎯 Running model optimization...');
+      try {
+        console.log('🎯 Running model optimization...');
 
-      await this.optimizeModels();
+        await Promise.race([
+          this.optimizeModels(),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), 15 * 60 * 1000)
+          ),
+        ]);
+      } catch (error) {
+        console.error('⚠️ Error in model optimization (non-blocking):', error.message);
+      }
     });
 
-    console.log('📅 Model optimization scheduled (weekly)');
+    // console.log('📅 Model optimization scheduled (weekly)');
   }
 
   /**
