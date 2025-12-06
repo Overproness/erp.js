@@ -1,10 +1,10 @@
 import { ErpLayout } from '@/layout';
 import ErpPanel from '@/pages/ErpPanelModule';
 
-export default function PaymentDataTableModule({ config }) {
+export default function PaymentDataTableModule({ config, extra }) {
   return (
     <ErpLayout>
-      <ErpPanel config={config}></ErpPanel>
+      <ErpPanel config={config} extra={extra}></ErpPanel>
     </ErpLayout>
   );
 }

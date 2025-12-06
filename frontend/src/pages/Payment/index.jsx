@@ -1,17 +1,21 @@
 import { DataImportButton } from '@/components/DataEntry';
+import FraudDetectionModal from '@/components/FraudDetectionModal';
 import { usePaymentStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
+import { request } from '@/request';
 import { useDate, useMoney } from '@/settings';
 import {
   ArrowUpOutlined,
   CalendarOutlined,
   CreditCardOutlined,
   DollarOutlined,
+  SafetyOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
+import { Button, Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PaymentDataTableModule from './PaymentModule/PaymentDataTableModule';
@@ -25,6 +29,10 @@ export default function Payment() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [fraudModalVisible, setFraudModalVisible] = useState(false);
+  const [invoices, setInvoices] = useState([]);
+  const [loadingInvoices, setLoadingInvoices] = useState(false);
+
   // Use dynamic statistics from API
   const {
     data: paymentStats,
@@ -35,6 +43,33 @@ export default function Payment() {
     autoRefresh: true,
     refreshInterval: 300000, // 5 minutes
   });
+
+  // Fetch invoices for fraud detection
+  const fetchInvoices = async () => {
+    setLoadingInvoices(true);
+    try {
+      const response = await request.list({
+        entity: 'invoice',
+        options: {
+          page: 1,
+          items: 100,
+        },
+      });
+      if (response.success) {
+        setInvoices(response.result || []);
+      }
+    } catch (error) {
+      console.error('Error fetching invoices:', error);
+    } finally {
+      setLoadingInvoices(false);
+    }
+  };
+
+  useEffect(() => {
+    if (fraudModalVisible) {
+      fetchInvoices();
+    }
+  }, [fraudModalVisible]);
 
   const searchConfig = {
     entity: 'client',
@@ -223,13 +258,30 @@ export default function Payment() {
       <PaymentDataTableModule
         config={config}
         extra={
-          <DataImportButton
-            moduleName="payment"
-            onImportComplete={(result) => {
-              dispatch(erp.list({ entity: 'payment' }));
-            }}
-          />
+          <>
+            <Button
+              type="primary"
+              icon={<SafetyOutlined />}
+              onClick={() => setFraudModalVisible(true)}
+              style={{ marginRight: 8, backgroundColor: '#8b45ff', borderColor: '#8b45ff' }}
+            >
+              {translate('AI Suggestions')}
+            </Button>
+            <DataImportButton
+              moduleName="payment"
+              onImportComplete={(result) => {
+                dispatch(erp.list({ entity: 'payment' }));
+              }}
+            />
+          </>
         }
+      />
+
+      {/* Fraud Detection Modal */}
+      <FraudDetectionModal
+        visible={fraudModalVisible}
+        onCancel={() => setFraudModalVisible(false)}
+        invoices={invoices}
       />
     </div>
   );

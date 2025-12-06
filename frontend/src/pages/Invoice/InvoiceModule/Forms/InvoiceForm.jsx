@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, Row, Select } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
@@ -40,6 +40,7 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
   const [lastNumber, setLastNumber] = useState(() => last_invoice_number + 1);
   const [isTaxModalVisible, setIsTaxModalVisible] = useState(false);
   const [selectedTaxName, setSelectedTaxName] = useState('');
+  const [isRecurring, setIsRecurring] = useState(false);
   const form = Form.useFormInstance();
 
   const handelTaxChange = (value) => {
@@ -55,10 +56,11 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
 
   useEffect(() => {
     if (current) {
-      const { taxRate = 0, year, number } = current;
+      const { taxRate = 0, year, number, isRecurring: recurringStatus } = current;
       setTaxRate(taxRate / 100);
       setCurrentYear(year);
       setLastNumber(number);
+      setIsRecurring(recurringStatus || false);
     }
   }, [current]);
   useEffect(() => {
@@ -92,7 +94,7 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
               searchFields={'name'}
               redirectLabel={'Add New Client'}
               withRedirect
-              urlToRedirect={'/customer'}
+              urlToRedirect={'/client'}
             />
           </Form.Item>
         </Col>
@@ -182,6 +184,87 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           </Form.Item>
         </Col>
       </Row>
+
+      {/* Recurring Billing Section */}
+      <Divider orientation="left">{translate('Recurring Billing')}</Divider>
+      <Row gutter={[12, 0]}>
+        <Col className="gutter-row" span={6}>
+          <Form.Item name="isRecurring" valuePropName="checked" initialValue={false}>
+            <Checkbox onChange={(e) => setIsRecurring(e.target.checked)}>
+              {translate('Enable Recurring Billing')}
+            </Checkbox>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {isRecurring && (
+        <Row gutter={[12, 0]}>
+          <Col className="gutter-row" span={6}>
+            <Form.Item
+              name={['recurringConfig', 'frequency']}
+              label={translate('Frequency')}
+              rules={[{ required: isRecurring, message: translate('Please select frequency') }]}
+            >
+              <Select
+                placeholder={translate('Select frequency')}
+                options={[
+                  { value: 'daily', label: translate('Daily') },
+                  { value: 'weekly', label: translate('Weekly') },
+                  { value: 'biweekly', label: translate('Bi-weekly') },
+                  { value: 'monthly', label: translate('Monthly') },
+                  { value: 'quarterly', label: translate('Quarterly') },
+                  { value: 'semiannually', label: translate('Semi-annually') },
+                  { value: 'annually', label: translate('Annually') },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col className="gutter-row" span={6}>
+            <Form.Item
+              name={['recurringConfig', 'startDate']}
+              label={translate('Start Date')}
+              rules={[{ required: isRecurring, type: 'object' }]}
+              initialValue={dayjs()}
+            >
+              <DatePicker style={{ width: '100%' }} format={dateFormat} />
+            </Form.Item>
+          </Col>
+
+          <Col className="gutter-row" span={6}>
+            <Form.Item
+              name={['recurringConfig', 'endDate']}
+              label={translate('End Date (Optional)')}
+            >
+              <DatePicker style={{ width: '100%' }} format={dateFormat} />
+            </Form.Item>
+          </Col>
+
+          <Col className="gutter-row" span={6}>
+            <Form.Item
+              name={['recurringConfig', 'occurrences']}
+              label={translate('Max Occurrences (Optional)')}
+            >
+              <InputNumber
+                min={1}
+                style={{ width: '100%' }}
+                placeholder={translate('Leave blank for unlimited')}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col className="gutter-row" span={6}>
+            <Form.Item
+              name={['recurringConfig', 'autoSend']}
+              valuePropName="checked"
+              initialValue={false}
+            >
+              <Checkbox>{translate('Auto-send invoices')}</Checkbox>
+            </Form.Item>
+          </Col>
+        </Row>
+      )}
+
       <Divider dashed />
       <Row gutter={[12, 12]} style={{ position: 'relative' }}>
         <Col className="gutter-row" span={5}>

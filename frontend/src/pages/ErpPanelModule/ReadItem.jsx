@@ -19,6 +19,7 @@ import { generate as uniqueId } from 'shortid';
 
 import { selectCurrentItem } from '@/redux/erp/selectors';
 
+import RecurringBillingCard from '@/components/RecurringBillingCard';
 import { DOWNLOAD_BASE_URL } from '@/config/serverApiConfig';
 import useMail from '@/hooks/useMail';
 import { useMoney } from '@/settings';
@@ -237,6 +238,20 @@ export default function ReadItem({ config, selectedItem }) {
         </Row>
       </PageHeader>
       <Divider dashed />
+
+      {/* Recurring Billing Card for Invoices */}
+      {entity === 'invoice' && currentErp.isRecurring && (
+        <>
+          <RecurringBillingCard
+            invoice={currentErp}
+            onUpdate={() => {
+              dispatch(erp.read({ entity, id: currentErp._id }));
+            }}
+          />
+          <Divider dashed />
+        </>
+      )}
+
       <Descriptions title={`Client : ${currentErp.client.name}`}>
         <Descriptions.Item label={translate('Address')}>{client.address}</Descriptions.Item>
         <Descriptions.Item label={translate('email')}>{client.email}</Descriptions.Item>

@@ -250,6 +250,32 @@ const routerApp = (entity, controller) => {
     router.route(`/${entity}/mail`).post(catchErrors(controller['mail']));
   }
 
+  if (entity === 'invoice') {
+    // Recurring billing routes
+    const recurringBilling = require('@/controllers/appControllers/invoiceController/recurringBilling');
+    router
+      .route(`/${entity}/recurring/generate/:id`)
+      .post(catchErrors(recurringBilling.generateRecurringInvoice));
+    router
+      .route(`/${entity}/recurring/pause/:id`)
+      .patch(catchErrors(recurringBilling.pauseRecurringBilling));
+    router
+      .route(`/${entity}/recurring/stop/:id`)
+      .patch(catchErrors(recurringBilling.stopRecurringBilling));
+    router
+      .route(`/${entity}/recurring/history/:id`)
+      .get(catchErrors(recurringBilling.getRecurringInvoiceHistory));
+    router
+      .route(`/${entity}/recurring/process`)
+      .post(catchErrors(recurringBilling.processRecurringInvoices));
+  }
+
+  if (entity === 'payment') {
+    // AI Fraud Detection routes
+    const fraudDetection = require('@/controllers/appControllers/paymentController/fraudDetection');
+    router.route(`/${entity}/fraud-detection`).post(catchErrors(fraudDetection.detectPaymentFraud));
+  }
+
   if (entity === 'quote') {
     router.route(`/${entity}/convert/:id`).get(catchErrors(controller['convert']));
 

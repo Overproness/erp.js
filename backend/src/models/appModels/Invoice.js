@@ -22,6 +22,39 @@ const invoiceSchema = new mongoose.Schema({
     type: String,
     enum: ['daily', 'weekly', 'monthly', 'annually', 'quarter'],
   },
+  // Recurring billing management
+  isRecurring: {
+    type: Boolean,
+    default: false,
+  },
+  recurringConfig: {
+    frequency: {
+      type: String,
+      enum: ['daily', 'weekly', 'biweekly', 'monthly', 'quarterly', 'semiannually', 'annually'],
+    },
+    startDate: Date,
+    endDate: Date, // null means indefinite
+    nextBillingDate: Date,
+    lastBillingDate: Date,
+    occurrences: Number, // Total occurrences (null for indefinite)
+    occurrencesCompleted: {
+      type: Number,
+      default: 0,
+    },
+    autoSend: {
+      type: Boolean,
+      default: false, // Automatically send invoice when generated
+    },
+    pausedUntil: Date, // Temporarily pause recurring billing
+  },
+  parentRecurringInvoice: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Invoice',
+  },
+  generatedFromRecurring: {
+    type: Boolean,
+    default: false,
+  },
   date: {
     type: Date,
     required: true,
