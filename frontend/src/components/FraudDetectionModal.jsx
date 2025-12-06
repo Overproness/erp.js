@@ -173,7 +173,9 @@ export default function FraudDetectionModal({ visible, onCancel, invoices = [] }
                 </div>
                 <div>
                   <Badge
-                    count={`${analysisResult.score || analysisResult.riskScore || 0}/${analysisResult.maxRiskScore || 100}`}
+                    count={`${analysisResult.score || analysisResult.riskScore || 0}/${
+                      analysisResult.maxRiskScore || 100
+                    }`}
                     style={{
                       backgroundColor: getRiskLevelConfig(analysisResult.riskLevel).color,
                       fontSize: 16,
@@ -325,16 +327,19 @@ export default function FraudDetectionModal({ visible, onCancel, invoices = [] }
             )}
 
             {/* No Payments Message */}
-            {(!analysisResult.payments || analysisResult.payments.length === 0) && 
-             (!analysisResult.flags || analysisResult.flags.length === 0) && (
-              <Alert
-                message={translate('No Payment Data')}
-                description={analysisResult.summary || translate('This invoice has no payment records to analyze for fraud detection.')}
-                type="info"
-                showIcon
-                icon={<CheckCircleOutlined />}
-              />
-            )}
+            {(!analysisResult.payments || analysisResult.payments.length === 0) &&
+              (!analysisResult.flags || analysisResult.flags.length === 0) && (
+                <Alert
+                  message={translate('No Payment Data')}
+                  description={
+                    analysisResult.summary ||
+                    translate('This invoice has no payment records to analyze for fraud detection.')
+                  }
+                  type="info"
+                  showIcon
+                  icon={<CheckCircleOutlined />}
+                />
+              )}
           </div>
         )}
 

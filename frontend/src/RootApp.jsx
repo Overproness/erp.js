@@ -5,8 +5,11 @@ import { Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CopilotProvider } from './context/CopilotContext';
+import { NotificationProvider } from './context/NotificationContext';
+import toastConfig from './config/toastConfig';
 import store from './redux/store';
 
 // Import directly instead of using lazy loading initially

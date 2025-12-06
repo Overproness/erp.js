@@ -83,12 +83,34 @@ mongoose.connection.once('open', async () => {
 // Start Express Server
 // ─────────────────────────────────────────────────────────────
 const app = require('./app');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const PORT = process.env.PORT || 8888;
 app.set('port', PORT);
 
-const server = app.listen(PORT, () => {
+const server = http.createServer(app);
+
+// Initialize Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true
+  },
+  transports: ['websocket', 'polling']
+});
+
+// Make io accessible to other parts of the app
+app.set('io', io);
+global.io = io;
+
+// Socket.io connection handling
+require('./sockets/notificationSocket')(io);
+
+server.listen(PORT, () => {
   console.log(`🚀 Express server running → PORT: ${server.address().port}`);
+  console.log(`🔌 Socket.io server ready for real-time notifications`);
 });
 
 // ─────────────────────────────────────────────────────────────

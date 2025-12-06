@@ -96,6 +96,7 @@ const appointmentRoutes = require('./routes/appRoutes/appointmentRoutes');
 const businessProcessRoutes = require('./routes/appRoutes/businessProcessRoutes');
 const reminderRoutes = require('./routes/appRoutes/reminderRoutes');
 const taskRoutes = require('./routes/appRoutes/taskRoutes');
+const notificationRoutes = require('./routes/appRoutes/notificationRoutes');
 
 // Data Entry Routes
 const dataEntryRoutes = require('./routes/dataEntryRoutes');
@@ -458,6 +459,7 @@ app.use('/api/appointments', adminAuth.isValidAuthToken, appointmentRoutes);
 app.use('/api/business-processes', adminAuth.isValidAuthToken, businessProcessRoutes);
 app.use('/api/reminders', adminAuth.isValidAuthToken, reminderRoutes);
 app.use('/api/task', adminAuth.isValidAuthToken, taskRoutes);
+app.use('/api/notifications', adminAuth.isValidAuthToken, notificationRoutes);
 
 // AI + Other Unprotected APIs
 app.use('/api/aiAssistant', aiAssistantRoutes);

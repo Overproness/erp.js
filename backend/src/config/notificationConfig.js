@@ -34,11 +34,11 @@ const config = {
         companyName: 'Tech Revisor',
         websiteUrl: 'https://www.techrevisor.com',
         supportEmail: 'support@techrevisor.com',
-        year: new Date().getFullYear()
-      }
-    }
+        year: new Date().getFullYear(),
+      },
+    },
   },
-  
+
   // SMS notification settings
   sms: {
     enabled: SMS_ENABLED === 'true',
@@ -47,16 +47,31 @@ const config = {
     twilioAuthToken: TWILIO_AUTH_TOKEN || '',
     defaultSender: TWILIO_PHONE_NUMBER || '',
     retryAttempts: 2,
-    retryDelay: 60000 // 1 minute
+    retryDelay: 60000, // 1 minute
   },
-  
-  // Push notification settings
+
+  // Push notification settings (Deprecated - now using Socket.io)
   push: {
     enabled: false,
-    provider: 'firebase',
-    firebaseCredentials: null,
-    defaultTopic: 'general'
-  }
+    deprecated: true,
+    message: 'Push notifications now handled via Socket.io WebSocket connections',
+  },
+
+  // Socket.io settings for real-time notifications
+  socketio: {
+    enabled: true,
+    transports: ['websocket', 'polling'],
+    cors: {
+      origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+      methods: ['GET', 'POST'],
+      credentials: true,
+    },
+    pingTimeout: 60000,
+    pingInterval: 25000,
+    maxHttpBufferSize: 1e6, // 1 MB
+    allowUpgrades: true,
+    perMessageDeflate: true,
+  },
 };
 
 module.exports = config;
