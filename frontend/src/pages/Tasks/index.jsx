@@ -1,40 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useLanguage from '@/locale/useLanguage';
 import {
-  Button,
-  Typography,
-  Row,
-  Col,
-  Statistic,
-  Card,
-  Tag,
-  Spin,
-  Modal,
-  message,
-  Alert,
-  Collapse,
-  Space,
-} from 'antd';
-import {
-  PlusOutlined,
+  AlertOutlined,
+  BulbOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   ExclamationCircleOutlined,
-  UserOutlined,
-  AlertOutlined,
-  BugOutlined,
-  BulbOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
-import useLanguage from '@/locale/useLanguage';
-import dayjs from 'dayjs';
-import { useTaskStats } from '@/hooks/useStatistics';
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Statistic,
+  Typography,
+  message,
+} from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // Import task API request service
 import taskRequest from '@/request/taskRequest';
 // Import custom task modules
-import ViewTaskModule from './TaskModule/ViewTaskModule';
+import { DataImportButton } from '@/components/DataEntry';
+import AISuggestionsModal from './TaskModule/AISuggestionsModal';
 import CreateTaskModule from './TaskModule/CreateTaskModule';
 import TaskDetailModule from './TaskModule/TaskDetailModule';
-import AISuggestionsModal from './TaskModule/AISuggestionsModal';
+import ViewTaskModule from './TaskModule/ViewTaskModule';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -303,6 +298,13 @@ export default function Tasks() {
             <Button icon={<BulbOutlined />} onClick={handleOpenAISuggestions}>
               {translate('AI Suggestions')}
             </Button>
+            <DataImportButton
+              moduleName="task"
+              onImportComplete={(result) => {
+                loadTasks();
+                message.success(`Imported ${result.saved || 0} tasks successfully!`);
+              }}
+            />
             <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateTask}>
               {translate('Add New Task')}
             </Button>

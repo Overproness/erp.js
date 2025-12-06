@@ -1,13 +1,14 @@
+import { DataImportButton } from '@/components/DataEntry';
 import useLanguage from '@/locale/useLanguage';
-import CustomerDataTableModule from './CustomerModule/CustomerDataTableModule';
-import { useDate } from '@/settings';
 import { crud } from '@/redux/crud/actions';
+import { useDate } from '@/settings';
 import { CrownOutlined, StarOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import CustomerDataTableModule from './CustomerModule/CustomerDataTableModule';
 
 const { Title, Text } = Typography;
 
@@ -154,7 +155,7 @@ export default function Customer() {
                 title={translate('Total Customers')}
                 value={totalCustomers}
                 valueStyle={{ color: '#8b45ff' }}
-                prefix={<UserOutlined  />}
+                prefix={<UserOutlined />}
               />
             </Card>
           </Col>
@@ -164,7 +165,7 @@ export default function Customer() {
                 title={translate('Active')}
                 value={activeCustomers}
                 valueStyle={{ color: '#52c41a' }}
-                prefix={<TeamOutlined  />}
+                prefix={<TeamOutlined />}
               />
             </Card>
           </Col>
@@ -192,7 +193,17 @@ export default function Customer() {
       </div>
 
       {/* Main Content */}
-      <CustomerDataTableModule config={config} />
+      <CustomerDataTableModule
+        config={config}
+        extra={
+          <DataImportButton
+            moduleName="client"
+            onImportComplete={(result) => {
+              dispatch(crud.list({ entity: 'client' }));
+            }}
+          />
+        }
+      />
     </div>
   );
 }

@@ -13,8 +13,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTaxStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 
+import { DataImportButton } from '@/components/DataEntry';
 import TaxForm from '@/forms/TaxForm';
 import CrudModule from '@/pages/CrudModule/CrudModule';
+import { erp } from '@/redux/erp/actions';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Switch } from 'antd';
 
@@ -134,6 +136,14 @@ export default function Taxes() {
     dataTableColumns,
     searchConfig,
     deleteModalLabels,
+    extra: (
+      <DataImportButton
+        moduleName="taxes"
+        onImportComplete={(result) => {
+          dispatch(erp.list({ entity: 'taxes' }));
+        }}
+      />
+    ),
   };
 
   return (
@@ -228,11 +238,11 @@ export default function Taxes() {
       </div>
 
       {/* Main Content */}
-        <CrudModule
-          createForm={<TaxForm />}
-          updateForm={<TaxForm isUpdateForm={true} />}
-          config={config}
-        />
+      <CrudModule
+        createForm={<TaxForm />}
+        updateForm={<TaxForm isUpdateForm={true} />}
+        config={config}
+      />
     </div>
   );
 }

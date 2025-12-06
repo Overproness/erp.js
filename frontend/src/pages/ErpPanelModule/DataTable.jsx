@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Dropdown, Table } from 'antd';
-import { useEffect } from 'react';
+import { cloneElement, isValidElement, useEffect } from 'react';
 
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 import { useErpContext } from '@/context/erp';
@@ -40,7 +40,8 @@ function AddNewItem({ config }) {
 
 export default function DataTable({ config, extra = [] }) {
   const translate = useLanguage();
-  let { entity, dataTableColumns, disableAdd = false, searchConfig } = config;
+  let { entity, dataTableColumns, disableAdd = false, searchConfig, dropdownExtra = [] } = config;
+  // console.log('🚀 ~ DataTable ~ entity:', searchConfig);
 
   const { DATATABLE_TITLE } = config;
 
@@ -52,6 +53,9 @@ export default function DataTable({ config, extra = [] }) {
 
   const { erpContextAction } = useErpContext();
   const { modal } = erpContextAction;
+
+  // Convert extra to array if it's a single element
+  const extraArray = Array.isArray(extra) ? extra : extra ? [extra] : [];
 
   const items = [
     {
@@ -69,7 +73,7 @@ export default function DataTable({ config, extra = [] }) {
       key: 'download',
       icon: <FilePdfOutlined />,
     },
-    ...extra,
+    ...dropdownExtra,
     {
       type: 'divider',
     },
@@ -201,7 +205,9 @@ export default function DataTable({ config, extra = [] }) {
           <Button onClick={handelDataTableLoad} key={`${uniqueId()}`} icon={<RedoOutlined />}>
             {translate('Refresh')}
           </Button>,
-
+          ...extraArray.map((item, index) =>
+            isValidElement(item) ? cloneElement(item, { key: `extra-${index}` }) : item
+          ),
           !disableAdd && <AddNewItem config={config} key={`${uniqueId()}`} />,
         ]}
         style={{

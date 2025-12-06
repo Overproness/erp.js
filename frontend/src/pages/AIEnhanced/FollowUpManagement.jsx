@@ -1,3 +1,4 @@
+import { DataImportButton } from '@/components/DataEntry';
 import {
   CalendarOutlined,
   CheckCircleOutlined,
@@ -246,6 +247,13 @@ export default function FollowUpManagement() {
             <Button icon={<ReloadOutlined />} onClick={loadFollowUps}>
               Refresh
             </Button>
+            <DataImportButton
+              moduleName="followUp"
+              onImportComplete={(result) => {
+                message.success(`Imported ${result.successful || 0} follow-ups successfully`);
+                loadFollowUps();
+              }}
+            />
             <Button
               type="primary"
               icon={<PlusOutlined />}

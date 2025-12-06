@@ -1,3 +1,4 @@
+import { DataImportButton } from '@/components/DataEntry';
 import AppointmentForm from '@/forms/AppointmentForm';
 import useLanguage from '@/locale/useLanguage';
 import { request } from '@/request';
@@ -418,6 +419,13 @@ export default function AppointmentsPage() {
             >
               {viewMode === 'list' ? 'Calendar View' : 'List View'}
             </Button>
+            <DataImportButton
+              moduleName="appointment"
+              onImportComplete={(result) => {
+                fetchAppointments();
+                message.success(`Imported ${result.saved || 0} appointments successfully!`);
+              }}
+            />
             <Button type="primary" icon={<PlusOutlined />} onClick={handleCreate}>
               {translate('New Appointment')}
             </Button>

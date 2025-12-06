@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { cloneElement, isValidElement, useCallback, useEffect } from 'react';
 
 import {
   ArrowLeftOutlined,
@@ -45,6 +45,17 @@ export default function DataTable({ config, extra = [] }) {
   const translate = useLanguage();
   const { moneyFormatter } = useMoney();
   const { dateFormat } = useDate();
+
+  // Convert extra to array if it's a single element
+  const extraArray = Array.isArray(extra) ? extra : extra ? [extra] : [];
+  // Also check for extra in config
+  const configExtra = config.extra;
+  const configExtraArray = Array.isArray(configExtra)
+    ? configExtra
+    : configExtra
+      ? [configExtra]
+      : [];
+  const allExtra = [...extraArray, ...configExtraArray];
 
   const items = [
     {
@@ -194,7 +205,9 @@ export default function DataTable({ config, extra = [] }) {
           <Button onClick={handelDataTableLoad} key={`${uniqueId()}`} icon={<RedoOutlined />}>
             {translate('Refresh')}
           </Button>,
-
+          ...allExtra.map((item, index) =>
+            isValidElement(item) ? cloneElement(item, { key: `extra-${index}` }) : item
+          ),
           <AddNewItem key={`${uniqueId()}`} config={config} />,
         ]}
         style={{

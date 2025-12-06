@@ -119,12 +119,21 @@ const accessSharedDocument = async (req, res) => {
     const { shortCode } = req.params;
     const { password } = req.body;
 
+    console.log('=== ACCESS SHARED DOCUMENT DEBUG ===');
+    console.log('ShortCode from params:', shortCode);
+    console.log('Password provided:', !!password);
+
     // Find URL by shortCode
     const url = await URL.findOne({
       shortCode: shortCode,
       isActive: true,
-      removed: false,
     });
+
+    console.log('URL found:', !!url);
+    if (url) {
+      console.log('URL ID:', url._id);
+      console.log('URL metadata:', url.metadata);
+    }
 
     if (!url) {
       return res.status(404).json({
@@ -218,7 +227,7 @@ const accessSharedDocument = async (req, res) => {
         },
         downloadUrl: `${req.protocol}://${req.get(
           'host'
-        )}/api/document/shared/${shortCode}/download`,
+        )}/api/public/document/shared/${shortCode}/download`,
         permissions: url.metadata?.permissions || ['read'],
         viewCount: url.clicks,
       },
@@ -246,7 +255,6 @@ const downloadSharedDocument = async (req, res) => {
     const url = await URL.findOne({
       shortCode: shortCode,
       isActive: true,
-      removed: false,
     });
 
     if (!url) {

@@ -1,15 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Card, Space, Button, Input, Select, message, Row, Col, Statistic, Typography } from 'antd';
-import { PlusOutlined, SearchOutlined, FilterOutlined, ReloadOutlined, LinkOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { request } from '@/request';
 import useLanguage from '@/locale/useLanguage';
+import { request } from '@/request';
+import { LinkOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Statistic,
+  Table,
+  Typography,
+} from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useColumns from './columns';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
 
-export default function UrlDataTableModule({ config }) {
+export default function UrlDataTableModule({ config, extra }) {
   const translate = useLanguage();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -37,10 +49,10 @@ export default function UrlDataTableModule({ config }) {
     try {
       setLoading(true);
       console.log('Deleting URL with ID:', id);
-      
+
       // Use the correct format for the delete request
       const response = await request.delete({ entity: 'url', id });
-      
+
       if (response.success) {
         message.success(translate('URL deleted successfully'));
         fetchData(); // Refresh the data
@@ -74,7 +86,7 @@ export default function UrlDataTableModule({ config }) {
 
       if (response.success) {
         setDataSource(response.result || []);
-        setPagination(prev => ({
+        setPagination((prev) => ({
           ...prev,
           total: response.pagination?.count || 0,
         }));
@@ -109,7 +121,7 @@ export default function UrlDataTableModule({ config }) {
   }, []);
 
   const handleTableChange = (paginationInfo, filtersInfo, sorter) => {
-    setPagination(prev => ({
+    setPagination((prev) => ({
       ...prev,
       current: paginationInfo.current,
       pageSize: paginationInfo.pageSize,
@@ -117,13 +129,13 @@ export default function UrlDataTableModule({ config }) {
   };
 
   const handleSearch = (value) => {
-    setFilters(prev => ({ ...prev, search: value }));
-    setPagination(prev => ({ ...prev, current: 1 }));
+    setFilters((prev) => ({ ...prev, search: value }));
+    setPagination((prev) => ({ ...prev, current: 1 }));
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-    setPagination(prev => ({ ...prev, current: 1 }));
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPagination((prev) => ({ ...prev, current: 1 }));
   };
 
   const handleRefresh = () => {
@@ -182,11 +194,8 @@ export default function UrlDataTableModule({ config }) {
         title={config.dataTableTitle || translate('URLs')}
         extra={
           <Space>
-            <Button
-              icon={<ReloadOutlined />}
-              onClick={handleRefresh}
-              loading={loading}
-            >
+            {extra}
+            <Button icon={<ReloadOutlined />} onClick={handleRefresh} loading={loading}>
               {translate('Refresh')}
             </Button>
             {/* New button for A/B Testing */}

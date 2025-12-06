@@ -1,41 +1,60 @@
-import React, { useState } from 'react';
+import { DataImportButton } from '@/components/DataEntry';
+import { useTeamStats } from '@/hooks/useStatistics';
+import useLanguage from '@/locale/useLanguage';
+import { erp } from '@/redux/erp/actions';
+import {
+  CalendarOutlined,
+  CheckCircleOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Card, Col, Row, Spin, Statistic, Typography } from 'antd';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, Typography, Row, Col, Statistic, Card, Spin } from 'antd';
-import { PlusOutlined, TeamOutlined, UserOutlined, CrownOutlined, CalendarOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { TeamDataTableModule } from './TeamModule/TeamDataTableModule';
 import { TEAM_ENTITY } from './TeamModule/TeamDataTableModule/config';
-import useLanguage from '@/locale/useLanguage';
-import { useTeamStats } from '@/hooks/useStatistics';
 
 const { Title, Text } = Typography;
 
 const Team = () => {
   const translate = useLanguage();
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
+
   // Use dynamic statistics from API
-  const { data: teamStats, loading: statsLoading, error: statsError } = useTeamStats({ 
+  const {
+    data: teamStats,
+    loading: statsLoading,
+    error: statsError,
+  } = useTeamStats({
     timeframe: '30',
     autoRefresh: true,
-    refreshInterval: 300000 // 5 minutes
+    refreshInterval: 300000, // 5 minutes
   });
 
   const handleCreateNew = () => {
     navigate('/team/create');
   };
-  
+
   const config = {
     entity: TEAM_ENTITY,
     DATATABLE_TITLE: translate('team_list'),
     ADD_NEW_ENTITY: translate('add_team'),
-    ENTITY_NAME: translate('team')
+    ENTITY_NAME: translate('team'),
   };
-  
+
   return (
     <div style={{ padding: '0' }}>
       {/* Header Section */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '24px',
+          }}
+        >
           <div>
             <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
               {translate('Team Management')}
@@ -116,7 +135,17 @@ const Team = () => {
           boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)',
         }}
       >
-        <TeamDataTableModule config={config} />
+        <TeamDataTableModule
+          config={config}
+          extra={
+            <DataImportButton
+              moduleName="team"
+              onImportComplete={(result) => {
+                dispatch(erp.list({ entity: 'team' }));
+              }}
+            />
+          }
+        />
       </Card>
     </div>
   );

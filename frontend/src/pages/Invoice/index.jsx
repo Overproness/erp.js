@@ -1,7 +1,8 @@
+import { DataImportButton } from '@/components/DataEntry';
 import { useInvoiceStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
+import { erp } from '@/redux/erp/actions';
 import { useDate, useMoney } from '@/settings';
-import InvoiceDataTableModule from './InvoiceModule/InvoiceDataTableModule';
 import {
   CalendarOutlined,
   DollarOutlined,
@@ -10,6 +11,8 @@ import {
 } from '@ant-design/icons';
 import { Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import InvoiceDataTableModule from './InvoiceModule/InvoiceDataTableModule';
 
 const { Title, Text } = Typography;
 
@@ -17,6 +20,7 @@ export default function Invoice() {
   const translate = useLanguage();
   const { dateFormat } = useDate();
   const { moneyFormatter } = useMoney();
+  const dispatch = useDispatch();
 
   // Use dynamic statistics from API
   const {
@@ -236,7 +240,18 @@ export default function Invoice() {
         </Row>
       </div>
 
-      <InvoiceDataTableModule config={config} />
+      <InvoiceDataTableModule
+        config={config}
+        extra={
+          <DataImportButton
+            moduleName="invoice"
+            onImportComplete={(result) => {
+              // console.log('🚀 ~ Invoice ~ result:', result);
+              dispatch(erp.list({ entity: 'invoice' }));
+            }}
+          />
+        }
+      />
     </div>
   );
 }

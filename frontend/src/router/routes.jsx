@@ -52,8 +52,8 @@ const Tasks = lazy(() => import('@/pages/Tasks'));
 
 // Business Process Automation
 const Appointments = lazy(() => import('@/pages/Appointments'));
-const BusinessProcesses = lazy(() => import('@/pages/BusinessProcesses'));
-const TaskTracking = lazy(() => import('@/pages/TaskTracking'));
+// const BusinessProcesses = lazy(() => import('@/pages/BusinessProcesses'));
+// const TaskTracking = lazy(() => import('@/pages/TaskTracking'));
 
 // AI Assistant
 const AiAssistantModule = lazy(() => import('@/pages/AIAssistant/AiAssistant'));
@@ -653,24 +653,24 @@ let routes = {
       ),
       permissions: ['workflow:read'],
     },
-    {
-      path: '/business-processes',
-      element: (
-        <Suspense fallback={<LoadingComponent />}>
-          <BusinessProcesses />
-        </Suspense>
-      ),
-      permissions: ['workflow:read'],
-    },
-    {
-      path: '/task-tracking',
-      element: (
-        <Suspense fallback={<LoadingComponent />}>
-          <TaskTracking />
-        </Suspense>
-      ),
-      permissions: ['task:read'],
-    },
+    // {
+    //   path: '/business-processes',
+    //   element: (
+    //     <Suspense fallback={<LoadingComponent />}>
+    //       <BusinessProcesses />
+    //     </Suspense>
+    //   ),
+    //   permissions: ['workflow:read'],
+    // },
+    // {
+    //   path: '/task-tracking',
+    //   element: (
+    //     <Suspense fallback={<LoadingComponent />}>
+    //       <TaskTracking />
+    //     </Suspense>
+    //   ),
+    //   permissions: ['task:read'],
+    // },
     // Marketing Management Routes
     {
       path: '/marketing',

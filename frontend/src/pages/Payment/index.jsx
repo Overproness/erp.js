@@ -1,6 +1,7 @@
+import { DataImportButton } from '@/components/DataEntry';
 import { usePaymentStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
-import PaymentDataTableModule from './PaymentModule/PaymentDataTableModule';
+import { erp } from '@/redux/erp/actions';
 import { useDate, useMoney } from '@/settings';
 import {
   ArrowUpOutlined,
@@ -11,7 +12,9 @@ import {
 } from '@ant-design/icons';
 import { Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PaymentDataTableModule from './PaymentModule/PaymentDataTableModule';
 
 const { Title, Text } = Typography;
 
@@ -20,6 +23,7 @@ export default function Payment() {
   const { dateFormat } = useDate();
   const { moneyFormatter } = useMoney();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Use dynamic statistics from API
   const {
@@ -216,8 +220,17 @@ export default function Payment() {
       </div>
 
       {/* Main Content */}
-        <PaymentDataTableModule config={config} />
-
+      <PaymentDataTableModule
+        config={config}
+        extra={
+          <DataImportButton
+            moduleName="payment"
+            onImportComplete={(result) => {
+              dispatch(erp.list({ entity: 'payment' }));
+            }}
+          />
+        }
+      />
     </div>
   );
 }

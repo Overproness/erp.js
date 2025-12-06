@@ -14,8 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { usePaymentModeStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 
+import { DataImportButton } from '@/components/DataEntry';
 import PaymentModeForm from '@/forms/PaymentModeForm';
 import CrudModule from '@/pages/CrudModule/CrudModule';
+import { erp } from '@/redux/erp/actions';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Switch } from 'antd';
 
@@ -126,6 +128,14 @@ export default function PaymentMode() {
     dataTableColumns,
     searchConfig,
     deleteModalLabels,
+    extra: (
+      <DataImportButton
+        moduleName="paymentMode"
+        onImportComplete={(result) => {
+          dispatch(erp.list({ entity: 'paymentMode' }));
+        }}
+      />
+    ),
   };
 
   return (
@@ -221,12 +231,11 @@ export default function PaymentMode() {
 
       {/* Main Content */}
 
-        <CrudModule
-          createForm={<PaymentModeForm />}
-          updateForm={<PaymentModeForm isUpdateForm={true} />}
-          config={config}
-        />
-
+      <CrudModule
+        createForm={<PaymentModeForm />}
+        updateForm={<PaymentModeForm isUpdateForm={true} />}
+        config={config}
+      />
     </div>
   );
 }

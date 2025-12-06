@@ -81,6 +81,7 @@ const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
 // App Routes
 const erpApiRouter = require('./routes/appRoutes/appApi');
 const documentRouter = require('./routes/appRoutes/documentRoutes');
+const documentPublicRoutes = require('./routes/appRoutes/documentPublicRoutes');
 const teamRouter = require('./routes/appRoutes/teamRoutes');
 const complianceRoutes = require('./routes/appRoutes/complianceRoutes');
 const userRoutes = require('./routes/appRoutes/userRoutes');
@@ -95,6 +96,9 @@ const appointmentRoutes = require('./routes/appRoutes/appointmentRoutes');
 const businessProcessRoutes = require('./routes/appRoutes/businessProcessRoutes');
 const reminderRoutes = require('./routes/appRoutes/reminderRoutes');
 const taskRoutes = require('./routes/appRoutes/taskRoutes');
+
+// Data Entry Routes
+const dataEntryRoutes = require('./routes/dataEntryRoutes');
 
 // AI Routes
 const aiAssistantRoutes = require('./routes/appRoutes/aiAssistantRoutes');
@@ -117,6 +121,7 @@ const teamPublicRoutes = require('./routes/appRoutes/teamPublicRoutes');
 // URL Management Routes
 const urlRoutes = require('./routes/appRoutes/urlRoutes');
 const urlRedirectRoutes = require('./routes/appRoutes/urlRedirectRoutes');
+const urlRedirectController = require('./controllers/appControllers/urlRedirectController');
 const abTestRoutes = require('./routes/appRoutes/abTestRoutes');
 
 // Chat Routes
@@ -188,7 +193,14 @@ app.use((req, res, next) => {
 // ─────────────────────────────────────────────────────────────
 // File Upload Middleware and Validation
 // ─────────────────────────────────────────────────────────────
-app.use(
+// Skip express-fileupload for data-entry routes that use multer
+app.use((req, res, next) => {
+  if (
+    req.path.startsWith('/api/data-entry/ocr') ||
+    req.path.startsWith('/api/data-entry/spreadsheet')
+  ) {
+    return next();
+  }
   fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
     useTempFiles: false,
@@ -200,8 +212,8 @@ app.use(
         result: null,
         message: 'File is too large. Maximum file size is 50MB.',
       }),
-  })
-);
+  })(req, res, next);
+});
 
 // Custom file validation
 const validateFileUpload = (req, res, next) => {
@@ -310,7 +322,46 @@ app.use('/api', behaviorTracking.trackApiInteraction);
 // ─────────────────────────────────────────────────────────────
 // Register Routes (Order Matters!)
 // ─────────────────────────────────────────────────────────────
-// Public Routes
+// Public Routes - URL shortcode redirect (must be BEFORE /api routes)
+// Direct mount for short URLs at root level
+const { catchErrors } = errorHandlers;
+
+app.get(
+  '/s/:shortCode',
+  (req, res, next) => {
+    delete req.headers.authorization;
+    next();
+  },
+  catchErrors(urlRedirectController.getUrl)
+);
+
+app.get(
+  '/s/:shortCode/preview',
+  (req, res, next) => {
+    delete req.headers.authorization;
+    next();
+  },
+  catchErrors(urlRedirectController.preview)
+);
+
+app.get(
+  '/s/:shortCode/qr',
+  (req, res, next) => {
+    delete req.headers.authorization;
+    next();
+  },
+  catchErrors(urlRedirectController.generateQRCode)
+);
+
+app.post(
+  '/s/:shortCode/password',
+  (req, res, next) => {
+    delete req.headers.authorization;
+    next();
+  },
+  catchErrors(urlRedirectController.checkPassword)
+);
+
 app.use('/api', coreAuthRouter);
 app.use(
   '/api/public/social-media',
@@ -349,6 +400,15 @@ app.use(
   teamPublicRoutes
 );
 
+app.use(
+  '/api/public/document',
+  (req, res, next) => {
+    delete req.headers.authorization;
+    next();
+  },
+  documentPublicRoutes
+);
+
 // Custom tracking endpoint
 app.post('/api/track/event', behaviorTracking.trackCustomEvent);
 
@@ -378,6 +438,7 @@ app.use('/api/social-media', adminAuth.isValidAuthToken, socialMediaRoutes);
 app.use('/api/reputation/analytics', adminAuth.isValidAuthToken, reputationAnalyticsRoutes);
 app.use('/api/marketing', adminAuth.isValidAuthToken, marketingRoutes);
 app.use('/api/user', adminAuth.isValidAuthToken, userRoutes);
+app.use('/api/data-entry', adminAuth.isValidAuthToken, dataEntryRoutes);
 app.use('/api/workflows', adminAuth.isValidAuthToken, workflowRoutes);
 app.use('/api/appointments', adminAuth.isValidAuthToken, appointmentRoutes);
 app.use('/api/business-processes', adminAuth.isValidAuthToken, businessProcessRoutes);

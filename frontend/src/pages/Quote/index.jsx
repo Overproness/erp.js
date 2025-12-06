@@ -1,6 +1,7 @@
+import { DataImportButton } from '@/components/DataEntry';
 import { useQuoteStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
-import QuoteDataTableModule from './QuoteModule/QuoteDataTableModule';
+import { erp } from '@/redux/erp/actions';
 import { useDate, useMoney } from '@/settings';
 import {
   CalendarOutlined,
@@ -11,6 +12,8 @@ import {
 } from '@ant-design/icons';
 import { Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import QuoteDataTableModule from './QuoteModule/QuoteDataTableModule';
 
 const { Title, Text } = Typography;
 
@@ -19,6 +22,7 @@ export default function Quote() {
   const { dateFormat } = useDate();
   const entity = 'quote';
   const { moneyFormatter } = useMoney();
+  const dispatch = useDispatch();
 
   // Use dynamic statistics from API
   const {
@@ -226,8 +230,17 @@ export default function Quote() {
       </div>
 
       {/* Main Content */}
-        <QuoteDataTableModule config={config} />
-
+      <QuoteDataTableModule
+        config={config}
+        extra={
+          <DataImportButton
+            moduleName="quote"
+            onImportComplete={(result) => {
+              dispatch(erp.list({ entity: 'quote' }));
+            }}
+          />
+        }
+      />
     </div>
   );
 }

@@ -6,11 +6,10 @@ const { catchErrors } = require('@/handlers/errorHandlers');
 const urlService = require('@/services/urlService');
 const analyticsService = require('@/services/urlAnalyticsService');
 
-
 const getUrl = catchErrors(async (req, res) => {
   const { shortCode } = req.params;
   const { preview = false, password } = req.query;
-  console.log("=== GET URL FUNCTION CALLED ===");
+  console.log('=== GET URL FUNCTION CALLED ===');
 
   try {
     // Use isActive: true instead of status: 'active'
@@ -20,7 +19,7 @@ const getUrl = catchErrors(async (req, res) => {
     if (!url) {
       return res.status(404).json({
         success: false,
-        message: 'URL not found'
+        message: 'URL not found',
       });
     }
 
@@ -45,7 +44,7 @@ const getUrl = catchErrors(async (req, res) => {
           shortCode: url.shortCode,
           title: url.title,
           description: url.description,
-          isPasswordProtected: true
+          isPasswordProtected: true,
         });
       }
       // Expired: show expired portal
@@ -57,7 +56,7 @@ const getUrl = catchErrors(async (req, res) => {
           portal: 'expired',
           shortCode: url.shortCode,
           title: url.title,
-          description: url.description
+          description: url.description,
         });
       }
       // Click limit reached: show limit reached portal
@@ -69,42 +68,42 @@ const getUrl = catchErrors(async (req, res) => {
           portal: 'limit_reached',
           shortCode: url.shortCode,
           title: url.title,
-          description: url.description
+          description: url.description,
         });
       }
       // Other access issues
       return res.status(403).json({
         success: false,
         message: accessCheck.message,
-        reason: accessCheck.reason
+        reason: accessCheck.reason,
       });
     }
 
     // Check for A/B test
     let finalUrl = url;
     let abTestVariant = 'control';
-    
+
     try {
-      const activeTests = await ABTest.find({ 
-        url: url._id, 
+      const activeTests = await ABTest.find({
+        url: url._id,
         status: 'active',
         startDate: { $lte: new Date() },
-        endDate: { $gte: new Date() }
+        endDate: { $gte: new Date() },
       });
-      
+
       if (activeTests.length > 0) {
         const test = activeTests[0];
         const userId = user?._id || clientInfo.userId;
-        
+
         // Simple variant assignment based on user ID hash
         const hash = require('crypto').createHash('md5').update(userId.toString()).digest('hex');
         const hashInt = parseInt(hash.substring(0, 8), 16);
         const variantIndex = hashInt % test.variants.length;
         abTestVariant = test.variants[variantIndex]?.name || 'control';
-        
+
         if (abTestVariant !== 'control') {
           // Get variant URL
-          const variant = test.variants.find(v => v.name === abTestVariant);
+          const variant = test.variants.find((v) => v.name === abTestVariant);
           if (variant && variant.url) {
             const variantUrl = await URL.findById(variant.url);
             if (variantUrl) {
@@ -132,17 +131,27 @@ const getUrl = catchErrors(async (req, res) => {
     // Increment click counters
     try {
       await URL.findByIdAndUpdate(url._id, {
-        $inc: { 
+        $inc: {
           totalClicks: 1,
-          uniqueClicks: clientInfo.isUniqueClick ? 1 : 0
+          uniqueClicks: clientInfo.isUniqueClick ? 1 : 0,
         },
         lastClickedAt: new Date(),
-        ...(url.totalClicks === 0 && { firstClickedAt: new Date() })
+        ...(url.totalClicks === 0 && { firstClickedAt: new Date() }),
       });
     } catch (updateError) {
       console.error('URL update error:', updateError);
     }
 
+    // Special handling for document share URLs - redirect directly to download
+    if (url.category === 'document_share' && url.metadata?.documentId) {
+      const downloadUrl = `${req.protocol}://${req.get('host')}/api/public/document/shared/${
+        url.shortCode
+      }/download`;
+      console.log('Document share detected, redirecting to:', downloadUrl);
+      return res.redirect(downloadUrl);
+    }
+
+    // For regular URLs, return JSON with redirect information
     // Only return URL data if not password protected, expired, or limit reached
     return res.status(200).json({
       success: true,
@@ -157,19 +166,17 @@ const getUrl = catchErrors(async (req, res) => {
         isExpired: false, // Already checked
         isLimitReached: false, // Already checked
         abTestVariant,
-        totalClicks: url.totalClicks + 1 // Include the incremented count
-      }
+        totalClicks: url.totalClicks + 1, // Include the incremented count
+      },
     });
-
   } catch (error) {
     console.error('Redirect error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Redirect failed'
+      message: 'Redirect failed',
     });
   }
 });
-
 
 // Check password for protected URLs
 const checkPassword = catchErrors(async (req, res) => {
@@ -177,27 +184,27 @@ const checkPassword = catchErrors(async (req, res) => {
   const { password } = req.body;
 
   const url = await URL.findByShortCode(shortCode);
-  
+
   if (!url) {
     return res.status(404).json({
       success: false,
-      message: 'URL not found'
+      message: 'URL not found',
     });
   }
 
   if (!url.passwordProtected) {
     return res.status(400).json({
       success: false,
-      message: 'URL is not password protected'
+      message: 'URL is not password protected',
     });
   }
 
   const isValidPassword = await urlService.verifyPassword(password, url.password);
-  
+
   if (!isValidPassword) {
     return res.status(401).json({
       success: false,
-      message: 'Invalid password'
+      message: 'Invalid password',
     });
   }
 
@@ -207,7 +214,7 @@ const checkPassword = catchErrors(async (req, res) => {
   return res.status(200).json({
     success: true,
     result: { accessToken },
-    message: 'Password verified'
+    message: 'Password verified',
   });
 });
 
@@ -217,29 +224,28 @@ const generateQRCode = catchErrors(async (req, res) => {
   const { size = 200, format = 'png' } = req.query;
 
   const url = await URL.findByShortCode(shortCode);
-  
+
   if (!url) {
     return res.status(404).json({
       success: false,
-      message: 'URL not found'
+      message: 'URL not found',
     });
   }
 
   try {
     const qrCodeBuffer = await urlService.generateQRCodeBuffer(url.shortenedUrl, {
       size: parseInt(size),
-      format
+      format,
     });
 
     res.setHeader('Content-Type', `image/${format}`);
     res.setHeader('Content-Disposition', `inline; filename="qr-${shortCode}.${format}"`);
     res.send(qrCodeBuffer);
-
   } catch (error) {
     console.error('QR Code generation error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Failed to generate QR code'
+      message: 'Failed to generate QR code',
     });
   }
 });
@@ -277,14 +283,14 @@ const checkUrlAccess = async (url, user, clientInfo, password) => {
 
   // Check IP restrictions
   if (url.ipRestrictions.length > 0) {
-    const ipAllowed = url.ipRestrictions.some(restriction => {
+    const ipAllowed = url.ipRestrictions.some((restriction) => {
       if (restriction.type === 'whitelist') {
         return restriction.ip === clientInfo.ipAddress;
       } else {
         return restriction.ip !== clientInfo.ipAddress;
       }
     });
-    
+
     if (!ipAllowed) {
       return { allowed: false, reason: 'ip_restricted', message: 'IP address not allowed' };
     }
@@ -292,14 +298,14 @@ const checkUrlAccess = async (url, user, clientInfo, password) => {
 
   // Check country restrictions
   if (url.countryRestrictions.length > 0 && clientInfo.country) {
-    const countryAllowed = url.countryRestrictions.some(restriction => {
+    const countryAllowed = url.countryRestrictions.some((restriction) => {
       if (restriction.type === 'allow') {
         return restriction.country === clientInfo.country;
       } else {
         return restriction.country !== clientInfo.country;
       }
     });
-    
+
     if (!countryAllowed) {
       return { allowed: false, reason: 'country_restricted', message: 'Country not allowed' };
     }
@@ -349,7 +355,7 @@ const trackClick = async (url, user, clientInfo, abTestVariant, abTest) => {
       isBot: clientInfo.isBot || false,
       isValidClick: !(clientInfo.isBot || false),
       language: clientInfo.language,
-      clickedAt: new Date()
+      clickedAt: new Date(),
     };
 
     await new URLClick(clickData).save();
@@ -364,14 +370,14 @@ const buildRedirectUrl = (url, queryParams) => {
   try {
     const originalUrl = url.originalUrl;
     const targetUrl = new globalThis.URL(originalUrl);
-    
+
     // Add UTM parameters if they exist in the URL model or query
     const utmParams = {
       utm_source: url.utmSource || queryParams.utm_source,
       utm_medium: url.utmMedium || queryParams.utm_medium,
       utm_campaign: url.utmCampaign || queryParams.utm_campaign,
       utm_term: url.utmTerm || queryParams.utm_term,
-      utm_content: url.utmContent || queryParams.utm_content
+      utm_content: url.utmContent || queryParams.utm_content,
     };
 
     Object.entries(utmParams).forEach(([key, value]) => {
@@ -402,5 +408,5 @@ const extractUserFromToken = async (authHeader) => {
 module.exports = {
   getUrl,
   checkPassword,
-  generateQRCode
+  generateQRCode,
 };

@@ -12,6 +12,10 @@ class OpenAIHelper {
     }
   }
 
+  hasApiKey() {
+    return !!this.apiKey;
+  }
+
   // Method to get user's API key from settings
   static async getUserApiKey(userId) {
     try {
@@ -40,17 +44,27 @@ class OpenAIHelper {
     }
 
     try {
+      // Extract and convert parameters to OpenAI format
+      const {
+        temperature = 0.7,
+        maxTokens = 1000,
+        topP = 1,
+        frequencyPenalty = 0,
+        presencePenalty = 0,
+        ...otherParams
+      } = parameters;
+
       const response = await axios.post(
         `${this.baseURL}/chat/completions`,
         {
           model,
           messages,
-          temperature: parameters.temperature || 0.7,
-          max_tokens: parameters.maxTokens || 1000,
-          top_p: parameters.topP || 1,
-          frequency_penalty: parameters.frequencyPenalty || 0,
-          presence_penalty: parameters.presencePenalty || 0,
-          ...parameters,
+          temperature,
+          max_tokens: maxTokens,
+          top_p: topP,
+          frequency_penalty: frequencyPenalty,
+          presence_penalty: presencePenalty,
+          ...otherParams,
         },
         {
           headers: {
