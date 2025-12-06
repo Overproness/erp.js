@@ -2,6 +2,7 @@ import AdvancedSearch from '@/components/AdvancedSearch';
 import AiDocumentManagerModal from '@/components/AiAssist/AiDocumentManagerModal';
 import AITagSuggestions from '@/components/Document/AITagSuggestions';
 import BulkURLImport from '@/components/Document/BulkURLImport';
+import ShareDocumentModal from '@/components/Document/ShareDocumentModal';
 import { useDocumentStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions'; // Change from crud to erp
@@ -15,7 +16,7 @@ import {
   FileTextOutlined,
   FormOutlined,
   PlusOutlined,
-  RobotOutlined,
+  ShareAltOutlined,
 } from '@ant-design/icons';
 import {
   Button,
@@ -66,6 +67,8 @@ export default function Document() {
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [aiModalVisible, setAiModalVisible] = useState(false);
   const [advancedSearchVisible, setAdvancedSearchVisible] = useState(false);
+  const [shareModalVisible, setShareModalVisible] = useState(false);
+  const [selectedDocumentForShare, setSelectedDocumentForShare] = useState(null);
 
   const handleRefreshList = () => {
     dispatch(
@@ -108,6 +111,11 @@ export default function Document() {
         })
       );
     }
+  };
+
+  const handleShare = (document) => {
+    setSelectedDocumentForShare(document);
+    setShareModalVisible(true);
   };
 
   // Fetch documents on mount
@@ -203,6 +211,9 @@ export default function Document() {
               icon={<DownloadOutlined />}
               onClick={() => dispatch(erp.downloadDocument({ entity: 'document', id: record._id }))}
             />
+          </Tooltip>
+          <Tooltip title={translate('Share')}>
+            <Button type="text" icon={<ShareAltOutlined />} onClick={() => handleShare(record)} />
           </Tooltip>
           <Tooltip title={translate('Delete')}>
             <Button
@@ -466,6 +477,17 @@ export default function Document() {
 
       {/* AI Assistant Modal */}
       <AiDocumentManagerModal visible={aiModalVisible} onCancel={() => setAiModalVisible(false)} />
+
+      {/* Share Document Modal */}
+      <ShareDocumentModal
+        visible={shareModalVisible}
+        onCancel={() => {
+          setShareModalVisible(false);
+          setSelectedDocumentForShare(null);
+        }}
+        documentId={selectedDocumentForShare?._id}
+        documentTitle={selectedDocumentForShare?.title || 'Document'}
+      />
 
       {/* Advanced Search Modal */}
       <Modal

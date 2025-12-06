@@ -100,6 +100,10 @@ const taskRoutes = require('./routes/appRoutes/taskRoutes');
 // Data Entry Routes
 const dataEntryRoutes = require('./routes/dataEntryRoutes');
 
+// Survey Routes
+const surveyRoutes = require('./routes/surveyRoutes');
+const publicSurveyRoutes = require('./routes/publicSurveyRoutes');
+
 // AI Routes
 const aiAssistantRoutes = require('./routes/appRoutes/aiAssistantRoutes');
 const aiDataProcessorRoutes = require('./routes/appRoutes/aiDataProcessorRoutes');
@@ -323,11 +327,11 @@ app.use('/api', behaviorTracking.trackApiInteraction);
 // Register Routes (Order Matters!)
 // ─────────────────────────────────────────────────────────────
 // Public Routes - URL shortcode redirect (must be BEFORE /api routes)
-// Direct mount for short URLs at root level
+// Move these to /api/s/:shortCode to avoid conflicts with frontend routing
 const { catchErrors } = errorHandlers;
 
 app.get(
-  '/s/:shortCode',
+  '/api/s/:shortCode',
   (req, res, next) => {
     delete req.headers.authorization;
     next();
@@ -336,7 +340,7 @@ app.get(
 );
 
 app.get(
-  '/s/:shortCode/preview',
+  '/api/s/:shortCode/preview',
   (req, res, next) => {
     delete req.headers.authorization;
     next();
@@ -345,7 +349,7 @@ app.get(
 );
 
 app.get(
-  '/s/:shortCode/qr',
+  '/api/s/:shortCode/qr',
   (req, res, next) => {
     delete req.headers.authorization;
     next();
@@ -354,7 +358,7 @@ app.get(
 );
 
 app.post(
-  '/s/:shortCode/password',
+  '/api/s/:shortCode/password',
   (req, res, next) => {
     delete req.headers.authorization;
     next();
@@ -409,6 +413,15 @@ app.use(
   documentPublicRoutes
 );
 
+app.use(
+  '/api/public/survey',
+  (req, res, next) => {
+    delete req.headers.authorization;
+    next();
+  },
+  publicSurveyRoutes
+);
+
 // Custom tracking endpoint
 app.post('/api/track/event', behaviorTracking.trackCustomEvent);
 
@@ -439,6 +452,7 @@ app.use('/api/reputation/analytics', adminAuth.isValidAuthToken, reputationAnaly
 app.use('/api/marketing', adminAuth.isValidAuthToken, marketingRoutes);
 app.use('/api/user', adminAuth.isValidAuthToken, userRoutes);
 app.use('/api/data-entry', adminAuth.isValidAuthToken, dataEntryRoutes);
+app.use('/api/surveys', adminAuth.isValidAuthToken, surveyRoutes);
 app.use('/api/workflows', adminAuth.isValidAuthToken, workflowRoutes);
 app.use('/api/appointments', adminAuth.isValidAuthToken, appointmentRoutes);
 app.use('/api/business-processes', adminAuth.isValidAuthToken, businessProcessRoutes);
@@ -472,6 +486,32 @@ app.use('/api/retargeting', adminAuth.isValidAuthToken, retargetingRoutes);
 //   adminAuth.isValidAuthToken,
 //   urlIntegration.generateCampaignUrls
 // );
+
+// ─────────────────────────────────────────────────────────────
+// Serve Frontend Build (Production) or Redirect (Development)
+// ─────────────────────────────────────────────────────────────
+const frontendBuildPath = path.join(__dirname, '../../frontend/dist');
+
+// Check if frontend build exists (production mode)
+if (fs.existsSync(frontendBuildPath)) {
+  // Serve static files from frontend build
+  app.use(express.static(frontendBuildPath));
+
+  // Catch-all route for client-side routing (must be after API routes)
+  app.get('*', (req, res, next) => {
+    // Don't serve index.html for API routes
+    if (req.path.startsWith('/api/')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+} else {
+  // Development mode: redirect /s/:shortCode to frontend dev server
+  app.get('/s/:shortCode', (req, res) => {
+    const frontendUrl = `http://localhost:3000/s/${req.params.shortCode}`;
+    res.redirect(frontendUrl);
+  });
+}
 
 // ─────────────────────────────────────────────────────────────
 // Error Handling and Not Found

@@ -35,7 +35,17 @@ const errorHandler = (error) => {
   // Handle 401 Unauthorized
   if (response && response.status === 401) {
     const errorMessage = response.data?.message || 'Authentication required. Please login again.';
-    showErrorMessage(`Authentication Error: ${errorMessage}`, 5);
+
+    // Don't show auth error for public endpoints (document shares, URL redirects, etc.)
+    const isPublicEndpoint =
+      response.config?.url?.includes('/public/') ||
+      response.config?.url?.includes('/api/s/') ||
+      response.config?.headers?.['X-Public-Request'] === 'true' ||
+      response.data?.requiresPassword; // Password-protected shares are expected 401s
+
+    if (!isPublicEndpoint) {
+      showErrorMessage(`Authentication Error: ${errorMessage}`, 5);
+    }
 
     return {
       success: false,

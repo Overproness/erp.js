@@ -67,12 +67,14 @@ export default function ErpOs() {
   }, [isOnline, isLoggedIn, dispatch]);
 
   // --- BEGIN: PUBLIC REDIRECT ROUTE HANDLING ---
-  // If the current route is a public redirect route, render only the router outlet (children), no layout
+  // If the current route is a public redirect route or public survey, render only the router outlet (children), no layout
   const isPublicRedirect =
     location.pathname.startsWith('/s/') &&
     (location.pathname.match(/^\/s\/[^/]+$/) || location.pathname.match(/^\/s\/[^/]+\/preview$/));
 
-  if (isPublicRedirect) {
+  const isPublicSurvey = location.pathname.startsWith('/public/survey/');
+
+  if (isPublicRedirect || isPublicSurvey) {
     // Only render the router outlet (children), no layout, no header/sidebar
     return (
       <Localization>

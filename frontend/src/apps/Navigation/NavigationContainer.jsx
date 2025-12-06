@@ -574,6 +574,16 @@ function Sidebar({ collapsible, isMobile = false }) {
           linkpath: '/reputation',
           permissions: ['reputation:read'],
         },
+        {
+          key: 'survey',
+          label: (
+            <Link to={'/survey'} className={getMenuItemClass(currentPath === 'survey')}>
+              {translate('Customer Surveys')}
+            </Link>
+          ),
+          linkpath: '/survey',
+          permissions: ['survey:read'],
+        },
       ],
     },
     {

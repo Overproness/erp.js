@@ -1,5 +1,6 @@
 import AuditTrailViewer from '@/components/AuditTrail/AuditTrailViewer';
 import DocumentSummarizer from '@/components/Document/DocumentSummarizer';
+import ShareDocumentModal from '@/components/Document/ShareDocumentModal';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
 import { selectDownloadState } from '@/redux/erp/selectors';
@@ -12,24 +13,11 @@ import {
   HistoryOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons';
-import {
-  Button,
-  Card,
-  Descriptions,
-  Divider,
-  message,
-  Space,
-  Tag,
-  Typography,
-  Modal,
-  Input,
-} from 'antd';
+import { Button, Card, Descriptions, Divider, message, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/serverApiConfig';
 
 const { Title, Paragraph } = Typography;
 
@@ -43,8 +31,6 @@ export default function DocumentRead() {
   const [documentData, setDocumentData] = useState(null);
   const [auditTrailVisible, setAuditTrailVisible] = useState(false);
   const [shareModalVisible, setShareModalVisible] = useState(false);
-  const [shareUrl, setShareUrl] = useState(null);
-  const [sharingLoading, setSharingLoading] = useState(false);
 
   useEffect(() => {
     dispatch(erp.read({ entity: 'document', id }));
@@ -87,43 +73,8 @@ export default function DocumentRead() {
     setAuditTrailVisible(true);
   };
 
-  const handleGenerateShareUrl = async () => {
-    setSharingLoading(true);
-    try {
-      const token = localStorage.getItem('token') || window.localStorage.getItem('token');
-      const response = await axios.post(
-        `${API_BASE_URL}document/${id}/share-url`,
-        {
-          permissions: ['read'],
-          analytics: true,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.data.success) {
-        setShareUrl(response.data.result.shortUrl);
-        setShareModalVisible(true);
-        message.success('Share URL generated successfully');
-      } else {
-        message.error(response.data.message || 'Failed to generate share URL');
-      }
-    } catch (error) {
-      console.error('Share URL error:', error);
-      message.error('Failed to generate share URL');
-    } finally {
-      setSharingLoading(false);
-    }
-  };
-
-  const handleCopyShareUrl = () => {
-    if (shareUrl) {
-      navigator.clipboard.writeText(shareUrl);
-      message.success('Share URL copied to clipboard');
-    }
+  const handleShare = () => {
+    setShareModalVisible(true);
   };
 
   if (isLoading || !documentData) {
@@ -177,11 +128,7 @@ export default function DocumentRead() {
                   : translate('Edit Content')}
               </Button>
             )}
-            <Button
-              icon={<ShareAltOutlined />}
-              onClick={handleGenerateShareUrl}
-              loading={sharingLoading}
-            >
+            <Button icon={<ShareAltOutlined />} onClick={handleShare}>
               {translate('Share')}
             </Button>
             <Button icon={<HistoryOutlined />} onClick={handleViewAuditTrail}>
@@ -242,40 +189,13 @@ export default function DocumentRead() {
         title={`Audit Trail - ${documentData.title}`}
       />
 
-      {/* Share URL Modal */}
-      <Modal
-        title="Share Document"
-        open={shareModalVisible}
+      {/* Share Document Modal with Security Controls */}
+      <ShareDocumentModal
+        visible={shareModalVisible}
         onCancel={() => setShareModalVisible(false)}
-        footer={[
-          <Button key="close" onClick={() => setShareModalVisible(false)}>
-            Close
-          </Button>,
-          <Button key="copy" type="primary" onClick={handleCopyShareUrl}>
-            Copy URL
-          </Button>,
-        ]}
-      >
-        {shareUrl && (
-          <div>
-            <Paragraph>
-              Share this URL with others to allow them to view and download this document:
-            </Paragraph>
-            <Input.Search
-              value={shareUrl}
-              readOnly
-              enterButton="Copy"
-              onSearch={handleCopyShareUrl}
-              size="large"
-            />
-            <div style={{ marginTop: '16px', fontSize: '12px', color: '#6b7280' }}>
-              <p>• Anyone with this link can view and download the document</p>
-              <p>• The link includes tracking analytics</p>
-              <p>• You can manage all share links in the document list</p>
-            </div>
-          </div>
-        )}
-      </Modal>
+        documentId={id}
+        documentTitle={documentData?.title || 'Document'}
+      />
     </Card>
   );
 }

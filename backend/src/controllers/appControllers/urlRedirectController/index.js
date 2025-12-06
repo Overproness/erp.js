@@ -36,6 +36,9 @@ const getUrl = catchErrors(async (req, res) => {
     if (!accessCheck.allowed) {
       // Password required: show password portal
       if (accessCheck.reason === 'password_required') {
+        // Detect document share by category or metadata.documentId
+        const isDocShare = url.category === 'document_share' || !!url.metadata?.documentId;
+
         return res.status(200).json({
           success: false,
           requiresPassword: true,
@@ -45,10 +48,14 @@ const getUrl = catchErrors(async (req, res) => {
           title: url.title,
           description: url.description,
           isPasswordProtected: true,
+          category: url.category || (isDocShare ? 'document_share' : null), // Include category to identify document shares
+          isDocumentShare: isDocShare, // Explicitly flag document shares
         });
       }
       // Expired: show expired portal
       if (accessCheck.reason === 'expired') {
+        const isDocShare = url.category === 'document_share' || !!url.metadata?.documentId;
+
         return res.status(200).json({
           success: false,
           isExpired: true,
@@ -57,10 +64,14 @@ const getUrl = catchErrors(async (req, res) => {
           shortCode: url.shortCode,
           title: url.title,
           description: url.description,
+          category: url.category || (isDocShare ? 'document_share' : null),
+          isDocumentShare: isDocShare,
         });
       }
       // Click limit reached: show limit reached portal
       if (accessCheck.reason === 'limit_reached') {
+        const isDocShare = url.category === 'document_share' || !!url.metadata?.documentId;
+
         return res.status(200).json({
           success: false,
           isLimitReached: true,
@@ -69,6 +80,8 @@ const getUrl = catchErrors(async (req, res) => {
           shortCode: url.shortCode,
           title: url.title,
           description: url.description,
+          category: url.category || (isDocShare ? 'document_share' : null),
+          isDocumentShare: isDocShare,
         });
       }
       // Other access issues
@@ -142,13 +155,32 @@ const getUrl = catchErrors(async (req, res) => {
       console.error('URL update error:', updateError);
     }
 
-    // Special handling for document share URLs - redirect directly to download
-    if (url.category === 'document_share' && url.metadata?.documentId) {
-      const downloadUrl = `${req.protocol}://${req.get('host')}/api/public/document/shared/${
-        url.shortCode
-      }/download`;
-      console.log('Document share detected, redirecting to:', downloadUrl);
-      return res.redirect(downloadUrl);
+    // Special handling for document share URLs
+    // Check by category or metadata.documentId
+    if (
+      (url.category === 'document_share' || url.metadata?.documentId) &&
+      url.metadata?.documentId
+    ) {
+      // Return document share information for frontend to handle
+      return res.status(200).json({
+        success: true,
+        isDocumentShare: true,
+        category: 'document_share',
+        result: {
+          _id: url._id,
+          shortCode: url.shortCode,
+          title: url.title,
+          description: url.description,
+          documentId: url.metadata.documentId,
+          documentTitle: url.metadata.documentTitle,
+          fileName: url.metadata.fileName,
+          fileType: url.metadata.fileType,
+          permissions: url.metadata.permissions || ['read'],
+          totalClicks: url.totalClicks + 1,
+          abTestVariant,
+        },
+        message: 'Document share accessed successfully',
+      });
     }
 
     // For regular URLs, return JSON with redirect information

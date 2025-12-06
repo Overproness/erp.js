@@ -63,6 +63,10 @@ const ABTest = require('./appModels/ABTest');
 // Workflow Execution Model
 const WorkflowExecution = require('./appModels/WorkflowExecution');
 
+// Survey Models
+const Survey = require('./appModels/Survey');
+const SurveyResponse = require('./appModels/SurveyResponse');
+
 module.exports = {
   // Core Models
   CompanyOwner,
@@ -115,4 +119,6 @@ module.exports = {
   TriggerRule,
   CustomerBehavior,
   CustomerSegment,
+  Survey,
+  SurveyResponse,
 };

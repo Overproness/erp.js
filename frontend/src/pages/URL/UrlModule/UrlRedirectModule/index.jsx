@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import useLanguage from '@/locale/useLanguage';
 import { Spin, message } from 'antd';
 import axios from 'axios';
-import useLanguage from '@/locale/useLanguage';
-import RedirectPage from './RedirectPage';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ErrorPage from './ErrorPage';
+import RedirectPage from './RedirectPage';
 
 const UrlRedirectModule = () => {
   const translate = useLanguage();
   const navigate = useNavigate();
   const { shortCode } = useParams();
-  
+
   const [url, setUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,10 +32,10 @@ const UrlRedirectModule = () => {
       let params = {};
       if (options.password) params.password = options.password;
 
-      const response = await axios.get(`/public/url/s/${shortCode}`, {
+      const response = await axios.get(`/api/s/${shortCode}`, {
         params,
         maxRedirects: 0,
-        validateStatus: (status) => status >= 200 && status < 400
+        validateStatus: (status) => status >= 200 && status < 400,
       });
 
       if (response.data.success) {
@@ -67,7 +67,9 @@ const UrlRedirectModule = () => {
           setUrl({
             ...response.data,
             ...response.data.result,
-            originalUrl: response.data.originalUrl || (response.data.result && response.data.result.originalUrl)
+            originalUrl:
+              response.data.originalUrl ||
+              (response.data.result && response.data.result.originalUrl),
           });
           setRequiresPassword(response.data.portal === 'password');
           setIsExpired(response.data.portal === 'expired');
@@ -78,17 +80,17 @@ const UrlRedirectModule = () => {
       }
     } catch (err) {
       console.error('Redirect error:', err);
-      
+
       // Handle specific HTTP status codes
       if (err.response) {
         const { status, data } = err.response;
-        
+
         if (data && data.portal) {
           setPortal(data.portal);
           setUrl({
             ...data,
             ...data.result,
-            originalUrl: data.originalUrl || (data.result && data.result.originalUrl)
+            originalUrl: data.originalUrl || (data.result && data.result.originalUrl),
           });
           setRequiresPassword(data.portal === 'password');
           setIsExpired(data.portal === 'expired');
@@ -133,13 +135,15 @@ const UrlRedirectModule = () => {
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        }}
+      >
         <Spin size="large" />
       </div>
     );
@@ -148,7 +152,6 @@ const UrlRedirectModule = () => {
   if (error || (!url && !requiresPassword && !isExpired && !isLimitReached && !portal)) {
     return <ErrorPage error={error} shortCode={shortCode} />;
   }
-
 
   // Show portals according to backend response
   if (portal === 'password' || requiresPassword) {
@@ -190,13 +193,15 @@ const UrlRedirectModule = () => {
 
   // This shouldn't be reached if auto-redirect works
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center',
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      }}
+    >
       <Spin size="large" />
     </div>
   );

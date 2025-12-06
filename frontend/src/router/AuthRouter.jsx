@@ -1,6 +1,7 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { selectAuth } from '@/redux/auth/selectors';
+import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import ForgetPassword from '@/pages/ForgetPassword/ForgetPassword';
 import Login from '@/pages/Login/Login';
@@ -9,22 +10,38 @@ import ResetPassword from '@/pages/ResetPassword/ResetPassword';
 import Signup from '@/pages/Signup/Signup';
 
 // Import team invitation page
-import AcceptInvitation from '@/pages/Team/AcceptInvitation';
 import Loading from '@/components/Loading';
+import AcceptInvitation from '@/pages/Team/AcceptInvitation';
 
 // Import the public redirect handler and preview page
 import RedirectHandler from '@/pages/URL/RedirectHandler';
+
+// Import public document share viewer
+import PublicDocumentShare from '@/pages/PublicDocumentShare';
+
+// Import public survey component
+const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
 
 export default function AuthRouter() {
   const { pathname } = useLocation();
   const { isLoggedIn, isLoading } = useSelector(selectAuth);
 
-  // Add review-portal to public paths
-  const publicPaths = ['/login', '/signup', '/forgot-password', '/reset-password', '/s', '/review-portal', '/team/invitation'];
+  // Add review-portal and document shares to public paths
+  const publicPaths = [
+    '/login',
+    '/signup',
+    '/forgot-password',
+    '/reset-password',
+    '/s',
+    '/share',
+    '/review-portal',
+    '/team/invitation',
+    '/public/survey',
+  ];
 
   // Check if the current path starts with any of the public paths
-  const isPublicPath = publicPaths.some(path => 
-    pathname === path || pathname.startsWith(`${path}/`)
+  const isPublicPath = publicPaths.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
 
   if (isLoading) {
@@ -51,12 +68,25 @@ export default function AuthRouter() {
       <Route element={<Navigate to="/login" replace />} path="/logout" />
       <Route element={<ForgetPassword />} path="/forgetpassword" />
       <Route element={<ResetPassword />} path="/resetpassword/:userId/:resetToken" />
-      
+
       {/* Special public route for team invitations - accessible when logged out */}
       <Route element={<AcceptInvitation />} path="/team/invitation/:token" />
 
       {/* Add public redirect routes here */}
       <Route element={<RedirectHandler />} path="/s/:shortCode" />
+
+      {/* Public document share viewer route */}
+      <Route element={<PublicDocumentShare />} path="/share/document/:shortCode" />
+
+      {/* Public survey route - accessible without authentication */}
+      <Route
+        path="/public/survey/:shortCode"
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <PublicSurvey />
+          </Suspense>
+        }
+      />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

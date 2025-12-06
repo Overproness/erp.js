@@ -138,6 +138,14 @@ const UpdateCampaignModule = lazy(
   () => import('@/pages/marketing/MarketingModule/UpdateCampaignModule')
 );
 
+// Survey Management
+const Survey = lazy(() => import('@/pages/Surveys/index'));
+const SurveyCreate = lazy(() => import('@/pages/Surveys/SurveyCreate'));
+const SurveyRead = lazy(() => import('@/pages/Surveys/SurveyRead'));
+const SurveyUpdate = lazy(() => import('@/pages/Surveys/SurveyUpdate'));
+const SurveyAnalytics = lazy(() => import('@/pages/Surveys/SurveyAnalytics'));
+const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
+
 let routes = {
   expense: [],
   default: [
@@ -164,6 +172,14 @@ let routes = {
     {
       path: '/signup',
       element: <Signup />,
+    },
+    {
+      path: '/public/survey/:shortCode',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <PublicSurvey />
+        </Suspense>
+      ),
     },
     {
       path: '/client',
@@ -725,6 +741,52 @@ let routes = {
         </Suspense>
       ),
       permissions: ['marketing:audiences'],
+    },
+    // Survey Management Routes
+    {
+      path: '/survey',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Survey />
+        </Suspense>
+      ),
+      permissions: ['survey:read'],
+    },
+    {
+      path: '/survey/create',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <SurveyCreate />
+        </Suspense>
+      ),
+      permissions: ['survey:create'],
+    },
+    {
+      path: '/survey/:id',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <SurveyRead />
+        </Suspense>
+      ),
+      permissions: ['survey:read'],
+    },
+    {
+      path: '/survey/:id/edit',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <SurveyUpdate />
+        </Suspense>
+      ),
+      permissions: ['survey:update'],
+    },
+    {
+      path: '/survey/:id/analytics',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <SurveyAnalytics />
+        </Suspense>
+      ),
+      permissions: ['survey:read'],
     },
   ],
 };

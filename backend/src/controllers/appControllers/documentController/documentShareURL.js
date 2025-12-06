@@ -43,6 +43,12 @@ const generateDocumentShareURL = async (req, res) => {
     // Generate short code for the URL
     const shortCode = await urlService.generateShortCode();
 
+    // Hash password if provided
+    let hashedPassword = null;
+    if (password) {
+      hashedPassword = await urlService.hashPassword(password);
+    }
+
     // Create URL in URL module - use public share endpoint
     // Note: The short URL will redirect to this public endpoint
     const targetUrl = `${req.protocol}://${req.get(
@@ -59,8 +65,9 @@ const generateDocumentShareURL = async (req, res) => {
       companyID: document.companyID,
       category: 'document_share',
       tags: ['document', 'share', document.fileType],
+      passwordProtected: !!password,
+      password: hashedPassword,
       customization: {
-        password: password || null,
         expiresAt: expiresAt ? new Date(expiresAt) : null,
         maxClicks: maxViews || null,
       },
@@ -123,11 +130,11 @@ const accessSharedDocument = async (req, res) => {
     console.log('ShortCode from params:', shortCode);
     console.log('Password provided:', !!password);
 
-    // Find URL by shortCode
+    // Find URL by shortCode - explicitly select password field
     const url = await URL.findOne({
       shortCode: shortCode,
       isActive: true,
-    });
+    }).select('+password');
 
     console.log('URL found:', !!url);
     if (url) {
@@ -145,35 +152,47 @@ const accessSharedDocument = async (req, res) => {
 
     // Check if URL has expired
     if (url.customization?.expiresAt && new Date() > new Date(url.customization.expiresAt)) {
-      return res.status(403).json({
+      return res.status(200).json({
         success: false,
         result: null,
         message: 'This share link has expired',
+        isExpired: true,
+        title: url.title,
+        description: url.description,
+        shortCode: url.shortCode,
       });
     }
 
     // Check if max clicks reached
     if (url.customization?.maxClicks && url.clicks >= url.customization.maxClicks) {
-      return res.status(403).json({
+      return res.status(200).json({
         success: false,
         result: null,
         message: 'This share link has reached its maximum view limit',
+        isLimitReached: true,
+        title: url.title,
+        description: url.description,
+        shortCode: url.shortCode,
       });
     }
 
     // Check password if required
-    if (url.customization?.password) {
+    if (url.passwordProtected && url.password) {
       if (!password) {
-        return res.status(401).json({
+        return res.status(200).json({
           success: false,
           result: null,
           message: 'Password required to access this document',
           requiresPassword: true,
+          title: url.title,
+          description: url.description,
+          shortCode: url.shortCode,
         });
       }
 
-      // Simple password check (in production, use bcrypt)
-      if (password !== url.customization.password) {
+      // Verify password using bcrypt
+      const isValidPassword = await urlService.verifyPassword(password, url.password);
+      if (!isValidPassword) {
         return res.status(401).json({
           success: false,
           result: null,
@@ -250,12 +269,13 @@ const accessSharedDocument = async (req, res) => {
 const downloadSharedDocument = async (req, res) => {
   try {
     const { shortCode } = req.params;
+    const { password } = req.query; // Password can be in query string for download links
 
-    // Find URL by shortCode
+    // Find URL by shortCode - explicitly select password field
     const url = await URL.findOne({
       shortCode: shortCode,
       isActive: true,
-    });
+    }).select('+password');
 
     if (!url) {
       return res.status(404).json({
@@ -280,6 +300,28 @@ const downloadSharedDocument = async (req, res) => {
         result: null,
         message: 'This share link has reached its maximum view limit',
       });
+    }
+
+    // Check password if required
+    if (url.passwordProtected && url.password) {
+      if (!password) {
+        return res.status(401).json({
+          success: false,
+          result: null,
+          message: 'Password required to download this document',
+          requiresPassword: true,
+        });
+      }
+
+      // Verify password using bcrypt
+      const isValidPassword = await urlService.verifyPassword(password, url.password);
+      if (!isValidPassword) {
+        return res.status(401).json({
+          success: false,
+          result: null,
+          message: 'Incorrect password',
+        });
+      }
     }
 
     // Get document

@@ -3,7 +3,6 @@ import { usePermissions } from '@/hooks/usePermissions';
 import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import {
-  ApartmentOutlined,
   BankOutlined,
   BulbOutlined,
   CalendarOutlined,
@@ -180,6 +179,13 @@ export default function IconSidebar() {
           label: 'Reputation',
           path: '/reputation',
           permissions: ['reputation:read'],
+        },
+        {
+          key: 'survey',
+          icon: <CheckSquareOutlined />,
+          label: 'Customer Surveys',
+          path: '/survey',
+          permissions: ['survey:read'],
         },
       ],
     },
