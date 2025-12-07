@@ -57,8 +57,8 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
 
       if (response.data.success && response.data.result) {
         // Handle both response formats: direct array or paginated object with items
-        const teamsData = Array.isArray(response.data.result) 
-          ? response.data.result 
+        const teamsData = Array.isArray(response.data.result)
+          ? response.data.result
           : response.data.result.items || [];
         setTeams(teamsData);
       }

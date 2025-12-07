@@ -132,19 +132,36 @@ class NotificationService {
         },
       });
 
+      console.log('=== NOTIFICATION SERVICE DEBUG ===');
+      console.log('Notification created in DB:', notification._id);
+      console.log('Recipient ID:', recipientId);
+      console.log('Recipient Model:', recipientModel);
+      console.log('Title:', title);
+      console.log('Room name:', `user:${recipientId}`);
+
       // Emit real-time notification via Socket.io
       const io = this.getIO();
+      console.log('Socket.io instance:', io ? 'AVAILABLE' : 'NOT AVAILABLE');
+      
       if (io) {
-        io.to(`user:${recipientId}`).emit('notification:new', {
+        const roomName = `user:${recipientId}`;
+        const socketsInRoom = await io.in(roomName).fetchSockets();
+        console.log(`Sockets in room ${roomName}:`, socketsInRoom.length);
+        
+        io.to(roomName).emit('notification:new', {
           notification: notification.toJSON(),
           timestamp: new Date(),
         });
+        console.log('Notification emitted to room:', roomName);
 
         // Update delivery status
         notification.deliveryStatus.app.delivered = true;
         notification.deliveryStatus.app.deliveredAt = new Date();
         await notification.save();
+      } else {
+        console.log('Socket.io not available - notification saved to DB only');
       }
+      console.log('=================================');
 
       // Handle additional channels
       if (channels.includes('email')) {

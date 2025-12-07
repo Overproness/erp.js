@@ -83,24 +83,44 @@ const create = async (req, res) => {
       const { notificationService } = require('../../../services/notificationService');
       const assignedUser = await User.findById(taskData.assignedTo);
 
+      console.log('=== TASK ASSIGNMENT NOTIFICATION DEBUG ===');
+      console.log('Task ID:', result._id);
+      console.log('Assigned To ID:', taskData.assignedTo);
+      console.log('Assigned User Found:', assignedUser ? 'YES' : 'NO');
       if (assignedUser) {
-        await notificationService.sendNotification({
-          recipientId: assignedUser._id,
-          recipientModel: 'User',
-          title: 'New Task Assigned',
-          message: `You have been assigned a new task: "${result.title}"`,
-          type: 'task_assignment',
-          data: {
-            taskId: result._id,
-            taskTitle: result.title,
-            deadline: result.deadline,
-            priority: result.priority,
-            teamId: team._id,
-            teamName: team.name,
-          },
-          priority: result.priority === 'high' ? 'high' : 'normal',
+        console.log('User details:', {
+          _id: assignedUser._id,
+          name: assignedUser.name,
+          email: assignedUser.email,
+          enabled: assignedUser.enabled,
+          removed: assignedUser.removed,
         });
       }
+
+      if (assignedUser) {
+        try {
+          const notificationResult = await notificationService.sendNotification({
+            recipientId: assignedUser._id,
+            recipientModel: 'User',
+            title: 'New Task Assigned',
+            message: `You have been assigned a new task: "${result.title}"`,
+            type: 'task_assigned',
+            data: {
+              taskId: result._id,
+              taskTitle: result.title,
+              deadline: result.deadline,
+              priority: result.priority,
+              teamId: team._id,
+              teamName: team.name,
+            },
+            priority: result.priority === 'high' ? 'high' : 'normal',
+          });
+          console.log('Notification sent successfully:', notificationResult ? 'YES' : 'NO');
+        } catch (notifError) {
+          console.error('Error sending notification:', notifError);
+        }
+      }
+      console.log('========================================');
     }
 
     // Handle team mentions and send notifications

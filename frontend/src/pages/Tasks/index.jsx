@@ -69,9 +69,9 @@ export default function Tasks() {
       if (response.success) {
         // Handle both paginated and non-paginated responses
         const taskData = response.result?.items || response.result || [];
-        // console.log('Task data extracted:', taskData);
-        // console.log('First task assignedTo:', taskData[0]?.assignedTo);
-        // console.log('First task full object:', JSON.stringify(taskData[0], null, 2));
+        console.log('Task data extracted:', taskData);
+        console.log('First task assignedTo:', taskData[0]?.assignedTo);
+        console.log('First task full object:', JSON.stringify(taskData[0], null, 2));
         setTasks(Array.isArray(taskData) ? taskData : []);
       } else if (response.message === 'Collection is Empty') {
         // Collection is empty - not an error, just no tasks yet

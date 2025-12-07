@@ -49,7 +49,8 @@ const list = async (req, res) => {
       .skip(skip)
       .limit(limit)
       .sort({ [sortBy]: sortValue, _id: sortValue })
-      .populate('assignedTo', 'name email') // Populate assignedTo with user details
+      .populate('assignedTo', 'name email role')
+      .populate('assignedTeam', 'name')
       .exec();
 
     const countPromise = Model.countDocuments(baseQuery);
@@ -65,6 +66,10 @@ const list = async (req, res) => {
       console.log('First task assignedTo (raw):', result[0].assignedTo);
       console.log('First task assignedTo type:', typeof result[0].assignedTo);
       console.log(
+        'First task assignedTo instanceof ObjectId?',
+        result[0].assignedTo instanceof mongoose.Types.ObjectId
+      );
+      console.log(
         'Is assignedTo an object?',
         result[0].assignedTo && typeof result[0].assignedTo === 'object'
       );
@@ -72,7 +77,24 @@ const list = async (req, res) => {
         console.log('assignedTo has name?', result[0].assignedTo.name);
         console.log('assignedTo has email?', result[0].assignedTo.email);
         console.log('assignedTo _id?', result[0].assignedTo._id);
+        console.log('assignedTo toString():', result[0].assignedTo.toString());
       }
+
+      // Try to manually fetch the user
+      const User = mongoose.model('User');
+      const testUser = await User.findById(result[0].assignedTo);
+      console.log(
+        'Manually fetched user:',
+        testUser
+          ? {
+              _id: testUser._id,
+              name: testUser.name,
+              email: testUser.email,
+              removed: testUser.removed,
+              enabled: testUser.enabled,
+            }
+          : 'null'
+      );
     }
     console.log('======================');
 

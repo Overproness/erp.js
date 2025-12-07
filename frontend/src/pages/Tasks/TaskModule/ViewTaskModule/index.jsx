@@ -33,6 +33,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import { API_BASE_URL } from '@/config/serverApiConfig';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -54,6 +56,66 @@ const ViewTaskModule = ({
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [dateRange, setDateRange] = useState(null);
+  const [userCache, setUserCache] = useState({});
+
+  // Fetch user data for assignedTo IDs
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!Array.isArray(tasks) || tasks.length === 0) {
+        return;
+      }
+
+      // Get unique team IDs from tasks
+      const teamIds = [...new Set(
+        tasks
+          .map(task => task.assignedTeam)
+          .filter(id => id && typeof id === 'string')
+      )];
+
+      if (teamIds.length === 0) {
+        return;
+      }
+
+      try {
+        const token = window.localStorage.getItem('auth_token');
+        
+        // Fetch team members for each team
+        const teamPromises = teamIds.map(async (teamId) => {
+          try {
+            const response = await axios.get(`${API_BASE_URL}team/${teamId}/members`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            
+            if (response.data.success && response.data.result) {
+              return response.data.result;
+            }
+            return [];
+          } catch (error) {
+            console.error(`Error fetching team ${teamId} members:`, error);
+            return [];
+          }
+        });
+
+        const teamResults = await Promise.all(teamPromises);
+        
+        // Build user cache from all team members
+        const newCache = {};
+        teamResults.flat().forEach(member => {
+          if (member.user && member.user._id) {
+            newCache[member.user._id] = member.user;
+          }
+        });
+        
+        setUserCache(newCache);
+      } catch (error) {
+        console.error('Error fetching team member data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [tasks]);
 
   // Apply filters when they change
   useEffect(() => {
@@ -250,12 +312,27 @@ const ViewTaskModule = ({
       dataIndex: ['assignedTo', 'name'],
       key: 'assignedTo',
       width: 150,
-      render: (_, record) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <UserOutlined style={{ color: '#6b7280', fontSize: '12px' }} />
-          <span style={{ fontSize: '13px' }}>{record.assignedTo?.name || '-'}</span>
-        </div>
-      ),
+      render: (_, record) => {
+        // Get user data from cache or use populated data
+        let userName = '-';
+        
+        if (record.assignedTo) {
+          if (typeof record.assignedTo === 'object' && record.assignedTo.name) {
+            // Already populated from backend
+            userName = record.assignedTo.name;
+          } else if (typeof record.assignedTo === 'string' && userCache[record.assignedTo]) {
+            // Get from cache
+            userName = userCache[record.assignedTo].name;
+          }
+        }
+        
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <UserOutlined style={{ color: '#6b7280', fontSize: '12px' }} />
+            <span style={{ fontSize: '13px' }}>{userName}</span>
+          </div>
+        );
+      },
     },
     {
       title: translate('Deadline'),
