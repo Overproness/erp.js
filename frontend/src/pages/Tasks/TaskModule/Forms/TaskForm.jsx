@@ -1,37 +1,70 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Input, DatePicker, Select, Button, message } from 'antd';
-import useLanguage from '@/locale/useLanguage';
-import axios from 'axios';
 import { API_BASE_URL } from '@/config/serverApiConfig';
+import useLanguage from '@/locale/useLanguage';
+import { DatePicker, Form, Input, message, Select } from 'antd';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export default function TaskForm({ isUpdateForm = false }) {
   const translate = useLanguage();
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [teams, setTeams] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [loadingTeams, setLoadingTeams] = useState(true);
+  const [loadingMembers, setLoadingMembers] = useState(false);
 
-  // Fetch users on component mount
+  // Fetch teams on component mount
   useEffect(() => {
-    fetchUsers();
+    fetchTeams();
   }, []);
 
-  // Function to fetch users from API
-  const fetchUsers = async () => {
-    setLoadingUsers(true);
+  // Function to fetch teams from API
+  const fetchTeams = async () => {
+    setLoadingTeams(true);
     try {
       const token = window.localStorage.getItem('auth_token');
-      const response = await axios.get(`${API_BASE_URL}admin/list`, {
+      const response = await axios.get(`${API_BASE_URL}team/list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.data.success && response.data.result) {
-        setUsers(response.data.result);
+        setTeams(response.data.result);
       }
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('Error fetching teams:', error);
+      message.error('Failed to load teams');
     } finally {
-      setLoadingUsers(false);
+      setLoadingTeams(false);
+    }
+  };
+
+  // Function to handle team selection and fetch members
+  const handleTeamChange = async (teamId) => {
+    setSelectedTeam(teamId);
+    setTeamMembers([]);
+
+    if (!teamId) {
+      return;
+    }
+
+    setLoadingMembers(true);
+    try {
+      const token = window.localStorage.getItem('auth_token');
+      const response = await axios.get(`${API_BASE_URL}team/${teamId}/members`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success && response.data.result) {
+        setTeamMembers(response.data.result);
+      }
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+      message.error('Failed to load team members');
+    } finally {
+      setLoadingMembers(false);
     }
   };
 
@@ -55,27 +88,61 @@ export default function TaskForm({ isUpdateForm = false }) {
       </Form.Item>
 
       <Form.Item
+        label={translate('Assigned Team')}
+        name="assignedTeam"
+        rules={[
+          {
+            required: true,
+            message: translate('Please select a team first!'),
+          },
+        ]}
+      >
+        <Select
+          placeholder={translate('Select team')}
+          showSearch
+          loading={loadingTeams}
+          optionFilterProp="children"
+          onChange={handleTeamChange}
+          filterOption={(input, option) =>
+            (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+          }
+        >
+          {teams.map((team) => (
+            <Select.Option key={team._id} value={team._id}>
+              {team.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      <Form.Item
         label={translate('Assigned To')}
         name="assignedTo"
         rules={[
           {
-            required: true,
+            required: false,
             message: translate('Please select assignee!'),
           },
         ]}
       >
         <Select
-          placeholder={translate('Select assignee')}
+          placeholder={
+            selectedTeam
+              ? translate('Select team member (optional)')
+              : translate('Please select a team first')
+          }
           showSearch
-          loading={loadingUsers}
+          loading={loadingMembers}
+          disabled={!selectedTeam}
+          allowClear
           optionFilterProp="children"
           filterOption={(input, option) =>
             (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
           }
         >
-          {users.map((user) => (
-            <Select.Option key={user._id} value={user._id}>
-              {user.name || user.email}
+          {teamMembers.map((member) => (
+            <Select.Option key={member.user._id} value={member.user._id}>
+              {member.user.name || member.user.email} ({member.role})
             </Select.Option>
           ))}
         </Select>

@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/config/serverApiConfig';
+import useLanguage from '@/locale/useLanguage';
+import { CloseOutlined, InboxOutlined, SaveOutlined } from '@ant-design/icons';
 import {
-  Form,
-  Input,
-  Select,
-  DatePicker,
   Button,
   Card,
-  Typography,
-  Row,
   Col,
+  DatePicker,
   Divider,
-  Upload,
+  Form,
+  Input,
   message,
+  Row,
+  Select,
   Space,
-  Tag,
-  Alert,
+  Typography,
+  Upload,
 } from 'antd';
-import {
-  ArrowLeftOutlined,
-  SaveOutlined,
-  CloseOutlined,
-  PlusOutlined,
-  InboxOutlined,
-  CheckCircleOutlined,
-  BugOutlined,
-} from '@ant-design/icons';
-import { useNavigate, useParams } from 'react-router-dom';
-import useLanguage from '@/locale/useLanguage';
-import dayjs from 'dayjs';
 import axios from 'axios';
-import { API_BASE_URL } from '@/config/serverApiConfig';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -42,35 +32,76 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [teams, setTeams] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [loadingTeams, setLoadingTeams] = useState(true);
+  const [loadingMembers, setLoadingMembers] = useState(false);
 
-  // Fetch users on component mount
+  // Fetch teams on component mount
   useEffect(() => {
-    fetchUsers();
+    fetchTeams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Function to fetch users from API
-  const fetchUsers = async () => {
-    setLoadingUsers(true);
+  // Function to fetch teams from API
+  const fetchTeams = async () => {
+    setLoadingTeams(true);
     try {
       const token = window.localStorage.getItem('auth_token');
-      const response = await axios.get(`${API_BASE_URL}admin/list`, {
+      const response = await axios.get(`${API_BASE_URL}team/list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.data.success && response.data.result) {
-        setUsers(response.data.result);
+        // Handle both response formats: direct array or paginated object with items
+        const teamsData = Array.isArray(response.data.result) 
+          ? response.data.result 
+          : response.data.result.items || [];
+        setTeams(teamsData);
       }
     } catch (error) {
-      console.error('Error fetching users:', error);
-      message.error(translate('Failed to load users'));
+      console.error('Error fetching teams:', error);
+      message.error(translate('Failed to load teams'));
     } finally {
-      setLoadingUsers(false);
+      setLoadingTeams(false);
     }
   };
+
+  // Function to handle team selection and fetch members
+  const handleTeamChange = useCallback(
+    async (teamId) => {
+      setSelectedTeam(teamId);
+      setTeamMembers([]);
+      form.setFieldsValue({ assignedTo: undefined }); // Clear assignee when team changes
+
+      if (!teamId) {
+        return;
+      }
+
+      setLoadingMembers(true);
+      try {
+        const token = window.localStorage.getItem('auth_token');
+        const response = await axios.get(`${API_BASE_URL}team/${teamId}/members`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data.success && response.data.result) {
+          setTeamMembers(response.data.result);
+        }
+      } catch (error) {
+        console.error('Error fetching team members:', error);
+        message.error(translate('Failed to load team members'));
+      } finally {
+        setLoadingMembers(false);
+      }
+    },
+    [form, translate]
+  );
 
   // Set form values when initialValues changes or in update mode
   useEffect(() => {
@@ -80,10 +111,16 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
         const formattedValues = {
           ...initialValues,
           deadline: initialValues.deadline ? dayjs(initialValues.deadline) : null,
+          assignedTeam: initialValues.assignedTeam?._id || initialValues.assignedTeam,
           assignedTo: initialValues.assignedTo?._id || initialValues.assignedTo,
         };
 
         form.setFieldsValue(formattedValues);
+
+        // If there's an assigned team, load its members
+        if (formattedValues.assignedTeam) {
+          handleTeamChange(formattedValues.assignedTeam);
+        }
 
         // Set file list if attachments exist
         if (initialValues.attachments && initialValues.attachments.length > 0) {
@@ -102,7 +139,7 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
         console.error('Error setting form values:', error);
       }
     }
-  }, [initialValues, form]);
+  }, [initialValues, form, handleTeamChange]);
 
   const handleSubmit = async (values) => {
     try {
@@ -262,24 +299,55 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
               </Form.Item>
 
               <Form.Item
-                name="assignedTo"
-                label={translate('Assigned To')}
-                rules={[{ required: true, message: translate('Please select assignee') }]}
+                name="assignedTeam"
+                label={translate('Assigned Team')}
+                rules={[{ required: true, message: translate('Please select a team') }]}
               >
                 <Select
-                  placeholder={translate('Select assignee')}
+                  placeholder={translate('Select team')}
                   showSearch
                   optionFilterProp="children"
-                  loading={loadingUsers}
+                  loading={loadingTeams}
+                  onChange={handleTeamChange}
                   filterOption={(input, option) =>
                     (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
                   }
                 >
-                  {users.map((user) => (
-                    <Option key={user._id} value={user._id}>
-                      {user.name || user.email}
-                    </Option>
-                  ))}
+                  {Array.isArray(teams) &&
+                    teams.map((team) => (
+                      <Option key={team._id} value={team._id}>
+                        {team.name}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                name="assignedTo"
+                label={translate('Assigned To')}
+                rules={[{ required: false }]}
+              >
+                <Select
+                  placeholder={
+                    selectedTeam
+                      ? translate('Select team member (optional)')
+                      : translate('Please select a team first')
+                  }
+                  showSearch
+                  optionFilterProp="children"
+                  loading={loadingMembers}
+                  disabled={!selectedTeam}
+                  allowClear
+                  filterOption={(input, option) =>
+                    (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+                  }
+                >
+                  {Array.isArray(teamMembers) &&
+                    teamMembers.map((member) => (
+                      <Option key={member.user._id} value={member.user._id}>
+                        {member.user.name || member.user.email} ({member.role})
+                      </Option>
+                    ))}
                 </Select>
               </Form.Item>
             </Card>

@@ -20,7 +20,7 @@ axios.interceptors.request.use((config) => {
     config.url.includes('/resetpassword') ||
     config.url.includes('/api/public/') || // Explicit /api/public/ pattern
     config.url.includes('/public/') || // Legacy /public/ pattern
-    config.url.includes('/api/s/') || // Public URL shortcode endpoints
+    config.url.includes('/s/') || // Public URL shortcode endpoints (baseURL already has /api)
     config.url.includes('/logout') || // Treat logout as a public endpoint
     // Check for explicit header indicating this is a public request
     config.headers?.['X-Public-Request'] === 'true';

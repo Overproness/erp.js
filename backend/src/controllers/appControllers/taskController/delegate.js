@@ -1,5 +1,7 @@
 const Task = require('../../../models/appModels/Task');
 const User = require('../../../models/appModels/User');
+const Team = require('../../../models/appModels/Team');
+const { notificationService } = require('../../../services/notificationService');
 
 const delegate = async (req, res) => {
   try {
@@ -13,6 +15,35 @@ const delegate = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: 'Task not found',
+      });
+    }
+
+    // Validate that task has a team assigned
+    if (!task.assignedTeam) {
+      return res.status(400).json({
+        success: false,
+        message: 'Task must be assigned to a team before delegating to a user',
+      });
+    }
+
+    // Fetch the team and validate delegate is a member
+    const team = await Team.findById(task.assignedTeam).populate('members.user');
+    if (!team) {
+      return res.status(404).json({
+        success: false,
+        message: 'Team not found',
+      });
+    }
+
+    const isMember = team.members.some((member) => {
+      const memberId = member.user._id || member.user;
+      return memberId.toString() === userId.toString();
+    });
+
+    if (!isMember) {
+      return res.status(400).json({
+        success: false,
+        message: 'You can only delegate to members of the task team',
       });
     }
 
@@ -48,6 +79,31 @@ const delegate = async (req, res) => {
     });
 
     await task.save();
+
+    // Send notification to delegated user
+    try {
+      await notificationService.sendNotification({
+        recipientId: userId,
+        recipientModel: 'User',
+        title: 'Task Delegated to You',
+        message: `Task "${task.title}" has been delegated to you${
+          delegationNote ? ': ' + delegationNote : ''
+        }`,
+        type: 'task_delegation',
+        data: {
+          taskId: task._id,
+          taskTitle: task.title,
+          deadline: task.deadline,
+          priority: task.priority,
+          delegationNote: delegationNote,
+          teamId: team._id,
+          teamName: team.name,
+        },
+        priority: task.priority === 'high' ? 'high' : 'normal',
+      });
+    } catch (notifError) {
+      console.error('Error sending notification:', notifError);
+    }
 
     return res.status(200).json({
       success: true,

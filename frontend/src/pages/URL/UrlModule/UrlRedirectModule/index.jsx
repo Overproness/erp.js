@@ -32,10 +32,14 @@ const UrlRedirectModule = () => {
       let params = {};
       if (options.password) params.password = options.password;
 
-      const response = await axios.get(`/api/s/${shortCode}`, {
+      const response = await axios.get(`/s/${shortCode}`, {
         params,
         maxRedirects: 0,
         validateStatus: (status) => status >= 200 && status < 400,
+        headers: {
+          // Explicitly don't send authorization for public URL redirects
+          Authorization: undefined,
+        },
       });
 
       if (response.data.success) {

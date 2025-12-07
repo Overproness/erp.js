@@ -1,5 +1,6 @@
 const Task = require('../../../models/appModels/Task');
 const User = require('../../../models/appModels/User');
+const Team = require('../../../models/appModels/Team');
 const { notificationService } = require('../../../services/notificationService');
 
 const reassign = async (req, res) => {
@@ -14,6 +15,35 @@ const reassign = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: 'Task not found',
+      });
+    }
+
+    // Validate that task has a team assigned
+    if (!task.assignedTeam) {
+      return res.status(400).json({
+        success: false,
+        message: 'Task must be assigned to a team before reassigning to a user',
+      });
+    }
+
+    // Fetch the team and validate new assignee is a member
+    const team = await Team.findById(task.assignedTeam).populate('members.user');
+    if (!team) {
+      return res.status(404).json({
+        success: false,
+        message: 'Team not found',
+      });
+    }
+
+    const isMember = team.members.some((member) => {
+      const memberId = member.user._id || member.user;
+      return memberId.toString() === newAssigneeId.toString();
+    });
+
+    if (!isMember) {
+      return res.status(400).json({
+        success: false,
+        message: 'The new assignee is not a member of the task team',
       });
     }
 

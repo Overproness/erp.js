@@ -6,7 +6,17 @@ const UnifiedAIHelper = require('../../../helpers/unifiedAIHelper');
  */
 const getModelsController = async (req, res) => {
   try {
-    const { userId } = req.admin;
+    // Support both CompanyOwner (admin) and User (team member) authentication
+    const currentUser = req.user || req.companyOwner || req.admin;
+    const userId = currentUser?._id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Authentication required',
+      });
+    }
 
     // Create AI helper for user
     const aiHelper = await UnifiedAIHelper.createForUser(userId);
