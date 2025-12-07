@@ -13,11 +13,11 @@ const notificationController = {
   list: async (req, res) => {
     try {
       const userId = req.user?._id || req.user?.id || req.admin?._id;
-      
+
       if (!userId) {
         return res.status(401).json({
           success: false,
-          message: 'Authentication required'
+          message: 'Authentication required',
         });
       }
 
@@ -28,7 +28,7 @@ const notificationController = {
         type,
         priority,
         startDate,
-        endDate
+        endDate,
       } = req.query;
 
       const notifications = await Notification.getUserNotifications(userId, {
@@ -38,13 +38,13 @@ const notificationController = {
         type,
         priority,
         startDate,
-        endDate
+        endDate,
       });
 
       const unreadCount = await Notification.getUnreadCount(userId);
       const total = await Notification.countDocuments({
         recipientId: userId,
-        deleted: false
+        deleted: false,
       });
 
       return res.status(200).json({
@@ -54,16 +54,16 @@ const notificationController = {
           limit: parseInt(limit),
           skip: parseInt(skip),
           total,
-          hasMore: (parseInt(skip) + notifications.length) < total
+          hasMore: parseInt(skip) + notifications.length < total,
         },
-        unreadCount
+        unreadCount,
       });
     } catch (error) {
       console.error('Error fetching notifications:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to fetch notifications',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -79,26 +79,26 @@ const notificationController = {
       const notification = await Notification.findOne({
         _id: id,
         recipientId: userId,
-        deleted: false
+        deleted: false,
       });
 
       if (!notification) {
         return res.status(404).json({
           success: false,
-          message: 'Notification not found'
+          message: 'Notification not found',
         });
       }
 
       return res.status(200).json({
         success: true,
-        result: notification
+        result: notification,
       });
     } catch (error) {
       console.error('Error reading notification:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to read notification',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -113,13 +113,13 @@ const notificationController = {
 
       const notification = await Notification.findOne({
         _id: id,
-        recipientId: userId
+        recipientId: userId,
       });
 
       if (!notification) {
         return res.status(404).json({
           success: false,
-          message: 'Notification not found'
+          message: 'Notification not found',
         });
       }
 
@@ -131,7 +131,7 @@ const notificationController = {
         io.to(`user:${userId}`).emit('notification:updated', {
           notificationId: id,
           read: true,
-          readAt: notification.readAt
+          readAt: notification.readAt,
         });
 
         // Update unread count
@@ -142,14 +142,14 @@ const notificationController = {
       return res.status(200).json({
         success: true,
         result: notification,
-        message: 'Notification marked as read'
+        message: 'Notification marked as read',
       });
     } catch (error) {
       console.error('Error marking notification as read:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to mark notification as read',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -165,20 +165,20 @@ const notificationController = {
       if (!ids || !Array.isArray(ids)) {
         return res.status(400).json({
           success: false,
-          message: 'Invalid request: ids array required'
+          message: 'Invalid request: ids array required',
         });
       }
 
       await Notification.updateMany(
         {
           _id: { $in: ids },
-          recipientId: userId
+          recipientId: userId,
         },
         {
           $set: {
             read: true,
-            readAt: new Date()
-          }
+            readAt: new Date(),
+          },
         }
       );
 
@@ -191,14 +191,14 @@ const notificationController = {
 
       return res.status(200).json({
         success: true,
-        message: `${ids.length} notifications marked as read`
+        message: `${ids.length} notifications marked as read`,
       });
     } catch (error) {
       console.error('Error marking notifications as read:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to mark notifications as read',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -216,21 +216,21 @@ const notificationController = {
       const io = global.io;
       if (io) {
         io.to(`user:${userId}`).emit('notifications:allMarkedRead', {
-          success: true
+          success: true,
         });
         io.to(`user:${userId}`).emit('notifications:unreadCount', { count: 0 });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'All notifications marked as read'
+        message: 'All notifications marked as read',
       });
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to mark all notifications as read',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -245,13 +245,13 @@ const notificationController = {
 
       const notification = await Notification.findOne({
         _id: id,
-        recipientId: userId
+        recipientId: userId,
       });
 
       if (!notification) {
         return res.status(404).json({
           success: false,
-          message: 'Notification not found'
+          message: 'Notification not found',
         });
       }
 
@@ -261,7 +261,7 @@ const notificationController = {
       const io = global.io;
       if (io) {
         io.to(`user:${userId}`).emit('notification:deleted', {
-          notificationId: id
+          notificationId: id,
         });
 
         // Update unread count if it was unread
@@ -273,14 +273,14 @@ const notificationController = {
 
       return res.status(200).json({
         success: true,
-        message: 'Notification deleted'
+        message: 'Notification deleted',
       });
     } catch (error) {
       console.error('Error deleting notification:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to delete notification',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -296,14 +296,14 @@ const notificationController = {
 
       return res.status(200).json({
         success: true,
-        count
+        count,
       });
     } catch (error) {
       console.error('Error getting unread count:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to get unread count',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -320,12 +320,12 @@ const notificationController = {
         Notification.countDocuments({ recipientId: userId, read: false, deleted: false }),
         Notification.aggregate([
           { $match: { recipientId: userId, deleted: false } },
-          { $group: { _id: '$type', count: { $sum: 1 } } }
+          { $group: { _id: '$type', count: { $sum: 1 } } },
         ]),
         Notification.aggregate([
           { $match: { recipientId: userId, deleted: false } },
-          { $group: { _id: '$priority', count: { $sum: 1 } } }
-        ])
+          { $group: { _id: '$priority', count: { $sum: 1 } } },
+        ]),
       ]);
 
       return res.status(200).json({
@@ -341,15 +341,15 @@ const notificationController = {
           byPriority: byPriority.reduce((acc, item) => {
             acc[item._id] = item.count;
             return acc;
-          }, {})
-        }
+          }, {}),
+        },
       });
     } catch (error) {
       console.error('Error getting notification stats:', error);
       return res.status(500).json({
         success: false,
         message: 'Failed to get notification statistics',
-        error: error.message
+        error: error.message,
       });
     }
   },
@@ -357,7 +357,7 @@ const notificationController = {
   /**
    * Get aggregated notifications (for team collaboration)
    */
-  getAggregated: notificationService.getAggregatedNotifications
+  getAggregated: notificationService.getAggregatedNotifications,
 };
 
 module.exports = notificationController;

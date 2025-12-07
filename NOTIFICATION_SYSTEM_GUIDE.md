@@ -1,11 +1,13 @@
 # Notification System Integration Guide
 
 ## Overview
+
 The new WebSocket-based notification system has been successfully implemented using Socket.io, MongoDB, and React Toastify. This guide shows how to integrate it into your application.
 
 ## Backend Setup ✅ COMPLETED
 
 ### What Was Implemented:
+
 1. **MongoDB Model** - `backend/src/models/appModels/Notification.js`
 2. **Socket.io Server** - Configured in `backend/src/server.js`
 3. **Socket Handlers** - `backend/src/sockets/notificationSocket.js`
@@ -17,6 +19,7 @@ The new WebSocket-based notification system has been successfully implemented us
 ## Frontend Setup ✅ COMPLETED
 
 ### What Was Implemented:
+
 1. **Socket Service** - `frontend/src/services/socketService.js`
 2. **Notification Context** - `frontend/src/context/NotificationContext.jsx`
 3. **Custom Hook** - `frontend/src/hooks/useNotifications.js`
@@ -31,16 +34,16 @@ The new WebSocket-based notification system has been successfully implemented us
 In your main app file (e.g., `frontend/src/RootApp.jsx` or `frontend/src/main.jsx`):
 
 ```jsx
-import { NotificationProvider } from './context/NotificationContext';
-import { ToastContainer } from 'react-toastify';
-import toastConfig from './config/toastConfig';
+import { NotificationProvider } from "./context/NotificationContext";
+import { ToastContainer } from "react-toastify";
+import toastConfig from "./config/toastConfig";
 
 function App() {
   return (
     <NotificationProvider>
       {/* Your existing providers */}
       <YourApp />
-      
+
       {/* Add ToastContainer at the root level */}
       <ToastContainer {...toastConfig} />
     </NotificationProvider>
@@ -57,19 +60,19 @@ import { useNotifications } from './hooks/useNotifications';
 
 function YourAuthComponent() {
   const { initializeSocket } = useNotifications();
-  
+
   const handleLogin = async (credentials) => {
     // Your login logic
     const response = await login(credentials);
     const token = response.token;
-    
+
     // Store token
     localStorage.setItem('token', token);
-    
+
     // Initialize socket connection
     initializeSocket(token);
   };
-  
+
   return (
     // Your login UI
   );
@@ -81,7 +84,7 @@ function YourAuthComponent() {
 In your header/navbar component:
 
 ```jsx
-import NotificationBell from './components/NotificationBell/NotificationBell';
+import NotificationBell from "./components/NotificationBell/NotificationBell";
 
 function Header() {
   return (
@@ -96,25 +99,23 @@ function Header() {
 ### Step 4: Disconnect Socket on Logout
 
 ```jsx
-import { useNotifications } from './hooks/useNotifications';
+import { useNotifications } from "./hooks/useNotifications";
 
 function YourLogoutHandler() {
   const { disconnectSocket } = useNotifications();
-  
+
   const handleLogout = () => {
     // Clear token
-    localStorage.removeItem('token');
-    
+    localStorage.removeItem("token");
+
     // Disconnect socket
     disconnectSocket();
-    
+
     // Redirect to login
-    navigate('/login');
+    navigate("/login");
   };
-  
-  return (
-    <button onClick={handleLogout}>Logout</button>
-  );
+
+  return <button onClick={handleLogout}>Logout</button>;
 }
 ```
 
@@ -123,27 +124,28 @@ function YourLogoutHandler() {
 ### Send a Notification (Backend)
 
 ```javascript
-const { notificationService } = require('@/services/notificationService');
+const { notificationService } = require("@/services/notificationService");
 
 // Example: Send task assignment notification
 await notificationService.sendNotification({
   recipientId: userId,
-  title: 'New Task Assigned',
-  message: 'You have been assigned a new task: Complete Report',
-  type: 'task_assigned',
-  priority: 'high',
-  actionUrl: '/tasks/12345',
-  actionText: 'View Task',
-  channels: ['app', 'email'], // Optional: also send email
+  title: "New Task Assigned",
+  message: "You have been assigned a new task: Complete Report",
+  type: "task_assigned",
+  priority: "high",
+  actionUrl: "/tasks/12345",
+  actionText: "View Task",
+  channels: ["app", "email"], // Optional: also send email
   source: {
-    module: 'tasks',
+    module: "tasks",
     entityId: taskId,
-    entityType: 'Task'
-  }
+    entityType: "Task",
+  },
 });
 ```
 
 ### Available Notification Types:
+
 - `info` - General information
 - `success` - Success messages
 - `warning` - Warnings
@@ -158,6 +160,7 @@ await notificationService.sendNotification({
 - `system_alert` - System alerts
 
 ### Priority Levels:
+
 - `low` - Low priority
 - `normal` - Normal priority (default)
 - `high` - High priority
@@ -193,6 +196,7 @@ DELETE /api/notifications/:id          - Delete notification
 ## WebSocket Events
 
 ### Client → Server:
+
 - `notifications:fetch` - Fetch notifications
 - `notifications:markRead` - Mark as read
 - `notifications:markAllRead` - Mark all as read
@@ -200,6 +204,7 @@ DELETE /api/notifications/:id          - Delete notification
 - `notifications:getUnreadCount` - Get unread count
 
 ### Server → Client:
+
 - `notification:new` - New notification received
 - `notification:updated` - Notification updated
 - `notification:deleted` - Notification deleted
@@ -221,6 +226,7 @@ DELETE /api/notifications/:id          - Delete notification
 To integrate notifications with existing modules, update their respective services:
 
 ### Example: Review Module
+
 ```javascript
 // In your review creation handler
 const review = await Review.create(reviewData);
@@ -228,36 +234,39 @@ const review = await Review.create(reviewData);
 // Send notification
 await notificationService.sendNotification({
   recipientId: businessOwnerId,
-  title: 'New Review Received',
+  title: "New Review Received",
   message: `${customerName} left a ${rating}-star review`,
-  type: 'new_review',
-  priority: rating <= 2 ? 'urgent' : 'normal',
+  type: "new_review",
+  priority: rating <= 2 ? "urgent" : "normal",
   actionUrl: `/reviews/${review._id}`,
-  actionText: 'View Review',
-  channels: rating <= 2 ? ['app', 'email', 'sms'] : ['app'],
+  actionText: "View Review",
+  channels: rating <= 2 ? ["app", "email", "sms"] : ["app"],
   source: {
-    module: 'reviews',
+    module: "reviews",
     entityId: review._id,
-    entityType: 'Review'
-  }
+    entityType: "Review",
+  },
 });
 ```
 
 ## Troubleshooting
 
 ### Socket Not Connecting:
+
 - Check if backend server is running
 - Verify CORS configuration in `backend/src/server.js`
 - Check authentication token is valid
 - Look for errors in browser console
 
 ### Notifications Not Appearing:
+
 - Verify Socket.io connection is established
 - Check MongoDB is running
 - Ensure NotificationProvider wraps your app
 - Check browser console for errors
 
 ### Toasts Not Showing:
+
 - Verify ToastContainer is rendered
 - Check toast configuration
 - Ensure react-toastify CSS is imported
@@ -265,6 +274,7 @@ await notificationService.sendNotification({
 ## Next Steps
 
 The system is ready! You just need to:
+
 1. Integrate the providers in your main app file
 2. Add the NotificationBell component to your header
 3. Initialize socket connection after login
@@ -273,6 +283,7 @@ The system is ready! You just need to:
 ## Files Modified/Created
 
 ### Backend:
+
 - ✅ `models/appModels/Notification.js` - NEW
 - ✅ `sockets/notificationSocket.js` - NEW
 - ✅ `services/notificationService.js` - REFACTORED
@@ -283,6 +294,7 @@ The system is ready! You just need to:
 - ✅ `app.js` - UPDATED
 
 ### Frontend:
+
 - ✅ `services/socketService.js` - NEW
 - ✅ `context/NotificationContext.jsx` - NEW
 - ✅ `hooks/useNotifications.js` - NEW
@@ -292,5 +304,6 @@ The system is ready! You just need to:
 - ✅ `config/toastCustomStyles.css` - NEW
 
 ### Dependencies Added:
+
 - Backend: `socket.io`
 - Frontend: `socket.io-client`, `react-toastify`

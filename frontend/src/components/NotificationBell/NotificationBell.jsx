@@ -3,9 +3,9 @@
  * Displays notification icon with unread count badge
  */
 
-import { useState, useEffect } from 'react';
-import { Badge, Popover, List, Button, Empty, Spin, Typography } from 'antd';
 import { BellOutlined, CheckOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Badge, Button, Empty, List, Popover, Spin, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../hooks/useNotifications';
 import './NotificationBell.css';
@@ -21,7 +21,7 @@ const NotificationBell = () => {
     connected,
     markAsRead,
     markAllAsRead,
-    deleteNotification
+    deleteNotification,
   } = useNotifications();
 
   const [open, setOpen] = useState(false);
@@ -104,12 +104,7 @@ const NotificationBell = () => {
       <div className="notification-header">
         <Text strong>Notifications</Text>
         {unreadCount > 0 && (
-          <Button 
-            type="link" 
-            size="small" 
-            onClick={handleMarkAllAsRead}
-            icon={<CheckOutlined />}
-          >
+          <Button type="link" size="small" onClick={handleMarkAllAsRead} icon={<CheckOutlined />}>
             Mark all read
           </Button>
         )}
@@ -153,7 +148,7 @@ const NotificationBell = () => {
                   onClick={(e) => handleDelete(e, notification._id)}
                   title="Delete"
                   danger
-                />
+                />,
               ].filter(Boolean)}
             >
               <List.Item.Meta

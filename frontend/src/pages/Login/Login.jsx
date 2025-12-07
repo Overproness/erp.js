@@ -4,27 +4,34 @@ import { useNavigate } from 'react-router-dom';
 
 import useLanguage from '@/locale/useLanguage';
 
-import { Form, Button } from 'antd';
 import { login } from '@/redux/auth/actions';
-import { selectAuth } from '@/redux/auth/selectors';
+import { selectAuth, selectCurrentAdmin } from '@/redux/auth/selectors';
+import { Button, Form } from 'antd';
 
-import LoginForm from '@/forms/LoginForm';
 import Loading from '@/components/Loading';
+import LoginForm from '@/forms/LoginForm';
+import { useNotifications } from '@/hooks/useNotifications';
 import AuthModule from '@/pages/AuthModule';
 
 const LoginPage = () => {
   const translate = useLanguage();
   const { isLoading, isSuccess } = useSelector(selectAuth);
+  const currentAdmin = useSelector(selectCurrentAdmin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { initializeSocket } = useNotifications();
 
   const onFinish = (values) => {
     dispatch(login({ loginData: values }));
   };
 
   useEffect(() => {
-    if (isSuccess) navigate('/');
-  }, [isSuccess]);
+    if (isSuccess && currentAdmin?.token) {
+      // Initialize socket connection with the auth token
+      initializeSocket(currentAdmin.token);
+      navigate('/');
+    }
+  }, [isSuccess, currentAdmin]);
 
   const FormContainer = () => {
     return (
@@ -54,7 +61,7 @@ const LoginPage = () => {
     );
   };
 
-  return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign in" />
+  return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign in" />;
 };
 
 export default LoginPage;

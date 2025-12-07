@@ -1,6 +1,6 @@
 const Task = require('../../../models/appModels/Task');
 const User = require('../../../models/appModels/User');
-const notificationService = require('../../../services/notificationService');
+const { notificationService } = require('../../../services/notificationService');
 
 const reassign = async (req, res) => {
   try {
@@ -49,12 +49,10 @@ const reassign = async (req, res) => {
     await task.save();
 
     // Send notification to new assignee
-    await notificationService.sendNotification(newAssigneeId, {
-      type: 'task_assigned',
-      title: 'Task assigned to you',
-      entityType: 'task',
-      entityId: task._id.toString(),
-    });
+    // const newAssignee = await User.findById(newAssigneeId);
+    const reassigner = await User.findById(req.admin?._id || req.user?._id);
+
+    await notificationService.sendTaskAssignmentNotification(task, newAssignee, reassigner);
 
     return res.status(200).json({
       success: true,

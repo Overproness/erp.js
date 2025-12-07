@@ -10,7 +10,7 @@ const sendMail = require('../helpers/sendMail');
 class NotificationService {
   constructor() {
     this.io = null; // Will be set after server initialization
-    
+
     this.emailTemplates = {
       new_review: {
         subject: 'New Review Received',
@@ -37,11 +37,14 @@ class NotificationService {
         template: 'negativeReviewAlert',
       },
     };
-    
+
     this.smsTemplates = {
-      review_request: 'Hi {{customerName}}, {{businessName}} values your feedback! Please leave a review at: {{reviewLink}}',
-      new_review_alert: 'New {{rating}}-star review received from {{customerName}}. Check your dashboard to respond.',
-      negative_review_alert: 'URGENT: New negative review ({{rating}}-star) received. Immediate attention required.',
+      review_request:
+        'Hi {{customerName}}, {{businessName}} values your feedback! Please leave a review at: {{reviewLink}}',
+      new_review_alert:
+        'New {{rating}}-star review received from {{customerName}}. Check your dashboard to respond.',
+      negative_review_alert:
+        'URGENT: New negative review ({{rating}}-star) received. Immediate attention required.',
     };
   }
 
@@ -99,7 +102,7 @@ class NotificationService {
         actionText = '',
         channels = ['app'],
         owner,
-        source = {}
+        source = {},
       } = options;
 
       // Determine owner if not provided
@@ -125,8 +128,8 @@ class NotificationService {
         owner: ownerId,
         source,
         deliveryStatus: {
-          app: { delivered: false }
-        }
+          app: { delivered: false },
+        },
       });
 
       // Emit real-time notification via Socket.io
@@ -134,7 +137,7 @@ class NotificationService {
       if (io) {
         io.to(`user:${recipientId}`).emit('notification:new', {
           notification: notification.toJSON(),
-          timestamp: new Date()
+          timestamp: new Date(),
         });
 
         // Update delivery status
@@ -174,19 +177,19 @@ class NotificationService {
   markAsRead = async (notificationId, userId) => {
     const notification = await Notification.findOne({
       _id: notificationId,
-      recipientId: userId
+      recipientId: userId,
     });
 
     if (notification) {
       await notification.markAsRead();
-      
+
       // Emit update via Socket.io
       const io = this.getIO();
       if (io) {
         io.to(`user:${userId}`).emit('notification:updated', {
           notificationId,
           read: true,
-          readAt: notification.readAt
+          readAt: notification.readAt,
         });
       }
     }
@@ -214,8 +217,8 @@ class NotificationService {
       source: {
         module: 'tasks',
         entityId: task._id,
-        entityType: 'Task'
-      }
+        entityType: 'Task',
+      },
     });
   };
 
@@ -239,8 +242,8 @@ class NotificationService {
         source: {
           module: 'team',
           entityId: team._id,
-          entityType: 'Team'
-        }
+          entityType: 'Team',
+        },
       });
       teamNotifications.push(notification);
     }
@@ -268,8 +271,8 @@ class NotificationService {
         source: {
           module: 'team',
           entityId: team._id,
-          entityType: 'Team'
-        }
+          entityType: 'Team',
+        },
       });
       teamNotifications.push(notification);
     }
@@ -313,7 +316,7 @@ class NotificationService {
       const query = {
         recipientId: userId,
         deleted: false,
-        createdAt: { $gte: startDate }
+        createdAt: { $gte: startDate },
       };
 
       if (teamId) {
@@ -321,9 +324,7 @@ class NotificationService {
       }
 
       // Fetch notifications from MongoDB
-      const notifications = await Notification.find(query)
-        .sort({ createdAt: -1 })
-        .lean();
+      const notifications = await Notification.find(query).sort({ createdAt: -1 }).lean();
 
       // Group notifications by type
       const teamActivities = notifications.filter(
@@ -422,12 +423,12 @@ class NotificationService {
       return { success: true };
     } catch (error) {
       console.error('Error sending email notification:', error);
-      
+
       // Update delivery status with error
       notification.deliveryStatus.email.delivered = false;
       notification.deliveryStatus.email.error = error.message;
       await notification.save();
-      
+
       return { success: false, error: error.message };
     }
   }
@@ -449,7 +450,7 @@ class NotificationService {
       if (this.smsTemplates[notification.type]) {
         smsMessage = this.smsTemplates[notification.type];
         // Simple template replacement
-        Object.keys(notification.data).forEach(key => {
+        Object.keys(notification.data).forEach((key) => {
           smsMessage = smsMessage.replace(`{{${key}}}`, notification.data[key]);
         });
       }
@@ -465,12 +466,12 @@ class NotificationService {
       return { success: true };
     } catch (error) {
       console.error('Error sending SMS notification:', error);
-      
+
       // Update delivery status with error
       notification.deliveryStatus.sms.delivered = false;
       notification.deliveryStatus.sms.error = error.message;
       await notification.save();
-      
+
       return { success: false, error: error.message };
     }
   }
@@ -507,8 +508,8 @@ class NotificationService {
         source: {
           module: 'reviews',
           entityId: response._id,
-          entityType: 'ReviewResponse'
-        }
+          entityType: 'ReviewResponse',
+        },
       });
 
       return { success: true };
@@ -539,15 +540,15 @@ class NotificationService {
         status,
         reviewId: review._id,
         responseId: response._id,
-        clientName
+        clientName,
       },
       actionUrl: `/reviews/${review._id}`,
       actionText: 'View Review',
       source: {
         module: 'reviews',
         entityId: response._id,
-        entityType: 'ReviewResponse'
-      }
+        entityType: 'ReviewResponse',
+      },
     });
   }
 
@@ -567,7 +568,7 @@ class NotificationService {
         reviewId: review._id,
         clientName,
         clientEmail: email,
-        rating: review.rating
+        rating: review.rating,
       },
       actionUrl: `/reviews/${review._id}`,
       actionText: 'View Review',
@@ -575,8 +576,8 @@ class NotificationService {
       source: {
         module: 'reviews',
         entityId: review._id,
-        entityType: 'Review'
-      }
+        entityType: 'Review',
+      },
     });
   }
 
@@ -600,8 +601,8 @@ class NotificationService {
       source: {
         module: 'reviews',
         entityId: reviewRequest._id,
-        entityType: 'ReviewRequest'
-      }
+        entityType: 'ReviewRequest',
+      },
     });
   }
 
@@ -625,8 +626,8 @@ class NotificationService {
       source: {
         module: 'reviews',
         entityId: review._id,
-        entityType: 'Review'
-      }
+        entityType: 'Review',
+      },
     });
   }
 
@@ -657,8 +658,8 @@ class NotificationService {
       source: {
         module: 'reviews',
         entityId: review._id,
-        entityType: 'Review'
-      }
+        entityType: 'Review',
+      },
     });
   }
 }

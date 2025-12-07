@@ -1,3 +1,4 @@
+import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import { selectAppSettings } from '@/redux/settings/selectors';
 import { notification } from 'antd';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
@@ -12,6 +13,7 @@ const CopilotContext = createContext();
  */
 export const CopilotProvider = ({ children }) => {
   const appSettings = useSelector(selectAppSettings);
+  const currentAdmin = useSelector(selectCurrentAdmin);
   // console.log('🚀 ~ CopilotProvider ~ appSettings:', appSettings);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -85,14 +87,13 @@ export const CopilotProvider = ({ children }) => {
    * Load models when settings change
    */
   useEffect(() => {
-    // Always try to load models to show what's available
-    // Even if no API keys are configured yet
-    if (appSettings) {
+    // Only load models if user is authenticated
+    if (appSettings && currentAdmin?.token) {
       // console.log('Loading available models, hasApiKeys:', hasApiKeys());
       loadAvailableModels();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appSettings, loadAvailableModels]);
+  }, [appSettings, currentAdmin?.token, loadAvailableModels]);
 
   /**
    * Reset conversation when module changes

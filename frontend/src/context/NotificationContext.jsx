@@ -3,10 +3,12 @@
  * Provides notification state and functions throughout the app
  */
 
-import { createContext, useState, useCallback } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { selectCurrentAdmin } from '../redux/auth/selectors';
+import { request } from '../request';
 import socketService from '../services/socketService';
-import request from '../request';
 
 const NotificationContext = createContext(null);
 
@@ -16,6 +18,7 @@ export const NotificationProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState(null);
+  const currentAdmin = useSelector(selectCurrentAdmin);
 
   /**
    * Initialize socket connection and event listeners
@@ -51,12 +54,12 @@ export const NotificationProvider = ({ children }) => {
       // Notification events
       socketService.on('notification:new', (data) => {
         const { notification } = data;
-        
+
         // Add to notifications list
-        setNotifications(prev => [notification, ...prev]);
-        
+        setNotifications((prev) => [notification, ...prev]);
+
         // Update unread count
-        setUnreadCount(prev => prev + 1);
+        setUnreadCount((prev) => prev + 1);
 
         // Show toast notification
         showToast(notification);
@@ -64,22 +67,16 @@ export const NotificationProvider = ({ children }) => {
 
       socketService.on('notification:updated', (data) => {
         const { notificationId, read, readAt } = data;
-        
-        setNotifications(prev => 
-          prev.map(n => 
-            n._id === notificationId 
-              ? { ...n, read, readAt }
-              : n
-          )
+
+        setNotifications((prev) =>
+          prev.map((n) => (n._id === notificationId ? { ...n, read, readAt } : n))
         );
       });
 
       socketService.on('notification:deleted', (data) => {
         const { notificationId } = data;
-        
-        setNotifications(prev => 
-          prev.filter(n => n._id !== notificationId)
-        );
+
+        setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
       });
 
       socketService.on('notifications:list', (data) => {
@@ -93,9 +90,7 @@ export const NotificationProvider = ({ children }) => {
       });
 
       socketService.on('notifications:allMarkedRead', () => {
-        setNotifications(prev => 
-          prev.map(n => ({ ...n, read: true, readAt: new Date() }))
-        );
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true, readAt: new Date() })));
         setUnreadCount(0);
       });
 
@@ -103,13 +98,22 @@ export const NotificationProvider = ({ children }) => {
         console.error('Notification error:', error);
         toast.error(error.message || 'Notification error occurred');
       });
-
     } catch (error) {
       console.error('Failed to initialize socket:', error);
       setError(error);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /**
+   * Auto-connect socket if user is already logged in
+   */
+  useEffect(() => {
+    if (currentAdmin?.token && !connected && !socketService.isConnected()) {
+      console.log('Auto-connecting socket with existing token');
+      initializeSocket(currentAdmin.token);
+    }
+  }, [currentAdmin?.token, connected, initializeSocket]);
 
   /**
    * Disconnect socket
@@ -130,9 +134,9 @@ export const NotificationProvider = ({ children }) => {
         <div className="notification-toast-title">{title}</div>
         <div className="notification-toast-message">{message}</div>
         {actionUrl && (
-          <button 
+          <button
             className="notification-toast-action"
-            onClick={() => window.location.href = actionUrl}
+            onClick={() => (window.location.href = actionUrl)}
           >
             View
           </button>
@@ -146,7 +150,7 @@ export const NotificationProvider = ({ children }) => {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      draggable: true
+      draggable: true,
     };
 
     switch (type) {
@@ -181,9 +185,9 @@ export const NotificationProvider = ({ children }) => {
             limit: options.limit || 20,
             skip: options.skip || 0,
             unreadOnly: options.unreadOnly || false,
-            ...options
-          }
-        }
+            ...options,
+          },
+        },
       });
 
       if (response.success) {
@@ -201,34 +205,33 @@ export const NotificationProvider = ({ children }) => {
   /**
    * Mark notification as read
    */
-  const markAsRead = useCallback(async (notificationId) => {
-    try {
-      // Optimistic update
-      setNotifications(prev => 
-        prev.map(n => 
-          n._id === notificationId 
-            ? { ...n, read: true, readAt: new Date() }
-            : n
-        )
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
+  const markAsRead = useCallback(
+    async (notificationId) => {
+      try {
+        // Optimistic update
+        setNotifications((prev) =>
+          prev.map((n) => (n._id === notificationId ? { ...n, read: true, readAt: new Date() } : n))
+        );
+        setUnreadCount((prev) => Math.max(0, prev - 1));
 
-      // Update via socket or API
-      if (socketService.isConnected()) {
-        socketService.markAsRead(notificationId);
-      } else {
-        await request.patch({
-          entity: 'notifications',
-          id: notificationId,
-          jsonData: { read: true }
-        });
+        // Update via socket or API
+        if (socketService.isConnected()) {
+          socketService.markAsRead(notificationId);
+        } else {
+          await request.patch({
+            entity: 'notifications',
+            id: notificationId,
+            jsonData: { read: true },
+          });
+        }
+      } catch (error) {
+        console.error('Failed to mark notification as read:', error);
+        // Revert optimistic update
+        fetchNotifications();
       }
-    } catch (error) {
-      console.error('Failed to mark notification as read:', error);
-      // Revert optimistic update
-      fetchNotifications();
-    }
-  }, [fetchNotifications]);
+    },
+    [fetchNotifications]
+  );
 
   /**
    * Mark all notifications as read
@@ -236,9 +239,7 @@ export const NotificationProvider = ({ children }) => {
   const markAllAsRead = useCallback(async () => {
     try {
       // Optimistic update
-      setNotifications(prev => 
-        prev.map(n => ({ ...n, read: true, readAt: new Date() }))
-      );
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true, readAt: new Date() })));
       setUnreadCount(0);
 
       // Update via socket or API
@@ -247,7 +248,7 @@ export const NotificationProvider = ({ children }) => {
       } else {
         await request.patch({
           entity: 'notifications/mark-all-read',
-          jsonData: {}
+          jsonData: {},
         });
       }
     } catch (error) {
@@ -259,30 +260,33 @@ export const NotificationProvider = ({ children }) => {
   /**
    * Delete notification
    */
-  const deleteNotification = useCallback(async (notificationId) => {
-    try {
-      // Optimistic update
-      const deletedNotif = notifications.find(n => n._id === notificationId);
-      setNotifications(prev => prev.filter(n => n._id !== notificationId));
-      
-      if (deletedNotif && !deletedNotif.read) {
-        setUnreadCount(prev => Math.max(0, prev - 1));
-      }
+  const deleteNotification = useCallback(
+    async (notificationId) => {
+      try {
+        // Optimistic update
+        const deletedNotif = notifications.find((n) => n._id === notificationId);
+        setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
 
-      // Delete via socket or API
-      if (socketService.isConnected()) {
-        socketService.deleteNotification(notificationId);
-      } else {
-        await request.delete({
-          entity: 'notifications',
-          id: notificationId
-        });
+        if (deletedNotif && !deletedNotif.read) {
+          setUnreadCount((prev) => Math.max(0, prev - 1));
+        }
+
+        // Delete via socket or API
+        if (socketService.isConnected()) {
+          socketService.deleteNotification(notificationId);
+        } else {
+          await request.delete({
+            entity: 'notifications',
+            id: notificationId,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to delete notification:', error);
+        fetchNotifications();
       }
-    } catch (error) {
-      console.error('Failed to delete notification:', error);
-      fetchNotifications();
-    }
-  }, [notifications, fetchNotifications]);
+    },
+    [notifications, fetchNotifications]
+  );
 
   /**
    * Get unread count via API
@@ -290,7 +294,7 @@ export const NotificationProvider = ({ children }) => {
   const getUnreadCount = useCallback(async () => {
     try {
       const response = await request.get({
-        entity: 'notifications/unread-count'
+        entity: 'notifications/unread-count',
       });
 
       if (response.success) {
@@ -314,14 +318,10 @@ export const NotificationProvider = ({ children }) => {
     markAllAsRead,
     deleteNotification,
     getUnreadCount,
-    showToast
+    showToast,
   };
 
-  return (
-    <NotificationContext.Provider value={value}>
-      {children}
-    </NotificationContext.Provider>
-  );
+  return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>;
 };
 
 export default NotificationContext;

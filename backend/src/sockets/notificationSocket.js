@@ -14,7 +14,7 @@ const activeConnections = new Map(); // userId -> Set of socketIds
 const authenticateSocket = (socket, next) => {
   try {
     const token = socket.handshake.auth.token || socket.handshake.query.token;
-    
+
     if (!token) {
       return next(new Error('Authentication token required'));
     }
@@ -23,7 +23,7 @@ const authenticateSocket = (socket, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     socket.userId = decoded.id || decoded._id || decoded.userId;
     socket.userEmail = decoded.email;
-    
+
     next();
   } catch (error) {
     console.error('Socket authentication error:', error.message);
@@ -56,7 +56,7 @@ module.exports = (io) => {
       message: 'Connected to notification service',
       userId,
       socketId: socket.id,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
 
     /**
@@ -65,11 +65,11 @@ module.exports = (io) => {
     socket.on('notifications:fetch', async (data = {}) => {
       try {
         const { limit = 20, skip = 0, unreadOnly = false } = data;
-        
+
         const notifications = await Notification.getUserNotifications(userId, {
           limit,
           skip,
-          unreadOnly
+          unreadOnly,
         });
 
         const unreadCount = await Notification.getUnreadCount(userId);
@@ -78,13 +78,13 @@ module.exports = (io) => {
           notifications,
           unreadCount,
           total: notifications.length,
-          hasMore: notifications.length === limit
+          hasMore: notifications.length === limit,
         });
       } catch (error) {
         console.error('Error fetching notifications:', error);
         socket.emit('notifications:error', {
           message: 'Failed to fetch notifications',
-          error: error.message
+          error: error.message,
         });
       }
     });
@@ -95,19 +95,19 @@ module.exports = (io) => {
     socket.on('notifications:markRead', async (data) => {
       try {
         const { notificationId, notificationIds } = data;
-        
+
         if (notificationId) {
           // Mark single notification as read
           const notification = await Notification.findOne({
             _id: notificationId,
-            recipientId: userId
+            recipientId: userId,
           });
 
           if (notification) {
             await notification.markAsRead();
             socket.emit('notifications:marked', {
               notificationId,
-              success: true
+              success: true,
             });
 
             // Update unread count
@@ -119,19 +119,19 @@ module.exports = (io) => {
           await Notification.updateMany(
             {
               _id: { $in: notificationIds },
-              recipientId: userId
+              recipientId: userId,
             },
             {
               $set: {
                 read: true,
-                readAt: new Date()
-              }
+                readAt: new Date(),
+              },
             }
           );
 
           socket.emit('notifications:marked', {
             notificationIds,
-            success: true
+            success: true,
           });
 
           // Update unread count
@@ -142,7 +142,7 @@ module.exports = (io) => {
         console.error('Error marking notification as read:', error);
         socket.emit('notifications:error', {
           message: 'Failed to mark notification as read',
-          error: error.message
+          error: error.message,
         });
       }
     });
@@ -153,10 +153,10 @@ module.exports = (io) => {
     socket.on('notifications:markAllRead', async () => {
       try {
         await Notification.markAllAsRead(userId);
-        
+
         socket.emit('notifications:allMarkedRead', {
           success: true,
-          message: 'All notifications marked as read'
+          message: 'All notifications marked as read',
         });
 
         socket.emit('notifications:unreadCount', { count: 0 });
@@ -164,7 +164,7 @@ module.exports = (io) => {
         console.error('Error marking all notifications as read:', error);
         socket.emit('notifications:error', {
           message: 'Failed to mark all notifications as read',
-          error: error.message
+          error: error.message,
         });
       }
     });
@@ -175,18 +175,18 @@ module.exports = (io) => {
     socket.on('notifications:delete', async (data) => {
       try {
         const { notificationId } = data;
-        
+
         const notification = await Notification.findOne({
           _id: notificationId,
-          recipientId: userId
+          recipientId: userId,
         });
 
         if (notification) {
           await notification.softDelete();
-          
+
           socket.emit('notifications:deleted', {
             notificationId,
-            success: true
+            success: true,
           });
 
           // Update unread count if it was unread
@@ -199,7 +199,7 @@ module.exports = (io) => {
         console.error('Error deleting notification:', error);
         socket.emit('notifications:error', {
           message: 'Failed to delete notification',
-          error: error.message
+          error: error.message,
         });
       }
     });
@@ -215,7 +215,7 @@ module.exports = (io) => {
         console.error('Error getting unread count:', error);
         socket.emit('notifications:error', {
           message: 'Failed to get unread count',
-          error: error.message
+          error: error.message,
         });
       }
     });
@@ -225,19 +225,19 @@ module.exports = (io) => {
      */
     socket.on('notifications:subscribe', (data) => {
       const { types = [], modules = [] } = data;
-      
-      types.forEach(type => {
+
+      types.forEach((type) => {
         socket.join(`notif-type:${type}`);
       });
 
-      modules.forEach(module => {
+      modules.forEach((module) => {
         socket.join(`notif-module:${module}`);
       });
 
       socket.emit('notifications:subscribed', {
         types,
         modules,
-        success: true
+        success: true,
       });
     });
 
@@ -246,11 +246,11 @@ module.exports = (io) => {
      */
     socket.on('disconnect', (reason) => {
       console.log(`❌ User disconnected: ${userId} (Socket: ${socket.id}) - Reason: ${reason}`);
-      
+
       // Remove from active connections
       if (activeConnections.has(userId)) {
         activeConnections.get(userId).delete(socket.id);
-        
+
         // Remove user entry if no more active connections
         if (activeConnections.get(userId).size === 0) {
           activeConnections.delete(userId);
@@ -279,7 +279,7 @@ module.exports = (io) => {
      * Emit notification to multiple users
      */
     emitToUsers: (userIds, event, data) => {
-      userIds.forEach(userId => {
+      userIds.forEach((userId) => {
         io.to(`user:${userId}`).emit(event, data);
       });
     },
@@ -303,6 +303,6 @@ module.exports = (io) => {
      */
     getActiveUserIds: () => {
       return Array.from(activeConnections.keys());
-    }
+    },
   };
 };

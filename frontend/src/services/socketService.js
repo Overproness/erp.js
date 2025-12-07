@@ -28,14 +28,14 @@ class SocketService {
 
     this.socket = io(serverUrl, {
       auth: {
-        token
+        token,
       },
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       reconnectionAttempts: this.maxReconnectAttempts,
-      autoConnect: true
+      autoConnect: true,
     });
 
     this.setupEventHandlers();
@@ -70,12 +70,12 @@ class SocketService {
     this.socket.on('connect_error', (error) => {
       console.error('Socket connection error:', error);
       this.reconnectAttempts++;
-      
+
       if (this.reconnectAttempts >= this.maxReconnectAttempts) {
         console.error('Max reconnection attempts reached');
-        this.emit('socket:error', { 
+        this.emit('socket:error', {
           message: 'Failed to connect to notification service',
-          error 
+          error,
         });
       }
     });
@@ -153,10 +153,10 @@ class SocketService {
    */
   off(event, callback) {
     if (!this.listeners.has(event)) return;
-    
+
     const listeners = this.listeners.get(event);
     const index = listeners.indexOf(callback);
-    
+
     if (index > -1) {
       listeners.splice(index, 1);
     }
@@ -173,8 +173,8 @@ class SocketService {
    */
   emit(event, data) {
     if (!this.listeners.has(event)) return;
-    
-    this.listeners.get(event).forEach(callback => {
+
+    this.listeners.get(event).forEach((callback) => {
       try {
         callback(data);
       } catch (error) {

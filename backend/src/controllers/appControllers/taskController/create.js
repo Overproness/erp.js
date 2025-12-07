@@ -62,29 +62,17 @@ const create = async (req, res) => {
 
     // Handle team mentions and send notifications
     if (taskData.mentions && Array.isArray(taskData.mentions)) {
-      const notificationService = require('../../../services/notificationService');
+      const { notificationService } = require('../../../services/notificationService');
 
       for (const mention of taskData.mentions) {
         if (mention.type === 'team' && mention.id) {
           const team = await Team.findById(mention.id).populate('members.user');
           if (team && team.members) {
-            // Send notification to all team members
-            for (const member of team.members) {
-              if (member.user && member.user._id) {
-                await notificationService.sendNotification(member.user._id, {
-                  type: 'team_mention',
-                  title: `Team mentioned in task: ${result.title}`,
-                  message: `Your team was mentioned in a new task: ${result.title}`,
-                  entityType: 'task',
-                  entityId: result._id,
-                  data: {
-                    taskId: result._id,
-                    taskTitle: result.title,
-                    mentionedBy: owner,
-                  },
-                });
-              }
-            }
+            const mentionedBy = await CompanyOwner.findById(owner);
+            await notificationService.sendTeamMentionNotification(team, mentionedBy, {
+              taskId: result._id,
+              taskTitle: result.title,
+            });
           }
         }
       }

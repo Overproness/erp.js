@@ -155,18 +155,25 @@ class ChatQueueService {
    */
   async notifyUser(queueItem) {
     try {
-      const Notification = require('../models/appModels/Notification');
+      const { notificationService } = require('./notificationService');
 
-      await Notification.create({
-        owner: queueItem.owner,
+      await notificationService.sendNotification({
+        recipientId: queueItem.owner,
         title: 'AI Assistant Response Ready',
         message: `Your question has been answered: "${queueItem.message.substring(0, 50)}..."`,
         type: 'ai_response',
         priority: 'normal',
-        link: `/ai-assistant/conversation/${queueItem._id}`,
+        actionUrl: `/ai-assistant/conversation/${queueItem._id}`,
+        actionText: 'View Response',
+        channels: ['app'],
         data: {
           queueId: queueItem._id,
           response: queueItem.response,
+        },
+        source: {
+          module: 'ai',
+          entityId: queueItem._id,
+          entityType: 'ChatQueue',
         },
       });
     } catch (error) {

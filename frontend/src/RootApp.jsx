@@ -7,9 +7,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import toastConfig from './config/toastConfig';
 import { CopilotProvider } from './context/CopilotContext';
 import { NotificationProvider } from './context/NotificationContext';
-import toastConfig from './config/toastConfig';
 import store from './redux/store';
 
 // Import directly instead of using lazy loading initially
@@ -22,13 +22,16 @@ const RootApp = () => {
         <ConfigProvider>
           <HelmetProvider>
             <App>
-              <CopilotProvider>
-                <Router>
-                  <Suspense fallback={<div className="loading-container">Loading...</div>}>
-                    <ErpOs />
-                  </Suspense>
-                </Router>
-              </CopilotProvider>
+              <NotificationProvider>
+                <CopilotProvider>
+                  <Router>
+                    <Suspense fallback={<div className="loading-container">Loading...</div>}>
+                      <ErpOs />
+                    </Suspense>
+                  </Router>
+                </CopilotProvider>
+              </NotificationProvider>
+              <ToastContainer {...toastConfig} />
             </App>
           </HelmetProvider>
         </ConfigProvider>
