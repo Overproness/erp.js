@@ -1,9 +1,20 @@
-import React from 'react';
-import { Button, Form, Input, Select, Divider, Switch, Space, Typography, message, Checkbox, Row, Col, Card } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { erp } from '@/redux/erp/actions';
 import { useErpContext } from '@/context/erp';
+import { erp } from '@/redux/erp/actions';
+import { CloseOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Divider,
+  Form,
+  Input,
+  Row,
+  Select,
+  Typography,
+  message,
+} from 'antd';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -18,28 +29,226 @@ const InviteMemberPanel = ({ config }) => {
 
   // Define permission modules with their CRUD operations (updated to match backend)
   const permissionModules = [
-    { key: 'Invoices', permissions: ['canViewInvoices', 'canCreateInvoices', 'canUpdateInvoices', 'canDeleteInvoices'] },
-    { key: 'Clients', permissions: ['canViewClients', 'canCreateClients', 'canUpdateClients', 'canDeleteClients'] },
-    { key: 'Payments', permissions: ['canViewPayments', 'canCreatePayments', 'canUpdatePayments', 'canDeletePayments'] },
-    { key: 'Quotes', permissions: ['canViewQuotes', 'canCreateQuotes', 'canUpdateQuotes', 'canDeleteQuotes'] },
-    { key: 'Offers', permissions: ['canViewOffers', 'canCreateOffers', 'canUpdateOffers', 'canDeleteOffers'] },
-    { key: 'Marketing', permissions: ['canViewMarketing', 'canCreateMarketing', 'canUpdateMarketing', 'canDeleteMarketing'] },
-    { key: 'Reputation', permissions: ['canViewReputation', 'canCreateReputation', 'canUpdateReputation', 'canDeleteReputation'] },
-    { key: 'Tasks', permissions: ['canViewTasks', 'canCreateTasks', 'canUpdateTasks', 'canDeleteTasks'] },
-    { key: 'Documents', permissions: ['canViewDocuments', 'canCreateDocuments', 'canUpdateDocuments', 'canDeleteDocuments'] },
-    { key: 'Reports', permissions: ['canViewReports', 'canCreateReports', 'canUpdateReports', 'canDeleteReports'] },
-    { key: 'Analytics', permissions: ['canViewAnalytics', 'canCreateAnalytics', 'canUpdateAnalytics', 'canDeleteAnalytics'] },
-    { key: 'Settings', permissions: ['canViewSettings', 'canCreateSettings', 'canUpdateSettings', 'canDeleteSettings'] },
-    { key: 'Notifications', permissions: ['canViewNotifications', 'canCreateNotifications', 'canUpdateNotifications', 'canDeleteNotifications'] },
-    { key: 'AI Assistants', permissions: ['canViewAiAssistants', 'canCreateAiAssistants', 'canUpdateAiAssistants', 'canDeleteAiAssistants'] },
-    { key: 'Taxes', permissions: ['canViewTaxes', 'canCreateTaxes', 'canUpdateTaxes', 'canDeleteTaxes'] },
-    { key: 'Currency', permissions: ['canViewCurrency', 'canCreateCurrency', 'canUpdateCurrency', 'canDeleteCurrency'] },
-    { key: 'Teams', permissions: ['canViewTeams', 'canCreateTeams', 'canUpdateTeams', 'canDeleteTeams'] },
-    { key: 'Workflows', permissions: ['canViewWorkflows', 'canCreateWorkflows', 'canUpdateWorkflows', 'canDeleteWorkflows'] },
-    { key: 'Social Accounts', permissions: ['canViewSocialAccounts', 'canCreateSocialAccounts', 'canUpdateSocialAccounts', 'canDeleteSocialAccounts'] },
-    { key: 'Social Posts', permissions: ['canViewSocialPosts', 'canCreateSocialPosts', 'canUpdateSocialPosts', 'canDeleteSocialPosts'] },
-    { key: 'Social Campaigns', permissions: ['canViewSocialCampaigns', 'canCreateSocialCampaigns', 'canUpdateSocialCampaigns', 'canDeleteSocialCampaigns'] },
-    { key: 'URLs', permissions: ['canViewUrls', 'canCreateUrls', 'canUpdateUrls', 'canDeleteUrls'] },
+    {
+      key: 'Invoices',
+      permissions: [
+        'canViewInvoices',
+        'canCreateInvoices',
+        'canUpdateInvoices',
+        'canDeleteInvoices',
+      ],
+    },
+    {
+      key: 'Clients',
+      permissions: ['canViewClients', 'canCreateClients', 'canUpdateClients', 'canDeleteClients'],
+    },
+    {
+      key: 'Payments',
+      permissions: [
+        'canViewPayments',
+        'canCreatePayments',
+        'canUpdatePayments',
+        'canDeletePayments',
+      ],
+    },
+    {
+      key: 'Payment Methods',
+      permissions: [
+        'canViewPaymentMethods',
+        'canCreatePaymentMethods',
+        'canUpdatePaymentMethods',
+        'canDeletePaymentMethods',
+      ],
+    },
+    {
+      key: 'Quotes',
+      permissions: ['canViewQuotes', 'canCreateQuotes', 'canUpdateQuotes', 'canDeleteQuotes'],
+    },
+    {
+      key: 'Offers',
+      permissions: ['canViewOffers', 'canCreateOffers', 'canUpdateOffers', 'canDeleteOffers'],
+    },
+    {
+      key: 'Follow-Ups',
+      permissions: [
+        'canViewFollowUps',
+        'canCreateFollowUps',
+        'canUpdateFollowUps',
+        'canDeleteFollowUps',
+      ],
+    },
+    {
+      key: 'Marketing',
+      permissions: [
+        'canViewMarketing',
+        'canCreateMarketing',
+        'canUpdateMarketing',
+        'canDeleteMarketing',
+      ],
+    },
+    {
+      key: 'Behavior Triggers',
+      permissions: [
+        'canViewBehaviorTriggers',
+        'canCreateBehaviorTriggers',
+        'canUpdateBehaviorTriggers',
+        'canDeleteBehaviorTriggers',
+      ],
+    },
+    {
+      key: 'Retargeting',
+      permissions: [
+        'canViewRetargeting',
+        'canCreateRetargeting',
+        'canUpdateRetargeting',
+        'canDeleteRetargeting',
+      ],
+    },
+    {
+      key: 'Reputation',
+      permissions: [
+        'canViewReputation',
+        'canCreateReputation',
+        'canUpdateReputation',
+        'canDeleteReputation',
+      ],
+    },
+    {
+      key: 'Surveys',
+      permissions: ['canViewSurveys', 'canCreateSurveys', 'canUpdateSurveys', 'canDeleteSurveys'],
+    },
+    {
+      key: 'Chat',
+      permissions: ['canViewChat', 'canCreateChat', 'canUpdateChat', 'canDeleteChat'],
+    },
+    {
+      key: 'Tasks',
+      permissions: ['canViewTasks', 'canCreateTasks', 'canUpdateTasks', 'canDeleteTasks'],
+    },
+    {
+      key: 'Appointments',
+      permissions: [
+        'canViewAppointments',
+        'canCreateAppointments',
+        'canUpdateAppointments',
+        'canDeleteAppointments',
+      ],
+    },
+    {
+      key: 'Documents',
+      permissions: [
+        'canViewDocuments',
+        'canCreateDocuments',
+        'canUpdateDocuments',
+        'canDeleteDocuments',
+      ],
+    },
+    {
+      key: 'Reports',
+      permissions: ['canViewReports', 'canCreateReports', 'canUpdateReports', 'canDeleteReports'],
+    },
+    {
+      key: 'Analytics',
+      permissions: [
+        'canViewAnalytics',
+        'canCreateAnalytics',
+        'canUpdateAnalytics',
+        'canDeleteAnalytics',
+      ],
+    },
+    {
+      key: 'Settings',
+      permissions: [
+        'canViewSettings',
+        'canCreateSettings',
+        'canUpdateSettings',
+        'canDeleteSettings',
+      ],
+    },
+    {
+      key: 'Notifications',
+      permissions: [
+        'canViewNotifications',
+        'canCreateNotifications',
+        'canUpdateNotifications',
+        'canDeleteNotifications',
+      ],
+    },
+    {
+      key: 'AI Assistants',
+      permissions: [
+        'canViewAiAssistants',
+        'canCreateAiAssistants',
+        'canUpdateAiAssistants',
+        'canDeleteAiAssistants',
+      ],
+    },
+    {
+      key: 'AI Learning',
+      permissions: [
+        'canViewAiLearning',
+        'canCreateAiLearning',
+        'canUpdateAiLearning',
+        'canDeleteAiLearning',
+      ],
+    },
+    {
+      key: 'Taxes',
+      permissions: ['canViewTaxes', 'canCreateTaxes', 'canUpdateTaxes', 'canDeleteTaxes'],
+    },
+    {
+      key: 'Currency',
+      permissions: [
+        'canViewCurrency',
+        'canCreateCurrency',
+        'canUpdateCurrency',
+        'canDeleteCurrency',
+      ],
+    },
+    {
+      key: 'Teams',
+      permissions: ['canViewTeams', 'canCreateTeams', 'canUpdateTeams', 'canDeleteTeams'],
+    },
+    {
+      key: 'Workflows',
+      permissions: [
+        'canViewWorkflows',
+        'canCreateWorkflows',
+        'canUpdateWorkflows',
+        'canDeleteWorkflows',
+      ],
+    },
+    {
+      key: 'Social Accounts',
+      permissions: [
+        'canViewSocialAccounts',
+        'canCreateSocialAccounts',
+        'canUpdateSocialAccounts',
+        'canDeleteSocialAccounts',
+      ],
+    },
+    {
+      key: 'Social Posts',
+      permissions: [
+        'canViewSocialPosts',
+        'canCreateSocialPosts',
+        'canUpdateSocialPosts',
+        'canDeleteSocialPosts',
+      ],
+    },
+    {
+      key: 'Social Campaigns',
+      permissions: [
+        'canViewSocialCampaigns',
+        'canCreateSocialCampaigns',
+        'canUpdateSocialCampaigns',
+        'canDeleteSocialCampaigns',
+      ],
+    },
+    {
+      key: 'URLs',
+      permissions: ['canViewUrls', 'canCreateUrls', 'canUpdateUrls', 'canDeleteUrls'],
+    },
   ];
 
   const crudLabels = ['View', 'Create', 'Update', 'Delete'];
@@ -65,8 +274,8 @@ const InviteMemberPanel = ({ config }) => {
     };
 
     // Generate all permissions object for admin/lead roles
-    permissionModules.forEach(module => {
-      module.permissions.forEach(permission => {
+    permissionModules.forEach((module) => {
+      module.permissions.forEach((permission) => {
         allPermissions[permission] = true;
       });
     });
@@ -85,7 +294,7 @@ const InviteMemberPanel = ({ config }) => {
   const onFinish = async (values) => {
     // Make sure we send data in the format expected by the backend
     console.log('Form values received:', JSON.stringify(values, null, 2));
-    
+
     // Explicitly convert each permission to a boolean to ensure they're not undefined (updated with all permissions)
     const permissions = {
       // Invoices
@@ -103,6 +312,11 @@ const InviteMemberPanel = ({ config }) => {
       canCreatePayments: values.permissions?.canCreatePayments === true,
       canUpdatePayments: values.permissions?.canUpdatePayments === true,
       canDeletePayments: values.permissions?.canDeletePayments === true,
+      // Payment Methods
+      canViewPaymentMethods: values.permissions?.canViewPaymentMethods === true,
+      canCreatePaymentMethods: values.permissions?.canCreatePaymentMethods === true,
+      canUpdatePaymentMethods: values.permissions?.canUpdatePaymentMethods === true,
+      canDeletePaymentMethods: values.permissions?.canDeletePaymentMethods === true,
       // Quotes
       canViewQuotes: values.permissions?.canViewQuotes === true,
       canCreateQuotes: values.permissions?.canCreateQuotes === true,
@@ -113,21 +327,51 @@ const InviteMemberPanel = ({ config }) => {
       canCreateOffers: values.permissions?.canCreateOffers === true,
       canUpdateOffers: values.permissions?.canUpdateOffers === true,
       canDeleteOffers: values.permissions?.canDeleteOffers === true,
+      // Follow-Ups
+      canViewFollowUps: values.permissions?.canViewFollowUps === true,
+      canCreateFollowUps: values.permissions?.canCreateFollowUps === true,
+      canUpdateFollowUps: values.permissions?.canUpdateFollowUps === true,
+      canDeleteFollowUps: values.permissions?.canDeleteFollowUps === true,
       // Marketing
       canViewMarketing: values.permissions?.canViewMarketing === true,
       canCreateMarketing: values.permissions?.canCreateMarketing === true,
       canUpdateMarketing: values.permissions?.canUpdateMarketing === true,
       canDeleteMarketing: values.permissions?.canDeleteMarketing === true,
+      // Behavior Triggers
+      canViewBehaviorTriggers: values.permissions?.canViewBehaviorTriggers === true,
+      canCreateBehaviorTriggers: values.permissions?.canCreateBehaviorTriggers === true,
+      canUpdateBehaviorTriggers: values.permissions?.canUpdateBehaviorTriggers === true,
+      canDeleteBehaviorTriggers: values.permissions?.canDeleteBehaviorTriggers === true,
+      // Retargeting
+      canViewRetargeting: values.permissions?.canViewRetargeting === true,
+      canCreateRetargeting: values.permissions?.canCreateRetargeting === true,
+      canUpdateRetargeting: values.permissions?.canUpdateRetargeting === true,
+      canDeleteRetargeting: values.permissions?.canDeleteRetargeting === true,
       // Reputation (was missing!)
       canViewReputation: values.permissions?.canViewReputation === true,
       canCreateReputation: values.permissions?.canCreateReputation === true,
       canUpdateReputation: values.permissions?.canUpdateReputation === true,
       canDeleteReputation: values.permissions?.canDeleteReputation === true,
+      // Surveys
+      canViewSurveys: values.permissions?.canViewSurveys === true,
+      canCreateSurveys: values.permissions?.canCreateSurveys === true,
+      canUpdateSurveys: values.permissions?.canUpdateSurveys === true,
+      canDeleteSurveys: values.permissions?.canDeleteSurveys === true,
+      // Chat
+      canViewChat: values.permissions?.canViewChat === true,
+      canCreateChat: values.permissions?.canCreateChat === true,
+      canUpdateChat: values.permissions?.canUpdateChat === true,
+      canDeleteChat: values.permissions?.canDeleteChat === true,
       // Tasks
       canViewTasks: values.permissions?.canViewTasks === true,
       canCreateTasks: values.permissions?.canCreateTasks === true,
       canUpdateTasks: values.permissions?.canUpdateTasks === true,
       canDeleteTasks: values.permissions?.canDeleteTasks === true,
+      // Appointments
+      canViewAppointments: values.permissions?.canViewAppointments === true,
+      canCreateAppointments: values.permissions?.canCreateAppointments === true,
+      canUpdateAppointments: values.permissions?.canUpdateAppointments === true,
+      canDeleteAppointments: values.permissions?.canDeleteAppointments === true,
       // Documents
       canViewDocuments: values.permissions?.canViewDocuments === true,
       canCreateDocuments: values.permissions?.canCreateDocuments === true,
@@ -158,6 +402,11 @@ const InviteMemberPanel = ({ config }) => {
       canCreateAiAssistants: values.permissions?.canCreateAiAssistants === true,
       canUpdateAiAssistants: values.permissions?.canUpdateAiAssistants === true,
       canDeleteAiAssistants: values.permissions?.canDeleteAiAssistants === true,
+      // AI Learning
+      canViewAiLearning: values.permissions?.canViewAiLearning === true,
+      canCreateAiLearning: values.permissions?.canCreateAiLearning === true,
+      canUpdateAiLearning: values.permissions?.canUpdateAiLearning === true,
+      canDeleteAiLearning: values.permissions?.canDeleteAiLearning === true,
       // Taxes
       canViewTaxes: values.permissions?.canViewTaxes === true,
       canCreateTaxes: values.permissions?.canCreateTaxes === true,
@@ -199,14 +448,14 @@ const InviteMemberPanel = ({ config }) => {
       canUpdateUrls: values.permissions?.canUpdateUrls === true,
       canDeleteUrls: values.permissions?.canDeleteUrls === true,
     };
-    
+
     console.log('Formatted permissions:', JSON.stringify(permissions, null, 2));
-    
+
     const formattedValues = {
       name: values.name,
       email: values.email,
       role: values.role || 'member',
-      permissions: permissions
+      permissions: permissions,
     };
 
     setSubmitting(true);
@@ -324,19 +573,21 @@ const InviteMemberPanel = ({ config }) => {
         canUpdateUrls: formattedValues.permissions.canUpdateUrls === true,
         canDeleteUrls: formattedValues.permissions.canDeleteUrls === true,
       };
-      
+
       console.log('Safe permissions before dispatch:', JSON.stringify(safePermissions, null, 2));
-      
-      const result = await dispatch(erp.custom({ 
-        entity, 
-        customAction: 'inviteMember', 
-        jsonData: { 
-          ...formattedValues,
-          permissions: safePermissions, // Override with safe values
-          teamId: recordId,
-        }
-      }));
-      
+
+      const result = await dispatch(
+        erp.custom({
+          entity,
+          customAction: 'inviteMember',
+          jsonData: {
+            ...formattedValues,
+            permissions: safePermissions, // Override with safe values
+            teamId: recordId,
+          },
+        })
+      );
+
       if (result && result.success) {
         message.success('Team member invited successfully');
         form.resetFields();
@@ -362,49 +613,60 @@ const InviteMemberPanel = ({ config }) => {
   const handleRoleChange = (newRole) => {
     const currentValues = form.getFieldsValue();
     const defaultPermissions = getDefaultPermissions(newRole);
-    
+
     form.setFieldsValue({
       ...currentValues,
       role: newRole,
-      permissions: defaultPermissions
+      permissions: defaultPermissions,
     });
   };
 
   // Handle select all for a module
   const handleSelectAllForModule = (moduleKey, selectAll) => {
-    const module = permissionModules.find(m => m.key === moduleKey);
+    const module = permissionModules.find((m) => m.key === moduleKey);
     if (!module) return;
 
     const currentValues = form.getFieldsValue();
     const updatedPermissions = { ...currentValues.permissions };
-    
-    module.permissions.forEach(permission => {
+
+    module.permissions.forEach((permission) => {
       updatedPermissions[permission] = selectAll;
     });
 
     form.setFieldsValue({
       ...currentValues,
-      permissions: updatedPermissions
+      permissions: updatedPermissions,
     });
   };
 
   return (
-    <div style={{ 
-      position: 'fixed', 
-      right: 0, 
-      top: 0, 
-      bottom: 0, 
-      width: '520px', 
-      background: 'white', 
-      padding: '24px', 
-      boxShadow: '-2px 0px 10px rgba(0, 0, 0, 0.15)', 
-      overflowY: 'auto', 
-      zIndex: 1000,
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <Title level={4} style={{ margin: 0 }}>Invite Team Member</Title>
+    <div
+      style={{
+        position: 'fixed',
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: '520px',
+        background: 'white',
+        padding: '24px',
+        boxShadow: '-2px 0px 10px rgba(0, 0, 0, 0.15)',
+        overflowY: 'auto',
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '16px',
+        }}
+      >
+        <Title level={4} style={{ margin: 0 }}>
+          Invite Team Member
+        </Title>
         <Button type="text" onClick={handleCancel} icon={<CloseOutlined />} />
       </div>
       <Divider style={{ margin: '0 0 24px 0' }} />
@@ -444,34 +706,56 @@ const InviteMemberPanel = ({ config }) => {
             <Option value="admin">Admin</Option>
           </Select>
         </Form.Item>
-        
+
         <Divider orientation="left">Permissions</Divider>
-        
+
         {/* Permissions Grid Header */}
-        <Row gutter={[8, 8]} style={{ marginBottom: '12px', fontWeight: 'bold', borderBottom: '1px solid #f0f0f0', paddingBottom: '8px' }}>
+        <Row
+          gutter={[8, 8]}
+          style={{
+            marginBottom: '12px',
+            fontWeight: 'bold',
+            borderBottom: '1px solid #f0f0f0',
+            paddingBottom: '8px',
+          }}
+        >
           <Col span={8}>
             <Text strong>Module</Text>
           </Col>
           <Col span={4} style={{ textAlign: 'center' }}>
-            <Text strong style={{ fontSize: '11px' }}>All</Text>
+            <Text strong style={{ fontSize: '11px' }}>
+              All
+            </Text>
           </Col>
           <Col span={3} style={{ textAlign: 'center' }}>
-            <Text strong style={{ fontSize: '11px' }}>View</Text>
+            <Text strong style={{ fontSize: '11px' }}>
+              View
+            </Text>
           </Col>
           <Col span={3} style={{ textAlign: 'center' }}>
-            <Text strong style={{ fontSize: '11px' }}>Create</Text>
+            <Text strong style={{ fontSize: '11px' }}>
+              Create
+            </Text>
           </Col>
           <Col span={3} style={{ textAlign: 'center' }}>
-            <Text strong style={{ fontSize: '11px' }}>Update</Text>
+            <Text strong style={{ fontSize: '11px' }}>
+              Update
+            </Text>
           </Col>
           <Col span={3} style={{ textAlign: 'center' }}>
-            <Text strong style={{ fontSize: '11px' }}>Delete</Text>
+            <Text strong style={{ fontSize: '11px' }}>
+              Delete
+            </Text>
           </Col>
         </Row>
 
         {/* Permissions Grid Rows */}
         {permissionModules.map((module) => (
-          <Row key={module.key} gutter={[8, 8]} style={{ marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid #f5f5f5' }}>
+          <Row
+            key={module.key}
+            gutter={[8, 8]}
+            style={{ marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid #f5f5f5' }}
+          >
             <Col span={8}>
               <Text style={{ fontSize: '12px', fontWeight: '500' }}>{module.key}</Text>
             </Col>
@@ -480,12 +764,14 @@ const InviteMemberPanel = ({ config }) => {
                 <Checkbox
                   indeterminate={(() => {
                     const currentValues = form.getFieldsValue();
-                    const checkedCount = module.permissions.filter(p => currentValues.permissions?.[p]).length;
+                    const checkedCount = module.permissions.filter(
+                      (p) => currentValues.permissions?.[p]
+                    ).length;
                     return checkedCount > 0 && checkedCount < module.permissions.length;
                   })()}
                   checked={(() => {
                     const currentValues = form.getFieldsValue();
-                    return module.permissions.every(p => currentValues.permissions?.[p]);
+                    return module.permissions.every((p) => currentValues.permissions?.[p]);
                   })()}
                   onChange={(e) => handleSelectAllForModule(module.key, e.target.checked)}
                 />
@@ -493,16 +779,20 @@ const InviteMemberPanel = ({ config }) => {
             </Col>
             {module.permissions.map((permission, index) => (
               <Col key={permission} span={3} style={{ textAlign: 'center' }}>
-                <Form.Item name={['permissions', permission]} valuePropName="checked" style={{ margin: 0 }}>
-                  <Checkbox 
+                <Form.Item
+                  name={['permissions', permission]}
+                  valuePropName="checked"
+                  style={{ margin: 0 }}
+                >
+                  <Checkbox
                     onChange={(e) => {
                       const currentValues = form.getFieldsValue();
                       form.setFieldsValue({
                         ...currentValues,
                         permissions: {
                           ...currentValues.permissions,
-                          [permission]: e.target.checked
-                        }
+                          [permission]: e.target.checked,
+                        },
                       });
                     }}
                   />
@@ -511,21 +801,31 @@ const InviteMemberPanel = ({ config }) => {
             ))}
           </Row>
         ))}
-        
+
         {/* Quick Actions */}
-        <Row gutter={[8, 8]} style={{ marginTop: '16px', padding: '12px', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
+        <Row
+          gutter={[8, 8]}
+          style={{
+            marginTop: '16px',
+            padding: '12px',
+            backgroundColor: '#f8f9fa',
+            borderRadius: '6px',
+          }}
+        >
           <Col span={24}>
-            <Text strong style={{ fontSize: '13px', marginBottom: '8px', display: 'block' }}>Quick Actions:</Text>
+            <Text strong style={{ fontSize: '13px', marginBottom: '8px', display: 'block' }}>
+              Quick Actions:
+            </Text>
           </Col>
           <Col span={8}>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               onClick={() => {
                 const allPermissions = getDefaultPermissions('admin');
                 const currentValues = form.getFieldsValue();
                 form.setFieldsValue({
                   ...currentValues,
-                  permissions: allPermissions
+                  permissions: allPermissions,
                 });
               }}
             >
@@ -533,13 +833,13 @@ const InviteMemberPanel = ({ config }) => {
             </Button>
           </Col>
           <Col span={8}>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               onClick={() => {
                 const currentValues = form.getFieldsValue();
                 form.setFieldsValue({
                   ...currentValues,
-                  permissions: {}
+                  permissions: {},
                 });
               }}
             >
@@ -547,12 +847,12 @@ const InviteMemberPanel = ({ config }) => {
             </Button>
           </Col>
           <Col span={8}>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               onClick={() => {
                 const viewOnlyPermissions = {};
-                permissionModules.forEach(module => {
-                  const viewPermission = module.permissions.find(p => p.includes('View'));
+                permissionModules.forEach((module) => {
+                  const viewPermission = module.permissions.find((p) => p.includes('View'));
                   if (viewPermission) {
                     viewOnlyPermissions[viewPermission] = true;
                   }
@@ -560,7 +860,7 @@ const InviteMemberPanel = ({ config }) => {
                 const currentValues = form.getFieldsValue();
                 form.setFieldsValue({
                   ...currentValues,
-                  permissions: viewOnlyPermissions
+                  permissions: viewOnlyPermissions,
                 });
               }}
             >
@@ -568,12 +868,10 @@ const InviteMemberPanel = ({ config }) => {
             </Button>
           </Col>
         </Row>
-        
+
         <Form.Item style={{ marginBottom: 0, marginTop: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-            <Button onClick={handleCancel}>
-              Cancel
-            </Button>
+            <Button onClick={handleCancel}>Cancel</Button>
             <Button type="primary" htmlType="submit" loading={submitting}>
               Send Invitation
             </Button>
