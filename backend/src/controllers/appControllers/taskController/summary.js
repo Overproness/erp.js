@@ -41,6 +41,19 @@ const summary = async (req, res) => {
         $match: {
           removed: false,
           companyID: companyID,
+          // If user is a team member, include tasks for their team
+          ...(req.user && req.user.team
+            ? {
+                $or: [
+                  { assignedTo: req.user._id },
+                  { assignedTeam: req.user.team },
+                  { collaborators: req.user._id },
+                  { createdBy: req.user._id },
+                  { owner: req.user._id },
+                  { assignedTo: { $exists: false }, assignedTeam: { $exists: false } },
+                ],
+              }
+            : {}),
         },
       },
       {

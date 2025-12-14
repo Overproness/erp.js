@@ -29,51 +29,46 @@ const create = async (req, res) => {
       updated: new Date(),
     };
 
-    // Validate that a team is assigned
-    if (!taskData.assignedTeam) {
-      return res.status(400).json({
-        success: false,
-        result: null,
-        message: 'Please assign the task to a team first',
-      });
-    }
-
-    // Fetch the team to validate members
-    const team = await Team.findById(taskData.assignedTeam).populate('members.user');
-    if (!team) {
-      return res.status(404).json({
-        success: false,
-        result: null,
-        message: 'Team not found',
-      });
-    }
-
-    // If assignedTo is provided, validate they are a member of the team
-    if (taskData.assignedTo) {
-      const isMember = team.members.some((member) => {
-        const memberId = member.user._id || member.user;
-        return memberId.toString() === taskData.assignedTo.toString();
-      });
-
-      if (!isMember) {
-        return res.status(400).json({
+    // Validate team assignment if provided
+    let team = null;
+    if (taskData.assignedTeam) {
+      // Fetch the team to validate members
+      team = await Team.findById(taskData.assignedTeam).populate('members.user');
+      if (!team) {
+        return res.status(404).json({
           success: false,
           result: null,
-          message: 'The assigned user is not a member of the selected team',
+          message: 'Team not found',
         });
       }
-    } else if (team.settings?.autoAssignTasks && team.members.length > 0) {
-      // Auto-assign to a random team member if enabled
-      const randomIndex = Math.floor(Math.random() * team.members.length);
-      const selectedMember = team.members[randomIndex];
-      taskData.assignedTo = selectedMember.user._id || selectedMember.user;
-      console.log('Auto-assigned to:', taskData.assignedTo);
-    }
 
-    // Check if task requires approval
-    if (team && team.settings?.requireApprovalForTasks) {
-      taskData.status = 'pending_approval';
-      taskData.requiresApproval = true;
+      // If assignedTo is provided, validate they are a member of the team
+      if (taskData.assignedTo) {
+        const isMember = team.members.some((member) => {
+          const memberId = member.user._id || member.user;
+          return memberId.toString() === taskData.assignedTo.toString();
+        });
+
+        if (!isMember) {
+          return res.status(400).json({
+            success: false,
+            result: null,
+            message: 'The assigned user is not a member of the selected team',
+          });
+        }
+      } else if (team.settings?.autoAssignTasks && team.members.length > 0) {
+        // Auto-assign to a random team member if enabled
+        const randomIndex = Math.floor(Math.random() * team.members.length);
+        const selectedMember = team.members[randomIndex];
+        taskData.assignedTo = selectedMember.user._id || selectedMember.user;
+        console.log('Auto-assigned to:', taskData.assignedTo);
+      }
+
+      // Check if task requires approval
+      if (team.settings?.requireApprovalForTasks) {
+        taskData.status = 'pending_approval';
+        taskData.requiresApproval = true;
+      }
     }
 
     const result = await new Model(taskData).save();

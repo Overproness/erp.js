@@ -92,15 +92,16 @@ export default function TaskForm({ isUpdateForm = false }) {
         name="assignedTeam"
         rules={[
           {
-            required: true,
-            message: translate('Please select a team first!'),
+            required: false,
+            message: translate('Please select a team!'),
           },
         ]}
       >
         <Select
-          placeholder={translate('Select team')}
+          placeholder={translate('Select team (optional)')}
           showSearch
           loading={loadingTeams}
+          allowClear
           optionFilterProp="children"
           onChange={handleTeamChange}
           filterOption={(input, option) =>

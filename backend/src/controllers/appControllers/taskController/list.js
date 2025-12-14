@@ -37,12 +37,38 @@ const list = async (req, res) => {
       fields.$or.push({ [field]: { $regex: new RegExp(req.query.q, 'i') } });
     }
 
-    const baseQuery = {
+    // Build base query with company filter
+    let baseQuery = {
       removed: false,
       companyID: companyID,
       ...(filter && equal && { [filter]: equal }),
       ...fields,
     };
+
+    // If the user is a team member, include tasks assigned to their team
+    if (req.user && req.user.team) {
+      // Find tasks assigned to the user OR to their team
+      baseQuery = {
+        removed: false,
+        companyID: companyID,
+        $or: [
+          // Tasks assigned directly to the user
+          { assignedTo: req.user._id },
+          // Tasks assigned to the user's team
+          { assignedTeam: req.user.team },
+          // Tasks where user is a collaborator
+          { collaborators: req.user._id },
+          // Tasks created by the user
+          { createdBy: req.user._id },
+          // Tasks owned by the user
+          { owner: req.user._id },
+          // Tasks with no specific assignment (available to all)
+          { assignedTo: { $exists: false }, assignedTeam: { $exists: false } },
+        ],
+        ...(filter && equal && { [filter]: equal }),
+        ...fields,
+      };
+    }
 
     // Execute query with population
     const resultsPromise = Model.find(baseQuery)
