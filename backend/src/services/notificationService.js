@@ -142,12 +142,12 @@ class NotificationService {
       // Emit real-time notification via Socket.io
       const io = this.getIO();
       console.log('Socket.io instance:', io ? 'AVAILABLE' : 'NOT AVAILABLE');
-      
+
       if (io) {
         const roomName = `user:${recipientId}`;
         const socketsInRoom = await io.in(roomName).fetchSockets();
         console.log(`Sockets in room ${roomName}:`, socketsInRoom.length);
-        
+
         io.to(roomName).emit('notification:new', {
           notification: notification.toJSON(),
           timestamp: new Date(),

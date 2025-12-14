@@ -1,40 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/config/serverApiConfig';
+import useLanguage from '@/locale/useLanguage';
 import {
-  Table,
-  Tag,
-  Space,
-  Button,
-  Card,
-  Typography,
-  Input,
-  Select,
-  DatePicker,
-  Dropdown,
-  Menu,
-  Badge,
-  Tooltip,
-  Empty,
-  message,
-} from 'antd';
-import {
-  SearchOutlined,
-  FilterOutlined,
-  EyeOutlined,
-  EditOutlined,
-  DeleteOutlined,
+  CalendarOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
   ExclamationCircleOutlined,
-  UserOutlined,
-  FlagOutlined,
-  CalendarOutlined,
+  EyeOutlined,
   MoreOutlined,
+  SearchOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import useLanguage from '@/locale/useLanguage';
-import dayjs from 'dayjs';
+import {
+  Button,
+  Card,
+  DatePicker,
+  Dropdown,
+  Empty,
+  Input,
+  Menu,
+  message,
+  Select,
+  Space,
+  Table,
+  Tag,
+  Typography,
+} from 'antd';
 import axios from 'axios';
-import { API_BASE_URL } from '@/config/serverApiConfig';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -66,11 +62,11 @@ const ViewTaskModule = ({
       }
 
       // Get unique team IDs from tasks
-      const teamIds = [...new Set(
-        tasks
-          .map(task => task.assignedTeam)
-          .filter(id => id && typeof id === 'string')
-      )];
+      const teamIds = [
+        ...new Set(
+          tasks.map((task) => task.assignedTeam).filter((id) => id && typeof id === 'string')
+        ),
+      ];
 
       if (teamIds.length === 0) {
         return;
@@ -78,7 +74,7 @@ const ViewTaskModule = ({
 
       try {
         const token = window.localStorage.getItem('auth_token');
-        
+
         // Fetch team members for each team
         const teamPromises = teamIds.map(async (teamId) => {
           try {
@@ -87,7 +83,7 @@ const ViewTaskModule = ({
                 Authorization: `Bearer ${token}`,
               },
             });
-            
+
             if (response.data.success && response.data.result) {
               return response.data.result;
             }
@@ -99,15 +95,15 @@ const ViewTaskModule = ({
         });
 
         const teamResults = await Promise.all(teamPromises);
-        
+
         // Build user cache from all team members
         const newCache = {};
-        teamResults.flat().forEach(member => {
+        teamResults.flat().forEach((member) => {
           if (member.user && member.user._id) {
             newCache[member.user._id] = member.user;
           }
         });
-        
+
         setUserCache(newCache);
       } catch (error) {
         console.error('Error fetching team member data:', error);
@@ -315,7 +311,7 @@ const ViewTaskModule = ({
       render: (_, record) => {
         // Get user data from cache or use populated data
         let userName = '-';
-        
+
         if (record.assignedTo) {
           if (typeof record.assignedTo === 'object' && record.assignedTo.name) {
             // Already populated from backend
@@ -325,7 +321,7 @@ const ViewTaskModule = ({
             userName = userCache[record.assignedTo].name;
           }
         }
-        
+
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <UserOutlined style={{ color: '#6b7280', fontSize: '12px' }} />

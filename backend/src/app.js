@@ -481,6 +481,10 @@ app.use('/api/triggers', adminAuth.isValidAuthToken, triggerRoutes);
 app.use('/api/analytics', adminAuth.isValidAuthToken, analyticsRoutes);
 app.use('/api/retargeting', adminAuth.isValidAuthToken, retargetingRoutes);
 
+// Global Analytics & Reporting Routes
+const globalAnalyticsRoutes = require('./routes/appRoutes/globalAnalyticsRoutes');
+app.use('/api/global-analytics', adminAuth.isValidAuthToken, globalAnalyticsRoutes);
+
 // ─────────────────────────────────────────────────────────────
 // Generate campaign URLs
 // app.post(

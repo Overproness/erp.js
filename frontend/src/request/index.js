@@ -106,10 +106,10 @@ class Request {
     throw error;
   }
   async post(entityOrUrl, jsonDataOrOptional) {
+    let entity, jsonData;
+    
     try {
       // Handle both old (string, data) and new ({ entity, jsonData }) calling patterns
-      let entity, jsonData;
-
       if (typeof entityOrUrl === 'string') {
         // Old pattern: post('url', data)
         entity = entityOrUrl;
@@ -125,7 +125,7 @@ class Request {
       const response = await axios.post(`${entity}`, jsonData);
       return response.data;
     } catch (error) {
-      console.error(`POST request failed for ${entity}:`, error);
+      console.error(`POST request failed for ${entity || entityOrUrl}:`, error);
       return this.handleError(error);
     }
   }

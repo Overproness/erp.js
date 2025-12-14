@@ -67,6 +67,10 @@ const WorkflowExecution = require('./appModels/WorkflowExecution');
 const Survey = require('./appModels/Survey');
 const SurveyResponse = require('./appModels/SurveyResponse');
 
+// Review and Appointment Models
+const Review = require('./appModels/Review');
+const Appointment = require('./appModels/Appointment');
+
 module.exports = {
   // Core Models
   CompanyOwner,
@@ -121,4 +125,6 @@ module.exports = {
   CustomerSegment,
   Survey,
   SurveyResponse,
+  Review,
+  Appointment,
 };

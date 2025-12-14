@@ -146,6 +146,9 @@ const SurveyUpdate = lazy(() => import('@/pages/Surveys/SurveyUpdate'));
 const SurveyAnalytics = lazy(() => import('@/pages/Surveys/SurveyAnalytics'));
 const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
 
+// Analytics & Reporting
+const AnalyticsReporting = lazy(() => import('@/pages/Analytics/index'));
+
 let routes = {
   expense: [],
   default: [
@@ -787,6 +790,16 @@ let routes = {
         </Suspense>
       ),
       permissions: ['survey:read'],
+    },
+    // Analytics & Reporting Routes
+    {
+      path: '/analytics',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AnalyticsReporting />
+        </Suspense>
+      ),
+      permissions: ['analytics:read'],
     },
   ],
 };

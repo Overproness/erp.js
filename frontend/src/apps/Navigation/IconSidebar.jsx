@@ -4,6 +4,7 @@ import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import {
   BankOutlined,
+  BarChartOutlined,
   BulbOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
@@ -293,6 +294,13 @@ export default function IconSidebar() {
     //     // },
     //   ],
     // },
+    {
+      key: 'analytics',
+      icon: <BarChartOutlined />,
+      label: 'Analytics & Reporting',
+      path: '/analytics',
+      permissions: ['analytics:read'],
+    },
     {
       key: 'team-settings',
       icon: <UsergroupAddOutlined />,
