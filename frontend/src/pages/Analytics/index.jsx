@@ -4,7 +4,6 @@ import {
   BarChartOutlined,
   CheckCircleOutlined,
   DollarOutlined,
-  DownloadOutlined,
   FileOutlined,
   LineChartOutlined,
   PieChartOutlined,
@@ -366,9 +365,9 @@ export default function AnalyticsReporting() {
           <Button icon={<FileOutlined />} onClick={() => setReportBuilderVisible(true)}>
             Custom Report
           </Button>
-          <Button icon={<DownloadOutlined />} onClick={() => handleExport('csv')}>
+          {/* <Button icon={<DownloadOutlined />} onClick={() => handleExport('csv')}>
             Export
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -412,7 +411,26 @@ export default function AnalyticsReporting() {
           title={`${selectedModule.toUpperCase()} Detailed Analytics`}
           style={{ marginTop: '24px' }}
         >
-          <pre>{JSON.stringify(moduleData, null, 2)}</pre>
+          {moduleData.timeline && moduleData.timeline.length > 0 ? (
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={moduleData.timeline}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="count" fill="#1890ff" name="Activity Count" />
+                {moduleData.timeline[0]?.revenue !== undefined && (
+                  <Bar dataKey="revenue" fill="#52c41a" name="Revenue" />
+                )}
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
+              <BarChartOutlined style={{ fontSize: '48px', marginBottom: '16px' }} />
+              <p>No timeline data available for this period</p>
+            </div>
+          )}
         </Card>
       )}
 

@@ -3,6 +3,7 @@ import { BulbOutlined, RobotOutlined, ThunderboltOutlined } from '@ant-design/ic
 import { Alert, Button, Card, Checkbox, Modal, Spin, Typography } from 'antd';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const { Text, Title } = Typography;
 
@@ -176,16 +177,8 @@ export default function AISuggestionsModal({ visible, onClose }) {
               }
               style={{ marginBottom: '24px' }}
             >
-              <div
-                style={{
-                  fontSize: '14px',
-                  lineHeight: '1.8',
-                  '& h1, & h2, & h3': { marginTop: '16px', marginBottom: '8px' },
-                  '& ul, & ol': { paddingLeft: '24px' },
-                  '& p': { marginBottom: '12px' },
-                }}
-              >
-                <ReactMarkdown>{insights.insights}</ReactMarkdown>
+              <div className="markdown-content">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{insights.insights}</ReactMarkdown>
               </div>
             </Card>
 

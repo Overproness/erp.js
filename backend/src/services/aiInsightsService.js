@@ -17,7 +17,7 @@ async function analyzeModules(ownerId, modules, analysisType = 'comprehensive') 
 
     // Create AI helper instance
     const aiHelper = await UnifiedAIHelper.createForUser(ownerId);
-    
+
     if (!aiHelper.hasAnyApiKey()) {
       throw new Error(
         'No AI API keys configured. Please add at least one API key (OpenAI, Claude, or Gemini) in Settings > AI Settings.'
@@ -72,7 +72,7 @@ async function getModuleInsights(ownerId, moduleName) {
   try {
     // Create AI helper instance
     const aiHelper = await UnifiedAIHelper.createForUser(ownerId);
-    
+
     if (!aiHelper.hasAnyApiKey()) {
       throw new Error(
         'No AI API keys configured. Please add at least one API key (OpenAI, Claude, or Gemini) in Settings > AI Settings.'

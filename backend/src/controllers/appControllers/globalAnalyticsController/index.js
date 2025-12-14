@@ -375,23 +375,28 @@ const createCustomReport = async (req, res) => {
     const ownerId = req.admin?._id || req.admin?.id || req.companyOwner?._id;
     const { name, description, modules, visualizations, filters } = req.body;
 
-    // Store report configuration
+    // Generate report data immediately
+    const reportData = await generateReportData(ownerId, modules, filters);
+
+    // Store report configuration with data
     const reportConfig = {
       name,
       description,
       modules,
       visualizations,
       filters,
+      data: reportData,
       owner: ownerId,
       createdAt: new Date(),
+      generatedAt: new Date(),
     };
 
     // TODO: Save to database (create ReportConfig model)
 
     return res.status(201).json({
       success: true,
-      message: 'Custom report created successfully',
-      data: reportConfig,
+      message: 'Custom report created and generated successfully',
+      report: reportConfig,
     });
   } catch (error) {
     console.error('Error creating custom report:', error);
@@ -404,6 +409,84 @@ const createCustomReport = async (req, res) => {
 };
 
 /**
+ * Helper function to generate report data
+ */
+async function generateReportData(ownerId, modules, filters) {
+  const reportData = {};
+  const dateRange = parseDateRange(filters.dateRange);
+
+  for (const module of modules) {
+    switch (module.toLowerCase()) {
+      case 'crm':
+      case 'customers':
+        reportData.customers = await getCustomerAnalytics(ownerId, dateRange.start, dateRange.end);
+        break;
+
+      case 'sales':
+        reportData.sales = await getSalesAnalytics(ownerId, dateRange.start, dateRange.end);
+        break;
+
+      case 'marketing':
+        reportData.marketing = await getMarketingAnalytics(ownerId, dateRange.start, dateRange.end);
+        break;
+
+      case 'reputation':
+        reportData.reputation = await getReputationAnalytics(
+          ownerId,
+          dateRange.start,
+          dateRange.end
+        );
+        break;
+
+      case 'tasks':
+        reportData.tasks = await getTaskAnalytics(ownerId, dateRange.start, dateRange.end);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  return reportData;
+}
+
+/**
+ * Helper function to parse date range
+ */
+function parseDateRange(rangeString) {
+  const end = new Date();
+  const start = new Date();
+
+  switch (rangeString) {
+    case 'last7days':
+      start.setDate(start.getDate() - 7);
+      break;
+    case 'last30days':
+      start.setDate(start.getDate() - 30);
+      break;
+    case 'last90days':
+      start.setDate(start.getDate() - 90);
+      break;
+    case 'thisMonth':
+      start.setDate(1);
+      break;
+    case 'lastMonth':
+      start.setMonth(start.getMonth() - 1);
+      start.setDate(1);
+      end.setDate(0);
+      break;
+    case 'thisYear':
+      start.setMonth(0);
+      start.setDate(1);
+      break;
+    default:
+      start.setDate(start.getDate() - 30);
+  }
+
+  return { start, end };
+}
+
+/**
  * Get predictive analytics
  */
 const getPredictiveAnalytics = async (req, res) => {
@@ -413,10 +496,12 @@ const getPredictiveAnalytics = async (req, res) => {
 
     const prediction = await predictiveService.predict(ownerId, metric, period);
 
-    return res.status(200).json({
-      success: true,
-      data: prediction,
-    });
+    // The service already returns { success, data } structure
+    if (!prediction.success) {
+      return res.status(400).json(prediction);
+    }
+
+    return res.status(200).json(prediction);
   } catch (error) {
     console.error('Error getting predictive analytics:', error);
     return res.status(500).json({

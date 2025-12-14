@@ -107,7 +107,7 @@ class Request {
   }
   async post(entityOrUrl, jsonDataOrOptional) {
     let entity, jsonData;
-    
+
     try {
       // Handle both old (string, data) and new ({ entity, jsonData }) calling patterns
       if (typeof entityOrUrl === 'string') {

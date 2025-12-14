@@ -138,7 +138,7 @@ export default function PredictiveAnalytics({ visible, onClose }) {
       onCancel={handleClose}
       width={1000}
       footer={null}
-      bodyStyle={{ maxHeight: '75vh', overflowY: 'auto' }}
+      styles={{ body: { maxHeight: '75vh', overflowY: 'auto' } }}
     >
       <div style={{ padding: '12px 0' }}>
         <Alert
@@ -222,7 +222,9 @@ export default function PredictiveAnalytics({ visible, onClose }) {
                   <Tag color={getTrendColor()}>
                     Confidence: {(predictionData.accuracy * 100).toFixed(1)}%
                   </Tag>
-                  <Tag>Mean: {predictionData.confidence.mean.toFixed(2)}</Tag>
+                  {predictionData.confidence && predictionData.confidence.mean !== undefined && (
+                    <Tag>Mean: {predictionData.confidence.mean.toFixed(2)}</Tag>
+                  )}
                 </div>
               </Card>
             </div>
