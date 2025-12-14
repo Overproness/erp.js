@@ -128,6 +128,7 @@ const urlRoutes = require('./routes/appRoutes/urlRoutes');
 const urlRedirectRoutes = require('./routes/appRoutes/urlRedirectRoutes');
 const urlRedirectController = require('./controllers/appControllers/urlRedirectController');
 const abTestRoutes = require('./routes/appRoutes/abTestRoutes');
+const crmUrlRoutes = require('./routes/appRoutes/crmUrlRoutes');
 
 // Chat Routes
 const chatRoutes = require('./routes/appRoutes/chatRoutes');
@@ -437,6 +438,8 @@ app.get('/api/marketing/retargeting/test-public', (req, res) => {
 
 // Protected Routes
 app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
+// CRM URL routes must come BEFORE erpApiRouter to match specific client routes first
+app.use('/api/client', adminAuth.isValidAuthToken, crmUrlRoutes);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/api/document', adminAuth.isValidAuthToken, documentRouter);
 app.use('/api/team', adminAuth.isValidAuthToken, teamRouter);

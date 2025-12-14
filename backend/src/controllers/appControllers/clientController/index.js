@@ -3,6 +3,7 @@ const createCRUDController = require('@/controllers/middlewaresControllers/creat
 const { calculateCustomerSegment } = require('@/helpers/customerSegmentation');
 const leadScoringService = require('@/services/leadScoringService');
 const summary = require('./summary');
+const crmUrlController = require('./crmUrlController');
 
 /**
  * Sanitizes HTML content to prevent XSS attacks
@@ -909,6 +910,19 @@ function modelController() {
     }
   };
   methods.updateQualification = updateQualification;
+
+  // Add CRM URL generation methods
+  methods.generatePortalUrl = crmUrlController.generatePortalUrl;
+  methods.generatePaymentUrl = crmUrlController.generatePaymentUrl;
+  methods.generateDocumentUrl = crmUrlController.generateDocumentUrl;
+  methods.generateAppointmentUrl = crmUrlController.generateAppointmentUrl;
+  methods.generateSurveyUrl = crmUrlController.generateSurveyUrl;
+  methods.generateReviewUrl = crmUrlController.generateReviewUrl;
+  methods.generateQuoteUrl = crmUrlController.generateQuoteUrl;
+  methods.generateInvoiceUrl = crmUrlController.generateInvoiceUrl;
+  methods.generateEventUrl = crmUrlController.generateEventUrl;
+  methods.getCustomerUrls = crmUrlController.getCustomerUrls;
+  methods.generateBulkUrls = crmUrlController.generateBulkUrls;
 
   return methods;
 }

@@ -66,12 +66,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generate as uniqueId } from 'shortid';
 import AISuggestionsModal from './AISuggestionsModal';
 import CustomerInsightsModal from './CustomerInsightsModal';
+import CustomerUrlManager from '@/components/CustomerUrlManager';
+import GenerateCustomerUrlModal from '@/components/GenerateCustomerUrlModal';
 
 import { selectCurrentItem } from '@/redux/erp/selectors';
 import { useMoney } from '@/settings';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { LinkOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -117,6 +120,10 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
 
   // AI Suggestions state
   const [showSuggestionsModal, setShowSuggestionsModal] = useState(false);
+
+  // URL Generation state
+  const [showUrlModal, setShowUrlModal] = useState(false);
+  const [showUrlManager, setShowUrlManager] = useState(false);
 
   // Helper function to safely extract ID string from potentially nested objects
   const getIdString = (id) => {
@@ -1035,6 +1042,14 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         }
         extra={[
           <Button
+            key="generate-url"
+            icon={<LinkOutlined />}
+            onClick={() => setShowUrlModal(true)}
+            style={{ marginRight: 8 }}
+          >
+            {translate('Generate URL')}
+          </Button>,
+          <Button
             key="ai-insights"
             type="primary"
             icon={<BulbOutlined />}
@@ -1318,6 +1333,16 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         </Col>
       </Row>
 
+      {/* Customer Communication URLs Section */}
+      <Row gutter={[24, 24]} style={{ marginTop: 32 }}>
+        <Col xs={24}>
+          <CustomerUrlManager
+            customerId={getIdString(currentCustomer._id)}
+            customerName={currentCustomer.name}
+          />
+        </Col>
+      </Row>
+
       {/* Interaction Modal */}
       <InteractionModal />
 
@@ -1336,6 +1361,32 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         onClose={() => setShowSuggestionsModal(false)}
         customerData={currentCustomer}
       />
+
+      {/* Generate URL Modal */}
+      <GenerateCustomerUrlModal
+        visible={showUrlModal}
+        onCancel={() => setShowUrlModal(false)}
+        customerId={getIdString(currentCustomer._id)}
+        customerName={currentCustomer.name}
+        onUrlGenerated={() => {
+          message.success('URL generated successfully!');
+          setShowUrlModal(false);
+        }}
+      />
+
+      {/* URL Manager Modal */}
+      <Modal
+        title={`Customer Communication URLs - ${currentCustomer.name}`}
+        open={showUrlManager}
+        onCancel={() => setShowUrlManager(false)}
+        width={1200}
+        footer={null}
+      >
+        <CustomerUrlManager
+          customerId={getIdString(currentCustomer._id)}
+          customerName={currentCustomer.name}
+        />
+      </Modal>
     </>
   );
 }
