@@ -13,7 +13,7 @@ const getInvitationDetails = require('./getInvitationDetails');
 const listMembers = require('./listMembers');
 const updateMember = require('./updateMember');
 const removeMember = require('./removeMember');
-
+const getMemberPerformance = require('./getMemberPerformance');
 
 const teamController = {
   create,
@@ -30,7 +30,8 @@ const teamController = {
   getInvitationDetails,
   listMembers,
   updateMember,
-  removeMember
+  removeMember,
+  getMemberPerformance,
 };
 
 module.exports = teamController;

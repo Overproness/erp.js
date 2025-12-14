@@ -17,6 +17,9 @@ router.route('/:teamId/invite').post(catchErrors(teamController.inviteMember));
 router.route('/:teamId/members').get(catchErrors(teamController.listMembers));
 router.route('/:teamId/members/:memberId').patch(catchErrors(teamController.updateMember));
 router.route('/:teamId/members/:memberId').delete(catchErrors(teamController.removeMember));
+router
+  .route('/:teamId/members/:memberId/performance')
+  .get(catchErrors(teamController.getMemberPerformance));
 
 // Note: Public invitation routes have been moved to teamPublicRoutes.js
 

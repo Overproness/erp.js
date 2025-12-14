@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EyeOutlined, UserAddOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Descriptions, Divider, Space, Table, Tabs, Tag, Typography, message } from 'antd';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { useErpContext } from '@/context/erp';
 import { erp } from '@/redux/erp/actions';
 import { selectCurrentItem } from '@/redux/erp/selectors';
 import { useDate } from '@/settings';
+import MemberPerformanceModal from '../../components/MemberPerformanceModal';
 
 const { TabPane } = Tabs;
 const { Title } = Typography;
@@ -24,6 +25,8 @@ export const ReadItem = ({ config }) => {
   const { erpContextAction } = useErpContext();
   const { panel } = erpContextAction;
   const [activeTabKey, setActiveTabKey] = useState('members');
+  const [performanceModalVisible, setPerformanceModalVisible] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
     dispatch(erp.read({ entity: TEAM_ENTITY, id }));
@@ -81,6 +84,18 @@ export const ReadItem = ({ config }) => {
       key: 'actions',
       render: (_, record) => (
         <Space>
+          <Button
+            icon={<EyeOutlined />}
+            onClick={() => {
+              setSelectedMember({
+                id: record._id,
+                name: record.name,
+                email: record.email,
+              });
+              setPerformanceModalVisible(true);
+            }}
+            key={`view-${record._id}`}
+          ></Button>
           <Button
             icon={<EditOutlined />}
             onClick={() =>
@@ -149,7 +164,7 @@ export const ReadItem = ({ config }) => {
         ]}
         style={{
           padding: '20px 0px',
-          background: 'none'
+          background: 'none',
         }}
       />
       <Divider orientation="left">Team Information</Divider>
@@ -182,6 +197,18 @@ export const ReadItem = ({ config }) => {
           />
         </TabPane>
       </Tabs>
+
+      {/* Member Performance Modal */}
+      <MemberPerformanceModal
+        visible={performanceModalVisible}
+        onClose={() => {
+          setPerformanceModalVisible(false);
+          setSelectedMember(null);
+        }}
+        teamId={id}
+        memberId={selectedMember?.id}
+        memberName={selectedMember?.name}
+      />
     </>
   );
 };
