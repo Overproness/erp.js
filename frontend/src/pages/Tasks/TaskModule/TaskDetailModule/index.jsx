@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import useLanguage from '@/locale/useLanguage';
 import {
-  Card,
-  Typography,
-  Button,
-  Space,
-  Tag,
-  Descriptions,
-  Timeline,
-  Divider,
-  Avatar,
-  List,
-  Input,
-  Form,
-  Empty,
-  Tooltip,
-  Modal,
-  Alert,
-  Row,
-  Col,
-} from 'antd';
-import {
-  EditOutlined,
-  DeleteOutlined,
   ArrowLeftOutlined,
+  BugOutlined,
+  CalendarOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
-  UserOutlined,
-  PaperClipOutlined,
-  CalendarOutlined,
-  FlagOutlined,
-  SendOutlined,
+  DeleteOutlined,
+  EditOutlined,
   ExclamationCircleOutlined,
-  FilePdfOutlined,
   FileImageOutlined,
-  FileTextOutlined,
   FileOutlined,
-  TeamOutlined,
+  FilePdfOutlined,
+  FileTextOutlined,
+  PaperClipOutlined,
   PlusOutlined,
-  BugOutlined,
+  SendOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import useLanguage from '@/locale/useLanguage';
+import {
+  Alert,
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Divider,
+  Empty,
+  Form,
+  Input,
+  List,
+  Modal,
+  Row,
+  Space,
+  Tag,
+  Timeline,
+  Typography,
+} from 'antd';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -163,6 +161,7 @@ const dummyActivityLogs = [
 ];
 
 const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
+  console.log('🚀 ~ TaskDetailModule ~ task:', task);
   const translate = useLanguage();
   const navigate = useNavigate();
   const [commentForm] = Form.useForm();
@@ -355,7 +354,7 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                   renderItem={(file) => (
                     <List.Item
                       actions={[
-                        <Button type="link" size="small">
+                        <Button key={''} type="link" size="small">
                           {translate('Download')}
                         </Button>,
                       ]}
@@ -504,10 +503,158 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
               </Descriptions>
             </Card>
 
+            {/* Module Integration */}
+            {(task.customer || task.invoice || task.quote || task.appointment) && (
+              <Card
+                title={translate('Related Modules')}
+                size="small"
+                style={{ marginBottom: '24px' }}
+              >
+                <Descriptions column={1} size="small" bordered>
+                  {task.customer && (
+                    <Descriptions.Item label={translate('Customer')}>
+                      <Button
+                        type="link"
+                        onClick={() => navigate(`/customer/${task.customer._id}`)}
+                        style={{ padding: 0 }}
+                      >
+                        {task.customer.name}
+                      </Button>
+                    </Descriptions.Item>
+                  )}
+
+                  {task.invoice && (
+                    <Descriptions.Item label={translate('Invoice')}>
+                      <Button
+                        type="link"
+                        onClick={() => navigate(`/invoice/${task.invoice._id}`)}
+                        style={{ padding: 0 }}
+                      >
+                        #{task.invoice.number}/{task.invoice.year} -{' '}
+                        {task.invoice.client?.name || 'N/A'}
+                      </Button>
+                    </Descriptions.Item>
+                  )}
+
+                  {task.quote && (
+                    <Descriptions.Item label={translate('Quote')}>
+                      <Button
+                        type="link"
+                        onClick={() => navigate(`/quote/${task.quote._id}`)}
+                        style={{ padding: 0 }}
+                      >
+                        #{task.quote.number}/{task.quote.year} - {task.quote.client?.name || 'N/A'}
+                      </Button>
+                    </Descriptions.Item>
+                  )}
+
+                  {task.appointment && (
+                    <Descriptions.Item label={translate('Appointment')}>
+                      <Button
+                        type="link"
+                        onClick={() => navigate(`/appointment/${task.appointment._id}`)}
+                        style={{ padding: 0 }}
+                      >
+                        {task.appointment.title}
+                      </Button>
+                    </Descriptions.Item>
+                  )}
+                </Descriptions>
+              </Card>
+            )}
+
+            {/* Document Sharing */}
+            {task.documents && task.documents.length > 0 && (
+              <Card
+                title={translate('Shared Documents')}
+                size="small"
+                style={{ marginBottom: '24px' }}
+              >
+                <List
+                  size="small"
+                  dataSource={task.documents}
+                  renderItem={(docItem, docIndex) => (
+                    <List.Item
+                      actions={[
+                        <Button
+                          key={`view-doc-${docIndex}`}
+                          type="link"
+                          size="small"
+                          disabled={!docItem.document?._id}
+                          onClick={() => {
+                            if (docItem.document?._id) {
+                              console.log('Viewing document:', docItem.document._id);
+                              navigate(`/document/read/${docItem.document._id}`);
+                            } else {
+                              console.error('Document ID not found:', docItem);
+                            }
+                          }}
+                        >
+                          {translate('View')}
+                        </Button>,
+                      ]}
+                    >
+                      <List.Item.Meta
+                        avatar={<FileTextOutlined style={{ fontSize: '20px' }} />}
+                        title={
+                          <div>
+                            {docItem.document?.title || 'Document'}
+                            <Tag
+                              color={
+                                docItem.status === 'approved'
+                                  ? 'green'
+                                  : docItem.status === 'rejected'
+                                    ? 'red'
+                                    : 'orange'
+                              }
+                              style={{ marginLeft: '8px', borderRadius: '4px' }}
+                            >
+                              {translate(docItem.status || 'pending')}
+                            </Tag>
+                          </div>
+                        }
+                        description={
+                          <div>
+                            <div>
+                              <strong>{translate('Purpose')}:</strong>{' '}
+                              {translate(docItem.purpose || 'reference')}
+                            </div>
+                            {docItem.notes && (
+                              <div style={{ marginTop: '4px' }}>
+                                <strong>{translate('Notes')}:</strong> {docItem.notes}
+                              </div>
+                            )}
+                            {docItem.approver && (
+                              <div style={{ marginTop: '4px' }}>
+                                <strong>{translate('Approver')}:</strong>{' '}
+                                {docItem.approver?.name || docItem.approver?.email || 'N/A'}
+                              </div>
+                            )}
+                            {docItem.approvedAt && (
+                              <div style={{ marginTop: '4px' }}>
+                                <strong>{translate('Approved At')}:</strong>{' '}
+                                {dayjs(docItem.approvedAt).format('YYYY-MM-DD HH:mm')}
+                              </div>
+                            )}
+                            {docItem.rejectionReason && (
+                              <div style={{ marginTop: '4px', color: '#ff4d4f' }}>
+                                <strong>{translate('Rejection Reason')}:</strong>{' '}
+                                {docItem.rejectionReason}
+                              </div>
+                            )}
+                          </div>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              </Card>
+            )}
+
             {/* Activity Log */}
             <Card title={translate('Activity Log')} size="small">
-              <Timeline>
-                {activityLogs.map((log, index) => {
+              <Timeline
+                items={activityLogs.map((log, index) => {
                   let icon;
                   let color;
                   let content;
@@ -538,16 +685,18 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
                       content = `${log.action} ${translate('by')} ${log.user}`;
                   }
 
-                  return (
-                    <Timeline.Item key={index} color={color} dot={icon}>
+                  return {
+                    color,
+                    dot: icon,
+                    children: (
                       <div>
                         <div>{content}</div>
                         <div style={{ fontSize: '12px', color: '#6b7280' }}>{log.timestamp}</div>
                       </div>
-                    </Timeline.Item>
-                  );
+                    ),
+                  };
                 })}
-              </Timeline>
+              />
             </Card>
           </Col>
         </Row>

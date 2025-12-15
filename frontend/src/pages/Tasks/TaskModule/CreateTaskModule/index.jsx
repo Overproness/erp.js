@@ -38,11 +38,146 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
   const [loadingTeams, setLoadingTeams] = useState(true);
   const [loadingMembers, setLoadingMembers] = useState(false);
 
+  // Integration module states
+  const [customers, setCustomers] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+  const [quotes, setQuotes] = useState([]);
+  const [documents, setDocuments] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+  const [loadingCustomers, setLoadingCustomers] = useState(false);
+  const [loadingInvoices, setLoadingInvoices] = useState(false);
+  const [loadingQuotes, setLoadingQuotes] = useState(false);
+  const [loadingDocuments, setLoadingDocuments] = useState(false);
+  const [selectedDocuments, setSelectedDocuments] = useState([]);
+
   // Fetch teams on component mount
   useEffect(() => {
     fetchTeams();
+    fetchCustomers();
+    fetchInvoices();
+    fetchQuotes();
+    fetchDocuments();
+    fetchAppointments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Function to fetch customers from API
+  const fetchCustomers = async () => {
+    setLoadingCustomers(true);
+    try {
+      const token = window.localStorage.getItem('auth_token');
+      const response = await axios.get(`${API_BASE_URL}client/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success && response.data.result) {
+        const customersData = Array.isArray(response.data.result)
+          ? response.data.result
+          : response.data.result.items || [];
+        setCustomers(customersData);
+      }
+    } catch (error) {
+      console.error('Error fetching customers:', error);
+    } finally {
+      setLoadingCustomers(false);
+    }
+  };
+
+  // Function to fetch invoices from API
+  const fetchInvoices = async () => {
+    setLoadingInvoices(true);
+    try {
+      const token = window.localStorage.getItem('auth_token');
+      const response = await axios.get(`${API_BASE_URL}invoice/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success && response.data.result) {
+        const invoicesData = Array.isArray(response.data.result)
+          ? response.data.result
+          : response.data.result.items || [];
+        setInvoices(invoicesData);
+      }
+    } catch (error) {
+      console.error('Error fetching invoices:', error);
+    } finally {
+      setLoadingInvoices(false);
+    }
+  };
+
+  // Function to fetch quotes from API
+  const fetchQuotes = async () => {
+    setLoadingQuotes(true);
+    try {
+      const token = window.localStorage.getItem('auth_token');
+      const response = await axios.get(`${API_BASE_URL}quote/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success && response.data.result) {
+        const quotesData = Array.isArray(response.data.result)
+          ? response.data.result
+          : response.data.result.items || [];
+        setQuotes(quotesData);
+      }
+    } catch (error) {
+      console.error('Error fetching quotes:', error);
+    } finally {
+      setLoadingQuotes(false);
+    }
+  };
+
+  // Function to fetch documents from API
+  const fetchDocuments = async () => {
+    setLoadingDocuments(true);
+    try {
+      const token = window.localStorage.getItem('auth_token');
+      const response = await axios.get(`${API_BASE_URL}document/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success && response.data.result) {
+        const documentsData = Array.isArray(response.data.result)
+          ? response.data.result
+          : response.data.result.items || [];
+        setDocuments(documentsData);
+      }
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+    } finally {
+      setLoadingDocuments(false);
+    }
+  };
+
+  // Function to fetch appointments from API
+  const fetchAppointments = async () => {
+    try {
+      const token = window.localStorage.getItem('auth_token');
+      const response = await axios.get(`${API_BASE_URL}appointments/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success && response.data.result) {
+        const appointmentsData = Array.isArray(response.data.result)
+          ? response.data.result
+          : response.data.result.items || [];
+        setAppointments(appointmentsData);
+      }
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+      // Silently fail - appointments are optional
+    }
+  };
 
   // Function to fetch teams from API
   const fetchTeams = async () => {
@@ -107,12 +242,34 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
   useEffect(() => {
     if (initialValues) {
       try {
+        // Process document sharing data for form
+        const documentPurpose = {};
+        const documentNotes = {};
+        const documentIds = [];
+
+        if (initialValues.documents && Array.isArray(initialValues.documents)) {
+          initialValues.documents.forEach((doc) => {
+            const docId = doc.document?._id || doc.document;
+            documentIds.push(docId);
+            documentPurpose[docId] = doc.purpose || 'reference';
+            documentNotes[docId] = doc.notes || '';
+          });
+          setSelectedDocuments(documentIds);
+        }
+
         // Convert dates to dayjs objects for the form
         const formattedValues = {
           ...initialValues,
           deadline: initialValues.deadline ? dayjs(initialValues.deadline) : null,
           assignedTeam: initialValues.assignedTeam?._id || initialValues.assignedTeam,
           assignedTo: initialValues.assignedTo?._id || initialValues.assignedTo,
+          customer: initialValues.customer?._id || initialValues.customer,
+          invoice: initialValues.invoice?._id || initialValues.invoice,
+          quote: initialValues.quote?._id || initialValues.quote,
+          appointment: initialValues.appointment?._id || initialValues.appointment,
+          documents: documentIds,
+          documentPurpose,
+          documentNotes,
         };
 
         form.setFieldsValue(formattedValues);
@@ -145,10 +302,20 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
     try {
       setLoading(true);
 
+      // Process document sharing data
+      const documentsData =
+        values.documents?.map((docId) => ({
+          document: docId,
+          purpose: values.documentPurpose?.[docId] || 'reference',
+          notes: values.documentNotes?.[docId] || '',
+          status: 'pending',
+        })) || [];
+
       // Format values before submission
       const formattedValues = {
         ...values,
         deadline: values.deadline ? values.deadline.toISOString() : null,
+        documents: documentsData,
         attachments: fileList.map((file) => ({
           name: file.name,
           url: file.url || (file.originFileObj ? URL.createObjectURL(file.originFileObj) : ''),
@@ -156,6 +323,10 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
           type: file.type,
         })),
       };
+
+      // Remove the temporary form fields
+      delete formattedValues.documentPurpose;
+      delete formattedValues.documentNotes;
 
       if (onSave) {
         await onSave(formattedValues, isUpdateForm ? initialValues?._id || id : null);
@@ -365,6 +536,163 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
                   tokenSeparators={[',']}
                 />
               </Form.Item>
+            </Card>
+
+            <Card
+              size="small"
+              title={translate('Module Integration')}
+              style={{ marginBottom: '24px' }}
+            >
+              <Form.Item name="customer" label={translate('Customer')}>
+                <Select
+                  placeholder={translate('Select customer (optional)')}
+                  showSearch
+                  allowClear
+                  optionFilterProp="children"
+                  loading={loadingCustomers}
+                  filterOption={(input, option) =>
+                    (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+                  }
+                >
+                  {Array.isArray(customers) &&
+                    customers.map((customer) => (
+                      <Option key={customer._id} value={customer._id}>
+                        {customer.name}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item name="invoice" label={translate('Invoice')}>
+                <Select
+                  placeholder={translate('Select invoice (optional)')}
+                  showSearch
+                  allowClear
+                  optionFilterProp="children"
+                  loading={loadingInvoices}
+                  filterOption={(input, option) =>
+                    (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+                  }
+                >
+                  {Array.isArray(invoices) &&
+                    invoices.map((invoice) => (
+                      <Option key={invoice._id} value={invoice._id}>
+                        #{invoice.number}/{invoice.year} - {invoice.client?.name || 'N/A'}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item name="quote" label={translate('Quote')}>
+                <Select
+                  placeholder={translate('Select quote (optional)')}
+                  showSearch
+                  allowClear
+                  optionFilterProp="children"
+                  loading={loadingQuotes}
+                  filterOption={(input, option) =>
+                    (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+                  }
+                >
+                  {Array.isArray(quotes) &&
+                    quotes.map((quote) => (
+                      <Option key={quote._id} value={quote._id}>
+                        #{quote.number}/{quote.year} - {quote.client?.name || 'N/A'}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item name="appointment" label={translate('Appointment')}>
+                <Select
+                  placeholder={translate('Select appointment (optional)')}
+                  showSearch
+                  allowClear
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+                  }
+                >
+                  {Array.isArray(appointments) &&
+                    appointments.map((appointment) => (
+                      <Option key={appointment._id} value={appointment._id}>
+                        {appointment.title}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+            </Card>
+
+            <Card
+              size="small"
+              title={translate('Document Sharing')}
+              style={{ marginBottom: '24px' }}
+            >
+              <Text type="secondary" style={{ display: 'block', marginBottom: '12px' }}>
+                {translate('Share documents with team leads for approval or signing')}
+              </Text>
+
+              <Form.Item name="documents" label={translate('Select Documents')}>
+                <Select
+                  mode="multiple"
+                  placeholder={translate('Select documents to share')}
+                  showSearch
+                  allowClear
+                  optionFilterProp="children"
+                  loading={loadingDocuments}
+                  onChange={(values) => setSelectedDocuments(values)}
+                  filterOption={(input, option) =>
+                    (option?.children?.toLowerCase() ?? '').includes(input.toLowerCase())
+                  }
+                >
+                  {Array.isArray(documents) &&
+                    documents.map((doc) => (
+                      <Option key={doc._id} value={doc._id}>
+                        {doc.title} ({doc.documentType})
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+
+              {selectedDocuments && selectedDocuments.length > 0 && (
+                <>
+                  {selectedDocuments.map((docId, index) => {
+                    const doc = documents.find((d) => d._id === docId);
+                    return (
+                      <Card
+                        key={docId}
+                        size="small"
+                        title={doc?.title || `Document ${index + 1}`}
+                        style={{ marginBottom: '8px', backgroundColor: '#fafafa' }}
+                      >
+                        <Form.Item
+                          name={['documentPurpose', docId]}
+                          label={translate('Purpose')}
+                          style={{ marginBottom: '8px' }}
+                        >
+                          <Select placeholder={translate('Select purpose')}>
+                            <Option value="reference">{translate('Reference')}</Option>
+                            <Option value="approval">{translate('Approval')}</Option>
+                            <Option value="signing">{translate('Signing')}</Option>
+                            <Option value="review">{translate('Review')}</Option>
+                            <Option value="attachment">{translate('Attachment')}</Option>
+                          </Select>
+                        </Form.Item>
+                        <Form.Item
+                          name={['documentNotes', docId]}
+                          label={translate('Notes')}
+                          style={{ marginBottom: 0 }}
+                        >
+                          <TextArea
+                            placeholder={translate('Add notes for this document')}
+                            rows={2}
+                          />
+                        </Form.Item>
+                      </Card>
+                    );
+                  })}
+                </>
+              )}
             </Card>
           </Col>
         </Row>

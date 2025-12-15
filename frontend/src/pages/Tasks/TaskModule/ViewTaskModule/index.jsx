@@ -11,6 +11,10 @@ import {
   MoreOutlined,
   SearchOutlined,
   UserOutlined,
+  FileTextOutlined,
+  TeamOutlined,
+  DollarOutlined,
+  ContactsOutlined,
 } from '@ant-design/icons';
 import {
   Button,
@@ -26,6 +30,7 @@ import {
   Table,
   Tag,
   Typography,
+  Tooltip,
 } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -355,6 +360,35 @@ const ViewTaskModule = ({
         );
       },
       sorter: (a, b) => dayjs(a.deadline).unix() - dayjs(b.deadline).unix(),
+    },
+    {
+      title: translate('Linked'),
+      key: 'integrations',
+      width: 120,
+      render: (_, record) => {
+        const integrations = [];
+        if (record.customer) integrations.push({ icon: <ContactsOutlined />, tooltip: 'Customer', color: '#1890ff' });
+        if (record.invoice) integrations.push({ icon: <DollarOutlined />, tooltip: 'Invoice', color: '#52c41a' });
+        if (record.quote) integrations.push({ icon: <FileTextOutlined />, tooltip: 'Quote', color: '#faad14' });
+        if (record.documents && record.documents.length > 0) {
+          integrations.push({ icon: <FileTextOutlined />, tooltip: `${record.documents.length} Documents`, color: '#722ed1' });
+        }
+        if (record.appointment) integrations.push({ icon: <CalendarOutlined />, tooltip: 'Appointment', color: '#13c2c2' });
+
+        if (integrations.length === 0) {
+          return <Text type="secondary">-</Text>;
+        }
+
+        return (
+          <Space size="small">
+            {integrations.map((item, index) => (
+              <Tooltip key={index} title={item.tooltip}>
+                <span style={{ color: item.color, fontSize: '16px' }}>{item.icon}</span>
+              </Tooltip>
+            ))}
+          </Space>
+        );
+      },
     },
     {
       title: translate('Actions'),

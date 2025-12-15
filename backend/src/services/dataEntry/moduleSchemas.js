@@ -272,15 +272,40 @@ const moduleSchemas = {
         required: false,
         aliases: ['assigned to', 'assignee', 'owner'],
       },
-      client: {
+      // Module Integration Fields
+      customer: {
         type: 'reference',
         ref: 'Client',
         required: false,
-        aliases: ['client', 'customer', 'related to'],
+        aliases: ['client', 'customer', 'customer name'],
+      },
+      invoice: {
+        type: 'reference',
+        ref: 'Invoice',
+        required: false,
+        aliases: ['invoice', 'invoice number', 'invoice ref'],
+      },
+      quote: {
+        type: 'reference',
+        ref: 'Quote',
+        required: false,
+        aliases: ['quote', 'quotation', 'quote number'],
+      },
+      document: {
+        type: 'reference',
+        ref: 'Document',
+        required: false,
+        aliases: ['document', 'file', 'attachment'],
+      },
+      appointment: {
+        type: 'reference',
+        ref: 'Appointment',
+        required: false,
+        aliases: ['appointment', 'meeting', 'schedule'],
       },
     },
     aiPrompt:
-      'Extract task information including title, description, status, priority, due date, and assigned person.',
+      'Extract task information including title, description, status, priority, due date, assigned person, related customer, invoice/quote, and documents.',
   },
 
   // Appointment Module

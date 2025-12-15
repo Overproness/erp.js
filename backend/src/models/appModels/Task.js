@@ -184,12 +184,94 @@ const taskSchema = new mongoose.Schema(
     comments: [commentSchema],
     activityLog: [activitySchema],
 
-    // Module Integration
+    // Module Integration - Enhanced
+    // Direct Customer Association
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Client',
+      autopopulate: true,
+      required: false,
+    },
+
+    // Invoice/Quote Association (can be linked to either)
+    invoice: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Invoice',
+      autopopulate: true,
+      required: false,
+    },
+    quote: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Quote',
+      autopopulate: true,
+      required: false,
+    },
+
+    // Document Sharing and Approval Workflow
+    documents: [
+      {
+        document: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Document',
+          required: true,
+          autopopulate: { select: 'title fileName fileType documentType' },
+        },
+        purpose: {
+          type: String,
+          enum: ['reference', 'approval', 'signing', 'review', 'attachment'],
+          default: 'reference',
+        },
+        status: {
+          type: String,
+          enum: ['pending', 'approved', 'rejected', 'signed', 'reviewed'],
+          default: 'pending',
+        },
+        approver: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        approvedAt: {
+          type: Date,
+        },
+        rejectionReason: {
+          type: String,
+        },
+        notes: {
+          type: String,
+        },
+        addedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+
+    // Appointment/Meeting Association
+    appointment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Appointment',
+      autopopulate: false,
+      required: false,
+    },
+
+    // Payment Association
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Payment',
+      autopopulate: false,
+      required: false,
+    },
+
+    // Legacy relatedTo field (keeping for backward compatibility)
     relatedTo: [
       {
         model: {
           type: String,
-          enum: ['invoice', 'quote', 'client', 'document'],
+          enum: ['invoice', 'quote', 'client', 'document', 'appointment', 'payment'],
         },
         id: {
           type: mongoose.Schema.Types.ObjectId,
@@ -227,6 +309,9 @@ const taskSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Add autopopulate plugin
+taskSchema.plugin(require('mongoose-autopopulate'));
 
 // Pre-save hook to automatically set status to 'assigned' when assignedTo is set
 taskSchema.pre('save', function (next) {
