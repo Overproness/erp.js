@@ -25,10 +25,10 @@ class CRMUrlService {
 
       // Generate secure token for portal access
       const accessToken = this._generateSecureToken(customerId);
-      
+
       // Create portal URL
       const portalUrl = `${this.baseUrl}/customer-portal/${customerId}?token=${accessToken}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, portalUrl, {
         title: options.title || `Portal Access - ${customer.name}`,
         description: options.description || `Secure customer portal access for ${customer.name}`,
@@ -38,7 +38,7 @@ class CRMUrlService {
         tags: ['portal', 'customer-access', ...(options.tags || [])],
         expiresAt: options.expiresAt,
         requiresAuth: options.requiresAuth !== false,
-        isPublic: false
+        isPublic: false,
       });
 
       return {
@@ -48,13 +48,13 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
+          email: customer.email,
         },
         metadata: {
           purpose: 'customer_portal_access',
           createdAt: new Date(),
-          validUntil: options.expiresAt
-        }
+          validUntil: options.expiresAt,
+        },
       };
     } catch (error) {
       console.error('Error generating customer portal URL:', error);
@@ -78,7 +78,7 @@ class CRMUrlService {
 
       // Generate secure payment token
       const paymentToken = this._generateSecureToken(`payment_${customerId}_${Date.now()}`);
-      
+
       // Create payment URL with encoded data
       const paymentParams = new URLSearchParams({
         token: paymentToken,
@@ -86,21 +86,23 @@ class CRMUrlService {
         currency: paymentData.currency || 'USD',
         description: paymentData.description || 'Payment Request',
         invoiceId: paymentData.invoiceId || '',
-        customerId: customerId
+        customerId: customerId,
       });
 
       const paymentUrl = `${this.baseUrl}/payment/${customerId}?${paymentParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, paymentUrl, {
         title: options.title || `Payment Request - ${customer.name}`,
-        description: options.description || `Payment request for ${paymentData.amount} ${paymentData.currency || 'USD'}`,
+        description:
+          options.description ||
+          `Payment request for ${paymentData.amount} ${paymentData.currency || 'USD'}`,
         userId: options.userId,
         campaign: options.campaign || 'payment_request',
         medium: options.medium || 'email',
         tags: ['payment', 'invoice', ...(options.tags || [])],
         expiresAt: options.expiresAt,
         requiresAuth: false,
-        isPublic: true
+        isPublic: true,
       });
 
       return {
@@ -111,13 +113,13 @@ class CRMUrlService {
           amount: paymentData.amount,
           currency: paymentData.currency || 'USD',
           description: paymentData.description,
-          invoiceId: paymentData.invoiceId
+          invoiceId: paymentData.invoiceId,
         },
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
-        }
+          email: customer.email,
+        },
       };
     } catch (error) {
       console.error('Error generating payment URL:', error);
@@ -141,10 +143,10 @@ class CRMUrlService {
 
       // Generate secure document access token
       const docToken = this._generateSecureToken(`doc_${documentId}_${customerId}`);
-      
+
       // Create document sharing URL
       const documentUrl = `${this.baseUrl}/shared-document/${documentId}?token=${docToken}&customer=${customerId}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, documentUrl, {
         title: options.title || `Document Share - ${customer.name}`,
         description: options.description || `Shared document for ${customer.name}`,
@@ -156,7 +158,7 @@ class CRMUrlService {
         requiresAuth: options.requiresAuth !== false,
         isPublic: options.isPublic || false,
         passwordProtected: options.passwordProtected || false,
-        maxClicks: options.maxClicks || null
+        maxClicks: options.maxClicks || null,
       });
 
       return {
@@ -167,13 +169,13 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
+          email: customer.email,
         },
         accessControl: {
           requiresAuth: options.requiresAuth !== false,
           passwordProtected: options.passwordProtected || false,
-          maxClicks: options.maxClicks
-        }
+          maxClicks: options.maxClicks,
+        },
       };
     } catch (error) {
       console.error('Error generating document share URL:', error);
@@ -196,18 +198,18 @@ class CRMUrlService {
 
       // Generate scheduling token
       const scheduleToken = this._generateSecureToken(`schedule_${customerId}`);
-      
+
       // Create appointment scheduling URL
       const scheduleParams = new URLSearchParams({
         token: scheduleToken,
         customer: customerId,
         timezone: options.timezone || 'UTC',
         duration: options.duration || '30',
-        type: options.appointmentType || 'general'
+        type: options.appointmentType || 'general',
       });
 
       const scheduleUrl = `${this.baseUrl}/schedule-appointment?${scheduleParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, scheduleUrl, {
         title: options.title || `Schedule Meeting - ${customer.name}`,
         description: options.description || `Appointment scheduling for ${customer.name}`,
@@ -217,7 +219,7 @@ class CRMUrlService {
         tags: ['appointment', 'scheduling', ...(options.tags || [])],
         expiresAt: options.expiresAt,
         requiresAuth: false,
-        isPublic: true
+        isPublic: true,
       });
 
       return {
@@ -227,13 +229,13 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
+          email: customer.email,
         },
         appointmentSettings: {
           timezone: options.timezone || 'UTC',
           duration: options.duration || '30',
-          type: options.appointmentType || 'general'
-        }
+          type: options.appointmentType || 'general',
+        },
       };
     } catch (error) {
       console.error('Error generating appointment URL:', error);
@@ -257,17 +259,17 @@ class CRMUrlService {
 
       // Generate survey response token
       const surveyToken = this._generateSecureToken(`survey_${surveyId}_${customerId}`);
-      
+
       // Create survey URL
       const surveyParams = new URLSearchParams({
         token: surveyToken,
         customer: customerId,
         survey: surveyId,
-        source: options.source || 'email'
+        source: options.source || 'email',
       });
 
       const surveyUrl = `${this.baseUrl}/survey/${surveyId}?${surveyParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, surveyUrl, {
         title: options.title || `Feedback Survey - ${customer.name}`,
         description: options.description || `Customer feedback survey for ${customer.name}`,
@@ -278,7 +280,7 @@ class CRMUrlService {
         expiresAt: options.expiresAt,
         requiresAuth: false,
         isPublic: true,
-        maxClicks: 1 // Typically one response per survey
+        maxClicks: 1, // Typically one response per survey
       });
 
       return {
@@ -289,8 +291,8 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
-        }
+          email: customer.email,
+        },
       };
     } catch (error) {
       console.error('Error generating survey URL:', error);
@@ -313,17 +315,17 @@ class CRMUrlService {
 
       // Generate review token
       const reviewToken = this._generateSecureToken(`review_${customerId}`);
-      
+
       // Create review URL
       const reviewParams = new URLSearchParams({
         token: reviewToken,
         customer: customerId,
         platform: options.platform || 'internal',
-        product: options.productId || ''
+        product: options.productId || '',
       });
 
       const reviewUrl = `${this.baseUrl}/review?${reviewParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, reviewUrl, {
         title: options.title || `Review Request - ${customer.name}`,
         description: options.description || `Request for review from ${customer.name}`,
@@ -334,7 +336,7 @@ class CRMUrlService {
         expiresAt: options.expiresAt,
         requiresAuth: false,
         isPublic: true,
-        maxClicks: 5 // Allow multiple visits
+        maxClicks: 5, // Allow multiple visits
       });
 
       return {
@@ -344,12 +346,12 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
+          email: customer.email,
         },
         reviewSettings: {
           platform: options.platform || 'internal',
-          productId: options.productId
-        }
+          productId: options.productId,
+        },
       };
     } catch (error) {
       console.error('Error generating review URL:', error);
@@ -373,17 +375,17 @@ class CRMUrlService {
 
       // Generate quote acceptance token
       const quoteToken = this._generateSecureToken(`quote_${quoteId}_${customerId}`);
-      
+
       // Create quote acceptance URL
       const quoteParams = new URLSearchParams({
         token: quoteToken,
         customer: customerId,
         quote: quoteId,
-        action: 'view'
+        action: 'view',
       });
 
       const quoteUrl = `${this.baseUrl}/quote/${quoteId}?${quoteParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToQuote(quoteId, quoteUrl, {
         title: options.title || `Quote - ${customer.name}`,
         description: options.description || `Quote acceptance for ${customer.name}`,
@@ -393,7 +395,7 @@ class CRMUrlService {
         tags: ['quote', 'acceptance', ...(options.tags || [])],
         expiresAt: options.expiresAt,
         requiresAuth: false,
-        isPublic: true
+        isPublic: true,
       });
 
       return {
@@ -404,8 +406,8 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
-        }
+          email: customer.email,
+        },
       };
     } catch (error) {
       console.error('Error generating quote URL:', error);
@@ -429,17 +431,17 @@ class CRMUrlService {
 
       // Generate invoice payment token
       const invoiceToken = this._generateSecureToken(`invoice_${invoiceId}_${customerId}`);
-      
+
       // Create invoice payment URL
       const invoiceParams = new URLSearchParams({
         token: invoiceToken,
         customer: customerId,
         invoice: invoiceId,
-        action: 'pay'
+        action: 'pay',
       });
 
       const invoiceUrl = `${this.baseUrl}/invoice/${invoiceId}?${invoiceParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToInvoice(invoiceId, invoiceUrl, {
         title: options.title || `Invoice Payment - ${customer.name}`,
         description: options.description || `Invoice payment for ${customer.name}`,
@@ -449,7 +451,7 @@ class CRMUrlService {
         tags: ['invoice', 'payment', ...(options.tags || [])],
         expiresAt: options.expiresAt,
         requiresAuth: false,
-        isPublic: true
+        isPublic: true,
       });
 
       return {
@@ -460,8 +462,8 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
-        }
+          email: customer.email,
+        },
       };
     } catch (error) {
       console.error('Error generating invoice URL:', error);
@@ -485,16 +487,16 @@ class CRMUrlService {
 
       // Generate event registration token
       const eventToken = this._generateSecureToken(`event_${eventId}_${customerId}`);
-      
+
       // Create event registration URL
       const eventParams = new URLSearchParams({
         token: eventToken,
         customer: customerId,
-        event: eventId
+        event: eventId,
       });
 
       const eventUrl = `${this.baseUrl}/event/${eventId}/register?${eventParams.toString()}`;
-      
+
       const urlData = await this.urlIntegration.linkToCustomer(customerId, eventUrl, {
         title: options.title || `Event Registration - ${customer.name}`,
         description: options.description || `Event registration for ${customer.name}`,
@@ -504,7 +506,7 @@ class CRMUrlService {
         tags: ['event', 'registration', ...(options.tags || [])],
         expiresAt: options.expiresAt,
         requiresAuth: false,
-        isPublic: true
+        isPublic: true,
       });
 
       return {
@@ -515,8 +517,8 @@ class CRMUrlService {
         customer: {
           id: customer._id,
           name: customer.name,
-          email: customer.email
-        }
+          email: customer.email,
+        },
       };
     } catch (error) {
       console.error('Error generating event URL:', error);
@@ -533,10 +535,10 @@ class CRMUrlService {
   async getCustomerUrls(customerId, filters = {}) {
     try {
       const URL = require('@/models/appModels/URL');
-      
+
       const query = {
         linkedModule: 'customer',
-        linkedEntityId: customerId
+        linkedEntityId: customerId,
       };
 
       if (filters.type) {
@@ -552,7 +554,7 @@ class CRMUrlService {
         .limit(filters.limit || 50)
         .lean();
 
-      return urls.map(url => ({
+      return urls.map((url) => ({
         id: url._id,
         shortCode: url.shortCode,
         shortUrl: `${this.urlIntegration.integrationConfig.baseShortUrl}/${url.shortCode}`,
@@ -563,12 +565,12 @@ class CRMUrlService {
         analytics: {
           totalClicks: url.analytics?.totalClicks || 0,
           uniqueClicks: url.analytics?.uniqueClicks || 0,
-          lastClicked: url.analytics?.lastClickedAt
+          lastClicked: url.analytics?.lastClickedAt,
         },
         isActive: url.isActive,
         expiresAt: url.expiresAt,
         createdAt: url.createdAt,
-        tags: url.tags
+        tags: url.tags,
       }));
     } catch (error) {
       console.error('Error getting customer URLs:', error);
@@ -586,17 +588,21 @@ class CRMUrlService {
   async generateBulkUrls(customers, urlType, commonOptions = {}) {
     try {
       const results = [];
-      
+
       for (const customerId of customers) {
         try {
           let urlData;
-          
+
           switch (urlType) {
             case 'portal':
               urlData = await this.generateCustomerPortalUrl(customerId, commonOptions);
               break;
             case 'survey':
-              urlData = await this.generateSurveyUrl(customerId, commonOptions.surveyId, commonOptions);
+              urlData = await this.generateSurveyUrl(
+                customerId,
+                commonOptions.surveyId,
+                commonOptions
+              );
               break;
             case 'review':
               urlData = await this.generateReviewRequestUrl(customerId, commonOptions);
@@ -607,21 +613,21 @@ class CRMUrlService {
             default:
               throw new Error(`Unsupported URL type: ${urlType}`);
           }
-          
+
           results.push({
             success: true,
             customerId,
-            urlData
+            urlData,
           });
         } catch (error) {
           results.push({
             success: false,
             customerId,
-            error: error.message
+            error: error.message,
           });
         }
       }
-      
+
       return results;
     } catch (error) {
       console.error('Error generating bulk URLs:', error);
@@ -660,7 +666,7 @@ class CRMUrlService {
       review: 'review',
       quote: 'quote',
       invoice: 'invoice',
-      event: 'event'
+      event: 'event',
     };
 
     for (const tag of tags) {

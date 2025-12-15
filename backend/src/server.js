@@ -107,10 +107,11 @@ global.io = io;
 
 // Socket.io connection handling
 require('./sockets/notificationSocket')(io);
+require('./sockets/chatSocket')(io);
 
 server.listen(PORT, () => {
   console.log(`🚀 Express server running → PORT: ${server.address().port}`);
-  console.log(`🔌 Socket.io server ready for real-time notifications`);
+  console.log(`🔌 Socket.io server ready for real-time notifications and chat`);
 });
 
 // ─────────────────────────────────────────────────────────────

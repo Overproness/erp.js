@@ -1,36 +1,36 @@
-import { useState } from 'react';
+import { request } from '@/request';
 import {
-  Modal,
-  Form,
-  Input,
-  Select,
-  DatePicker,
-  Switch,
-  Button,
-  Space,
-  message,
-  Card,
-  Row,
-  Col,
-  Divider,
-  Typography,
-  Tag,
-  InputNumber
-} from 'antd';
-import {
-  LinkOutlined,
+  CalendarOutlined,
   CopyOutlined,
   DollarOutlined,
   FileOutlined,
-  CalendarOutlined,
-  FormOutlined,
-  StarOutlined,
   FileTextOutlined,
+  FormOutlined,
+  LinkOutlined,
   PayCircleOutlined,
-  TeamOutlined
+  StarOutlined,
+  TeamOutlined,
 } from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Col,
+  DatePicker,
+  Divider,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Space,
+  Switch,
+  Tag,
+  Typography,
+  message,
+} from 'antd';
 import dayjs from 'dayjs';
-import { request } from '@/request';
+import { useState } from 'react';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -42,67 +42,81 @@ const urlTypeConfigs = {
     title: 'Customer Portal',
     description: 'Generate a secure portal access URL for your customer',
     color: 'blue',
-    fields: ['title', 'description', 'expiration', 'requiresAuth']
+    fields: ['title', 'description', 'expiration', 'requiresAuth'],
   },
   payment: {
     icon: <DollarOutlined />,
     title: 'Payment Request',
     description: 'Create a payment request URL with amount details',
     color: 'green',
-    fields: ['title', 'description', 'amount', 'currency', 'invoiceId', 'expiration']
+    fields: ['title', 'description', 'amount', 'currency', 'invoiceId', 'expiration'],
   },
   document: {
     icon: <FileOutlined />,
     title: 'Document Share',
     description: 'Share a document securely with your customer',
     color: 'orange',
-    fields: ['title', 'description', 'documentId', 'expiration', 'requiresAuth', 'passwordProtected', 'maxClicks']
+    fields: [
+      'title',
+      'description',
+      'documentId',
+      'expiration',
+      'requiresAuth',
+      'passwordProtected',
+      'maxClicks',
+    ],
   },
   appointment: {
     icon: <CalendarOutlined />,
     title: 'Appointment Scheduling',
     description: 'Allow customer to schedule an appointment',
     color: 'purple',
-    fields: ['title', 'description', 'timezone', 'duration', 'appointmentType', 'expiration']
+    fields: ['title', 'description', 'timezone', 'duration', 'appointmentType', 'expiration'],
   },
   survey: {
     icon: <FormOutlined />,
     title: 'Survey/Feedback',
     description: 'Send a survey or feedback request',
     color: 'cyan',
-    fields: ['title', 'description', 'surveyId', 'expiration']
+    fields: ['title', 'description', 'surveyId', 'expiration'],
   },
   review: {
     icon: <StarOutlined />,
     title: 'Review Request',
     description: 'Request a review or testimonial from customer',
     color: 'gold',
-    fields: ['title', 'description', 'platform', 'productId', 'expiration']
+    fields: ['title', 'description', 'platform', 'productId', 'expiration'],
   },
   quote: {
     icon: <FileTextOutlined />,
     title: 'Quote Acceptance',
     description: 'Send a quote for customer review and acceptance',
     color: 'geekblue',
-    fields: ['title', 'description', 'quoteId', 'expiration']
+    fields: ['title', 'description', 'quoteId', 'expiration'],
   },
   invoice: {
     icon: <PayCircleOutlined />,
     title: 'Invoice Payment',
     description: 'Send an invoice for customer payment',
     color: 'red',
-    fields: ['title', 'description', 'invoiceId', 'expiration']
+    fields: ['title', 'description', 'invoiceId', 'expiration'],
   },
   event: {
     icon: <TeamOutlined />,
     title: 'Event Registration',
     description: 'Invite customer to register for an event',
     color: 'magenta',
-    fields: ['title', 'description', 'eventId', 'expiration']
-  }
+    fields: ['title', 'description', 'eventId', 'expiration'],
+  },
 };
 
-const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName, onUrlGenerated }) => {
+const GenerateCustomerUrlModal = ({
+  visible,
+  onCancel,
+  customerId,
+  customerName,
+  onUrlGenerated,
+}) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [urlType, setUrlType] = useState('portal');
@@ -126,7 +140,7 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
         campaign: values.campaign,
         medium: values.medium || 'email',
         tags: values.tags || [],
-        expiresAt: values.expiresAt ? values.expiresAt.toISOString() : null
+        expiresAt: values.expiresAt ? values.expiresAt.toISOString() : null,
       };
 
       // Add type-specific fields
@@ -135,7 +149,7 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
           amount: values.amount,
           currency: values.currency || 'USD',
           description: values.description,
-          invoiceId: values.invoiceId
+          invoiceId: values.invoiceId,
         };
       } else if (urlType === 'document') {
         requestData.documentId = values.documentId;
@@ -166,7 +180,7 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
         entity: 'client',
         id: customerId,
         subEntity: `generate-url/${urlType}`,
-        jsonData: requestData
+        jsonData: requestData,
       });
 
       if (response.success) {
@@ -224,7 +238,7 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
                 size="small"
                 style={{
                   borderColor: urlType === type ? typeConfig.color : undefined,
-                  backgroundColor: urlType === type ? `${typeConfig.color}10` : undefined
+                  backgroundColor: urlType === type ? `${typeConfig.color}10` : undefined,
                 }}
                 onClick={() => handleTypeChange(type)}
               >
@@ -258,7 +272,7 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
               duration: 30,
               timezone: 'UTC',
               requiresAuth: true,
-              passwordProtected: false
+              passwordProtected: false,
             }}
           >
             {/* Common Fields */}
@@ -283,12 +297,7 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
                     label="Amount"
                     rules={[{ required: true, message: 'Please enter amount' }]}
                   >
-                    <InputNumber
-                      style={{ width: '100%' }}
-                      min={0}
-                      step={0.01}
-                      placeholder="0.00"
-                    />
+                    <InputNumber style={{ width: '100%' }} min={0} step={0.01} placeholder="0.00" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -417,7 +426,11 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
             )}
 
             {config.fields.includes('passwordProtected') && (
-              <Form.Item name="passwordProtected" label="Password Protected" valuePropName="checked">
+              <Form.Item
+                name="passwordProtected"
+                label="Password Protected"
+                valuePropName="checked"
+              >
                 <Switch />
               </Form.Item>
             )}
@@ -468,7 +481,12 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
           <div style={{ marginTop: 24, textAlign: 'right' }}>
             <Space>
               <Button onClick={onCancel}>Cancel</Button>
-              <Button type="primary" icon={<LinkOutlined />} loading={loading} onClick={handleGenerate}>
+              <Button
+                type="primary"
+                icon={<LinkOutlined />}
+                loading={loading}
+                onClick={handleGenerate}
+              >
                 Generate URL
               </Button>
             </Space>
@@ -509,7 +527,10 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
               {generatedUrl.accessToken && (
                 <div>
                   <Text type="secondary">Access Token:</Text>
-                  <Paragraph copyable={{ text: generatedUrl.accessToken }} style={{ marginBottom: 0 }}>
+                  <Paragraph
+                    copyable={{ text: generatedUrl.accessToken }}
+                    style={{ marginBottom: 0 }}
+                  >
                     {generatedUrl.accessToken}
                   </Paragraph>
                 </div>
@@ -518,7 +539,10 @@ const GenerateCustomerUrlModal = ({ visible, onCancel, customerId, customerName,
               {generatedUrl.metadata?.validUntil && (
                 <div>
                   <Text type="secondary">Valid Until:</Text>
-                  <Text> {dayjs(generatedUrl.metadata.validUntil).format('MMMM D, YYYY h:mm A')}</Text>
+                  <Text>
+                    {' '}
+                    {dayjs(generatedUrl.metadata.validUntil).format('MMMM D, YYYY h:mm A')}
+                  </Text>
                 </div>
               )}
 

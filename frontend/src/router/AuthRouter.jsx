@@ -22,6 +22,9 @@ import PublicDocumentShare from '@/pages/PublicDocumentShare';
 // Import public survey component
 const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
 
+// Import customer chat page
+const CustomerChatPage = lazy(() => import('@/pages/CustomerChatPage'));
+
 export default function AuthRouter() {
   const { pathname } = useLocation();
   const { isLoggedIn, isLoading } = useSelector(selectAuth);
@@ -37,6 +40,7 @@ export default function AuthRouter() {
     '/review-portal',
     '/team/invitation',
     '/public/survey',
+    '/chat',
   ];
 
   // Check if the current path starts with any of the public paths
@@ -84,6 +88,16 @@ export default function AuthRouter() {
         element={
           <Suspense fallback={<Loading isLoading={true} />}>
             <PublicSurvey />
+          </Suspense>
+        }
+      />
+
+      {/* Public customer chat route - accessible without authentication */}
+      <Route
+        path="/chat/:roomId"
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <CustomerChatPage />
           </Suspense>
         }
       />

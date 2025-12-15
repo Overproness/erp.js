@@ -63,18 +63,17 @@ import {
 import useLanguage from '@/locale/useLanguage';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CustomerChatInterface from '@/components/CustomerChatInterface';
+import GenerateCustomerChatModal from '@/components/GenerateCustomerChatModal';
 import { generate as uniqueId } from 'shortid';
 import AISuggestionsModal from './AISuggestionsModal';
 import CustomerInsightsModal from './CustomerInsightsModal';
-import CustomerUrlManager from '@/components/CustomerUrlManager';
-import GenerateCustomerUrlModal from '@/components/GenerateCustomerUrlModal';
 
 import { selectCurrentItem } from '@/redux/erp/selectors';
 import { useMoney } from '@/settings';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import { LinkOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -121,9 +120,9 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
   // AI Suggestions state
   const [showSuggestionsModal, setShowSuggestionsModal] = useState(false);
 
-  // URL Generation state
-  const [showUrlModal, setShowUrlModal] = useState(false);
-  const [showUrlManager, setShowUrlManager] = useState(false);
+  // Chat state
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [activeChatRoom, setActiveChatRoom] = useState(null);
 
   // Helper function to safely extract ID string from potentially nested objects
   const getIdString = (id) => {
@@ -1042,12 +1041,12 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         }
         extra={[
           <Button
-            key="generate-url"
-            icon={<LinkOutlined />}
-            onClick={() => setShowUrlModal(true)}
+            key="start-chat"
+            icon={<MessageOutlined />}
+            onClick={() => setShowChatModal(true)}
             style={{ marginRight: 8 }}
           >
-            {translate('Generate URL')}
+            {translate('Start Chat')}
           </Button>,
           <Button
             key="ai-insights"
@@ -1333,15 +1332,18 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         </Col>
       </Row>
 
-      {/* Customer Communication URLs Section */}
-      <Row gutter={[24, 24]} style={{ marginTop: 32 }}>
-        <Col xs={24}>
-          <CustomerUrlManager
-            customerId={getIdString(currentCustomer._id)}
-            customerName={currentCustomer.name}
-          />
-        </Col>
-      </Row>
+      {/* Customer Chat Section - Show if active chat exists */}
+      {activeChatRoom && (
+        <Row gutter={[24, 24]} style={{ marginTop: 32 }}>
+          <Col xs={24}>
+            <CustomerChatInterface
+              roomId={activeChatRoom.roomId}
+              accessToken={activeChatRoom.accessToken}
+              userType="employee"
+            />
+          </Col>
+        </Row>
+      )}
 
       {/* Interaction Modal */}
       <InteractionModal />
@@ -1362,31 +1364,18 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
         customerData={currentCustomer}
       />
 
-      {/* Generate URL Modal */}
-      <GenerateCustomerUrlModal
-        visible={showUrlModal}
-        onCancel={() => setShowUrlModal(false)}
+      {/* Generate Customer Chat Modal */}
+      <GenerateCustomerChatModal
+        visible={showChatModal}
+        onCancel={() => setShowChatModal(false)}
         customerId={getIdString(currentCustomer._id)}
         customerName={currentCustomer.name}
-        onUrlGenerated={() => {
-          message.success('URL generated successfully!');
-          setShowUrlModal(false);
+        onGenerated={(result) => {
+          message.success('Chat room created!');
+          setActiveChatRoom(result);
+          setShowChatModal(false);
         }}
       />
-
-      {/* URL Manager Modal */}
-      <Modal
-        title={`Customer Communication URLs - ${currentCustomer.name}`}
-        open={showUrlManager}
-        onCancel={() => setShowUrlManager(false)}
-        width={1200}
-        footer={null}
-      >
-        <CustomerUrlManager
-          customerId={getIdString(currentCustomer._id)}
-          customerName={currentCustomer.name}
-        />
-      </Modal>
     </>
   );
 }

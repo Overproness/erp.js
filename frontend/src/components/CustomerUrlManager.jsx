@@ -1,35 +1,35 @@
-import { useState, useEffect, useCallback } from 'react';
+import { request } from '@/request';
 import {
-  Card,
-  Table,
-  Button,
-  Space,
-  Tag,
-  Tooltip,
-  message,
-  Modal,
-  Typography,
-  Badge,
-  Statistic,
-  Row,
-  Col,
-  Empty,
-  Input,
-} from 'antd';
-import {
-  LinkOutlined,
-  CopyOutlined,
-  EyeOutlined,
-  DeleteOutlined,
-  ReloadOutlined,
-  PlusOutlined,
   BarChartOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  LinkOutlined,
+  PlusOutlined,
+  ReloadOutlined,
 } from '@ant-design/icons';
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Empty,
+  Input,
+  message,
+  Modal,
+  Row,
+  Space,
+  Statistic,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
+} from 'antd';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { request } from '@/request';
+import { useCallback, useEffect, useState } from 'react';
 import GenerateCustomerUrlModal from './GenerateCustomerUrlModal';
 
 dayjs.extend(relativeTime);
@@ -268,8 +268,9 @@ const CustomerUrlManager = ({ customerId, customerName }) => {
   const urlsArray = Array.isArray(urls) ? urls : [];
   const stats = {
     total: urlsArray.length,
-    active: urlsArray.filter((u) => u.isActive && (!u.expiresAt || dayjs(u.expiresAt).isAfter(dayjs())))
-      .length,
+    active: urlsArray.filter(
+      (u) => u.isActive && (!u.expiresAt || dayjs(u.expiresAt).isAfter(dayjs()))
+    ).length,
     totalClicks: urlsArray.reduce((sum, u) => sum + (u.analytics?.totalClicks || 0), 0),
     uniqueClicks: urlsArray.reduce((sum, u) => sum + (u.analytics?.uniqueClicks || 0), 0),
   };

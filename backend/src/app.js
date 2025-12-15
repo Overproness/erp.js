@@ -132,6 +132,7 @@ const crmUrlRoutes = require('./routes/appRoutes/crmUrlRoutes');
 
 // Chat Routes
 const chatRoutes = require('./routes/appRoutes/chatRoutes');
+const customerChatRoutes = require('./routes/appRoutes/customerChatRoutes');
 
 // ─────────────────────────────────────────────────────────────
 // Create Express App
@@ -446,6 +447,7 @@ app.use('/api/team', adminAuth.isValidAuthToken, teamRouter);
 app.use('/api/url', adminAuth.isValidAuthToken, urlRoutes);
 app.use('/api/abtest', adminAuth.isValidAuthToken, abTestRoutes);
 app.use('/api/chat', adminAuth.isValidAuthToken, chatRoutes);
+app.use('/api/customer-chat', customerChatRoutes); // Has its own auth middleware
 app.use('/api/audit', adminAuth.isValidAuthToken, auditRoutes);
 app.use('/api/document-audit', adminAuth.isValidAuthToken, documentAuditRoutes);
 app.use('/api/ai', adminAuth.isValidAuthToken, aiDataProcessorRoutes);

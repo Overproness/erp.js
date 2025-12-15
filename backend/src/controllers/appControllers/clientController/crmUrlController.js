@@ -8,7 +8,7 @@ const generatePortalUrl = async (req, res) => {
     const { id } = req.params;
     const options = {
       userId: req.user?._id,
-      ...req.body
+      ...req.body,
     };
 
     const urlData = await crmUrlService.generateCustomerPortalUrl(id, options);
@@ -16,14 +16,14 @@ const generatePortalUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Customer portal URL generated successfully'
+      message: 'Customer portal URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating portal URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -40,7 +40,7 @@ const generatePaymentUrl = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Payment data with amount is required'
+        message: 'Payment data with amount is required',
       });
     }
 
@@ -50,14 +50,14 @@ const generatePaymentUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Payment request URL generated successfully'
+      message: 'Payment request URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating payment URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -74,7 +74,7 @@ const generateDocumentUrl = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Document ID is required'
+        message: 'Document ID is required',
       });
     }
 
@@ -84,14 +84,14 @@ const generateDocumentUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Document share URL generated successfully'
+      message: 'Document share URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating document URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -104,7 +104,7 @@ const generateAppointmentUrl = async (req, res) => {
     const { id } = req.params;
     const options = {
       userId: req.user?._id,
-      ...req.body
+      ...req.body,
     };
 
     const urlData = await crmUrlService.generateAppointmentSchedulingUrl(id, options);
@@ -112,14 +112,14 @@ const generateAppointmentUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Appointment scheduling URL generated successfully'
+      message: 'Appointment scheduling URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating appointment URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -136,7 +136,7 @@ const generateSurveyUrl = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Survey ID is required'
+        message: 'Survey ID is required',
       });
     }
 
@@ -146,14 +146,14 @@ const generateSurveyUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Survey URL generated successfully'
+      message: 'Survey URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating survey URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -166,7 +166,7 @@ const generateReviewUrl = async (req, res) => {
     const { id } = req.params;
     const options = {
       userId: req.user?._id,
-      ...req.body
+      ...req.body,
     };
 
     const urlData = await crmUrlService.generateReviewRequestUrl(id, options);
@@ -174,14 +174,14 @@ const generateReviewUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Review request URL generated successfully'
+      message: 'Review request URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating review URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -198,7 +198,7 @@ const generateQuoteUrl = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Quote ID is required'
+        message: 'Quote ID is required',
       });
     }
 
@@ -208,14 +208,14 @@ const generateQuoteUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Quote URL generated successfully'
+      message: 'Quote URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating quote URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -232,7 +232,7 @@ const generateInvoiceUrl = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Invoice ID is required'
+        message: 'Invoice ID is required',
       });
     }
 
@@ -242,14 +242,14 @@ const generateInvoiceUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Invoice payment URL generated successfully'
+      message: 'Invoice payment URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating invoice URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -266,7 +266,7 @@ const generateEventUrl = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Event ID is required'
+        message: 'Event ID is required',
       });
     }
 
@@ -276,14 +276,14 @@ const generateEventUrl = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urlData,
-      message: 'Event registration URL generated successfully'
+      message: 'Event registration URL generated successfully',
     });
   } catch (error) {
     console.error('Error generating event URL:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -297,7 +297,7 @@ const getCustomerUrls = async (req, res) => {
     const filters = {
       type: req.query.type,
       isActive: req.query.isActive === 'true',
-      limit: parseInt(req.query.limit) || 50
+      limit: parseInt(req.query.limit) || 50,
     };
 
     const urls = await crmUrlService.getCustomerUrls(id, filters);
@@ -305,14 +305,14 @@ const getCustomerUrls = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: urls,
-      message: 'Customer URLs retrieved successfully'
+      message: 'Customer URLs retrieved successfully',
     });
   } catch (error) {
     console.error('Error getting customer URLs:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -328,7 +328,7 @@ const generateBulkUrls = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'Customer IDs array is required'
+        message: 'Customer IDs array is required',
       });
     }
 
@@ -336,31 +336,31 @@ const generateBulkUrls = async (req, res) => {
       return res.status(400).json({
         success: false,
         result: null,
-        message: 'URL type is required'
+        message: 'URL type is required',
       });
     }
 
     const enrichedOptions = {
       userId: req.user?._id,
-      ...options
+      ...options,
     };
 
     const results = await crmUrlService.generateBulkUrls(customerIds, urlType, enrichedOptions);
 
-    const successCount = results.filter(r => r.success).length;
-    const failCount = results.filter(r => !r.success).length;
+    const successCount = results.filter((r) => r.success).length;
+    const failCount = results.filter((r) => !r.success).length;
 
     return res.status(200).json({
       success: true,
       result: results,
-      message: `Bulk URL generation completed: ${successCount} successful, ${failCount} failed`
+      message: `Bulk URL generation completed: ${successCount} successful, ${failCount} failed`,
     });
   } catch (error) {
     console.error('Error generating bulk URLs:', error);
     return res.status(400).json({
       success: false,
       result: null,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -376,5 +376,5 @@ module.exports = {
   generateInvoiceUrl,
   generateEventUrl,
   getCustomerUrls,
-  generateBulkUrls
+  generateBulkUrls,
 };
