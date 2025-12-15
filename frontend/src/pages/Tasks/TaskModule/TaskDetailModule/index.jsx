@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '@/config/serverApiConfig';
 import useLanguage from '@/locale/useLanguage';
 import {
   ArrowLeftOutlined,
@@ -30,6 +31,7 @@ import {
   Form,
   Input,
   List,
+  message,
   Modal,
   Row,
   Space,
@@ -37,6 +39,7 @@ import {
   Timeline,
   Typography,
 } from 'antd';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -160,7 +163,7 @@ const dummyActivityLogs = [
   },
 ];
 
-const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
+const TaskDetailModule = ({ task, onEdit, onDelete, onBack, onMarkComplete }) => {
   console.log('🚀 ~ TaskDetailModule ~ task:', task);
   const translate = useLanguage();
   const navigate = useNavigate();
@@ -168,6 +171,7 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
   const [comments, setComments] = useState(dummyComments);
   const [activityLogs, setActivityLogs] = useState(dummyActivityLogs);
   const [loading, setLoading] = useState(false);
+  const [markCompleteLoading, setMarkCompleteLoading] = useState(false);
 
   // Add debugging
   console.log('TaskDetailModule - props received:', {
@@ -177,6 +181,7 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
       onEdit: !!onEdit,
       onDelete: !!onDelete,
       onBack: !!onBack,
+      onMarkComplete: !!onMarkComplete,
     },
   });
 
@@ -232,9 +237,70 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
     });
   };
 
-  const handleMarkComplete = () => {
-    // Placeholder for actual complete logic
+  const handleMarkComplete = async () => {
     console.log('TaskDetailModule - Mark as complete for task:', task?._id);
+    
+    if (onMarkComplete) {
+      // Use the callback if provided
+      onMarkComplete(task);
+      return;
+    }
+
+    // Otherwise, implement the functionality directly
+    Modal.confirm({
+      title: translate('Mark Task as Complete'),
+      content: translate('Are you sure you want to mark this task as completed?'),
+      okText: translate('Yes'),
+      cancelText: translate('No'),
+      async onOk() {
+        setMarkCompleteLoading(true);
+        try {
+          const token = window.localStorage.getItem('auth_token');
+          const response = await axios.patch(
+            `${API_BASE_URL}task/${task._id}`,
+            { status: 'completed', completed: new Date() },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.data.success) {
+            message.success(translate('Task marked as completed successfully'));
+            
+            // Update activity log
+            const newActivity = {
+              action: 'updated',
+              user: 'Current User',
+              field: 'status',
+              oldValue: task.status,
+              newValue: 'completed',
+              timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+            };
+            setActivityLogs([newActivity, ...activityLogs]);
+            
+            // Navigate back or reload
+            setTimeout(() => {
+              if (onBack) {
+                onBack();
+              } else {
+                navigate('/tasks');
+              }
+            }, 1000);
+          } else {
+            message.error(translate('Failed to mark task as complete'));
+          }
+        } catch (error) {
+          console.error('Error marking task as complete:', error);
+          message.error(
+            error.response?.data?.message || translate('An error occurred while updating the task')
+          );
+        } finally {
+          setMarkCompleteLoading(false);
+        }
+      },
+    });
   };
 
   const handleAddComment = (values) => {
@@ -317,9 +383,15 @@ const TaskDetailModule = ({ task, onEdit, onDelete, onBack }) => {
 
         <Space>
           {task.status !== 'completed' && (
-            <Button type="primary" icon={<CheckCircleOutlined />} onClick={handleMarkComplete}>
-              {translate('Mark Complete')}
-            </Button>
+            // <Button 
+            //   icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} 
+            //   onClick={handleMarkComplete}
+            //   loading={markCompleteLoading}
+            // >
+            //   {translate('Mark Complete')}
+            // </Button>
+            <>
+            </>
           )}
           <Button icon={<EditOutlined />} onClick={handleEdit}>
             {translate('Edit')}
