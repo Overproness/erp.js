@@ -6,7 +6,7 @@ const chatUrlService = require('@/services/chatUrlService');
 const generateChatUrl = async (req, res) => {
   try {
     const { id: customerId } = req.params;
-    const employeeId = req.admin?._id || req.user?._id;
+    const employeeId = req.companyOwner?._id || req.user?._id;
 
     if (!employeeId) {
       return res.status(401).json({

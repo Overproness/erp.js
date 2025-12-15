@@ -437,7 +437,14 @@ app.get('/api/marketing/retargeting/test-public', (req, res) => {
   });
 });
 
-// Protected Routes
+// ─────────────────────────────────────────────────────────────
+// PUBLIC ROUTES (Must be before authenticated routes!)
+// ─────────────────────────────────────────────────────────────
+app.use('/api/customer-chat', customerChatRoutes); // Public customer chat (has its own selective auth)
+
+// ─────────────────────────────────────────────────────────────
+// PROTECTED ROUTES (Require authentication)
+// ─────────────────────────────────────────────────────────────
 app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 // CRM URL routes must come BEFORE erpApiRouter to match specific client routes first
 app.use('/api/client', adminAuth.isValidAuthToken, crmUrlRoutes);
@@ -447,7 +454,6 @@ app.use('/api/team', adminAuth.isValidAuthToken, teamRouter);
 app.use('/api/url', adminAuth.isValidAuthToken, urlRoutes);
 app.use('/api/abtest', adminAuth.isValidAuthToken, abTestRoutes);
 app.use('/api/chat', adminAuth.isValidAuthToken, chatRoutes);
-app.use('/api/customer-chat', customerChatRoutes); // Has its own auth middleware
 app.use('/api/audit', adminAuth.isValidAuthToken, auditRoutes);
 app.use('/api/document-audit', adminAuth.isValidAuthToken, documentAuditRoutes);
 app.use('/api/ai', adminAuth.isValidAuthToken, aiDataProcessorRoutes);

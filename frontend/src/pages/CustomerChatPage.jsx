@@ -1,7 +1,7 @@
 import CustomerChatInterface from '@/components/CustomerChatInterface';
-import request from '@/request';
 import { MessageOutlined, WarningOutlined } from '@ant-design/icons';
 import { Card, Result, Space, Spin, Typography } from 'antd';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -16,6 +16,14 @@ const CustomerChatPage = () => {
   const [error, setError] = useState(null);
   const [roomInfo, setRoomInfo] = useState(null);
 
+  // Debug logging
+  useEffect(() => {
+    console.log('CustomerChatPage loaded:', {
+      roomId,
+      accessToken: accessToken ? 'present' : 'missing',
+    });
+  }, [roomId, accessToken]);
+
   useEffect(() => {
     verifyAccess();
   }, [roomId, accessToken]);
@@ -28,7 +36,11 @@ const CustomerChatPage = () => {
     }
 
     try {
-      const response = await request.get(`/customer-chat/room?accessToken=${accessToken}`);
+      // Use axios directly to avoid authentication middleware
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8888';
+      const response = await axios.get(
+        `${backendUrl}/api/customer-chat/room?accessToken=${accessToken}`
+      );
 
       if (response.data.success) {
         setRoomInfo(response.data.result);
@@ -36,6 +48,7 @@ const CustomerChatPage = () => {
         setError(response.data.message || 'Invalid access');
       }
     } catch (err) {
+      console.error('Error verifying chat access:', err);
       setError(err.response?.data?.message || 'Failed to access chat room');
     } finally {
       setLoading(false);

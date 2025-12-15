@@ -44,9 +44,17 @@ export default function AuthRouter() {
   ];
 
   // Check if the current path starts with any of the public paths
+  // Normalize pathname by removing double slashes
+  const normalizedPathname = pathname.replace(/\/+/g, '/');
+
   const isPublicPath = publicPaths.some(
-    (path) => pathname === path || pathname.startsWith(`${path}/`)
+    (path) => normalizedPathname === path || normalizedPathname.startsWith(`${path}/`)
   );
+
+  // Debug logging for chat routes
+  if (normalizedPathname.includes('/chat')) {
+    console.log('Chat route detected:', { normalizedPathname, isPublicPath, isLoggedIn });
+  }
 
   if (isLoading) {
     return <Loading isLoading={true} />;
@@ -61,6 +69,7 @@ export default function AuthRouter() {
   if (!isLoggedIn && !isPublicPath) {
     // Store the attempted URL for redirection after login
     sessionStorage.setItem('redirectAfterLogin', pathname);
+    console.log('Redirecting to login. Path:', normalizedPathname, 'isPublicPath:', isPublicPath);
     return <Navigate to="/login" replace />;
   }
 

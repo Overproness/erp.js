@@ -50,20 +50,19 @@ const GenerateCustomerChatModal = ({
       };
 
       const response = await request.post(`/customer-chat/${customerId}/generate`, payload);
+      console.log('🚀 ~ handleGenerate ~ response:', response);
 
-      if (response.data.success) {
-        setGeneratedUrl(response.data.result);
+      if (response.success) {
+        setGeneratedUrl(response.result);
         message.success(
-          response.data.result.isExisting
-            ? 'Active chat room found!'
-            : 'Chat room created successfully!'
+          response.result.isExisting ? 'Active chat room found!' : 'Chat room created successfully!'
         );
 
         if (onGenerated) {
-          onGenerated(response.data.result);
+          onGenerated(response.result);
         }
       } else {
-        message.error(response.data.message || 'Failed to generate chat URL');
+        message.error(response.message || 'Failed to generate chat URL');
       }
     } catch (error) {
       console.error('Error generating chat URL:', error);

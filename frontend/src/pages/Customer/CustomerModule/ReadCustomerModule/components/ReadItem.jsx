@@ -35,6 +35,7 @@ import {
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import {
+  Alert,
   Avatar,
   Badge,
   Button,
@@ -123,6 +124,50 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
   // Chat state
   const [showChatModal, setShowChatModal] = useState(false);
   const [activeChatRoom, setActiveChatRoom] = useState(null);
+  const [showResumeAlert, setShowResumeAlert] = useState(false);
+  const [savedRoomData, setSavedRoomData] = useState(null);
+
+  // Check for saved room on mount (for employee reconnection)
+  useEffect(() => {
+    const EMPLOYEE_ROOM_KEY = 'employee_active_chat_room';
+    const savedData = localStorage.getItem(EMPLOYEE_ROOM_KEY);
+
+    if (savedData) {
+      try {
+        const roomData = JSON.parse(savedData);
+        const savedTime = new Date(roomData.timestamp);
+        const now = new Date();
+        const hoursSinceLastChat = (now - savedTime) / (1000 * 60 * 60);
+
+        // Only show resume if session is less than 24 hours old
+        if (hoursSinceLastChat < 24) {
+          setSavedRoomData(roomData);
+          setShowResumeAlert(true);
+        } else {
+          // Clear old session
+          localStorage.removeItem(EMPLOYEE_ROOM_KEY);
+        }
+      } catch (error) {
+        console.error('Error parsing saved room data:', error);
+        localStorage.removeItem(EMPLOYEE_ROOM_KEY);
+      }
+    }
+  }, []);
+
+  const handleResumeChat = () => {
+    if (savedRoomData) {
+      setActiveChatRoom({
+        roomId: savedRoomData.roomId,
+        accessToken: savedRoomData.accessToken,
+      });
+      setShowResumeAlert(false);
+    }
+  };
+
+  const handleDismissResumeAlert = () => {
+    setShowResumeAlert(false);
+    localStorage.removeItem('employee_active_chat_room');
+  };
 
   // Helper function to safely extract ID string from potentially nested objects
   const getIdString = (id) => {
@@ -1026,6 +1071,29 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
 
   return (
     <>
+      {/* Resume Chat Alert */}
+      {showResumeAlert && savedRoomData && (
+        <Alert
+          message="Previous Chat Session Found"
+          description={`You have an active chat session. Would you like to resume it?`}
+          type="info"
+          showIcon
+          action={
+            <Space>
+              <Button size="small" type="primary" onClick={handleResumeChat}>
+                Resume Chat
+              </Button>
+              <Button size="small" onClick={handleDismissResumeAlert}>
+                Dismiss
+              </Button>
+            </Space>
+          }
+          closable
+          onClose={handleDismissResumeAlert}
+          style={{ marginBottom: 16 }}
+        />
+      )}
+
       <PageHeader
         onBack={() => {
           navigate(`/${entity.toLowerCase()}`);

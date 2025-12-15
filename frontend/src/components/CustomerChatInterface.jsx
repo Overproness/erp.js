@@ -1,6 +1,8 @@
+import storePersist from '@/redux/storePersist';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  CopyOutlined,
   CustomerServiceOutlined,
   SendOutlined,
   UserOutlined,
@@ -30,6 +32,9 @@ dayjs.extend(relativeTime);
 const { TextArea } = Input;
 const { Text } = Typography;
 
+// LocalStorage key for employee room persistence
+const EMPLOYEE_ROOM_KEY = 'employee_active_chat_room';
+
 const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -39,6 +44,7 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
   const [isConnected, setIsConnected] = useState(false);
   const [otherParticipantOnline, setOtherParticipantOnline] = useState(false);
   const [otherParticipantTyping, setOtherParticipantTyping] = useState(false);
+  const [chatUrl, setChatUrl] = useState(null);
 
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -55,7 +61,9 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
 
   // Initialize socket connection
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // Get authentication token from Redux store
+    const authData = storePersist.get('auth');
+    const token = authData?.current?.token;
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8888';
 
     // Connect to chat namespace
@@ -86,6 +94,23 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
       setRoomInfo(data.room);
       setMessages(data.messages || []);
       setLoading(false);
+
+      // For employees: persist room info for reconnection on reload
+      if (userType === 'employee') {
+        const roomData = {
+          roomId: data.room.roomId,
+          accessToken: accessToken,
+          timestamp: new Date().toISOString(),
+        };
+        localStorage.setItem(EMPLOYEE_ROOM_KEY, JSON.stringify(roomData));
+      }
+
+      // Generate customer chat URL
+      let frontendUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+      // Remove trailing slash to prevent double slashes
+      frontendUrl = frontendUrl.replace(/\/$/, '');
+      const customerUrl = `${frontendUrl}/chat/${data.room.roomId}?token=${accessToken}`;
+      setChatUrl(customerUrl);
     });
 
     socket.on('chat:newMessage', (data) => {
@@ -124,6 +149,10 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
 
     return () => {
       socket.disconnect();
+      // Clear room persistence on unmount for employees
+      if (userType === 'employee') {
+        localStorage.removeItem(EMPLOYEE_ROOM_KEY);
+      }
     };
   }, [roomId, accessToken, userType]);
 
@@ -176,6 +205,16 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
     }
   };
 
+  // Copy chat URL to clipboard
+  const handleCopyUrl = () => {
+    if (chatUrl) {
+      navigator.clipboard.writeText(chatUrl);
+      message.success('Chat URL copied to clipboard! You can now send it to the customer.');
+    } else {
+      message.error('Chat URL not available yet');
+    }
+  };
+
   if (loading) {
     return (
       <Card>
@@ -210,6 +249,15 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
             {otherParticipantOnline && <Badge status="success" text="Other party online" />}
           </Space>
         </Space>
+      }
+      extra={
+        userType === 'employee' && chatUrl ? (
+          <Tooltip title="Copy chat URL to send to customer">
+            <Button type="primary" icon={<CopyOutlined />} onClick={handleCopyUrl} size="small">
+              Copy Chat URL
+            </Button>
+          </Tooltip>
+        ) : null
       }
       style={{ height: '600px', display: 'flex', flexDirection: 'column' }}
       bodyStyle={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 0 }}
