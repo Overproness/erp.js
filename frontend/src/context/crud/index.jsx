@@ -1,6 +1,6 @@
-import { useMemo, useReducer, createContext, useContext } from 'react';
-import { initialState, contextReducer } from './reducer';
+import { createContext, useContext, useMemo, useReducer } from 'react';
 import contextActions from './actions';
+import { contextReducer, initialState } from './reducer';
 import contextSelectors from './selectors';
 
 const CrudContext = createContext();

@@ -35,7 +35,9 @@ function createAuthResolvers(authController) {
         try {
           const registerHandler = require('../../controllers/coreControllers/adminAuth/register');
           await registerHandler(req, res);
-          return getResponse().data || { success: false, result: null, message: 'Registration failed' };
+          return (
+            getResponse().data || { success: false, result: null, message: 'Registration failed' }
+          );
         } catch (error) {
           return { success: false, result: null, message: error.message };
         }

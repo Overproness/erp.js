@@ -1,20 +1,20 @@
-import { useLayoutEffect, useEffect, useState } from 'react';
-import { Row, Col, Button } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, Row } from 'antd';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import CreateForm from '@/components/CreateForm';
-import UpdateForm from '@/components/UpdateForm';
 import DeleteModal from '@/components/DeleteModal';
 import ReadItem from '@/components/ReadItem';
 import SearchItem from '@/components/SearchItem';
 import DataTable from '@/components/UnifiedDataTable';
+import UpdateForm from '@/components/UpdateForm';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectCurrentItem } from '@/redux/crud/selectors';
+import { useCrudContext } from '@/context/crud';
 import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';
-import { useCrudContext } from '@/context/crud';
+import { selectCurrentItem } from '@/redux/crud/selectors';
 
 import { CrudLayout } from '@/layout';
 

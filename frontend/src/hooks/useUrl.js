@@ -1,28 +1,28 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useCallback, useMemo } from 'react';
-import { message } from 'antd';
 import {
-  fetchUrls,
+  bulkDeleteUrls,
+  bulkUpdateUrls,
+  clearSelection,
   createUrl,
-  updateUrl,
   deleteUrl,
   fetchUrlDetails,
-  bulkUpdateUrls,
-  bulkDeleteUrls,
-  updateFilters,
-  updatePagination,
-  selectUrls,
-  selectUrlsLoading,
-  selectUrlsError,
+  fetchUrls,
+  selectBulkLoading,
   selectCurrentUrl,
+  selectFilteredUrls,
+  selectSelectedUrls,
   selectUrlFilters,
   selectUrlPagination,
-  selectFilteredUrls,
+  selectUrls,
+  selectUrlsError,
+  selectUrlsLoading,
   selectUrlStats,
-  selectSelectedUrls,
-  selectBulkLoading,
-  clearSelection
+  updateFilters,
+  updatePagination,
+  updateUrl,
 } from '@/redux/url';
+import { message } from 'antd';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const useUrlManagement = () => {
   const dispatch = useDispatch();
@@ -64,83 +64,112 @@ export const useUrlManagement = () => {
     return [];
   }, [urlsRaw]);
 
-  const filteredUrls = useMemo(() => Array.isArray(filteredUrlsRaw) ? filteredUrlsRaw : [], [filteredUrlsRaw]);
+  const filteredUrls = useMemo(
+    () => (Array.isArray(filteredUrlsRaw) ? filteredUrlsRaw : []),
+    [filteredUrlsRaw]
+  );
 
   // Actions
-  const refreshUrls = useCallback((options = {}) => {
-    return dispatch(fetchUrls({ ...filters, ...pagination, ...options }));
-  }, [dispatch, filters, pagination]);
+  const refreshUrls = useCallback(
+    (options = {}) => {
+      return dispatch(fetchUrls({ ...filters, ...pagination, ...options }));
+    },
+    [dispatch, filters, pagination]
+  );
 
-  const createNewUrl = useCallback(async (urlData) => {
-    try {
-      const result = await dispatch(createUrl(urlData)).unwrap();
-      message.success('URL created successfully');
-      return result;
-    } catch (error) {
-      message.error(error.message || 'Failed to create URL');
-      throw error;
-    }
-  }, [dispatch]);
+  const createNewUrl = useCallback(
+    async (urlData) => {
+      try {
+        const result = await dispatch(createUrl(urlData)).unwrap();
+        message.success('URL created successfully');
+        return result;
+      } catch (error) {
+        message.error(error.message || 'Failed to create URL');
+        throw error;
+      }
+    },
+    [dispatch]
+  );
 
-  const updateExistingUrl = useCallback(async (id, urlData) => {
-    try {
-      const result = await dispatch(updateUrl({ id, urlData })).unwrap();
-      message.success('URL updated successfully');
-      return result;
-    } catch (error) {
-      message.error(error.message || 'Failed to update URL');
-      throw error;
-    }
-  }, [dispatch]);
+  const updateExistingUrl = useCallback(
+    async (id, urlData) => {
+      try {
+        const result = await dispatch(updateUrl({ id, urlData })).unwrap();
+        message.success('URL updated successfully');
+        return result;
+      } catch (error) {
+        message.error(error.message || 'Failed to update URL');
+        throw error;
+      }
+    },
+    [dispatch]
+  );
 
-  const deleteExistingUrl = useCallback(async (id) => {
-    try {
-      const result = await dispatch(deleteUrl(id)).unwrap();
-      message.success('URL deleted successfully');
-      return result;
-    } catch (error) {
-      message.error(error.message || 'Failed to delete URL');
-      throw error;
-    }
-  }, [dispatch]);
+  const deleteExistingUrl = useCallback(
+    async (id) => {
+      try {
+        const result = await dispatch(deleteUrl(id)).unwrap();
+        message.success('URL deleted successfully');
+        return result;
+      } catch (error) {
+        message.error(error.message || 'Failed to delete URL');
+        throw error;
+      }
+    },
+    [dispatch]
+  );
 
-  const getUrlDetails = useCallback(async (id) => {
-    try {
-      const result = await dispatch(fetchUrlDetails(id)).unwrap();
-      return result;
-    } catch (error) {
-      message.error(error.message || 'Failed to fetch URL details');
-      throw error;
-    }
-  }, [dispatch]);
+  const getUrlDetails = useCallback(
+    async (id) => {
+      try {
+        const result = await dispatch(fetchUrlDetails(id)).unwrap();
+        return result;
+      } catch (error) {
+        message.error(error.message || 'Failed to fetch URL details');
+        throw error;
+      }
+    },
+    [dispatch]
+  );
 
-  const updateUrlFilters = useCallback((newFilters) => {
-    dispatch(updateFilters(newFilters));
-  }, [dispatch]);
+  const updateUrlFilters = useCallback(
+    (newFilters) => {
+      dispatch(updateFilters(newFilters));
+    },
+    [dispatch]
+  );
 
-  const updateUrlPagination = useCallback((newPagination) => {
-    dispatch(updatePagination(newPagination));
-  }, [dispatch]);
+  const updateUrlPagination = useCallback(
+    (newPagination) => {
+      dispatch(updatePagination(newPagination));
+    },
+    [dispatch]
+  );
 
-  const performBulkUpdate = useCallback(async (updateData) => {
-    if (selectedUrls.length === 0) {
-      message.warning('Please select URLs to update');
-      return;
-    }
+  const performBulkUpdate = useCallback(
+    async (updateData) => {
+      if (selectedUrls.length === 0) {
+        message.warning('Please select URLs to update');
+        return;
+      }
 
-    try {
-      const result = await dispatch(bulkUpdateUrls({ 
-        ids: selectedUrls, 
-        updateData 
-      })).unwrap();
-      message.success(`${selectedUrls.length} URLs updated successfully`);
-      dispatch(clearSelection());
-      return result;
-    } catch (error) {
-      message.error(error.message || 'Failed to update URLs');
-      throw error;
-    }
-  }, [dispatch, selectedUrls]);
+      try {
+        const result = await dispatch(
+          bulkUpdateUrls({
+            ids: selectedUrls,
+            updateData,
+          })
+        ).unwrap();
+        message.success(`${selectedUrls.length} URLs updated successfully`);
+        dispatch(clearSelection());
+        return result;
+      } catch (error) {
+        message.error(error.message || 'Failed to update URLs');
+        throw error;
+      }
+    },
+    [dispatch, selectedUrls]
+  );
 
   const performBulkDelete = useCallback(async () => {
     if (selectedUrls.length === 0) {
@@ -166,14 +195,14 @@ export const useUrlManagement = () => {
     currentUrl,
     stats,
     selectedUrls,
-    
+
     // State
     isLoading,
     bulkLoading,
     error,
     filters,
     pagination,
-    
+
     // Actions
     refreshUrls,
     createUrl: createNewUrl,
@@ -183,6 +212,6 @@ export const useUrlManagement = () => {
     updateFilters: updateUrlFilters,
     updatePagination: updateUrlPagination,
     bulkUpdate: performBulkUpdate,
-    bulkDelete: performBulkDelete
+    bulkDelete: performBulkDelete,
   };
 };

@@ -34,9 +34,7 @@ async function buildContext({ req, res }) {
 
   const token =
     req.cookies?.token ||
-    (req.headers.authorization?.startsWith('Bearer ')
-      ? req.headers.authorization.slice(7)
-      : null);
+    (req.headers.authorization?.startsWith('Bearer ') ? req.headers.authorization.slice(7) : null);
 
   if (token) {
     try {

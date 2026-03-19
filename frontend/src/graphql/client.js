@@ -1,7 +1,7 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
 import { BASE_URL } from '@/config/serverApiConfig';
 import storePersist from '@/redux/storePersist';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
   uri: `${BASE_URL}graphql`,

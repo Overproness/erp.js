@@ -1,4 +1,3 @@
-import { cloneElement, isValidElement, useCallback, useContext, useEffect, useMemo } from 'react';
 import {
   ArrowLeftOutlined,
   DeleteOutlined,
@@ -11,24 +10,25 @@ import {
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Dropdown, Input, Table } from 'antd';
+import { cloneElement, isValidElement, useCallback, useContext, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { generate as uniqueId } from 'shortid';
 
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
+import { DOWNLOAD_BASE_URL } from '@/config/serverApiConfig';
 import useLanguage from '@/locale/useLanguage';
 import { useDate, useMoney } from '@/settings';
 import { dataForTable } from '@/utils/dataStructure';
-import { DOWNLOAD_BASE_URL } from '@/config/serverApiConfig';
 
-import { crud } from '@/redux/crud/actions';
-import { selectListItems as selectCrudListItems } from '@/redux/crud/selectors';
 import { CrudContext } from '@/context/crud';
 import crudContextActionsFactory from '@/context/crud/actions';
+import { crud } from '@/redux/crud/actions';
+import { selectListItems as selectCrudListItems } from '@/redux/crud/selectors';
 
+import { useErpContext } from '@/context/erp';
 import { erp } from '@/redux/erp/actions';
 import { selectListItems as selectErpListItems } from '@/redux/erp/selectors';
-import { useErpContext } from '@/context/erp';
 
 /**
  * UnifiedDataTable - A single table component for both CrudModule (panel) and ErpPanelModule (navigate) modes.
@@ -223,7 +223,9 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
       }
     : (e) => {
         const value = e.target.value;
-        dispatch(crud.list({ entity, options: { q: value, fields: searchConfig?.searchFields || '' } }));
+        dispatch(
+          crud.list({ entity, options: { q: value, fields: searchConfig?.searchFields || '' } })
+        );
       };
 
   // --- Add new ---
@@ -262,14 +264,23 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
 
   const headerExtra = [
     searchElement,
-    <Button onClick={() => handleTableLoad({ current: 1 })} key={`${uniqueId()}`} icon={<RedoOutlined />}>
+    <Button
+      onClick={() => handleTableLoad({ current: 1 })}
+      key={`${uniqueId()}`}
+      icon={<RedoOutlined />}
+    >
       {translate('Refresh')}
     </Button>,
     ...allHeaderExtra.map((item, index) =>
       isValidElement(item) ? cloneElement(item, { key: `extra-${index}` }) : item
     ),
     !disableAdd && (
-      <Button key={`${uniqueId()}`} onClick={handleAddNew} type="primary" icon={isNavigateMode ? <PlusOutlined /> : undefined}>
+      <Button
+        key={`${uniqueId()}`}
+        onClick={handleAddNew}
+        type="primary"
+        icon={isNavigateMode ? <PlusOutlined /> : undefined}
+      >
         {config.ADD_NEW_ENTITY}
       </Button>
     ),
