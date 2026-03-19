@@ -7,7 +7,7 @@ import UpdateForm from '@/components/UpdateForm';
 import DeleteModal from '@/components/DeleteModal';
 import ReadItem from '@/components/ReadItem';
 import SearchItem from '@/components/SearchItem';
-import DataTable from '@/components/DataTable/DataTable';
+import DataTable from '@/components/UnifiedDataTable';
 
 import { useDispatch, useSelector } from 'react-redux';
 

@@ -23,7 +23,6 @@ import {
   selectBulkLoading,
   clearSelection
 } from '@/redux/url';
-import request from '@/request/request';
 
 export const useUrlManagement = () => {
   const dispatch = useDispatch();

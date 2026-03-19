@@ -23,4 +23,4 @@ function useCrudContext() {
   return { state, crudContextAction, crudContextSelector };
 }
 
-export { CrudContextProvider, useCrudContext };
+export { CrudContext, CrudContextProvider, useCrudContext };

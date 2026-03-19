@@ -53,11 +53,16 @@ const reminderScheduler = require('./services/reminderScheduler');
 
 mongoose.connection.once('open', async () => {
   try {
-    await migrateSetting(); // Migrate existing settings (if structure changed)
-    await initDefaultSettings(); // Set up default settings (if not present)
-    // console.log('⚙️ Settings initialization completed');
+    await migrateSetting();
+    await initDefaultSettings();
 
-    // Initialize copilot modules
+    // Initialize GraphQL endpoint
+    try {
+      await app.setupGraphQL();
+    } catch (error) {
+      console.error('⚠️ GraphQL initialization failed (non-fatal):', error.message);
+    }
+
     try {
       initializeCopilotModules();
     } catch (error) {
@@ -79,9 +84,9 @@ mongoose.connection.once('open', async () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
-// Start Express Server
-// ─────────────────────────────────────────────────────────────
+// Remove the duplicate model loading since app.js handles it now
+// (server.js glob loading is kept for compatibility with any pre-existing code)
+
 const app = require('./app');
 const http = require('http');
 const { Server } = require('socket.io');

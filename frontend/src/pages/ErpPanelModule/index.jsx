@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-import DataTable from './DataTable';
+import DataTable from '@/components/UnifiedDataTable';
 
 import Delete from './DeleteItem';
 
@@ -28,7 +28,7 @@ export default function ErpPanel({ config, extra }) {
 
   return (
     <>
-      <DataTable config={config} extra={extra} />
+      <DataTable config={config} extra={extra} mode="navigate" />
       <Delete config={config} isOpen={deleteModal.isOpen} />
     </>
   );
