@@ -50,18 +50,18 @@ export default function PrivacyPage() {
                 {sections.map((section) => {
                   const isActive = activeId === section.id;
                   return (
-                  <a
-                    key={section.id}
-                    href={`#${section.id}`}
-                    className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all no-underline ${
-                      isActive
-                        ? 'text-[#0058c3] bg-[#0058c3]/5 border-l-2 border-[#0058c3]'
-                        : 'hover:text-[#0058c3] hover:bg-[#e7e8e9]'
-                    }`}
-                    style={!isActive ? { color: '#414754' } : undefined}
-                  >
-                    {section.label}
-                  </a>
+                    <a
+                      key={section.id}
+                      href={`#${section.id}`}
+                      className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all no-underline ${
+                        isActive
+                          ? 'text-[#0058c3] bg-[#0058c3]/5 border-l-2 border-[#0058c3]'
+                          : 'hover:text-[#0058c3] hover:bg-[#e7e8e9]'
+                      }`}
+                      style={!isActive ? { color: '#414754' } : undefined}
+                    >
+                      {section.label}
+                    </a>
                   );
                 })}
               </nav>
@@ -79,8 +79,8 @@ export default function PrivacyPage() {
                   </span>
                 </div>
                 <p className="text-xs leading-relaxed" style={{ color: '#414754' }}>
-                  ERP.js is fully GDPR and SOC2 compliant, ensuring your enterprise data
-                  remains secure.
+                  ERP.js is fully GDPR and SOC2 compliant, ensuring your enterprise data remains
+                  secure.
                 </p>
               </div>
             </div>
@@ -99,9 +99,9 @@ export default function PrivacyPage() {
                 Privacy <span className="text-[#0070f3]">Policy</span>
               </h1>
               <p className="text-lg leading-relaxed" style={{ color: '#414754' }}>
-                At ERP.js, we prioritize the integrity and confidentiality of your data. This
-                policy outlines our commitment to transparency and the measures we take to protect
-                your information.
+                At ERP.js, we prioritize the integrity and confidentiality of your data. This policy
+                outlines our commitment to transparency and the measures we take to protect your
+                information.
               </p>
             </div>
 
@@ -127,10 +127,10 @@ export default function PrivacyPage() {
                   }}
                 >
                   <p className="leading-relaxed mb-4" style={{ color: '#414754' }}>
-                    This Privacy Policy describes how ERP.js (&ldquo;we&rdquo;,
-                    &ldquo;us&rdquo;, or &ldquo;our&rdquo;) collects, uses, and shares information
-                    about you when you use our website, mobile application, and other online
-                    products and services (collectively, the &ldquo;Services&rdquo;).
+                    This Privacy Policy describes how ERP.js (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or
+                    &ldquo;our&rdquo;) collects, uses, and shares information about you when you use
+                    our website, mobile application, and other online products and services
+                    (collectively, the &ldquo;Services&rdquo;).
                   </p>
                   <p className="leading-relaxed" style={{ color: '#414754' }}>
                     By accessing or using our Services, you agree to the terms of this Privacy

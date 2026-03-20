@@ -51,18 +51,18 @@ export default function TermsPage() {
               {sidebarLinks.map((link) => {
                 const isActive = activeId === link.id;
                 return (
-                <a
-                  key={link.id}
-                  href={`#${link.id}`}
-                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-all no-underline ${
-                    isActive
-                      ? 'text-[#0058c3] bg-[#d8e2ff]/30 border-l-2 border-[#0058c3]'
-                      : 'hover:bg-[#e7e8e9]'
-                  }`}
-                  style={!isActive ? { color: '#414754' } : undefined}
-                >
-                  {link.label}
-                </a>
+                  <a
+                    key={link.id}
+                    href={`#${link.id}`}
+                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all no-underline ${
+                      isActive
+                        ? 'text-[#0058c3] bg-[#d8e2ff]/30 border-l-2 border-[#0058c3]'
+                        : 'hover:bg-[#e7e8e9]'
+                    }`}
+                    style={!isActive ? { color: '#414754' } : undefined}
+                  >
+                    {link.label}
+                  </a>
                 );
               })}
             </nav>
@@ -123,9 +123,8 @@ export default function TermsPage() {
             <p className="leading-relaxed" style={{ color: '#191c1d' }}>
               Please read these Terms of Service (&ldquo;Terms&rdquo;) carefully before using the{' '}
               <strong className="text-[#0058c3]">ERP.js Automation Suite</strong>. These Terms
-              constitute a legally binding agreement between you (&ldquo;Licensee&rdquo;) and
-              ERP.js Corp regarding your access to and use of our enterprise automation
-              platform.
+              constitute a legally binding agreement between you (&ldquo;Licensee&rdquo;) and ERP.js
+              Corp regarding your access to and use of our enterprise automation platform.
             </p>
           </div>
 
@@ -143,10 +142,10 @@ export default function TermsPage() {
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  By accessing or using any part of the ERP.js ecosystem, you agree to become
-                  bound by the terms and conditions of this agreement. If you do not agree to all
-                  the terms and conditions of this agreement, then you may not access the Website or
-                  use any services.
+                  By accessing or using any part of the ERP.js ecosystem, you agree to become bound
+                  by the terms and conditions of this agreement. If you do not agree to all the
+                  terms and conditions of this agreement, then you may not access the Website or use
+                  any services.
                 </p>
                 <p>
                   The platform is intended for professional use by entities and organizations. Users
@@ -168,8 +167,8 @@ export default function TermsPage() {
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  ERP.js provides a high-performance, developer-centric suite of enterprise
-                  tools including but not limited to:
+                  ERP.js provides a high-performance, developer-centric suite of enterprise tools
+                  including but not limited to:
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 list-none p-0">
                   {[
@@ -233,8 +232,8 @@ export default function TermsPage() {
                     Maintaining the <strong>confidentiality</strong> of your account credentials.
                   </li>
                   <li>
-                    Promptly notifying ERP.js of any <strong>unauthorized use</strong> or
-                    security breach.
+                    Promptly notifying ERP.js of any <strong>unauthorized use</strong> or security
+                    breach.
                   </li>
                   <li>
                     Ensuring all user-generated data complies with local and international{' '}
@@ -325,9 +324,9 @@ export default function TermsPage() {
                 className="p-6 rounded-xl font-mono text-xs leading-relaxed uppercase"
                 style={{ background: '#2e3132', color: '#f0f1f2' }}
               >
-                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL ERP.JS,
-                ITS AFFILIATES, AGENTS, DIRECTORS, OR EMPLOYEES BE LIABLE FOR ANY INDIRECT,
-                PUNITIVE, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING WITHOUT
+                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL ERP.JS, ITS
+                AFFILIATES, AGENTS, DIRECTORS, OR EMPLOYEES BE LIABLE FOR ANY INDIRECT, PUNITIVE,
+                INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING WITHOUT
                 LIMITATION DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE
                 LOSSES.
               </div>

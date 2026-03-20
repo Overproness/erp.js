@@ -304,8 +304,8 @@ export default function HomePage() {
               className="max-w-xl mx-auto mb-10 text-lg relative z-10"
               style={{ color: '#c1c6d7' }}
             >
-              Join thousands of enterprises running their entire operation on ERP.js. Scale
-              without the technical debt.
+              Join thousands of enterprises running their entire operation on ERP.js. Scale without
+              the technical debt.
             </p>
             <div className="flex flex-wrap justify-center gap-4 relative z-10">
               <Link

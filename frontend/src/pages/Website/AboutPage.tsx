@@ -100,8 +100,7 @@ export default function AboutPage() {
             <div className="md:col-span-5 bg-gradient-to-br from-[#0058c3] to-[#0070f3] p-10 rounded-xl flex flex-col justify-end text-white">
               <h3 className="text-2xl font-bold mb-2">100% Modularity</h3>
               <p className="opacity-80">
-                Every module in ERP.js is an independent micro-service wrapped in a crystalline
-                API.
+                Every module in ERP.js is an independent micro-service wrapped in a crystalline API.
               </p>
             </div>
             <div
