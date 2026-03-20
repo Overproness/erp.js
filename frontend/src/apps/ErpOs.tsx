@@ -75,7 +75,10 @@ export default function ErpOs() {
   const isPublicSurvey = location.pathname.startsWith('/public/survey/');
   const isCustomerChat = location.pathname.startsWith('/chat/');
 
-  if (isPublicRedirect || isPublicSurvey || isCustomerChat) {
+  const websitePaths = ['/', '/features', '/pricing', '/about', '/contact', '/privacy', '/terms'];
+  const isWebsitePath = websitePaths.includes(location.pathname);
+
+  if (isPublicRedirect || isPublicSurvey || isCustomerChat || isWebsitePath) {
     // Only render the router outlet (children), no layout, no header/sidebar
     return (
       <Localization>

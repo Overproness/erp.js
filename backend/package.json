@@ -6,17 +6,16 @@
     "node": "20.9.0"
   },
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js --ignore public/",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "dev:ts": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "build": "tsc --project tsconfig.json",
     "build:watch": "tsc --project tsconfig.json --watch",
     "typecheck": "tsc --noEmit",
     "production": "NODE_ENV=production",
-    "setup": "node src/setup/setup.js",
-    "urlsetup": "node src/setup/urlSetup.js",
-    "upgrade": "node src/setup/upgrade.js",
-    "reset": "node src/setup/reset.js",
+    "setup": "ts-node -r tsconfig-paths/register src/setup/setup.ts",
+    "urlsetup": "ts-node -r tsconfig-paths/register src/setup/urlSetup.ts",
+    "reset": "ts-node -r tsconfig-paths/register src/setup/reset.ts",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix"
   },

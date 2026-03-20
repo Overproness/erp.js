@@ -70,6 +70,8 @@ const chatTypeDefs = gql`
     chatRoomList(page: Int, limit: Int): ListResponse!
     chatMessageList(roomId: ID!, page: Int, limit: Int): ListResponse!
     chatQueueList(page: Int, limit: Int): ListResponse!
+    customerChatRoomsByCustomer(id: ID!, page: Int, limit: Int): ListResponse!
+    customerChatStats: MutationResponse!
   }
 
   extend type Mutation {
@@ -80,6 +82,10 @@ const chatTypeDefs = gql`
     chatRoomMarkRead(id: ID!): MutationResponse!
     chatQueueAssign(id: ID!, agentId: ID!): MutationResponse!
     chatQueueClose(id: ID!): MutationResponse!
+    customerChatGenerateUrl(id: ID!): MutationResponse!
+    customerChatRoomClose(roomId: ID!): MutationResponse!
+    customerChatRoomArchive(roomId: ID!): MutationResponse!
+    customerChatRoomDelete(roomId: ID!): MutationResponse!
   }
 `;
 

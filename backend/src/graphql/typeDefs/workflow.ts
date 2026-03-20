@@ -71,10 +71,6 @@ const workflowTypeDefs = gql`
     workflowCreate(input: WorkflowCreateInput!): MutationResponse!
     workflowUpdate(id: ID!, input: WorkflowUpdateInput!): MutationResponse!
     workflowDelete(id: ID!): MutationResponse!
-    workflowActivate(id: ID!): MutationResponse!
-    workflowDeactivate(id: ID!): MutationResponse!
-    workflowExecute(id: ID!, input: JSON): MutationResponse!
-    workflowDuplicate(id: ID!): MutationResponse!
   }
 `;
 

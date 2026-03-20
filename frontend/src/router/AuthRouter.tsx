@@ -25,12 +25,28 @@ const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
 // Import customer chat page
 const CustomerChatPage = lazy(() => import('@/pages/CustomerChatPage'));
 
+// Website pages
+import HomePage from '@/pages/Website/HomePage';
+import FeaturesPage from '@/pages/Website/FeaturesPage';
+import PricingPage from '@/pages/Website/PricingPage';
+import AboutPage from '@/pages/Website/AboutPage';
+import ContactPage from '@/pages/Website/ContactPage';
+import PrivacyPage from '@/pages/Website/PrivacyPage';
+import TermsPage from '@/pages/Website/TermsPage';
+
 export default function AuthRouter() {
   const { pathname } = useLocation();
   const { isLoggedIn, isLoading } = useSelector(selectAuth);
 
   // Add review-portal and document shares to public paths
   const publicPaths = [
+    '/',
+    '/features',
+    '/pricing',
+    '/about',
+    '/contact',
+    '/privacy',
+    '/terms',
     '/login',
     '/signup',
     '/forgot-password',
@@ -60,9 +76,9 @@ export default function AuthRouter() {
     return <Loading isLoading={true} />;
   }
 
-  // For login/signup pages, redirect to dashboard if already logged in
+  // For login/signup pages, redirect to app if already logged in
   if (isLoggedIn && (pathname === '/login' || pathname === '/signup')) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/client" replace />;
   }
 
   // For protected pages, redirect to login if not logged in
@@ -75,8 +91,16 @@ export default function AuthRouter() {
 
   return (
     <Routes>
-      <Route element={<Login />} path="/" />
+      <Route element={<HomePage />} path="/" />
       <Route element={<Login />} path="/login" />
+
+      {/* Website pages */}
+      <Route element={<FeaturesPage />} path="/features" />
+      <Route element={<PricingPage />} path="/pricing" />
+      <Route element={<AboutPage />} path="/about" />
+      <Route element={<ContactPage />} path="/contact" />
+      <Route element={<PrivacyPage />} path="/privacy" />
+      <Route element={<TermsPage />} path="/terms" />
       <Route element={<Signup />} path="/signup" />
       <Route element={<Navigate to="/login" replace />} path="/logout" />
       <Route element={<ForgetPassword />} path="/forgetpassword" />

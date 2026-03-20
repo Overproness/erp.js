@@ -10,7 +10,13 @@ import { Scene } from "./Scene";
 
 export default function App() {
   return (
-    <div className="w-full h-screen overflow-hidden touch-none bg-gradient-to-br from-[#f0f5fa] to-[#d9e8f5]">
+    <div
+      className="w-full h-screen overflow-hidden touch-none"
+      style={{
+        background:
+          "linear-gradient(135deg, #f3f4f5 0%, #e8edf5 60%, #dce6f5 100%)",
+      }}
+    >
       <Canvas orthographic camera={{ position: [0, 0, 16], zoom: 40 }}>
         {/* Ambient fill — low, just to prevent pure-black shadows */}
         <ambientLight intensity={0.25} color="#c8deff" />

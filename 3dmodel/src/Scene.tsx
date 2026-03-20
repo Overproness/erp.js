@@ -3,8 +3,8 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-const CUBE_SIZE = 1.2;
-const SPACING = 1.6;
+const CUBE_SIZE = 1.5;
+const SPACING = 1.4;
 
 export function Scene() {
   const [isDragging, setIsDragging] = useState(false);
@@ -24,11 +24,13 @@ export function Scene() {
     };
 
     const bumpCanvas = document.createElement("canvas");
-    bumpCanvas.width = size; bumpCanvas.height = size;
+    bumpCanvas.width = size;
+    bumpCanvas.height = size;
     const bumpCtx = bumpCanvas.getContext("2d")!;
 
     const roughCanvas = document.createElement("canvas");
-    roughCanvas.width = size; roughCanvas.height = size;
+    roughCanvas.width = size;
+    roughCanvas.height = size;
     const roughCtx = roughCanvas.getContext("2d")!;
 
     const bumpData = bumpCtx.createImageData(size, size);
@@ -52,13 +54,21 @@ export function Scene() {
         // Each facet has a unique tilt direction and magnitude (like a cut gem face)
         const tiltAngle = hash(cx, cy) * Math.PI * 2;
         const tiltStrength = 0.45 + hash(cx + 7, cy + 3) * 0.55;
-        const tilt = tiltStrength * (Math.cos(tiltAngle) * (lx - 0.5) + Math.sin(tiltAngle) * (ly - 0.5));
+        const tilt =
+          tiltStrength *
+          (Math.cos(tiltAngle) * (lx - 0.5) + Math.sin(tiltAngle) * (ly - 0.5));
 
         // Intra-facet micro-grain (very subtle, adds realism)
         const grain = (Math.random() - 0.5) * 10;
 
         // Groove depression: edges are recessed (darker bump = lower surface)
-        const bv = Math.min(255, Math.max(0, Math.floor((128 + 68 * tilt + grain) * (0.08 + 0.92 * groove))));
+        const bv = Math.min(
+          255,
+          Math.max(
+            0,
+            Math.floor((128 + 68 * tilt + grain) * (0.08 + 0.92 * groove)),
+          ),
+        );
         bumpData.data[idx] = bv;
         bumpData.data[idx + 1] = bv;
         bumpData.data[idx + 2] = bv;
@@ -88,7 +98,10 @@ export function Scene() {
       return tex;
     };
 
-    return { bumpTexture: makeTexture(bumpCanvas), roughnessTexture: makeTexture(roughCanvas) };
+    return {
+      bumpTexture: makeTexture(bumpCanvas),
+      roughnessTexture: makeTexture(roughCanvas),
+    };
   }, []);
 
   // Generate initial positions for a 5x5x5 grid
@@ -97,8 +110,8 @@ export function Scene() {
     for (let x = -2; x <= 2; x++) {
       for (let y = -2; y <= 2; y++) {
         for (let z = -2; z <= 2; z++) {
-          // Skip some cubes to make it look more organic like the video
-          if (Math.random() > 0.5) continue;
+          // Keep ~42% of cubes — fewer, bigger blocks
+          if (Math.random() > 0.32) continue;
 
           pos.push(
             new THREE.Vector3(
@@ -111,8 +124,8 @@ export function Scene() {
       }
     }
     // Ensure we have at least some cubes
-    if (pos.length < 10) {
-      for (let i = 0; i < 10 - pos.length; i++) {
+    if (pos.length < 8) {
+      for (let i = 0; i < 8 - pos.length; i++) {
         pos.push(
           new THREE.Vector3(
             (Math.random() - 0.5) * 3,
@@ -141,10 +154,10 @@ export function Scene() {
     // 3. Diagonal/elevation oscillation (moves up and down) - more pronounced
     const phi = Math.sin(t * 0.8) * 0.8;
 
-    // Convert Spherical coordinates to Cartesian for the camera
-    state.camera.position.x = radius * Math.cos(phi) * Math.sin(theta);
-    state.camera.position.y = radius * Math.sin(phi);
-    state.camera.position.z = radius * Math.cos(phi) * Math.cos(theta);
+    // Convert Spherical coordinates to Cartesian for the camera (all 3 axes inverted)
+    state.camera.position.x = -(radius * Math.cos(phi) * Math.sin(theta));
+    state.camera.position.y = (radius * Math.sin(phi));
+    state.camera.position.z = -(radius * Math.cos(phi) * Math.cos(theta));
 
     // Always look at the center of the structure
     state.camera.lookAt(0, 0, 0);
@@ -245,11 +258,11 @@ function InteractiveCube({
         }}
       >
         <meshPhysicalMaterial
-          color="#006FCA"
+          color="#0058c3"
           transmission={0.6}
           ior={1.65}
           thickness={0.8}
-          attenuationColor="#66aaff"
+          attenuationColor="#0070f3"
           attenuationDistance={14.0}
           metalness={0.0}
           roughness={0.25}
@@ -264,7 +277,7 @@ function InteractiveCube({
           bumpScale={0.12}
         />
         <Edges scale={1.0} threshold={15}>
-          <lineBasicMaterial color="#00ddff" transparent opacity={0.75} />
+          <lineBasicMaterial color="#0070f3" transparent opacity={0.6} />
         </Edges>
       </RoundedBox>
     </DragControls>

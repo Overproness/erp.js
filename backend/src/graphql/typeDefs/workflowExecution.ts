@@ -30,8 +30,6 @@ const workflowExecutionTypeDefs = gql`
   }
 
   extend type Mutation {
-    workflowExecutionRetry(id: ID!): MutationResponse!
-    workflowExecutionCancel(id: ID!): MutationResponse!
     workflowExecutionDelete(id: ID!): MutationResponse!
   }
 `;

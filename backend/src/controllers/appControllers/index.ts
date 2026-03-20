@@ -21,6 +21,7 @@ const aiUserPreferenceController = require('./aiUserPreferenceController');
 
 // Additional controllers
 const workflowController = require('./workflowController');
+const customerChatController = require('./customerChatController');
 const userController = require('./userController');
 const socialPostController = require('./socialPostController');
 const socialMentionController = require('./socialMentionController');
@@ -50,10 +51,28 @@ const reviewPortalController = require('./reviewPortalController');
 
 // Marketing Controllers
 const campaignController = require('./campaignController');
+const segmentController = require('./segmentController');
+const followUpController = require('./followUpController');
+const retargetingController = require('./RetargetingController');
 
 // Customer Management Controllers
 const customerJourneyController = require('./customerJourneyController');
 const interactionController = require('./interactionController');
+
+// Communication Controllers
+const chatController = require('./chatController');
+const notificationController = require('./notificationController');
+const reminderController = require('./reminderController');
+
+// Business Operations Controllers
+const businessProcessController = require('./businessProcessController');
+const appointmentController = require('./appointmentController');
+const triggerRuleController = require('./triggerRuleController');
+const reviewTemplateController = require('./reviewTemplateController');
+
+// AI / Copilot Controllers
+const copilotController = require('./copilotController');
+const aiEnhancedController = require('./aiEnhancedController');
 
 // Create missing controllers if they don't exist
 let auditTrailModelController, dataRetentionPolicyModelController, consentRecordModelController;
@@ -116,6 +135,7 @@ module.exports = {
   aiUserPreferenceController,
   // Additional controllers
   workflowController,
+  customerChatController,
   userController,
   socialPostController,
   socialMentionController,
@@ -133,6 +153,9 @@ module.exports = {
   auditTrailModelController,
   dataRetentionPolicyModelController,
   consentRecordModelController,
+  // Expose under the names the GraphQL resolvers expect
+  consentRecordController: consentRecordModelController,
+  dataRetentionPolicyController: dataRetentionPolicyModelController,
   aiProcessingWorkflowController,
   aiConversationController,
   // URL Management
@@ -148,7 +171,22 @@ module.exports = {
   reviewPortalController,
   // Marketing Controllers
   campaignController,
+  segmentController,
+  followUpController,
+  retargetingController,
   // Customer Management
   customerJourneyController,
   interactionController,
+  // Communication
+  chatController,
+  notificationController,
+  reminderController,
+  // Business Operations
+  businessProcessController,
+  appointmentController,
+  triggerRuleController,
+  reviewTemplateController,
+  // AI / Copilot
+  copilotController,
+  aiEnhancedController,
 };

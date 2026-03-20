@@ -208,6 +208,33 @@ function createEntitySpecificResolvers(controllers) {
           }
         },
       }),
+
+      // Customer Chat queries
+      ...(customerChatController?.getCustomerChatRooms && {
+        customerChatRoomsByCustomer: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          req.query.page = args.page;
+          req.query.limit = args.limit;
+          try {
+            await customerChatController.getCustomerChatRooms(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(customerChatController?.getEmployeeStats && {
+        customerChatStats: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          try {
+            await customerChatController.getEmployeeStats(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
     },
 
     Mutation: {
@@ -403,6 +430,56 @@ function createEntitySpecificResolvers(controllers) {
           req.body = args.input;
           try {
             await adminController.updateProfile(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // Customer Chat
+      ...(customerChatController?.generateChatUrl && {
+        customerChatGenerateUrl: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await customerChatController.generateChatUrl(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(customerChatController?.closeChatRoom && {
+        customerChatRoomClose: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.roomId = args.roomId;
+          try {
+            await customerChatController.closeChatRoom(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(customerChatController?.archiveChatRoom && {
+        customerChatRoomArchive: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.roomId = args.roomId;
+          try {
+            await customerChatController.archiveChatRoom(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(customerChatController?.deleteChatRoom && {
+        customerChatRoomDelete: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.roomId = args.roomId;
+          try {
+            await customerChatController.deleteChatRoom(req, res);
             return getResponse().data;
           } catch (error) {
             return { success: false, result: null, message: error.message };

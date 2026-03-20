@@ -34,7 +34,7 @@ const LoginPage = () => {
         isLoggedIn: true,
       });
       initializeSocket(adminData.token);
-      navigate('/');
+      navigate('/client');
     }
   }, [isSuccess, adminData]);
 

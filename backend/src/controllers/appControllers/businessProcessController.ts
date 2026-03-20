@@ -1,7 +1,5 @@
 // @ts-nocheck
 const BusinessProcess = require('@/models/appModels/BusinessProcess');
-const EnhancedWorkflow = require('@/models/appModels/EnhancedWorkflow');
-const { WorkflowEngine } = require('@/core/WorkflowEngine');
 
 // Create business process
 const createBusinessProcess = async (req, res) => {
@@ -293,32 +291,6 @@ const executeBusinessProcess = async (req, res) => {
     const execution = process.startExecution(userId, initialData);
     await process.save();
 
-    // Trigger workflows if configured
-    if (
-      process.integrations.workflows.enabled &&
-      process.integrations.workflows.linkedWorkflows.length > 0
-    ) {
-      const workflowEngine = new WorkflowEngine();
-
-      for (const linkedWorkflow of process.integrations.workflows.linkedWorkflows) {
-        if (linkedWorkflow.triggerOn === 'start') {
-          try {
-            await workflowEngine.executeWorkflow(
-              linkedWorkflow.workflowId,
-              {
-                processId: process._id,
-                executionData: initialData,
-              },
-              { type: 'business_process_start' },
-              userId
-            );
-          } catch (error) {
-            console.error('Error triggering workflow:', error);
-          }
-        }
-      }
-    }
-
     const updated = await BusinessProcess.findById(id).populate(
       'executions.startedBy',
       'name email'
@@ -378,49 +350,6 @@ const completeProcessStep = async (req, res) => {
     }
 
     await process.save();
-
-    // Trigger workflows if step completed and configured
-    if (
-      process.integrations.workflows.enabled &&
-      process.integrations.workflows.linkedWorkflows.length > 0
-    ) {
-      const workflowEngine = new WorkflowEngine();
-
-      for (const linkedWorkflow of process.integrations.workflows.linkedWorkflows) {
-        if (linkedWorkflow.triggerOn === 'step_complete' && linkedWorkflow.stepId === stepId) {
-          try {
-            await workflowEngine.executeWorkflow(
-              linkedWorkflow.workflowId,
-              {
-                processId: process._id,
-                stepId: stepId,
-                stepOutput: output,
-              },
-              { type: 'business_process_step_complete' },
-              userId
-            );
-          } catch (error) {
-            console.error('Error triggering workflow:', error);
-          }
-        }
-
-        if (linkedWorkflow.triggerOn === 'complete' && execution.status === 'completed') {
-          try {
-            await workflowEngine.executeWorkflow(
-              linkedWorkflow.workflowId,
-              {
-                processId: process._id,
-                executionData: execution.data,
-              },
-              { type: 'business_process_complete' },
-              userId
-            );
-          } catch (error) {
-            console.error('Error triggering workflow:', error);
-          }
-        }
-      }
-    }
 
     const updated = await BusinessProcess.findById(id)
       .populate('executions.startedBy', 'name email')

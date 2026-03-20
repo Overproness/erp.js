@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 
 import { reducer as authReducer } from './auth';
 import { reducer as permissionsReducer } from './permissions';
+import { reducer as settingsReducer } from './settings';
 
 // Import slim UI slices (Apollo Client migration)
 import crudUiReducer from './crud/crudUiSlice';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   // Core slices
   auth: authReducer,
   permissions: permissionsReducer,
+  settings: settingsReducer,
 
   // UI slices (Apollo Client integration)
   crudUi: crudUiReducer,

@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
 
-export const selectSettings = (state) => state.settings;
+const EMPTY_SETTINGS_STATE = { result: {} };
+
+export const selectSettings = (state) => state.settings || EMPTY_SETTINGS_STATE;
 
 export const selectCurrentSettings = createSelector([selectSettings], (settings) => {
-  // Add debugging to see what's being loaded
-  return settings.result || {};
+  return settings?.result || {};
 });
 
 export const selectMoneyFormat = createSelector([selectCurrentSettings], (settings) => {

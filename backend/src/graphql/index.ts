@@ -4,10 +4,23 @@ import { expressMiddleware } from '@apollo/server/express4';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import typeDefs from './typeDefs';
-import resolvers from './resolvers';
+import { initializeResolvers } from './resolvers';
 import { GraphQLContext, AdminUser } from '../types/context';
 
 async function createApolloServer(): Promise<ApolloServer> {
+  // Import all app controllers and wire them into the resolvers
+  const controllers = require('../controllers/appControllers');
+  const coreControllers = require('../controllers/coreControllers/adminAuth');
+  const settingController = require('../controllers/coreControllers/settingController');
+  const adminController = require('../controllers/coreControllers/adminController');
+
+  const resolvers = initializeResolvers({
+    ...controllers,
+    adminAuth: coreControllers,
+    settingController,
+    adminController,
+  });
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
