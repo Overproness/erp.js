@@ -1,15 +1,15 @@
 import React from 'react';
-import { 
-  Form, 
-  Input, 
-  Select, 
-  DatePicker, 
-  Radio, 
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Radio,
   Card,
   Row,
   Col,
   Typography,
-  InputNumber
+  InputNumber,
 } from 'antd';
 import { MailOutlined, MobileOutlined, GlobalOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
@@ -41,17 +41,10 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
               },
             ]}
           >
-            <Input 
-              placeholder={translate('Enter campaign name')} 
-              maxLength={100}
-              showCount
-            />
+            <Input placeholder={translate('Enter campaign name')} maxLength={100} showCount />
           </Form.Item>
 
-          <Form.Item
-            name="description"
-            label={translate('Description')}
-          >
+          <Form.Item name="description" label={translate('Description')}>
             <TextArea
               placeholder={translate('Briefly describe the campaign objective')}
               autoSize={{ minRows: 3, maxRows: 6 }}
@@ -72,27 +65,21 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
                   },
                 ]}
               >
-                <RangePicker 
+                <RangePicker
                   style={{ width: '100%' }}
-                  placeholder={[
-                    translate('Start Date'),
-                    translate('End Date')
-                  ]}
+                  placeholder={[translate('Start Date'), translate('End Date')]}
                 />
               </Form.Item>
             </Col>
-            
+
             <Col xs={24} md={12}>
-              <Form.Item
-                name="budget"
-                label={translate('Budget')}
-              >
+              <Form.Item name="budget" label={translate('Budget')}>
                 <InputNumber
                   style={{ width: '100%' }}
                   min={0}
                   step={100}
-                  formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                   placeholder="0"
                 />
               </Form.Item>
@@ -115,7 +102,9 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
               <Card style={{ marginBottom: '12px', borderRadius: '8px' }}>
                 <Radio value="email" style={{ width: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <MailOutlined style={{ fontSize: '18px', marginRight: '8px', color: '#4f46e5' }} />
+                    <MailOutlined
+                      style={{ fontSize: '18px', marginRight: '8px', color: '#4f46e5' }}
+                    />
                     <div>
                       <div style={{ fontWeight: 500 }}>{translate('Email Campaign')}</div>
                       <div style={{ fontSize: '12px', color: '#6b7280' }}>
@@ -125,11 +114,13 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
                   </div>
                 </Radio>
               </Card>
-              
+
               <Card style={{ marginBottom: '12px', borderRadius: '8px' }}>
                 <Radio value="sms" style={{ width: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <MobileOutlined style={{ fontSize: '18px', marginRight: '8px', color: '#10b981' }} />
+                    <MobileOutlined
+                      style={{ fontSize: '18px', marginRight: '8px', color: '#10b981' }}
+                    />
                     <div>
                       <div style={{ fontWeight: 500 }}>{translate('SMS Campaign')}</div>
                       <div style={{ fontSize: '12px', color: '#6b7280' }}>
@@ -139,11 +130,13 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
                   </div>
                 </Radio>
               </Card>
-              
+
               <Card style={{ marginBottom: '12px', borderRadius: '8px' }}>
                 <Radio value="multi" style={{ width: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <GlobalOutlined style={{ fontSize: '18px', marginRight: '8px', color: '#8b5cf6' }} />
+                    <GlobalOutlined
+                      style={{ fontSize: '18px', marginRight: '8px', color: '#8b5cf6' }}
+                    />
                     <div>
                       <div style={{ fontWeight: 500 }}>{translate('Multi-channel')}</div>
                       <div style={{ fontSize: '12px', color: '#6b7280' }}>
@@ -155,22 +148,16 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
               </Card>
             </Radio.Group>
           </Form.Item>
-          
-          <Form.Item
-            name="status"
-            label={translate('Campaign Status')}
-          >
+
+          <Form.Item name="status" label={translate('Campaign Status')}>
             <Select defaultValue="draft">
               <Option value="draft">{translate('Draft')}</Option>
               <Option value="scheduled">{translate('Scheduled')}</Option>
               <Option value="active">{translate('Active')}</Option>
             </Select>
           </Form.Item>
-          
-          <Form.Item
-            name="priority"
-            label={translate('Priority')}
-          >
+
+          <Form.Item name="priority" label={translate('Priority')}>
             <Select defaultValue="medium">
               <Option value="low">{translate('Low')}</Option>
               <Option value="medium">{translate('Medium')}</Option>

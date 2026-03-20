@@ -144,7 +144,9 @@ function CrystalScene() {
           bumpTexture={bumpTexture}
           roughnessTexture={roughnessTexture}
           index={i}
-          setIsDragging={(v) => { isDragging.current = v; }}
+          setIsDragging={(v) => {
+            isDragging.current = v;
+          }}
         />
       ))}
     </group>

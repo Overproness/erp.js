@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Form, 
-  Input, 
+import {
+  Form,
+  Input,
   Card,
   Row,
   Col,
@@ -13,9 +13,9 @@ import {
   Space,
   Upload,
   message,
-  Divider
+  Divider,
 } from 'antd';
-import { 
+import {
   MailOutlined,
   FileTextOutlined,
   PictureOutlined,
@@ -23,7 +23,7 @@ import {
   PlusOutlined,
   DeleteOutlined,
   MessageOutlined,
-  MobileOutlined
+  MobileOutlined,
 } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import { RichTextEditor } from '@/components/common/RichTextEditor'; // Assuming you have this component
@@ -38,10 +38,14 @@ const MOCK_TEMPLATES = [
   { id: 1, name: 'Welcome Email', type: 'email', thumbnail: 'https://via.placeholder.com/100x120' },
   { id: 2, name: 'Newsletter', type: 'email', thumbnail: 'https://via.placeholder.com/100x120' },
   { id: 3, name: 'Special Offer', type: 'email', thumbnail: 'https://via.placeholder.com/100x120' },
-  { id: 4, name: 'Product Launch', type: 'email', thumbnail: 'https://via.placeholder.com/100x120' },
+  {
+    id: 4,
+    name: 'Product Launch',
+    type: 'email',
+    thumbnail: 'https://via.placeholder.com/100x120',
+  },
   { id: 5, name: 'Welcome SMS', type: 'sms', thumbnail: 'https://via.placeholder.com/100x120' },
   { id: 6, name: 'Promotion SMS', type: 'sms', thumbnail: 'https://via.placeholder.com/100x120' },
-
 ];
 
 const CampaignContent = ({ form, formData, onChange }) => {
@@ -51,7 +55,7 @@ const CampaignContent = ({ form, formData, onChange }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   // Filter templates based on active tab
-  const filteredTemplates = MOCK_TEMPLATES.filter(template => template.type === activeTab);
+  const filteredTemplates = MOCK_TEMPLATES.filter((template) => template.type === activeTab);
 
   const handleContentModeChange = (e) => {
     setContentMode(e.target.value);
@@ -61,7 +65,7 @@ const CampaignContent = ({ form, formData, onChange }) => {
   const handleTemplateSelect = (templateId) => {
     setSelectedTemplate(templateId);
     // In a real app, you would fetch the template content and set it in the form
-    const template = MOCK_TEMPLATES.find(t => t.id === templateId);
+    const template = MOCK_TEMPLATES.find((t) => t.id === templateId);
     if (template) {
       message.success(`${template.name} template selected`);
     }
@@ -83,13 +87,9 @@ const CampaignContent = ({ form, formData, onChange }) => {
                 },
               ]}
             >
-              <Input
-                placeholder={translate('Enter email subject')}
-                maxLength={150}
-                showCount
-              />
+              <Input placeholder={translate('Enter email subject')} maxLength={150} showCount />
             </Form.Item>
-            
+
             <Form.Item
               name={['content', 'email', 'preheader']}
               label={translate('Preheader')}
@@ -101,7 +101,7 @@ const CampaignContent = ({ form, formData, onChange }) => {
                 showCount
               />
             </Form.Item>
-            
+
             <Form.Item
               name={['content', 'email', 'body']}
               label={translate('Email Body')}
@@ -123,22 +123,19 @@ const CampaignContent = ({ form, formData, onChange }) => {
                         ...values.content,
                         email: {
                           ...values.content?.email,
-                          body: content
-                        }
-                      }
+                          body: content,
+                        },
+                      },
                     });
                   }}
                 />
               ) : (
-                <TextArea
-                  rows={6}
-                  placeholder={translate('Enter or paste HTML code here')}
-                />
+                <TextArea rows={6} placeholder={translate('Enter or paste HTML code here')} />
               )}
             </Form.Item>
           </>
         );
-        
+
       case 'sms':
         return (
           <>
@@ -159,10 +156,8 @@ const CampaignContent = ({ form, formData, onChange }) => {
                 showCount
               />
             </Form.Item>
-            
-            <Form.Item
-              name={['content', 'sms', 'includeUnsubscribeLink']}
-            >
+
+            <Form.Item name={['content', 'sms', 'includeUnsubscribeLink']}>
               <Radio.Group defaultValue={true}>
                 <Radio value={true}>{translate('Include opt-out link (Recommended)')}</Radio>
                 <Radio value={false}>{translate('No opt-out link')}</Radio>
@@ -170,7 +165,7 @@ const CampaignContent = ({ form, formData, onChange }) => {
             </Form.Item>
           </>
         );
-        
+
       default:
         return null;
     }
@@ -183,18 +178,18 @@ const CampaignContent = ({ form, formData, onChange }) => {
         {translate('Create the content for your marketing campaign')}
       </Text>
 
-      <Tabs 
-        activeKey={activeTab} 
+      <Tabs
+        activeKey={activeTab}
         onChange={setActiveTab}
         tabPosition="left"
         style={{ minHeight: '500px' }}
       >
-        <TabPane 
+        <TabPane
           tab={
             <span>
               <MailOutlined /> {translate('Email')}
             </span>
-          } 
+          }
           key="email"
         >
           <div style={{ marginBottom: '20px' }}>
@@ -213,31 +208,39 @@ const CampaignContent = ({ form, formData, onChange }) => {
               <div style={{ marginBottom: '16px' }}>
                 <Text>{translate('Select a template to use')}</Text>
               </div>
-              
+
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-                {filteredTemplates.map(template => (
-                  <div 
-                    key={template.id} 
-                    style={{ 
-                      border: selectedTemplate === template.id ? '2px solid #1890ff' : '1px solid #d9d9d9',
+                {filteredTemplates.map((template) => (
+                  <div
+                    key={template.id}
+                    style={{
+                      border:
+                        selectedTemplate === template.id
+                          ? '2px solid #1890ff'
+                          : '1px solid #d9d9d9',
                       borderRadius: '4px',
                       padding: '8px',
                       width: '120px',
                       cursor: 'pointer',
-                      textAlign: 'center'
+                      textAlign: 'center',
                     }}
                     onClick={() => handleTemplateSelect(template.id)}
                   >
-                    <img 
-                      src={template.thumbnail} 
+                    <img
+                      src={template.thumbnail}
                       alt={template.name}
-                      style={{ width: '100%', height: '80px', objectFit: 'cover', marginBottom: '8px' }}
+                      style={{
+                        width: '100%',
+                        height: '80px',
+                        objectFit: 'cover',
+                        marginBottom: '8px',
+                      }}
                     />
                     <div style={{ fontSize: '13px' }}>{template.name}</div>
                   </div>
                 ))}
               </div>
-              
+
               <Button
                 type="primary"
                 disabled={!selectedTemplate}
@@ -250,18 +253,17 @@ const CampaignContent = ({ form, formData, onChange }) => {
             renderContentFields()
           )}
         </TabPane>
-        
-        <TabPane 
+
+        <TabPane
           tab={
             <span>
               <MobileOutlined /> {translate('SMS')}
             </span>
-          } 
+          }
           key="sms"
         >
           {renderContentFields()}
         </TabPane>
-        
       </Tabs>
     </Card>
   );
