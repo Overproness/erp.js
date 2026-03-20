@@ -1,4 +1,6 @@
-require('module-alias/register');
+if (process.env.NODE_ENV === 'production') {
+  require('module-alias/register');
+}
 require('dotenv').config({ path: '.env' });
 
 import mongoose from 'mongoose';
@@ -28,9 +30,11 @@ mongoose.connection.on('error', (error: Error) => {
 // ─────────────────────────────────────────────────────────────
 const { globSync } = require('glob');
 
-const modelFiles: string[] = globSync('./src/models/**/*.{js,ts}');
+const modelFiles: string[] = globSync(path.join(__dirname, 'models/**/*.{js,ts}'), {
+  ignore: ['**/*.d.ts'],
+});
 for (const filePath of modelFiles) {
-  require(path.resolve(filePath));
+  require(filePath);
 }
 
 // ─────────────────────────────────────────────────────────────

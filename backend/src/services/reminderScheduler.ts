@@ -144,12 +144,6 @@ class ReminderSchedulerService {
         if (smsSuccess) anySuccess = true;
       }
 
-      // Send via Push Notification
-      if (reminder.channels.push.enabled) {
-        const pushSuccess = await this.sendPushReminder(reminder);
-        if (pushSuccess) anySuccess = true;
-      }
-
       // Send via Webhook
       if (reminder.channels.webhook.enabled) {
         const webhookSuccess = await this.sendWebhookReminder(reminder);
@@ -240,28 +234,6 @@ class ReminderSchedulerService {
       return true;
     } catch (error) {
       console.error('❌ Error in sendSmsReminder:', error);
-      return false;
-    }
-  }
-
-  /**
-   * Send reminder via push notification (placeholder)
-   */
-  async sendPushReminder(reminder) {
-    try {
-      // TODO: Integrate with push notification service (Firebase, OneSignal, etc.)
-      console.log(`🔔 Push notification placeholder for reminder ${reminder._id}`);
-
-      for (const recipient of reminder.recipients) {
-        reminder.markAsSent('push', recipient._id.toString(), {
-          success: true,
-          placeholder: true,
-        });
-      }
-
-      return true;
-    } catch (error) {
-      console.error('❌ Error in sendPushReminder:', error);
       return false;
     }
   }

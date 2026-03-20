@@ -374,37 +374,6 @@ const aiSettings = {
         }
       },
       
-      // Push notification content generation
-      pushNotification: {
-        enabled: true,
-        templates: {
-          alert: {
-            structure: ['headline', 'brief_details'],
-            toneOptions: ['urgent', 'important'],
-            defaultTone: 'important',
-          },
-          promotional: {
-            structure: ['offer_headline', 'brief_value_prop'],
-            toneOptions: ['exciting', 'exclusive'],
-            defaultTone: 'exciting',
-          },
-          informational: {
-            structure: ['topic', 'brief_info'],
-            toneOptions: ['helpful', 'intriguing'],
-            defaultTone: 'intriguing',
-          }
-        },
-        personalization: {
-          level: 'medium',
-          fields: ['first_name', 'location', 'preferences'],
-        },
-        constraints: {
-          maxTitle: 50,
-          maxBody: 140,
-          emoji: true,
-        }
-      },
-      
       // Social media content generation
       socialMedia: {
         enabled: true,

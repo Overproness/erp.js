@@ -22,7 +22,6 @@ import {
   UploadOutlined,
   PlusOutlined,
   DeleteOutlined,
-  BellOutlined,
   MessageOutlined,
   MobileOutlined
 } from '@ant-design/icons';
@@ -42,8 +41,7 @@ const MOCK_TEMPLATES = [
   { id: 4, name: 'Product Launch', type: 'email', thumbnail: 'https://via.placeholder.com/100x120' },
   { id: 5, name: 'Welcome SMS', type: 'sms', thumbnail: 'https://via.placeholder.com/100x120' },
   { id: 6, name: 'Promotion SMS', type: 'sms', thumbnail: 'https://via.placeholder.com/100x120' },
-  { id: 7, name: 'News Alert', type: 'push', thumbnail: 'https://via.placeholder.com/100x120' },
-  { id: 8, name: 'App Update', type: 'push', thumbnail: 'https://via.placeholder.com/100x120' },
+
 ];
 
 const CampaignContent = ({ form, formData, onChange }) => {
@@ -173,83 +171,6 @@ const CampaignContent = ({ form, formData, onChange }) => {
           </>
         );
         
-      case 'push':
-        return (
-          <>
-            <Row gutter={16}>
-              <Col xs={24} sm={16}>
-                <Form.Item
-                  name={['content', 'push', 'title']}
-                  label={translate('Notification Title')}
-                  rules={[
-                    {
-                      required: activeTab === 'push',
-                      message: translate('Please enter a notification title'),
-                    },
-                  ]}
-                >
-                  <Input
-                    placeholder={translate('Enter notification title')}
-                    maxLength={50}
-                    showCount
-                  />
-                </Form.Item>
-                
-                <Form.Item
-                  name={['content', 'push', 'body']}
-                  label={translate('Notification Body')}
-                  rules={[
-                    {
-                      required: activeTab === 'push',
-                      message: translate('Please enter notification content'),
-                    },
-                  ]}
-                >
-                  <TextArea
-                    rows={3}
-                    placeholder={translate('Enter notification message')}
-                    maxLength={120}
-                    showCount
-                  />
-                </Form.Item>
-                
-                <Form.Item
-                  name={['content', 'push', 'actionUrl']}
-                  label={translate('Action URL')}
-                >
-                  <Input
-                    placeholder={translate('URL to open when notification is clicked')}
-                  />
-                </Form.Item>
-              </Col>
-              
-              <Col xs={24} sm={8}>
-                <Form.Item
-                  name={['content', 'push', 'image']}
-                  label={translate('Notification Image')}
-                >
-                  <Upload
-                    listType="picture-card"
-                    maxCount={1}
-                    beforeUpload={(file) => {
-                      const isImage = file.type.startsWith('image/');
-                      if (!isImage) {
-                        message.error(translate('You can only upload image files!'));
-                      }
-                      return isImage ? false : Upload.LIST_IGNORE;
-                    }}
-                  >
-                    <div>
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>{translate('Upload')}</div>
-                    </div>
-                  </Upload>
-                </Form.Item>
-              </Col>
-            </Row>
-          </>
-        );
-        
       default:
         return null;
     }
@@ -341,16 +262,6 @@ const CampaignContent = ({ form, formData, onChange }) => {
           {renderContentFields()}
         </TabPane>
         
-        <TabPane 
-          tab={
-            <span>
-              <BellOutlined /> {translate('Push Notification')}
-            </span>
-          } 
-          key="push"
-        >
-          {renderContentFields()}
-        </TabPane>
       </Tabs>
     </Card>
   );

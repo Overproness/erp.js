@@ -440,8 +440,6 @@ class AIOptimizer {
         variants.push(...await this.generateEmailVariants(campaign, variantCount - 1));
       } else if (campaign.type === 'sms') {
         variants.push(...await this.generateSMSVariants(campaign, variantCount - 1));
-      } else if (campaign.type === 'push') {
-        variants.push(...await this.generatePushVariants(campaign, variantCount - 1));
       }
 
       // Update campaign with new variants
@@ -557,52 +555,6 @@ class AIOptimizer {
   }
 
   /**
-   * Generate push notification campaign variants
-   * @param {Object} campaign Campaign object
-   * @param {number} count Number of variants to generate
-   * @returns {Promise<Array>} Generated variants
-   */
-  async generatePushVariants(campaign, count) {
-    const variants = [];
-    
-    // Variant 1: Different title
-    variants.push({
-      name: 'Title Variation',
-      content: {
-        ...campaign.content,
-        title: await this.generateAlternativeTitle(campaign.content.title)
-      },
-      metrics: {
-        sent: 0,
-        opened: 0,
-        clicked: 0,
-        converted: 0,
-        revenue: 0
-      }
-    });
-    
-    if (count > 1) {
-      // Variant 2: Different body
-      variants.push({
-        name: 'Body Variation',
-        content: {
-          ...campaign.content,
-          body: await this.generateAlternativeBody(campaign.content.body)
-        },
-        metrics: {
-          sent: 0,
-          opened: 0,
-          clicked: 0,
-          converted: 0,
-          revenue: 0
-        }
-      });
-    }
-    
-    return variants.slice(0, count);
-  }
-
-  /**
    * Generate alternative subject line
    * @param {string} originalSubject Original subject
    * @returns {Promise<string>} Alternative subject
@@ -639,40 +591,6 @@ class AIOptimizer {
     ];
     
     return variations[variationIndex % variations.length] || originalMessage;
-  }
-
-  /**
-   * Generate alternative title for push notification
-   * @param {string} originalTitle Original title
-   * @returns {Promise<string>} Alternative title
-   */
-  async generateAlternativeTitle(originalTitle) {
-    if (!originalTitle) return 'Check this out!';
-    
-    const variations = [
-      `${originalTitle} 🔔`,
-      `New: ${originalTitle}`,
-      `Don't miss: ${originalTitle}`,
-      `Just in: ${originalTitle}`
-    ];
-    
-    return variations[Math.floor(Math.random() * variations.length)];
-  }
-
-  /**
-   * Generate alternative body for push notification
-   * @param {string} originalBody Original body
-   * @returns {Promise<string>} Alternative body
-   */
-  async generateAlternativeBody(originalBody) {
-    if (!originalBody) return 'Tap to see our latest update!';
-    
-    // Make it more concise or add urgency
-    if (originalBody.length > 60) {
-      return originalBody.substring(0, 57) + '...';
-    } else {
-      return `${originalBody} Tap now!`;
-    }
   }
 
   /**

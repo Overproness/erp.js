@@ -1,0 +1,25 @@
+# ~/n8n-factory/traefik/docker-compose.yml
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--api.insecure=true" # Exposes the Traefik dashboard on port 8080
+      - "--providers.docker=true" # Enables Docker as a provider
+      - "--providers.docker.exposedbydefault=false" # Don't expose all containers by default
+      - "--entrypoints.web.address=:80" # Listens on port 80 for HTTP traffic
+    ports:
+      - "80:80"
+      - "8080:8080" # Dashboard port
+    volumes:
+      # Mount the Docker socket so Traefik can listen for new containers
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
+# The shared network for all our services
+networks:
+  web:
+    external: true

@@ -11,10 +11,10 @@ import fs from 'fs';
 // Load All Mongoose Models (must be before anything else)
 // ─────────────────────────────────────────────────────────────
 const { globSync } = require('glob');
-const modelFiles: string[] = globSync('./src/models/**/*.{js,ts}', { cwd: path.join(__dirname, '..') });
+const modelFiles: string[] = globSync('./models/**/*.{js,ts}', { cwd: __dirname });
 for (const filePath of modelFiles) {
   try {
-    require(path.resolve(path.join(__dirname, '..', filePath)));
+    require(path.resolve(path.join(__dirname, filePath)));
   } catch (e) {
     // Skip non-model files in models directory
   }

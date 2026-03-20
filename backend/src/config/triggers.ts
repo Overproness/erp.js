@@ -293,40 +293,6 @@ const triggers = {
       }
     },
     
-    // Push notification actions
-    pushNotification: {
-      displayName: 'Send Push Notification',
-      description: 'Send a push notification to the customer\'s devices',
-      parameters: {
-        title: {
-          type: 'string',
-          required: true,
-          description: 'Notification title',
-        },
-        body: {
-          type: 'string',
-          required: true,
-          description: 'Notification body',
-        },
-        image: {
-          type: 'string',
-          required: false,
-          description: 'URL to an image for the notification',
-        },
-        url: {
-          type: 'string',
-          required: false,
-          description: 'URL to open when clicked',
-        },
-        delay: {
-          type: 'number',
-          required: false,
-          default: 0,
-          description: 'Delay in minutes before sending',
-        }
-      }
-    },
-    
     // Segment membership actions
     segmentAction: {
       displayName: 'Update Segment Membership',

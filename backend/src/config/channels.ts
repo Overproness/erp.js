@@ -153,49 +153,6 @@ const channels = {
     }
   },
   
-  // Push notification channel configuration
-  push: {
-    enabled: process.env.PUSH_ENABLED === 'true',
-    displayName: 'Push Notifications',
-    description: 'Send notifications to mobile devices and browsers',
-    icon: 'bell',
-    providers: {
-      default: 'firebase',
-      available: ['firebase', 'onesignal', 'custom'],
-      
-      // Firebase Cloud Messaging configuration
-      firebase: {
-        credentialFile: process.env.FIREBASE_CREDENTIAL_FILE || './firebase-credentials.json',
-        databaseURL: process.env.FIREBASE_DATABASE_URL,
-        projectId: process.env.FIREBASE_PROJECT_ID,
-      },
-      
-      // OneSignal configuration
-      onesignal: {
-        appId: process.env.ONESIGNAL_APP_ID,
-        apiKey: process.env.ONESIGNAL_API_KEY,
-        userAuthKey: process.env.ONESIGNAL_USER_AUTH_KEY,
-      },
-      
-      // Custom push provider
-      custom: {
-        apiUrl: process.env.PUSH_API_URL,
-        apiKey: process.env.PUSH_API_KEY,
-      }
-    },
-    
-    // Default sending settings
-    settings: {
-      ttl: 86400, // Time to live in seconds (24 hours)
-      priority: 'high',
-      badge: true,
-      sound: true,
-      throttleRate: 10000, // notifications per minute
-      maxRetries: 3,
-      retryDelay: 60, // seconds
-    }
-  },
-  
   // Social media channel configuration
   social: {
     enabled: process.env.SOCIAL_ENABLED === 'true',

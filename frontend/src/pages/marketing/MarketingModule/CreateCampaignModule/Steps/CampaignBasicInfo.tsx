@@ -11,7 +11,7 @@ import {
   Typography,
   InputNumber
 } from 'antd';
-import { MailOutlined, BellOutlined, MobileOutlined, GlobalOutlined } from '@ant-design/icons';
+import { MailOutlined, MobileOutlined, GlobalOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Title, Text } = Typography;
@@ -120,20 +120,6 @@ const CampaignBasicInfo = ({ form, formData, onChange }) => {
                       <div style={{ fontWeight: 500 }}>{translate('Email Campaign')}</div>
                       <div style={{ fontSize: '12px', color: '#6b7280' }}>
                         {translate('Send emails to your audience')}
-                      </div>
-                    </div>
-                  </div>
-                </Radio>
-              </Card>
-              
-              <Card style={{ marginBottom: '12px', borderRadius: '8px' }}>
-                <Radio value="push" style={{ width: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <BellOutlined style={{ fontSize: '18px', marginRight: '8px', color: '#f59e0b' }} />
-                    <div>
-                      <div style={{ fontWeight: 500 }}>{translate('Push Notification')}</div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                        {translate('Send push notifications to apps')}
                       </div>
                     </div>
                   </div>

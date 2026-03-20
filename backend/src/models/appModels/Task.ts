@@ -323,6 +323,6 @@ taskSchema.pre('save', function (next) {
 
 taskSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
-const exportedModel = mongoose.model('Task', taskSchema);
+const exportedModel = (mongoose.models['Task'] as any) || mongoose.model('Task', taskSchema);
 export default exportedModel;
 module.exports = exportedModel;

@@ -17,3 +17,7 @@ coverage/
 logs/
 docs/
 tmp/
+
+
+design_ignore/
+node_modules/

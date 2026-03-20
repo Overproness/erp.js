@@ -118,7 +118,7 @@
     "typescript": "^5.9.3"
   },
   "_moduleAliases": {
-    "@": "src"
+    "@": "dist"
   },
   "main": "server.js",
   "author": "Muntazar&Wasif",

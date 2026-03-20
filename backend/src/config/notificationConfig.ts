@@ -50,13 +50,6 @@ const config = {
     retryDelay: 60000, // 1 minute
   },
 
-  // Push notification settings (Deprecated - now using Socket.io)
-  push: {
-    enabled: false,
-    deprecated: true,
-    message: 'Push notifications now handled via Socket.io WebSocket connections',
-  },
-
   // Socket.io settings for real-time notifications
   socketio: {
     enabled: true,

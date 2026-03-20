@@ -9,7 +9,7 @@ export default function HomePage() {
     <WebsiteLayout>
       {/* Hero Section */}
       <section
-        className="relative min-h-[90vh] flex items-center overflow-hidden px-6 lg:px-20"
+        className="relative min-h-[90vh] flex items-center overflow-hidden"
         style={{ background: '#f8f9fa' }}
       >
         {/* Background Decorative Elements */}
@@ -18,7 +18,9 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#a6c1fe]/20 rounded-full blur-[100px]"></div>
         </div>
 
-        <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10">
+        {/* hero section */}
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+          {/* left side of the hero section */}
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d8e2ff] text-[#004397] text-[10px] font-bold uppercase tracking-widest mb-6">
               <span className="flex h-2 w-2 rounded-full bg-[#0058c3]"></span>
@@ -59,7 +61,7 @@ export default function HomePage() {
           </div>
 
           {/* 3D Crystal Engine Model */}
-          <div className="relative hidden lg:flex justify-center items-center h-[600px]">
+          <div className="relative hidden lg:flex justify-center items-center h-[600px] rounded-2xl overflow-hidden">
             <Suspense
               fallback={
                 <div className="w-full h-full flex items-center justify-center">

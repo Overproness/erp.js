@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Environment, Lightformer, RoundedBox, Edges } from '@react-three/drei';
+import { DragControls, Environment, Lightformer, RoundedBox, Edges } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { useMemo, useRef, useState } from 'react';
@@ -10,6 +10,7 @@ const SPACING = 1.4;
 
 function CrystalScene() {
   const animTime = useRef(0);
+  const isDragging = useRef(false);
 
   const { bumpTexture, roughnessTexture } = useMemo(() => {
     const size = 512;
@@ -121,6 +122,7 @@ function CrystalScene() {
   }, []);
 
   useFrame((state, delta) => {
+    if (isDragging.current) return;
     animTime.current += delta * 0.12;
     const t = animTime.current;
     const baseRadius = 15;
@@ -142,6 +144,7 @@ function CrystalScene() {
           bumpTexture={bumpTexture}
           roughnessTexture={roughnessTexture}
           index={i}
+          setIsDragging={(v) => { isDragging.current = v; }}
         />
       ))}
     </group>
@@ -153,54 +156,86 @@ function CrystalCube({
   bumpTexture,
   roughnessTexture,
   index,
+  setIsDragging,
 }: {
   position: THREE.Vector3;
   bumpTexture: THREE.Texture;
   roughnessTexture: THREE.Texture;
   index: number;
+  setIsDragging: (v: boolean) => void;
 }) {
   const ref = useRef<THREE.Mesh>(null);
   const randomOffset = useMemo(() => index * 1.7, [index]);
+  const [dragged, setDragged] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [localPos] = useState(() => position.clone());
 
   useFrame((state) => {
     if (ref.current) {
-      const t = state.clock.getElapsedTime() + randomOffset;
-      ref.current.rotation.x = Math.sin(t * 0.5) * 0.1;
-      ref.current.rotation.y = Math.cos(t * 0.5) * 0.1;
+      const limit = 8;
+      ref.current.position.x = THREE.MathUtils.clamp(ref.current.position.x, -limit, limit);
+      ref.current.position.y = THREE.MathUtils.clamp(ref.current.position.y, -limit, limit);
+      ref.current.position.z = THREE.MathUtils.clamp(ref.current.position.z, -limit, limit);
+      if (!dragged) {
+        const t = state.clock.getElapsedTime() + randomOffset;
+        ref.current.rotation.x = Math.sin(t * 0.5) * 0.1;
+        ref.current.rotation.y = Math.cos(t * 0.5) * 0.1;
+      }
     }
   });
 
   return (
-    <RoundedBox
-      ref={ref}
-      position={position}
-      args={[CUBE_SIZE, CUBE_SIZE, CUBE_SIZE]}
-      radius={0.15}
-      smoothness={4}
+    <DragControls
+      onDragStart={() => {
+        setDragged(true);
+        setIsDragging(true);
+        document.body.style.cursor = 'grabbing';
+      }}
+      onDragEnd={() => {
+        setDragged(false);
+        setIsDragging(false);
+        document.body.style.cursor = hovered ? 'grab' : 'auto';
+      }}
     >
-      <meshPhysicalMaterial
-        color="#0058c3"
-        transmission={0.6}
-        ior={1.65}
-        thickness={0.8}
-        attenuationColor="#0070f3"
-        attenuationDistance={14.0}
-        metalness={0.0}
-        roughness={0.25}
-        roughnessMap={roughnessTexture}
-        clearcoat={1.0}
-        clearcoatRoughness={0.02}
-        envMapIntensity={5.0}
-        iridescence={1.0}
-        iridescenceIOR={1.5}
-        iridescenceThicknessRange={[150, 550]}
-        bumpMap={bumpTexture}
-        bumpScale={0.12}
-      />
-      <Edges scale={1.0} threshold={15}>
-        <lineBasicMaterial color="#0070f3" transparent opacity={0.6} />
-      </Edges>
-    </RoundedBox>
+      <RoundedBox
+        ref={ref}
+        position={localPos}
+        args={[CUBE_SIZE, CUBE_SIZE, CUBE_SIZE]}
+        radius={0.15}
+        smoothness={4}
+        onPointerOver={() => {
+          setHovered(true);
+          if (!dragged) document.body.style.cursor = 'grab';
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          if (!dragged) document.body.style.cursor = 'auto';
+        }}
+      >
+        <meshPhysicalMaterial
+          color="#0058c3"
+          transmission={0.6}
+          ior={1.65}
+          thickness={0.8}
+          attenuationColor="#0070f3"
+          attenuationDistance={14.0}
+          metalness={0.0}
+          roughness={0.25}
+          roughnessMap={roughnessTexture}
+          clearcoat={1.0}
+          clearcoatRoughness={0.02}
+          envMapIntensity={2.5}
+          iridescence={1.0}
+          iridescenceIOR={1.5}
+          iridescenceThicknessRange={[150, 550]}
+          bumpMap={bumpTexture}
+          bumpScale={0.12}
+        />
+        <Edges scale={1.0} threshold={15}>
+          <lineBasicMaterial color="#0070f3" transparent opacity={0.6} />
+        </Edges>
+      </RoundedBox>
+    </DragControls>
   );
 }
 
@@ -211,7 +246,7 @@ export default function HeroScene() {
         orthographic
         camera={{ position: [0, 0, 16], zoom: 40 }}
         style={{ background: 'transparent' }}
-        gl={{ alpha: true, antialias: true }}
+        gl={{ alpha: true, antialias: true, toneMappingExposure: 0.85 }}
       >
         <ambientLight intensity={0.25} color="#c8deff" />
         <directionalLight
@@ -226,28 +261,28 @@ export default function HeroScene() {
         <Environment resolution={256}>
           <group rotation={[-Math.PI / 2, 0, 0]}>
             <Lightformer
-              intensity={2.5}
+              intensity={1.8}
               rotation-x={Math.PI / 2}
               position={[0, 8, -8]}
               scale={[16, 16, 1]}
               color="#ffffff"
             />
             <Lightformer
-              intensity={1.5}
+              intensity={1.2}
               rotation-y={Math.PI / 2}
               position={[-8, 2, 0]}
               scale={[20, 6, 1]}
               color="#88ccff"
             />
             <Lightformer
-              intensity={1.5}
+              intensity={1.2}
               rotation-y={-Math.PI / 2}
               position={[8, 2, 0]}
               scale={[20, 6, 1]}
               color="#88ccff"
             />
             <Lightformer
-              intensity={1.0}
+              intensity={0.8}
               rotation-x={-Math.PI / 4}
               position={[0, -4, 6]}
               scale={[14, 4, 1]}

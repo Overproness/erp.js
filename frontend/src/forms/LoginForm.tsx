@@ -64,7 +64,7 @@ export default function LoginForm() {
         />
       </Form.Item>
 
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between py-3">
         <Form.Item name="remember" valuePropName="checked" noStyle>
           <label
             className="flex items-center gap-2 cursor-pointer text-sm"

@@ -102,7 +102,7 @@ export default function RegisterForm() {
           onBlur={handleBlur}
         />
       </Form.Item>
-      <p className="text-xs" style={{ color: '#71767f', marginTop: -8, marginBottom: 12 }}>
+      <p className="text-xs py-2" style={{ color: '#71767f', marginTop: -8, marginBottom: 12 }}>
         {translate('You will complete your company setup after registration')}
       </p>
     </div>

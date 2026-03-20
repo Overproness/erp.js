@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  api-controller:
+    build: . # Build from the Dockerfile in the current directory
+    container_name: api-controller
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - web
+    volumes:
+      # Mount the Docker socket to run docker-compose commands
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount the scripts and instances directories so the container can access them
+      - ../scripts:/app/scripts
+      - ../n8n-instances:/app/n8n-instances
+
+networks:
+  web:
+    external: true
