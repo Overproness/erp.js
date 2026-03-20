@@ -17,10 +17,7 @@ export default function WebsiteNavbar() {
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 h-16">
       <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
         <div className="flex items-center gap-8">
-          <Link
-            to="/"
-            className="flex items-center gap-2.5 no-underline"
-          >
+          <Link to="/" className="flex items-center gap-2.5 no-underline">
             <img src="/logo-bg-remove.png" alt="ERP.js" className="h-8 w-8 object-contain" />
             <span className="text-2xl font-bold tracking-tighter text-slate-900 font-inter">
               ERP.js
@@ -63,7 +60,9 @@ export default function WebsiteNavbar() {
             className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-slate-100 transition-colors border-none bg-transparent cursor-pointer"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            <span className="material-symbols-outlined text-slate-700">{mobileOpen ? 'close' : 'menu'}</span>
+            <span className="material-symbols-outlined text-slate-700">
+              {mobileOpen ? 'close' : 'menu'}
+            </span>
           </button>
         </div>
       </div>

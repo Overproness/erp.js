@@ -302,7 +302,12 @@ export default function DashboardModule() {
 
   if (money_format_settings) {
     const today = new Date();
-    const dateString = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const dateString = today.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
 
     // KPI card component
     const KpiCard = ({ title, value, subtitle, icon, loading, color = '#0058c3' }) => (
@@ -319,20 +324,56 @@ export default function DashboardModule() {
           cursor: 'default',
           fontFamily: "'Inter', -apple-system, sans-serif",
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)';
+        }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#71767f', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{title}</span>
-          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '20px', color }}>{icon}</span>
+          <span
+            style={{
+              fontSize: '13px',
+              fontWeight: 600,
+              color: '#71767f',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+            }}
+          >
+            {title}
+          </span>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              background: `${color}14`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px', color }}>
+              {icon}
+            </span>
           </div>
         </div>
         {loading ? (
           <Spin size="small" />
         ) : (
           <>
-            <span style={{ fontSize: '28px', fontWeight: 700, color: '#191c1d', letterSpacing: '-0.02em', lineHeight: 1 }}>{value}</span>
+            <span
+              style={{
+                fontSize: '28px',
+                fontWeight: 700,
+                color: '#191c1d',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+              }}
+            >
+              {value}
+            </span>
             <span style={{ fontSize: '12px', color: '#71767f' }}>{subtitle}</span>
           </>
         )}
@@ -342,14 +383,27 @@ export default function DashboardModule() {
     return (
       <div style={{ fontFamily: "'Inter', -apple-system, sans-serif" }}>
         {/* Header */}
-        <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div
+          style={{
+            marginBottom: '28px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
           <div>
-            <h1 style={{ margin: '0 0 4px 0', color: '#191c1d', fontWeight: 700, fontSize: '24px', letterSpacing: '-0.02em' }}>
+            <h1
+              style={{
+                margin: '0 0 4px 0',
+                color: '#191c1d',
+                fontWeight: 700,
+                fontSize: '24px',
+                letterSpacing: '-0.02em',
+              }}
+            >
               System Overview
             </h1>
-            <p style={{ margin: 0, color: '#71767f', fontSize: '14px' }}>
-              {dateString}
-            </p>
+            <p style={{ margin: 0, color: '#71767f', fontSize: '14px' }}>{dateString}</p>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
             <button
@@ -361,15 +415,32 @@ export default function DashboardModule() {
                 refreshPayments();
               }}
               style={{
-                display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px',
-                borderRadius: '10px', border: '1.5px solid #e1e3e4', background: '#ffffff',
-                color: '#414754', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-                transition: 'all 0.2s ease', fontFamily: "'Inter', -apple-system, sans-serif",
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 16px',
+                borderRadius: '10px',
+                border: '1.5px solid #e1e3e4',
+                background: '#ffffff',
+                color: '#414754',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                fontFamily: "'Inter', -apple-system, sans-serif",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0058c3'; e.currentTarget.style.color = '#0058c3'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e1e3e4'; e.currentTarget.style.color = '#414754'; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#0058c3';
+                e.currentTarget.style.color = '#0058c3';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#e1e3e4';
+                e.currentTarget.style.color = '#414754';
+              }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>refresh</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                refresh
+              </span>
               Refresh
             </button>
           </div>
@@ -380,7 +451,10 @@ export default function DashboardModule() {
           <Col xs={24} sm={12} lg={6}>
             <KpiCard
               title="Total Invoices"
-              value={moneyFormatter({ amount: invoiceData.total, currency_code: money_format_settings.currency_code })}
+              value={moneyFormatter({
+                amount: invoiceData.total,
+                currency_code: money_format_settings.currency_code,
+              })}
               subtitle={`${invoiceData.totalCount} invoices this period`}
               icon="receipt_long"
               loading={isInvoicesLoading}
@@ -390,7 +464,10 @@ export default function DashboardModule() {
           <Col xs={24} sm={12} lg={6}>
             <KpiCard
               title="Pending Quotes"
-              value={moneyFormatter({ amount: quoteData.total, currency_code: money_format_settings.currency_code })}
+              value={moneyFormatter({
+                amount: quoteData.total,
+                currency_code: money_format_settings.currency_code,
+              })}
               subtitle={`${quoteData.totalCount} quotes pending`}
               icon="request_quote"
               loading={isQuotesLoading}
@@ -400,7 +477,10 @@ export default function DashboardModule() {
           <Col xs={24} sm={12} lg={6}>
             <KpiCard
               title="Net Revenue"
-              value={moneyFormatter({ amount: paymentData.total, currency_code: money_format_settings.currency_code })}
+              value={moneyFormatter({
+                amount: paymentData.total,
+                currency_code: money_format_settings.currency_code,
+              })}
               subtitle={`${paymentData.totalCount} payments received`}
               icon="trending_up"
               loading={isPaymentsLoading}
@@ -445,7 +525,10 @@ export default function DashboardModule() {
             <Col xs={24} sm={12} lg={6}>
               <KpiCard
                 title="Avg Invoice Value"
-                value={moneyFormatter({ amount: dashboardStats.performance?.averageInvoiceValue || 0, currency_code: money_format_settings.currency_code })}
+                value={moneyFormatter({
+                  amount: dashboardStats.performance?.averageInvoiceValue || 0,
+                  currency_code: money_format_settings.currency_code,
+                })}
                 subtitle="Per invoice average"
                 icon="calculate"
                 loading={dashboardLoading}
@@ -455,7 +538,10 @@ export default function DashboardModule() {
             <Col xs={24} sm={12} lg={6}>
               <KpiCard
                 title="Unpaid Amount"
-                value={moneyFormatter({ amount: invoiceData.unpaid, currency_code: money_format_settings.currency_code })}
+                value={moneyFormatter({
+                  amount: invoiceData.unpaid,
+                  currency_code: money_format_settings.currency_code,
+                })}
                 subtitle="Outstanding balance"
                 icon="warning"
                 loading={isInvoicesLoading}
@@ -486,11 +572,21 @@ export default function DashboardModule() {
           }}
         >
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <h3 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: 700, color: '#ffffff' }}>
+            <h3
+              style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: 700, color: '#ffffff' }}
+            >
               N8N Workflow Automation
             </h3>
-            <p style={{ margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.85)', maxWidth: '500px' }}>
-              Automate your business processes with powerful N8N workflows. Connect invoicing, CRM, and marketing in one seamless pipeline.
+            <p
+              style={{
+                margin: 0,
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.85)',
+                maxWidth: '500px',
+              }}
+            >
+              Automate your business processes with powerful N8N workflows. Connect invoicing, CRM,
+              and marketing in one seamless pipeline.
             </p>
           </div>
           <button
@@ -501,21 +597,57 @@ export default function DashboardModule() {
               }
             }}
             style={{
-              display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 24px',
-              borderRadius: '12px', border: '2px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.15)',
-              color: '#ffffff', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
-              backdropFilter: 'blur(10px)', transition: 'all 0.2s ease', whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              border: '2px solid rgba(255,255,255,0.3)',
+              background: 'rgba(255,255,255,0.15)',
+              color: '#ffffff',
+              fontSize: '14px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              backdropFilter: 'blur(10px)',
+              transition: 'all 0.2s ease',
+              whiteSpace: 'nowrap',
               fontFamily: "'Inter', -apple-system, sans-serif",
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+            }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>bolt</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+              bolt
+            </span>
             Open Workflows
           </button>
           {/* Decorative circles */}
-          <div style={{ position: 'absolute', right: '-40px', top: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
-          <div style={{ position: 'absolute', right: '80px', bottom: '-60px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(255,255,255,0.04)' }} />
+          <div
+            style={{
+              position: 'absolute',
+              right: '-40px',
+              top: '-40px',
+              width: '200px',
+              height: '200px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.05)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              right: '80px',
+              bottom: '-60px',
+              width: '160px',
+              height: '160px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.04)',
+            }}
+          />
         </div>
 
         {/* Quick Actions */}
@@ -524,18 +656,47 @@ export default function DashboardModule() {
             <div
               onClick={() => navigate('/invoice/create')}
               style={{
-                background: '#ffffff', borderRadius: '14px', padding: '20px', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: '14px', transition: 'box-shadow 0.2s ease',
+                background: '#ffffff',
+                borderRadius: '14px',
+                padding: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                transition: 'box-shadow 0.2s ease',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)';
+              }}
             >
-              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#0058c314', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: '#0058c3' }}>add_circle</span>
+              <div
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '12px',
+                  background: '#0058c314',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: '22px', color: '#0058c3' }}
+                >
+                  add_circle
+                </span>
               </div>
               <div>
-                <span style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}>New Invoice</span>
+                <span
+                  style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}
+                >
+                  New Invoice
+                </span>
                 <span style={{ fontSize: '12px', color: '#71767f' }}>Create a new invoice</span>
               </div>
             </div>
@@ -544,18 +705,47 @@ export default function DashboardModule() {
             <div
               onClick={() => navigate('/client/create')}
               style={{
-                background: '#ffffff', borderRadius: '14px', padding: '20px', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: '14px', transition: 'box-shadow 0.2s ease',
+                background: '#ffffff',
+                borderRadius: '14px',
+                padding: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                transition: 'box-shadow 0.2s ease',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)';
+              }}
             >
-              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#8b5cf614', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: '#8b5cf6' }}>person_add</span>
+              <div
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '12px',
+                  background: '#8b5cf614',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: '22px', color: '#8b5cf6' }}
+                >
+                  person_add
+                </span>
               </div>
               <div>
-                <span style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}>Add Client</span>
+                <span
+                  style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}
+                >
+                  Add Client
+                </span>
                 <span style={{ fontSize: '12px', color: '#71767f' }}>Register a new client</span>
               </div>
             </div>
@@ -564,18 +754,47 @@ export default function DashboardModule() {
             <div
               onClick={() => navigate('/quote/create')}
               style={{
-                background: '#ffffff', borderRadius: '14px', padding: '20px', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: '14px', transition: 'box-shadow 0.2s ease',
+                background: '#ffffff',
+                borderRadius: '14px',
+                padding: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                transition: 'box-shadow 0.2s ease',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)';
+              }}
             >
-              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f59e0b14', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: '#f59e0b' }}>edit_note</span>
+              <div
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '12px',
+                  background: '#f59e0b14',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: '22px', color: '#f59e0b' }}
+                >
+                  edit_note
+                </span>
               </div>
               <div>
-                <span style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}>Create Quote</span>
+                <span
+                  style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}
+                >
+                  Create Quote
+                </span>
                 <span style={{ fontSize: '12px', color: '#71767f' }}>Draft a new quote</span>
               </div>
             </div>

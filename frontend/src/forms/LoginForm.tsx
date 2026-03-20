@@ -24,7 +24,8 @@ export default function LoginForm() {
           }}
           onFocus={(e) => {
             e.target.style.border = '1.5px solid #0058c3';
-            e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
+            e.target.style.boxShadow =
+              'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
           }}
           onBlur={(e) => {
             e.target.style.border = '1.5px solid transparent';
@@ -47,18 +48,28 @@ export default function LoginForm() {
           }}
           onFocus={(e) => {
             const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
-            if (el) { el.style.border = '1.5px solid #0058c3'; el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }
+            if (el) {
+              el.style.border = '1.5px solid #0058c3';
+              el.style.boxShadow =
+                'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
+            }
           }}
           onBlur={(e) => {
             const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
-            if (el) { el.style.border = '1.5px solid transparent'; el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }
+            if (el) {
+              el.style.border = '1.5px solid transparent';
+              el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+            }
           }}
         />
       </Form.Item>
 
       <div className="flex items-center justify-between mb-2">
         <Form.Item name="remember" valuePropName="checked" noStyle>
-          <label className="flex items-center gap-2 cursor-pointer text-sm" style={{ color: '#414754' }}>
+          <label
+            className="flex items-center gap-2 cursor-pointer text-sm"
+            style={{ color: '#414754' }}
+          >
             <input type="checkbox" className="rounded" />
             {translate('Remember me')}
           </label>

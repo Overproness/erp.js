@@ -163,7 +163,9 @@ export default function HeaderContent() {
           transition: 'all 0.2s ease',
         }}
       >
-        <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#71767f' }}>search</span>
+        <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#71767f' }}>
+          search
+        </span>
         <input
           placeholder="Quick search transactions..."
           onFocus={() => setSearchFocused(true)}
@@ -219,8 +221,12 @@ export default function HeaderContent() {
               borderRadius: '10px',
               transition: 'background 0.2s ease',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#f3f4f5'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#f3f4f5';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
           >
             <Avatar
               className="last"

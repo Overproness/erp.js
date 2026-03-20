@@ -45,9 +45,13 @@ function CrystalScene() {
         const groove = edgeDist < grooveW ? edgeDist / grooveW : 1.0;
         const tiltAngle = hash(cx, cy) * Math.PI * 2;
         const tiltStrength = 0.45 + hash(cx + 7, cy + 3) * 0.55;
-        const tilt = tiltStrength * (Math.cos(tiltAngle) * (lx - 0.5) + Math.sin(tiltAngle) * (ly - 0.5));
+        const tilt =
+          tiltStrength * (Math.cos(tiltAngle) * (lx - 0.5) + Math.sin(tiltAngle) * (ly - 0.5));
         const grain = (Math.random() - 0.5) * 10;
-        const bv = Math.min(255, Math.max(0, Math.floor((128 + 68 * tilt + grain) * (0.08 + 0.92 * groove))));
+        const bv = Math.min(
+          255,
+          Math.max(0, Math.floor((128 + 68 * tilt + grain) * (0.08 + 0.92 * groove)))
+        );
         bumpData.data[idx] = bv;
         bumpData.data[idx + 1] = bv;
         bumpData.data[idx + 2] = bv;
@@ -104,7 +108,13 @@ function CrystalScene() {
     }
     if (pos.length < 8) {
       for (let i = 0; i < 8; i++) {
-        pos.push(new THREE.Vector3((rng(i + 1000) - 0.5) * 3, (rng(i + 2000) - 0.5) * 3, (rng(i + 3000) - 0.5) * 3));
+        pos.push(
+          new THREE.Vector3(
+            (rng(i + 1000) - 0.5) * 3,
+            (rng(i + 2000) - 0.5) * 3,
+            (rng(i + 3000) - 0.5) * 3
+          )
+        );
       }
     }
     return pos;
@@ -126,7 +136,13 @@ function CrystalScene() {
   return (
     <group>
       {cubes.map((pos, i) => (
-        <CrystalCube key={i} position={pos} bumpTexture={bumpTexture} roughnessTexture={roughnessTexture} index={i} />
+        <CrystalCube
+          key={i}
+          position={pos}
+          bumpTexture={bumpTexture}
+          roughnessTexture={roughnessTexture}
+          index={i}
+        />
       ))}
     </group>
   );
@@ -209,10 +225,34 @@ export default function HeroScene() {
         <CrystalScene />
         <Environment resolution={256}>
           <group rotation={[-Math.PI / 2, 0, 0]}>
-            <Lightformer intensity={2.5} rotation-x={Math.PI / 2} position={[0, 8, -8]} scale={[16, 16, 1]} color="#ffffff" />
-            <Lightformer intensity={1.5} rotation-y={Math.PI / 2} position={[-8, 2, 0]} scale={[20, 6, 1]} color="#88ccff" />
-            <Lightformer intensity={1.5} rotation-y={-Math.PI / 2} position={[8, 2, 0]} scale={[20, 6, 1]} color="#88ccff" />
-            <Lightformer intensity={1.0} rotation-x={-Math.PI / 4} position={[0, -4, 6]} scale={[14, 4, 1]} color="#b0d8ff" />
+            <Lightformer
+              intensity={2.5}
+              rotation-x={Math.PI / 2}
+              position={[0, 8, -8]}
+              scale={[16, 16, 1]}
+              color="#ffffff"
+            />
+            <Lightformer
+              intensity={1.5}
+              rotation-y={Math.PI / 2}
+              position={[-8, 2, 0]}
+              scale={[20, 6, 1]}
+              color="#88ccff"
+            />
+            <Lightformer
+              intensity={1.5}
+              rotation-y={-Math.PI / 2}
+              position={[8, 2, 0]}
+              scale={[20, 6, 1]}
+              color="#88ccff"
+            />
+            <Lightformer
+              intensity={1.0}
+              rotation-x={-Math.PI / 4}
+              position={[0, -4, 6]}
+              scale={[14, 4, 1]}
+              color="#b0d8ff"
+            />
           </group>
         </Environment>
         <EffectComposer>

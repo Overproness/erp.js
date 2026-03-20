@@ -8,7 +8,7 @@ import Loading from '@/components/Loading';
 import AuthModule from '@/pages/AuthModule';
 import storePersist from '@/redux/storePersist';
 
-const SignupPage = () => { 
+const SignupPage = () => {
   const translate = useLanguage();
   const navigate = useNavigate();
 

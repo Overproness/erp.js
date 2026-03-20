@@ -21,17 +21,23 @@ const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 
 const handlePasswordFocus = (e: React.FocusEvent<HTMLInputElement>) => {
   const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
-  if (el) { el.style.border = '1.5px solid #0058c3'; el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }
+  if (el) {
+    el.style.border = '1.5px solid #0058c3';
+    el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
+  }
 };
 
 const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
   const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
-  if (el) { el.style.border = '1.5px solid transparent'; el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }
+  if (el) {
+    el.style.border = '1.5px solid transparent';
+    el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+  }
 };
 
 export default function RegisterForm() {
   const translate = useLanguage();
-  
+
   return (
     <div className="space-y-1">
       <Form.Item
@@ -76,7 +82,10 @@ export default function RegisterForm() {
 
       <div className="py-2">
         <div className="h-px" style={{ background: '#e1e3e4' }}></div>
-        <p className="text-xs font-medium uppercase tracking-wider mt-3 mb-1" style={{ color: '#414754' }}>
+        <p
+          className="text-xs font-medium uppercase tracking-wider mt-3 mb-1"
+          style={{ color: '#414754' }}
+        >
           Company Information
         </p>
       </div>
