@@ -6,7 +6,6 @@ import AuthLayout from '@/layout/AuthLayout';
 import SideContent from './SideContent';
 
 // import logo from '@/style/images/crm-erp.svg';
-import logo from '@/style/images/logo-icon.svg';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -24,7 +23,7 @@ const AuthModule = ({ authContent, AUTH_TITLE, isForRegistre = false }) => {
       >
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 0 }} span={0}>
           <img
-            src={logo}
+            src="/logo.png"
             alt="Logo"
             style={{
               margin: '0px auto 20px',

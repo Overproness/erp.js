@@ -8,7 +8,6 @@ import NotificationBell from '@/components/NotificationBell/NotificationBell';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 
 import { FILE_BASE_URL } from '@/config/serverApiConfig';
-import logoIcon from '@/style/images/logo-icon.svg';
 
 import useLanguage from '@/locale/useLanguage';
 
@@ -154,7 +153,7 @@ export default function HeaderContent() {
         }}
       >
         <img
-          src={logoIcon}
+          src="/logo.png"
           alt="Logo"
           style={{
             height: '32px',
@@ -170,7 +169,7 @@ export default function HeaderContent() {
             letterSpacing: '0.5px',
           }}
         >
-          Quickmation
+          ERP.js
         </span>
       </div>
 

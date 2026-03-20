@@ -2,10 +2,10 @@ import './style/app.css';
 
 import { ApolloProvider } from '@apollo/client/react';
 import { App, ConfigProvider } from 'antd';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { antdTheme } from './config/theme';
@@ -18,6 +18,14 @@ import store from './redux/store';
 // Import directly instead of using lazy loading initially
 import ErpOs from './apps/ErpOs';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 const RootApp: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -29,6 +37,7 @@ const RootApp: React.FC = () => {
                 <NotificationProvider>
                   <CopilotProvider>
                     <Router>
+                      <ScrollToTop />
                       <Suspense fallback={<div className="loading-container">Loading...</div>}>
                         <ErpOs />
                       </Suspense>

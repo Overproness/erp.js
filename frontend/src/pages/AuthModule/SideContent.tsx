@@ -1,7 +1,6 @@
 import { Layout, Typography } from 'antd';
 // import logo from '@/style/images/crm-erp.svg';
 import useLanguage from '@/locale/useLanguage';
-import logo from '@/style/images/logo-icon.svg';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -21,7 +20,7 @@ export default function SideContent() {
     >
       <div style={{ width: '100%' }}>
         <img
-          src={logo}
+          src="/logo.png"
           alt="ERP CRM"
           style={{ margin: '0 0 40px', display: 'block' }}
           height={63}
@@ -29,7 +28,7 @@ export default function SideContent() {
         />
 
         <Title level={1} style={{ fontSize: 28 }}>
-          Quickmation | Automation Suite
+          ERP.js | Automation Suite
         </Title>
         <Text>
           Accounting / Invoicing / Quote App <b /> based on Node.js React.js Ant Design

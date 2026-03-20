@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import WebsiteLayout from './components/WebsiteLayout';
 
 const sidebarLinks = [
@@ -12,12 +13,34 @@ const sidebarLinks = [
 ];
 
 export default function TermsPage() {
+  const [activeId, setActiveId] = useState('acceptance');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+    );
+
+    sidebarLinks.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <WebsiteLayout title="Terms of Service">
       <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 font-inter">
         {/* Sticky Sidebar */}
         <aside className="hidden md:block md:col-span-3">
-          <div className="sticky top-28 space-y-1">
+          <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-1">
             <p
               className="text-[0.6875rem] font-semibold uppercase tracking-wider mb-4 px-3"
               style={{ color: '#727786' }}
@@ -25,20 +48,23 @@ export default function TermsPage() {
               On this page
             </p>
             <nav className="flex flex-col gap-1">
-              {sidebarLinks.map((link, i) => (
+              {sidebarLinks.map((link) => {
+                const isActive = activeId === link.id;
+                return (
                 <a
                   key={link.id}
                   href={`#${link.id}`}
                   className={`px-3 py-2 text-sm font-medium rounded-lg transition-all no-underline ${
-                    i === 0
+                    isActive
                       ? 'text-[#0058c3] bg-[#d8e2ff]/30 border-l-2 border-[#0058c3]'
                       : 'hover:bg-[#e7e8e9]'
                   }`}
-                  style={i !== 0 ? { color: '#414754' } : undefined}
+                  style={!isActive ? { color: '#414754' } : undefined}
                 >
                   {link.label}
                 </a>
-              ))}
+                );
+              })}
             </nav>
             <div
               className="mt-8 p-4 rounded-xl border border-[#c1c6d7]/10"
@@ -96,9 +122,9 @@ export default function TermsPage() {
           >
             <p className="leading-relaxed" style={{ color: '#191c1d' }}>
               Please read these Terms of Service (&ldquo;Terms&rdquo;) carefully before using the{' '}
-              <strong className="text-[#0058c3]">Quickmation Automation Suite</strong>. These Terms
+              <strong className="text-[#0058c3]">ERP.js Automation Suite</strong>. These Terms
               constitute a legally binding agreement between you (&ldquo;Licensee&rdquo;) and
-              Quickmation Corp regarding your access to and use of our enterprise automation
+              ERP.js Corp regarding your access to and use of our enterprise automation
               platform.
             </p>
           </div>
@@ -117,7 +143,7 @@ export default function TermsPage() {
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  By accessing or using any part of the Quickmation ecosystem, you agree to become
+                  By accessing or using any part of the ERP.js ecosystem, you agree to become
                   bound by the terms and conditions of this agreement. If you do not agree to all
                   the terms and conditions of this agreement, then you may not access the Website or
                   use any services.
@@ -142,7 +168,7 @@ export default function TermsPage() {
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  Quickmation provides a high-performance, developer-centric suite of enterprise
+                  ERP.js provides a high-performance, developer-centric suite of enterprise
                   tools including but not limited to:
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 list-none p-0">
@@ -207,7 +233,7 @@ export default function TermsPage() {
                     Maintaining the <strong>confidentiality</strong> of your account credentials.
                   </li>
                   <li>
-                    Promptly notifying Quickmation of any <strong>unauthorized use</strong> or
+                    Promptly notifying ERP.js of any <strong>unauthorized use</strong> or
                     security breach.
                   </li>
                   <li>
@@ -238,7 +264,7 @@ export default function TermsPage() {
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
                   The Service and its original content, features, and functionality are and will
-                  remain the exclusive property of Quickmation and its licensors. Our intellectual
+                  remain the exclusive property of ERP.js and its licensors. Our intellectual
                   property is protected by copyright, trademark, and other laws.
                 </p>
                 <p>
@@ -299,7 +325,7 @@ export default function TermsPage() {
                 className="p-6 rounded-xl font-mono text-xs leading-relaxed uppercase"
                 style={{ background: '#2e3132', color: '#f0f1f2' }}
               >
-                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL QUICKMATION,
+                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL ERP.JS,
                 ITS AFFILIATES, AGENTS, DIRECTORS, OR EMPLOYEES BE LIABLE FOR ANY INDIRECT,
                 PUNITIVE, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING WITHOUT
                 LIMITATION DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE

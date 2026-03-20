@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: 'Is my data secure on the cloud?',
-    a: 'Quickmation uses military-grade encryption for all data at rest and in transit. We are SOC2 Type II compliant and offer advanced security features like SSO and audit logs on our higher-tier plans.',
+    a: 'ERP.js uses military-grade encryption for all data at rest and in transit. We are SOC2 Type II compliant and offer advanced security features like SSO and audit logs on our higher-tier plans.',
   },
 ];
 
@@ -425,7 +425,7 @@ export default function PricingPage() {
             <h3 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
               Frequently Asked Questions
             </h3>
-            <p style={{ color: '#414754' }}>Quick answers to common queries about Quickmation</p>
+            <p style={{ color: '#414754' }}>Quick answers to common queries about ERP.js</p>
           </div>
           <div className="space-y-4">
             {faqs.map((faq, i) => (

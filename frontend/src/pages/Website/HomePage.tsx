@@ -35,7 +35,7 @@ export default function HomePage() {
               for Modern Teams.
             </h1>
             <p className="text-lg leading-relaxed mb-10 max-w-lg" style={{ color: '#414754' }}>
-              Quickmation unifies your CRM, workflows, and analytics into a single high-performance
+              ERP.js unifies your CRM, workflows, and analytics into a single high-performance
               canvas. Built for developers, scaled for enterprise.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -304,7 +304,7 @@ export default function HomePage() {
               className="max-w-xl mx-auto mb-10 text-lg relative z-10"
               style={{ color: '#c1c6d7' }}
             >
-              Join thousands of enterprises running their entire operation on Quickmation. Scale
+              Join thousands of enterprises running their entire operation on ERP.js. Scale
               without the technical debt.
             </p>
             <div className="flex flex-wrap justify-center gap-4 relative z-10">

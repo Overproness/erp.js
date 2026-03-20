@@ -11,7 +11,7 @@ export default function WebsiteLayout({ children, title }: WebsiteLayoutProps) {
   return (
     <>
       <Helmet>
-        <title>{title ? `${title} | Quickmation` : 'Quickmation | Automation Suite'}</title>
+        <title>{title ? `${title} | ERP.js` : 'ERP.js | Automation Suite'}</title>
       </Helmet>
       <div
         className="min-h-screen font-inter antialiased"

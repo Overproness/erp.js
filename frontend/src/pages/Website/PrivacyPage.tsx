@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import WebsiteLayout from './components/WebsiteLayout';
 
 const sections = [
@@ -10,13 +11,35 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
+  const [activeId, setActiveId] = useState('introduction');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+    );
+
+    sections.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <WebsiteLayout title="Privacy Policy">
       <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-inter">
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Sidebar Navigation */}
           <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-28">
+            <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto">
               <h3
                 className="text-xs font-semibold uppercase tracking-wider mb-6"
                 style={{ color: '#414754' }}
@@ -24,20 +47,23 @@ export default function PrivacyPage() {
                 Documentation
               </h3>
               <nav className="flex flex-col gap-1">
-                {sections.map((section, i) => (
+                {sections.map((section) => {
+                  const isActive = activeId === section.id;
+                  return (
                   <a
                     key={section.id}
                     href={`#${section.id}`}
                     className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all no-underline ${
-                      i === 0
+                      isActive
                         ? 'text-[#0058c3] bg-[#0058c3]/5 border-l-2 border-[#0058c3]'
                         : 'hover:text-[#0058c3] hover:bg-[#e7e8e9]'
                     }`}
-                    style={i !== 0 ? { color: '#414754' } : undefined}
+                    style={!isActive ? { color: '#414754' } : undefined}
                   >
                     {section.label}
                   </a>
-                ))}
+                  );
+                })}
               </nav>
               <div
                 className="mt-12 p-6 rounded-xl border border-[#c1c6d7]/20"
@@ -53,7 +79,7 @@ export default function PrivacyPage() {
                   </span>
                 </div>
                 <p className="text-xs leading-relaxed" style={{ color: '#414754' }}>
-                  Quickmation is fully GDPR and SOC2 compliant, ensuring your enterprise data
+                  ERP.js is fully GDPR and SOC2 compliant, ensuring your enterprise data
                   remains secure.
                 </p>
               </div>
@@ -73,7 +99,7 @@ export default function PrivacyPage() {
                 Privacy <span className="text-[#0070f3]">Policy</span>
               </h1>
               <p className="text-lg leading-relaxed" style={{ color: '#414754' }}>
-                At Quickmation, we prioritize the integrity and confidentiality of your data. This
+                At ERP.js, we prioritize the integrity and confidentiality of your data. This
                 policy outlines our commitment to transparency and the measures we take to protect
                 your information.
               </p>
@@ -101,7 +127,7 @@ export default function PrivacyPage() {
                   }}
                 >
                   <p className="leading-relaxed mb-4" style={{ color: '#414754' }}>
-                    This Privacy Policy describes how Quickmation (&ldquo;we&rdquo;,
+                    This Privacy Policy describes how ERP.js (&ldquo;we&rdquo;,
                     &ldquo;us&rdquo;, or &ldquo;our&rdquo;) collects, uses, and shares information
                     about you when you use our website, mobile application, and other online
                     products and services (collectively, the &ldquo;Services&rdquo;).
@@ -165,7 +191,7 @@ export default function PrivacyPage() {
                       Third-Party Integrations
                     </h4>
                     <p className="text-sm leading-relaxed" style={{ color: '#414754' }}>
-                      If you connect your Quickmation account with third-party services (e.g., cloud
+                      If you connect your ERP.js account with third-party services (e.g., cloud
                       providers or authentication services), we may receive information from those
                       services as per their authorization protocols.
                     </p>

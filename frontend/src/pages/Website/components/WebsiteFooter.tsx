@@ -6,7 +6,7 @@ export default function WebsiteFooter() {
       <div className="max-w-7xl mx-auto py-12 px-6 flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-xs">
           <span className="font-bold text-slate-900 text-2xl tracking-tighter mb-4 block">
-            Quickmation
+            ERP.js
           </span>
           <p className="text-slate-500 text-sm leading-relaxed mb-6">
             The operating system for the modern enterprise. Built with precision, engineered for
@@ -77,7 +77,7 @@ export default function WebsiteFooter() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-6 py-8 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <p className="text-slate-500 text-xs">&copy; {new Date().getFullYear()} Quickmation Inc.</p>
+        <p className="text-slate-500 text-xs">&copy; {new Date().getFullYear()} ERP.js Inc.</p>
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-2 text-xs text-slate-500">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
