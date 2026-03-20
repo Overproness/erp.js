@@ -115,10 +115,7 @@ const aiUserPreferenceSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 aiUserPreferenceSchema.pre('save', function (next) {
@@ -126,7 +123,7 @@ aiUserPreferenceSchema.pre('save', function (next) {
   next();
 });
 
-aiUserPreferenceSchema.index({ companyID: 1 }); // Index for companyID
+aiUserPreferenceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('AiUserPreference', aiUserPreferenceSchema);
 export default exportedModel;

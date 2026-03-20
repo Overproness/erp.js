@@ -160,7 +160,6 @@ const notificationSchema = new mongoose.Schema(
     // Expiration
     expiresAt: {
       type: Date,
-      index: true,
     },
 
     // Soft delete

@@ -180,10 +180,7 @@ const sharedResourceSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Update the 'updated' field before saving
@@ -192,7 +189,7 @@ sharedResourceSchema.pre('save', function (next) {
   next();
 });
 
-sharedResourceSchema.index({ companyID: 1 }); // Index for companyID
+sharedResourceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('SharedResource', sharedResourceSchema);
 export default exportedModel;

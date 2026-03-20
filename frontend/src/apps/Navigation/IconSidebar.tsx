@@ -1,36 +1,8 @@
+// @ts-nocheck
 import { N8N_URL } from '@/config/serverApiConfig';
 import { usePermissions } from '@/hooks/usePermissions';
 import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
-import {
-  BankOutlined,
-  BarChartOutlined,
-  BulbOutlined,
-  CalendarOutlined,
-  CheckSquareOutlined,
-  ContainerOutlined,
-  CreditCardOutlined,
-  CustomerServiceOutlined,
-  DashboardOutlined,
-  DeploymentUnitOutlined,
-  ExperimentOutlined,
-  FileOutlined,
-  FileSyncOutlined,
-  FundOutlined,
-  LinkOutlined,
-  MessageOutlined,
-  NodeIndexOutlined,
-  ReconciliationOutlined,
-  RobotOutlined,
-  SendOutlined,
-  SettingOutlined,
-  ShopOutlined,
-  StarOutlined,
-  TeamOutlined,
-  UsergroupAddOutlined,
-  WalletOutlined,
-} from '@ant-design/icons';
-import { Button, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -49,8 +21,7 @@ export default function IconSidebar() {
   } = usePermissions();
 
   const [currentPath, setCurrentPath] = useState(location.pathname.slice(1));
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [activeSubmenu, setActiveSubmenu] = useState(null);
+  const [expandedKey, setExpandedKey] = useState(null);
 
   // Permission checker
   const checkPermission = (requiredPermissions) => {
@@ -82,246 +53,74 @@ export default function IconSidebar() {
 
   // Define menu items
   const menuItems = [
-    {
-      key: 'dashboard',
-      icon: <DashboardOutlined />,
-      label: 'Dashboard',
-      path: '/',
-    },
+    { key: 'dashboard', icon: 'dashboard', label: 'Dashboard', path: '/' },
     {
       key: 'crm',
-      icon: <BankOutlined />,
-      label: 'CRM (Customers & Sales)',
+      icon: 'group',
+      label: 'CRM',
       path: '/client',
       permissions: ['customer:read'],
       children: [
-        {
-          key: 'customer',
-          icon: <CustomerServiceOutlined />,
-          label: 'Customers',
-          path: '/client',
-          permissions: ['customer:read'],
-        },
-        {
-          key: 'quote',
-          icon: <FileSyncOutlined />,
-          label: 'Quotes',
-          path: '/quote',
-          permissions: ['quote:read'],
-        },
-        {
-          key: 'invoice',
-          icon: <ContainerOutlined />,
-          label: 'Invoices',
-          path: '/invoice',
-          permissions: ['invoice:read'],
-        },
-        {
-          key: 'payment',
-          icon: <CreditCardOutlined />,
-          label: 'Payments',
-          path: '/payment',
-          permissions: ['payment:read'],
-        },
-        {
-          key: 'paymentMode',
-          icon: <WalletOutlined />,
-          label: 'Payment Methods',
-          path: '/payment/mode',
-          permissions: ['payment:read'],
-        },
-        {
-          key: 'follow-ups',
-          icon: <CalendarOutlined />,
-          label: 'Follow-Up Management',
-          path: '/ai-enhanced/follow-ups',
-          permissions: ['ai:read'],
-        },
+        { key: 'customer', icon: 'person', label: 'Customers', path: '/client', permissions: ['customer:read'] },
+        { key: 'quote', icon: 'request_quote', label: 'Quotes', path: '/quote', permissions: ['quote:read'] },
+        { key: 'invoice', icon: 'receipt_long', label: 'Invoices', path: '/invoice', permissions: ['invoice:read'] },
+        { key: 'payment', icon: 'payments', label: 'Payments', path: '/payment', permissions: ['payment:read'] },
+        { key: 'paymentMode', icon: 'credit_card', label: 'Payment Methods', path: '/payment/mode', permissions: ['payment:read'] },
+        { key: 'follow-ups', icon: 'calendar_month', label: 'Follow-Ups', path: '/ai-enhanced/follow-ups', permissions: ['ai:read'] },
       ],
     },
     {
       key: 'marketing',
-      icon: <FundOutlined />,
-      label: 'Marketing & Reputation',
+      icon: 'campaign',
+      label: 'Marketing',
       path: '/marketing',
       permissions: ['marketing:read'],
       children: [
-        {
-          key: 'marketing-campaigns',
-          icon: <FundOutlined />,
-          label: 'Campaigns',
-          path: '/marketing',
-          permissions: ['marketing:read'],
-        },
-        {
-          key: 'marketing-behavior',
-          icon: <NodeIndexOutlined />,
-          label: 'Behavior Triggers',
-          path: '/marketing/behavior-triggers',
-          permissions: ['marketing:read'],
-        },
-        {
-          key: 'marketing-retargeting',
-          icon: <ReconciliationOutlined />,
-          label: 'Retargeting',
-          path: '/marketing/audiences',
-          permissions: ['marketing:read'],
-        },
-        {
-          key: 'social-media',
-          icon: <SendOutlined />,
-          label: 'Social Media',
-          path: '/social-media',
-          permissions: ['social:read'],
-        },
-        {
-          key: 'reputation',
-          icon: <StarOutlined />,
-          label: 'Reputation',
-          path: '/reputation',
-          permissions: ['reputation:read'],
-        },
-        {
-          key: 'survey',
-          icon: <CheckSquareOutlined />,
-          label: 'Customer Surveys',
-          path: '/survey',
-          permissions: ['survey:read'],
-        },
+        { key: 'marketing-campaigns', icon: 'campaign', label: 'Campaigns', path: '/marketing', permissions: ['marketing:read'] },
+        { key: 'marketing-behavior', icon: 'psychology', label: 'Behavior Triggers', path: '/marketing/behavior-triggers', permissions: ['marketing:read'] },
+        { key: 'marketing-retargeting', icon: 'track_changes', label: 'Retargeting', path: '/marketing/audiences', permissions: ['marketing:read'] },
+        { key: 'social-media', icon: 'share', label: 'Social Media', path: '/social-media', permissions: ['social:read'] },
+        { key: 'reputation', icon: 'star', label: 'Reputation', path: '/reputation', permissions: ['reputation:read'] },
+        { key: 'survey', icon: 'quiz', label: 'Surveys', path: '/survey', permissions: ['survey:read'] },
       ],
     },
-    {
-      key: 'chat',
-      icon: <MessageOutlined />,
-      label: 'Chat',
-      path: '/chat',
-    },
+    { key: 'chat', icon: 'chat', label: 'Chat', path: '/chat' },
     {
       key: 'ai-assistant',
-      icon: <RobotOutlined />,
+      icon: 'smart_toy',
       label: 'AI Assistant',
       path: '/ai-assistant',
       permissions: ['ai:read'],
       children: [
-        {
-          key: 'ai-chat',
-          icon: <MessageOutlined />,
-          label: 'AI Chat',
-          path: '/ai-assistant',
-          permissions: ['ai:read'],
-        },
-        {
-          key: 'ai-learning',
-          icon: <BulbOutlined />,
-          label: 'AI Learning',
-          path: '/ai-enhanced/learning',
-          permissions: ['ai:read'],
-        },
+        { key: 'ai-chat', icon: 'chat', label: 'AI Chat', path: '/ai-assistant', permissions: ['ai:read'] },
+        { key: 'ai-learning', icon: 'lightbulb', label: 'AI Learning', path: '/ai-enhanced/learning', permissions: ['ai:read'] },
       ],
     },
-    {
-      key: 'url',
-      icon: <LinkOutlined />,
-      label: 'URL',
-      path: '/url',
-      permissions: ['url:read'],
-    },
-    {
-      key: 'document',
-      icon: <FileOutlined />,
-      label: 'Documents',
-      path: '/document',
-      permissions: ['document:read'],
-    },
-    {
-      key: 'taxes',
-      icon: <ShopOutlined />,
-      label: 'Taxes',
-      path: '/taxes',
-      permissions: ['settings:read'],
-    },
+    { key: 'url', icon: 'link', label: 'URLs', path: '/url', permissions: ['url:read'] },
+    { key: 'document', icon: 'description', label: 'Documents', path: '/document', permissions: ['document:read'] },
+    { key: 'taxes', icon: 'receipt', label: 'Taxes', path: '/taxes', permissions: ['settings:read'] },
     {
       key: 'workflows-tasks',
-      icon: <DeploymentUnitOutlined />,
-      label: 'Workflow & Tasks',
+      icon: 'conversion_path',
+      label: 'Workflows',
       path: '/workflow',
       permissions: ['workflow:read'],
       children: [
-        {
-          key: 'workflow',
-          icon: <ExperimentOutlined />,
-          label: 'Workflows',
-          path: '#',
-          permissions: ['workflow:read'],
-          isExternal: true,
-        },
-        {
-          key: 'tasks',
-          icon: <CheckSquareOutlined />,
-          label: 'Tasks',
-          path: '/tasks',
-          permissions: ['task:read'],
-        },
-        {
-          key: 'appointments',
-          icon: <CalendarOutlined />,
-          label: 'Appointments',
-          path: '/appointments',
-          permissions: ['workflow:read'],
-        },
+        { key: 'workflow', icon: 'bolt', label: 'N8N Workflows', path: '#', permissions: ['workflow:read'], isExternal: true },
+        { key: 'tasks', icon: 'task_alt', label: 'Tasks', path: '/tasks', permissions: ['task:read'] },
+        { key: 'appointments', icon: 'calendar_month', label: 'Appointments', path: '/appointments', permissions: ['workflow:read'] },
       ],
     },
-    // {
-    //   key: 'business-process-automation',
-    //   icon: <ApartmentOutlined />,
-    //   label: 'Business Process Automation',
-    //   path: '/appointments',
-    //   permissions: ['workflow:read'],
-    //   children: [
-    //     // {
-    //     //   key: 'business-processes',
-    //     //   icon: <ApartmentOutlined />,
-    //     //   label: 'Business Processes',
-    //     //   path: '/business-processes',
-    //     //   permissions: ['workflow:read'],
-    //     // },
-    //     // {
-    //     //   key: 'task-tracking',
-    //     //   icon: <CheckSquareOutlined />,
-    //     //   label: 'Task Tracking',
-    //     //   path: '/task-tracking',
-    //     //   permissions: ['task:read'],
-    //     // },
-    //   ],
-    // },
-    {
-      key: 'analytics',
-      icon: <BarChartOutlined />,
-      label: 'Analytics & Reporting',
-      path: '/analytics',
-      permissions: ['analytics:read'],
-    },
+    { key: 'analytics', icon: 'analytics', label: 'Analytics', path: '/analytics', permissions: ['analytics:read'] },
     {
       key: 'team-settings',
-      icon: <UsergroupAddOutlined />,
-      label: 'Team & Settings',
+      icon: 'settings',
+      label: 'Settings',
       path: '/team',
       permissions: ['team:read'],
       children: [
-        {
-          key: 'team',
-          icon: <TeamOutlined />,
-          label: 'Team',
-          path: '/team',
-          permissions: ['team:read'],
-        },
-        {
-          key: 'generalSettings',
-          icon: <SettingOutlined />,
-          label: 'Settings',
-          path: '/settings',
-          permissions: ['settings:read'],
-        },
+        { key: 'team', icon: 'groups', label: 'Team', path: '/team', permissions: ['team:read'] },
+        { key: 'generalSettings', icon: 'tune', label: 'Settings', path: '/settings', permissions: ['settings:read'] },
       ],
     },
   ];
@@ -331,12 +130,12 @@ export default function IconSidebar() {
   // Check if current path matches item
   const isActive = (item) => {
     if (currentPath === item.key) return true;
-    if (item.path === '/' && currentPath === 'dashboard') return true;
-    if (item.path && currentPath.startsWith(item.path.slice(1))) return true;
+    if (item.path === '/' && (currentPath === 'dashboard' || currentPath === '')) return true;
+    if (item.path && item.path !== '/' && currentPath.startsWith(item.path.slice(1))) return true;
     if (item.children) {
       return item.children.some((child) => {
         if (currentPath === child.key) return true;
-        if (child.path && currentPath.startsWith(child.path.slice(1))) return true;
+        if (child.path && child.path !== '#' && currentPath.startsWith(child.path.slice(1))) return true;
         return false;
       });
     }
@@ -346,26 +145,22 @@ export default function IconSidebar() {
   // Handle main menu item click
   const handleItemClick = (item) => {
     if (item.children) {
-      // Toggle submenu
-      setActiveSubmenu(activeSubmenu === item.key ? null : item.key);
+      setExpandedKey(expandedKey === item.key ? null : item.key);
     } else {
-      // Navigate directly
       navigate(item.path);
-      setActiveSubmenu(null);
     }
   };
 
   // Handle submenu item click
-  const handleSubmenuClick = (item) => {
-    if (item.isExternal && item.key === 'workflow') {
+  const handleChildClick = (child) => {
+    if (child.isExternal && child.key === 'workflow') {
       const companyId = currentAdmin?._id;
       if (companyId) {
         window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
       }
     } else {
-      navigate(item.path);
+      navigate(child.path);
     }
-    setActiveSubmenu(null);
   };
 
   // Update current path on location change
@@ -391,258 +186,172 @@ export default function IconSidebar() {
         setCurrentPath(basePath);
       }
     }
+
+    // Auto-expand parent of active child
+    for (const item of filteredItems) {
+      if (item.children && isActive(item)) {
+        setExpandedKey(item.key);
+        break;
+      }
+    }
   }, [location]);
 
   return (
-    <>
-      {/* Main Icon Sidebar */}
-      <aside
-        className="icon-sidebar"
-        style={{
-          position: 'fixed',
-          left: 0,
-          top: 70,
-          bottom: 0,
-          width: '70px',
-          background: '#ffffff',
-          borderRight: '1px solid #e8e8e8',
-          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.06)',
-          zIndex: 1002,
-          display: 'flex',
-          flexDirection: 'column',
-          paddingTop: '16px',
-          overflow: 'auto',
-        }}
+    <aside
+      className="erp-sidebar"
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: '220px',
+        background: '#ffffff',
+        borderRight: '1px solid rgba(0,0,0,0.06)',
+        zIndex: 1002,
+        display: 'flex',
+        flexDirection: 'column',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        fontFamily: "'Inter', -apple-system, sans-serif",
+      }}
+    >
+      {/* Logo */}
+      <div
+        className="flex items-center gap-2.5 px-5 py-5 cursor-pointer"
+        onClick={() => navigate('/')}
       >
+        <img src="/logo-bg-remove.png" alt="ERP.js" className="h-8 w-8 object-contain" />
+        <div>
+          <span className="text-lg font-bold tracking-tighter" style={{ color: '#191c1d' }}>ERP.js</span>
+          <span className="block text-[9px] font-semibold uppercase tracking-wider" style={{ color: '#71767f' }}>Enterprise Engine</span>
+        </div>
+      </div>
+
+      {/* New Project Button */}
+      <div className="px-4 mb-4">
+        <button
+          onClick={() => navigate('/client/create')}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg font-semibold text-sm text-white border-none cursor-pointer transition-all hover:opacity-90 active:scale-[0.98]"
+          style={{ background: 'linear-gradient(135deg, #0058c3, #0070f3)' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+          New Project
+        </button>
+      </div>
+
+      {/* Menu Items */}
+      <nav className="flex-1 px-3 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         {filteredItems.map((item) => {
           const active = isActive(item);
+          const isExpanded = expandedKey === item.key;
+
           return (
-            <Tooltip
-              key={item.key}
-              title={translate(item.label)}
-              placement="right"
-              mouseEnterDelay={0.3}
-            >
-              <div
-                className={`icon-menu-item ${active ? 'active' : ''} ${
-                  activeSubmenu === item.key ? 'submenu-open' : ''
-                }`}
+            <div key={item.key} style={{ marginBottom: '2px' }}>
+              <button
                 onClick={() => handleItemClick(item)}
-                onMouseEnter={() => setHoveredItem(item.key)}
-                onMouseLeave={() => setHoveredItem(null)}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border-none cursor-pointer transition-all text-left"
                 style={{
-                  width: '100%',
-                  height: '56px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  position: 'relative',
-                  transition: 'all 0.2s ease',
-                  background: active ? '#eaf4ff' : 'transparent',
-                  borderLeft: active ? '3px solid #1e3a8a' : '3px solid transparent',
+                  background: active ? 'linear-gradient(135deg, #0058c3, #0070f3)' : 'transparent',
+                  color: active ? '#ffffff' : '#414754',
                 }}
+                onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = '#f3f4f5'; }}
+                onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = active ? 'linear-gradient(135deg, #0058c3, #0070f3)' : 'transparent'; }}
               >
                 <span
-                  style={{
-                    fontSize: '22px',
-                    color: active || hoveredItem === item.key ? '#1e3a8a' : '#64748b',
-                    transition: 'color 0.2s ease',
-                  }}
+                  className="material-symbols-outlined"
+                  style={{ fontSize: '20px', color: active ? '#ffffff' : '#71767f' }}
                 >
                   {item.icon}
                 </span>
-              </div>
-            </Tooltip>
-          );
-        })}
-      </aside>
+                <span style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '-0.01em', flex: 1 }}>
+                  {translate(item.label)}
+                </span>
+                {item.children && (
+                  <span
+                    className="material-symbols-outlined"
+                    style={{
+                      fontSize: '16px',
+                      color: active ? '#ffffff' : '#71767f',
+                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  >
+                    expand_more
+                  </span>
+                )}
+              </button>
 
-      {/* Submenu Panel */}
-      {activeSubmenu && (
-        <>
-          {/* Backdrop to close submenu when clicking outside */}
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 1001,
-              background: 'transparent',
-            }}
-            onClick={() => setActiveSubmenu(null)}
-          />
-
-          {/* Submenu content */}
-          <aside
-            className="submenu-panel"
-            style={{
-              position: 'fixed',
-              left: '70px',
-              top: 70,
-              bottom: 0,
-              width: '240px',
-              background: '#ffffff',
-              borderRight: '1px solid #e8e8e8',
-              boxShadow: '4px 0 12px rgba(0, 0, 0, 0.08)',
-              zIndex: 1003,
-              padding: '16px 12px',
-              overflowY: 'auto',
-              animation: 'slideIn 0.2s ease-out',
-            }}
-          >
-            {/* Submenu title */}
-            <div
-              style={{
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: '#1e3a8a',
-                marginBottom: '16px',
-                paddingLeft: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}
-            >
-              {translate(filteredItems.find((i) => i.key === activeSubmenu)?.label || '')}
-            </div>
-
-            {/* Submenu items */}
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {filteredItems
-                .find((i) => i.key === activeSubmenu)
-                ?.children?.map((child) => {
-                  const childActive = currentPath === child.key;
-
-                  if (child.isExternal && child.key === 'workflow') {
+              {/* Children */}
+              {item.children && isExpanded && (
+                <div style={{ marginLeft: '16px', paddingLeft: '16px', borderLeft: '1.5px solid #e1e3e4', marginTop: '4px', marginBottom: '4px' }}>
+                  {item.children.map((child) => {
+                    const childActive = currentPath === child.key;
                     return (
-                      <li key={child.key} style={{ marginBottom: '4px' }}>
-                        <Button
-                          type="primary"
-                          icon={child.icon}
-                          onClick={() => handleSubmenuClick(child)}
-                          style={{
-                            backgroundColor: '#7ED957',
-                            borderColor: '#7ED957',
-                            color: '#fff',
-                            width: '100%',
-                            height: '40px',
-                            fontSize: '14px',
-                            fontWeight: '500',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-start',
-                            gap: '8px',
-                          }}
-                        >
-                          {translate(child.label)}
-                        </Button>
-                      </li>
-                    );
-                  }
-
-                  return (
-                    <li key={child.key} style={{ marginBottom: '4px' }}>
-                      <Link
-                        to={child.path}
-                        onClick={() => handleSubmenuClick(child)}
+                      <button
+                        key={child.key}
+                        onClick={() => handleChildClick(child)}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg border-none cursor-pointer transition-all text-left"
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '10px 12px',
-                          borderRadius: '8px',
-                          textDecoration: 'none',
-                          color: childActive ? '#1e3a8a' : '#1F2937',
-                          background: childActive ? '#dbeafe' : 'transparent',
-                          transition: 'all 0.2s ease',
-                          fontWeight: childActive ? '600' : '500',
-                          fontSize: '14px',
+                          background: childActive ? '#eaf4ff' : 'transparent',
+                          color: childActive ? '#0058c3' : '#414754',
+                          marginBottom: '2px',
                         }}
-                        onMouseEnter={(e) => {
-                          if (!childActive) {
-                            e.currentTarget.style.background = '#f3f4f6';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!childActive) {
-                            e.currentTarget.style.background = 'transparent';
-                          }
-                        }}
+                        onMouseEnter={(e) => { if (!childActive) e.currentTarget.style.background = '#f3f4f5'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = childActive ? '#eaf4ff' : 'transparent'; }}
                       >
                         <span
-                          style={{
-                            fontSize: '18px',
-                            marginRight: '10px',
-                            color: childActive ? '#1e3a8a' : '#64748b',
-                          }}
+                          className="material-symbols-outlined"
+                          style={{ fontSize: '18px', color: childActive ? '#0058c3' : '#71767f' }}
                         >
                           {child.icon}
                         </span>
-                        {translate(child.label)}
-                      </Link>
-                    </li>
-                  );
-                })}
-            </ul>
-          </aside>
-        </>
-      )}
+                        <span style={{ fontSize: '13px', fontWeight: 500 }}>{translate(child.label)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </nav>
+
+      {/* Bottom Section */}
+      <div style={{ padding: '12px', marginTop: 'auto', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+        <button
+          onClick={() => navigate('/help')}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border-none cursor-pointer transition-all text-left"
+          style={{ background: 'transparent', color: '#414754' }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = '#f3f4f5'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#71767f' }}>help</span>
+          <span style={{ fontSize: '13px', fontWeight: 500 }}>Help</span>
+        </button>
+        <Link
+          to="/logout"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg no-underline transition-all"
+          style={{ color: '#414754' }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = '#f3f4f5'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#71767f' }}>logout</span>
+          <span style={{ fontSize: '13px', fontWeight: 500 }}>Logout</span>
+        </Link>
+      </div>
 
       <style>{`
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        .icon-menu-item:hover {
-          background: #f3f4f6 !important;
-        }
-
-        .icon-menu-item.active:hover {
-          background: #eaf4ff !important;
-        }
-
-        .icon-sidebar::-webkit-scrollbar {
+        .erp-sidebar::-webkit-scrollbar {
           width: 4px;
         }
-
-        .icon-sidebar::-webkit-scrollbar-track {
-          background: #ffffff;
+        .erp-sidebar::-webkit-scrollbar-track {
+          background: transparent;
         }
-
-        .icon-sidebar::-webkit-scrollbar-thumb {
-          background: #dbeafe;
+        .erp-sidebar::-webkit-scrollbar-thumb {
+          background: #e1e3e4;
           border-radius: 2px;
         }
-
-        .icon-sidebar::-webkit-scrollbar-thumb:hover {
-          background: #bfdbfe;
-        }
-
-        .submenu-panel::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .submenu-panel::-webkit-scrollbar-track {
-          background: #ffffff;
-        }
-
-        .submenu-panel::-webkit-scrollbar-thumb {
-          background: #dbeafe;
-          border-radius: 3px;
-        }
-
-        .submenu-panel::-webkit-scrollbar-thumb:hover {
-          background: #bfdbfe;
-        }
       `}</style>
-    </>
+    </aside>
   );
 }

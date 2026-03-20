@@ -29,9 +29,7 @@ const urlClickSchema = new mongoose.Schema({
   // User Information
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    sparse: true
-  },
+    ref: 'User',  },
   isAuthenticated: {
     type: Boolean,
     default: false
@@ -173,9 +171,7 @@ const urlClickSchema = new mongoose.Schema({
   },
   abTestId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ABTest',
-    sparse: true
-  },
+    ref: 'ABTest',  },
 
   // Behavior Tracking
   timeOnSite: {
@@ -259,10 +255,7 @@ const urlClickSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  }
+          }
 }, {
   timestamps: { createdAt: true, updatedAt: false }, // Only track creation time
   toJSON: { virtuals: true },
@@ -280,7 +273,7 @@ urlClickSchema.index({ utmSource: 1, utmMedium: 1, utmCampaign: 1 });
 urlClickSchema.index({ abTestGroup: 1, abTestId: 1 });
 urlClickSchema.index({ userId: 1, sessionId: 1 });
 urlClickSchema.index({ isBot: 1, isValidClick: 1 });
-urlClickSchema.index({ companyID: 1 }); // Index for companyID
+urlClickSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Compound indexes for common queries
 urlClickSchema.index({ url: 1, isValidClick: 1, isBot: 1, clickedAt: -1 });

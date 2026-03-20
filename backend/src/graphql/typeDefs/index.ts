@@ -45,6 +45,7 @@ const copilotTypeDefs = require('./copilot');
 const crmUrlsTypeDefs = require('./crmUrls');
 const dataEntryTypeDefs = require('./dataEntry');
 const subscriptionTypeDefs = require('./subscriptions');
+const projectTypeDefs = require('./project');
 
 // Root types that all extensions build on
 const rootTypeDefs = gql`
@@ -106,4 +107,5 @@ module.exports = [
   crmUrlsTypeDefs,
   dataEntryTypeDefs,
   subscriptionTypeDefs,
+  projectTypeDefs,
 ];

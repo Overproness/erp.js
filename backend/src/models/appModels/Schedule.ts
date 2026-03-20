@@ -228,10 +228,7 @@ const scheduleSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Update the 'updated' field before saving
@@ -248,7 +245,7 @@ scheduleSchema.pre('save', function (next) {
   next();
 });
 
-scheduleSchema.index({ companyID: 1 }); // Index for companyID
+scheduleSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Schedule', scheduleSchema);
 export default exportedModel;

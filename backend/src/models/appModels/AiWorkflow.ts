@@ -110,10 +110,7 @@ const workflowSchema = new mongoose.Schema({
     default: Date.now,
   },
   companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-  },
+    type: String,  },
 });
 
 // Update the updated field before saving
@@ -125,7 +122,7 @@ workflowSchema.pre('save', function() {
 workflowSchema.index({ owner: 1, removed: 1 });
 workflowSchema.index({ category: 1, enabled: 1 });
 workflowSchema.index({ triggerType: 1 });
-workflowSchema.index({ companyID: 1 }); // Index for companyID
+workflowSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const AiWorkflow = mongoose.model('AiWorkflow', workflowSchema);
 

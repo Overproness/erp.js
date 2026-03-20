@@ -45,17 +45,14 @@ const DocumentAuditSchema = new Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   {
     timestamps: true,
   }
 );
 
-DocumentAuditSchema.index({ companyID: 1 }); // Index for companyID
+DocumentAuditSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('DocumentAudit', DocumentAuditSchema);
 export default exportedModel;

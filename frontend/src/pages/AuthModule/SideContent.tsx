@@ -20,11 +20,11 @@ export default function SideContent() {
     >
       <div style={{ width: '100%' }}>
         <img
-          src="/logo.png"
+          src="/logo-bg-remove.png"
           alt="ERP CRM"
           style={{ margin: '0 0 40px', display: 'block' }}
-          height={63}
-          width={220}
+          height={100}
+          width={100}
         />
 
         <Title level={1} style={{ fontSize: 28 }}>

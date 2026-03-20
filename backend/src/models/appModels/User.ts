@@ -57,7 +57,6 @@ const userSchema = new mongoose.Schema(
     },
     companyID: {
       type: String,
-      index: true,
       sparse: true,
     },
     permissions: {

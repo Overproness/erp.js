@@ -71,10 +71,7 @@ const aiAnalyticsSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 aiAnalyticsSchema.pre('save', function (next) {
@@ -84,7 +81,7 @@ aiAnalyticsSchema.pre('save', function (next) {
 
 aiAnalyticsSchema.index({ type: 1, module: 1, created: -1 });
 aiAnalyticsSchema.index({ owner: 1, type: 1 });
-aiAnalyticsSchema.index({ companyID: 1 }); // Index for companyID
+aiAnalyticsSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('AiAnalytics', aiAnalyticsSchema);
 export default exportedModel;

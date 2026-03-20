@@ -58,8 +58,10 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="relative">
                     <input
-                      className="w-full border-none rounded-lg px-4 pt-6 pb-2 placeholder-transparent focus:ring-2 focus:ring-[#0058c3] focus:ring-offset-0 text-sm"
-                      style={{ background: '#e1e3e4', color: '#191c1d' }}
+                      className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
+                      style={{ background: '#e1e3e4', color: '#191c1d', border: '1.5px solid transparent', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)' }}
+                      onFocus={(e) => { e.target.style.border = '1.5px solid #0058c3'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }}
+                      onBlur={(e) => { e.target.style.border = '1.5px solid transparent'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }}
                       id="name"
                       name="name"
                       placeholder="Name"
@@ -75,8 +77,10 @@ export default function ContactPage() {
                   </div>
                   <div className="relative">
                     <input
-                      className="w-full border-none rounded-lg px-4 pt-6 pb-2 placeholder-transparent focus:ring-2 focus:ring-[#0058c3] focus:ring-offset-0 text-sm"
-                      style={{ background: '#e1e3e4', color: '#191c1d' }}
+                      className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
+                      style={{ background: '#e1e3e4', color: '#191c1d', border: '1.5px solid transparent', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)' }}
+                      onFocus={(e) => { e.target.style.border = '1.5px solid #0058c3'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }}
+                      onBlur={(e) => { e.target.style.border = '1.5px solid transparent'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }}
                       id="email"
                       name="email"
                       placeholder="Work Email"
@@ -93,8 +97,10 @@ export default function ContactPage() {
                 </div>
                 <div className="relative">
                   <input
-                    className="w-full border-none rounded-lg px-4 pt-6 pb-2 placeholder-transparent focus:ring-2 focus:ring-[#0058c3] focus:ring-offset-0 text-sm"
-                    style={{ background: '#e1e3e4', color: '#191c1d' }}
+                    className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
+                    style={{ background: '#e1e3e4', color: '#191c1d', border: '1.5px solid transparent', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)' }}
+                    onFocus={(e) => { e.target.style.border = '1.5px solid #0058c3'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }}
+                    onBlur={(e) => { e.target.style.border = '1.5px solid transparent'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }}
                     id="company"
                     name="company"
                     placeholder="Company"
@@ -110,8 +116,10 @@ export default function ContactPage() {
                 </div>
                 <div className="relative">
                   <textarea
-                    className="w-full border-none rounded-lg px-4 pt-6 pb-2 placeholder-transparent focus:ring-2 focus:ring-[#0058c3] focus:ring-offset-0 resize-none text-sm"
-                    style={{ background: '#e1e3e4', color: '#191c1d' }}
+                    className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent resize-none text-sm outline-none transition-all"
+                    style={{ background: '#e1e3e4', color: '#191c1d', border: '1.5px solid transparent', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)' }}
+                    onFocus={(e) => { e.target.style.border = '1.5px solid #0058c3'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }}
+                    onBlur={(e) => { e.target.style.border = '1.5px solid transparent'; e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }}
                     id="message"
                     name="message"
                     placeholder="Message"

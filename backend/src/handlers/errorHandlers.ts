@@ -149,6 +149,28 @@ export const validateObjectId = (paramName = 'id') => {
   };
 };
 
+export const notFound = (req: Request, res: Response, next: NextFunction): void => {
+  res.status(404).json({
+    success: false,
+    result: null,
+    message: `Route not found: ${req.method} ${req.originalUrl}`,
+  });
+};
+
+export const productionErrors = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  res.status(err.status || 500).json({
+    success: false,
+    result: null,
+    message: err.message || 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err : undefined,
+  });
+};
+
 export const sanitizeOutput = (data: any): any => {
   if (!data) return data;
 

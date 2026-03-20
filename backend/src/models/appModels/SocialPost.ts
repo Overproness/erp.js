@@ -150,10 +150,7 @@ const socialPostSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
@@ -161,7 +158,7 @@ socialPostSchema.index({ owner: 1, removed: 1 });
 socialPostSchema.index({ status: 1, scheduledFor: 1 });
 socialPostSchema.index({ campaign: 1 });
 socialPostSchema.index({ platforms: 1 });
-socialPostSchema.index({ companyID: 1 }); // Index for companyID
+socialPostSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Middleware
 socialPostSchema.pre('save', function(next) {

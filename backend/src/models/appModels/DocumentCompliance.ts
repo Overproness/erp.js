@@ -95,17 +95,14 @@ const DocumentComplianceSchema = new Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   {
     timestamps: true,
   }
 );
 
-DocumentComplianceSchema.index({ companyID: 1 }); // Index for companyID
+DocumentComplianceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('DocumentCompliance', DocumentComplianceSchema);
 export default exportedModel;

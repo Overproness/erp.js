@@ -91,17 +91,14 @@ const aiExtractionTemplateSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 aiExtractionTemplateSchema.index({ owner: 1, removed: 1 });
 aiExtractionTemplateSchema.index({ category: 1, enabled: 1 });
 aiExtractionTemplateSchema.index({ name: 1, owner: 1 }, { unique: true });
-aiExtractionTemplateSchema.index({ companyID: 1 }); // Index for companyID
+aiExtractionTemplateSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Middleware
 aiExtractionTemplateSchema.pre('save', function(next) {

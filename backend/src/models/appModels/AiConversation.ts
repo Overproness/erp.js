@@ -76,10 +76,7 @@ const aiConversationSchema = new mongoose.Schema({
     default: Date.now,
   },
   companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-  },
+    type: String,  },
 });
 
 aiConversationSchema.pre('save', function (next) {
@@ -92,7 +89,7 @@ aiConversationSchema.pre('save', function (next) {
 
 aiConversationSchema.index({ user: 1, created: -1 });
 aiConversationSchema.index({ 'context.module': 1, 'context.entityId': 1 });
-aiConversationSchema.index({ companyID: 1 });
+aiConversationSchema.index({ companyID: 1 }, { sparse: true });
 
 const exportedModel = mongoose.model('AiConversation', aiConversationSchema);
 export default exportedModel;

@@ -45,9 +45,7 @@ const reviewSchema = new Schema({
     default: 'direct',
   },
   platformReviewId: {
-    type: String,
-    sparse: true,
-  },
+    type: String,  },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected', 'flagged', 'responded'],
@@ -123,10 +121,7 @@ const reviewSchema = new Schema({
     default: false,
   },
   companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-  }
+    type: String,  }
 });
 
 // Indexes for faster queries
@@ -135,7 +130,7 @@ reviewSchema.index({ business: 1, platform: 1 });
 reviewSchema.index({ business: 1, 'client.email': 1 });
 reviewSchema.index({ business: 1, rating: 1 });
 reviewSchema.index({ 'sentiment.category': 1, business: 1 });
-reviewSchema.index({ companyID: 1 }); // Index for companyID
+reviewSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Text index for searching review content
 reviewSchema.index({ 

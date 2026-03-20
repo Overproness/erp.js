@@ -107,10 +107,7 @@ const aiKnowledgeBaseSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 aiKnowledgeBaseSchema.pre('save', function (next) {
@@ -127,7 +124,7 @@ aiKnowledgeBaseSchema.pre('save', function (next) {
 
 aiKnowledgeBaseSchema.index({ 'entries.title': 'text', 'entries.content': 'text', 'entries.tags': 'text' });
 aiKnowledgeBaseSchema.index({ domain: 1, owner: 1 });
-aiKnowledgeBaseSchema.index({ companyID: 1 }); // Index for companyID
+aiKnowledgeBaseSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('AiKnowledgeBase', aiKnowledgeBaseSchema);
 export default exportedModel;

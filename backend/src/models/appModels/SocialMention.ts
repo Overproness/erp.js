@@ -223,10 +223,7 @@ const socialMentionSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
@@ -236,7 +233,7 @@ socialMentionSchema.index({ sentiment: 1, priority: 1 });
 socialMentionSchema.index({ keywords: 1 });
 socialMentionSchema.index({ 'response.status': 1 });
 socialMentionSchema.index({ mentionType: 1, detectedAt: -1 });
-socialMentionSchema.index({ companyID: 1 }); // Index for companyID
+socialMentionSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Text search index
 socialMentionSchema.index({

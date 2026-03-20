@@ -108,10 +108,7 @@ const DocumentVersionSchema = new Schema(
       default: false,
     },
     companyID: {
-      type: String,
-      index: true,
-      sparse: true,
-    },
+      type: String,    },
   },
   {
     timestamps: true,
@@ -123,7 +120,7 @@ DocumentVersionSchema.index({ document: 1, versionNumber: 1 }, { unique: true })
 DocumentVersionSchema.index({ document: 1, version: 1 });
 DocumentVersionSchema.index({ document: 1, createdAt: -1 });
 DocumentVersionSchema.index({ author: 1 });
-DocumentVersionSchema.index({ companyID: 1 }); // Index for companyID
+DocumentVersionSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual for getting the latest version
 DocumentVersionSchema.virtual('isLatest').get(function () {

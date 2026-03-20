@@ -100,10 +100,7 @@ const teamSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Update the 'updated' field before saving
@@ -114,7 +111,7 @@ teamSchema.pre('save', function (next) {
 
 // Create text index for search
 teamSchema.index({ name: 'text', description: 'text' });
-teamSchema.index({ companyID: 1 }); // Index for companyID
+teamSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Team', teamSchema);
 export default exportedModel;

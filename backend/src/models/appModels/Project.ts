@@ -155,10 +155,7 @@ const projectSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Update the 'updated' field before saving
@@ -178,7 +175,7 @@ projectSchema.pre('save', function (next) {
   next();
 });
 
-projectSchema.index({ companyID: 1 }); // Index for companyID
+projectSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Project', projectSchema);
 export default exportedModel;

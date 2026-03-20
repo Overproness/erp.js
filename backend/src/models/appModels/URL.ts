@@ -313,10 +313,7 @@ const urlSchema = new mongoose.Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
 
     // Customization settings for URL behavior
     customization: {
@@ -354,9 +351,7 @@ const urlSchema = new mongoose.Schema(
 );
 
 // Indexes for performance
-urlSchema.index({ shortCode: 1 }, { unique: true });
 urlSchema.index({ owner: 1, createdAt: -1 });
-urlSchema.index({ expiresAt: 1 });
 urlSchema.index({ isActive: 1, isPublic: 1 });
 urlSchema.index({ totalClicks: -1 });
 urlSchema.index({ linkedModule: 1, linkedEntityId: 1 });
@@ -365,7 +360,7 @@ urlSchema.index(
   { expiresAt: 1 },
   { expireAfterSeconds: 0, partialFilterExpression: { expiresAt: { $exists: true } } }
 );
-urlSchema.index({ companyID: 1 }); // Index for companyID
+urlSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual for full shortened URL
 urlSchema.virtual('shortenedUrl').get(function () {

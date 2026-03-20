@@ -2,7 +2,7 @@
 const custom = require('@/controllers/pdfController');
 const mongoose = require('mongoose');
 
-module.exports = downloadPdf = async (req, res, { directory, id }) => {
+const downloadPdf = async (req, res, { directory, id }) => {
   try {
     const modelName = directory.slice(0, 1).toUpperCase() + directory.slice(1);
     if (mongoose.models[modelName]) {
@@ -73,3 +73,5 @@ module.exports = downloadPdf = async (req, res, { directory, id }) => {
     }
   }
 };
+
+module.exports = downloadPdf;

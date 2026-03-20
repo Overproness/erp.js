@@ -33,10 +33,7 @@ const SearchHistorySchema = new Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   {
     collection: 'searchhistory',
@@ -47,7 +44,7 @@ const SearchHistorySchema = new Schema(
 // Index for efficient queries
 SearchHistorySchema.index({ userId: 1, timestamp: -1 });
 SearchHistorySchema.index({ companyOwner: 1, timestamp: -1 });
-SearchHistorySchema.index({ companyID: 1 }); // Index for companyID
+SearchHistorySchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('SearchHistory', SearchHistorySchema);
 export default exportedModel;

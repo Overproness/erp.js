@@ -46,17 +46,14 @@ const DataRetentionPolicySchema = new mongoose.Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   { timestamps: { createdAt: 'created', updatedAt: 'updated' } }
 );
 
 // Add index for faster lookups by data type and status
 DataRetentionPolicySchema.index({ dataType: 1, status: 1 });
-DataRetentionPolicySchema.index({ companyID: 1 }); // Index for companyID
+DataRetentionPolicySchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('DataRetentionPolicy', DataRetentionPolicySchema);
 export default exportedModel;

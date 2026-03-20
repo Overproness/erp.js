@@ -227,17 +227,14 @@ const triggerRuleSchema = new Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 triggerRuleSchema.index({ owner: 1, removed: 1, isActive: 1 });
 triggerRuleSchema.index({ triggerType: 1, isActive: 1 });
 triggerRuleSchema.index({ 'eventConditions.eventType': 1, isActive: 1 });
-triggerRuleSchema.index({ companyID: 1 }); // Index for companyID
+triggerRuleSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Pre-save middleware
 triggerRuleSchema.pre('save', function(next) {

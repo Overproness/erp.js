@@ -120,10 +120,7 @@ const BusinessSchema = new Schema(
       default: false,
     },
     companyID: {
-      type: String,
-      index: true,
-      sparse: true,
-    },
+      type: String,    },
   },
   {
     timestamps: { createdAt: 'created', updatedAt: 'updated' },
@@ -136,7 +133,7 @@ const BusinessSchema = new Schema(
 BusinessSchema.index({ owner: 1, name: 1 });
 BusinessSchema.index({ removed: 1 });
 BusinessSchema.index({ 'address.city': 1, 'address.country': 1 });
-BusinessSchema.index({ companyID: 1 }); // Index for companyID
+BusinessSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Business', BusinessSchema);
 export default exportedModel;

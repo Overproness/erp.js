@@ -19,7 +19,6 @@ function initializeResolvers(controllers) {
     { name: 'quote', controller: controllers.quoteController },
     { name: 'payment', controller: controllers.paymentController },
     { name: 'project', controller: controllers.projectController },
-    { name: 'schedule', controller: controllers.scheduleController },
     // Financial
     { name: 'taxes', controller: controllers.taxesController },
     { name: 'paymentMode', controller: controllers.paymentModeController },
@@ -56,18 +55,14 @@ function initializeResolvers(controllers) {
     // Reputation
     { name: 'review', controller: controllers.reviewController },
     { name: 'reviewLink', controller: controllers.reviewLinkController },
-    { name: 'reviewResponse', controller: controllers.reviewResponseController },
     { name: 'reviewTemplate', controller: controllers.reviewTemplateController },
     // AI
     { name: 'aiKnowledgeBase', controller: controllers.aiKnowledgeBaseController },
-    { name: 'aiUserPreference', controller: controllers.aiUserPreferenceController },
     // Compliance
     { name: 'consentRecord', controller: controllers.consentRecordController },
     { name: 'dataRetentionPolicy', controller: controllers.dataRetentionPolicyController },
     { name: 'auditTrail', controller: controllers.auditTrailController },
     // Misc
-    { name: 'savedSearch', controller: controllers.savedSearchController },
-    { name: 'sharedResource', controller: controllers.sharedResourceController },
   ];
 
   const mergedQueries = {

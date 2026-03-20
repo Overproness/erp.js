@@ -47,13 +47,10 @@ const taxesSchema = new Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
-taxesSchema.index({ companyID: 1 }); // Index for companyID
+taxesSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Taxes', taxesSchema);
 export default exportedModel;

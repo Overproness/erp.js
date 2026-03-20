@@ -28,6 +28,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
           changeOrigin: true,
           secure: false,
         },
+        '/graphql': {
+          target: proxy_url,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
     optimizeDeps: {

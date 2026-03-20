@@ -16,12 +16,12 @@ const bulkCreate = require('./bulkCreate');
 const bulkUpdate = require('./bulkUpdate');
 const bulkDelete = require('./bulkDelete');
 
-const createCRUDController = (modelName) => {
+const createCRUDController = (modelName, registeredModelName) => {
   if (!modelsFiles.includes(modelName)) {
     throw new Error(`Model ${modelName} does not exist`);
   }
 
-  const Model = mongoose.model(modelName);
+  const Model = mongoose.model(registeredModelName || modelName);
   const crudMethods = {
     create: (req, res) => create(Model, req, res),
     read: (req, res) => read(Model, req, res),

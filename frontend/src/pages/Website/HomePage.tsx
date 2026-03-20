@@ -1,5 +1,8 @@
+import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import WebsiteLayout from './components/WebsiteLayout';
+
+const HeroScene = lazy(() => import('@/components/HeroScene'));
 
 export default function HomePage() {
   return (
@@ -55,61 +58,17 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 3D Component Placeholder */}
+          {/* 3D Crystal Engine Model */}
           <div className="relative hidden lg:flex justify-center items-center h-[600px]">
-            <div
-              className="absolute w-[400px] h-[400px] rounded-[2rem] transform rotate-12 -translate-x-12 -translate-y-12 flex items-center justify-center"
-              style={{
-                background: 'rgba(255,255,255,0.7)',
-                backdropFilter: 'blur(20px)',
-                borderTop: '1px solid rgba(255,255,255,0.4)',
-                borderLeft: '1px solid rgba(255,255,255,0.4)',
-                borderBottom: '1px solid rgba(0,0,0,0.05)',
-                borderRight: '1px solid rgba(0,0,0,0.05)',
-              }}
+            <Suspense
+              fallback={
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-xl bg-[#0058c3]/10 animate-pulse"></div>
+                </div>
+              }
             >
-              <div className="w-32 h-32 bg-[#0058c3]/20 rounded-xl border border-[#0058c3]/30 flex items-center justify-center">
-                <span
-                  className="material-symbols-outlined text-[#0058c3] text-5xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  account_tree
-                </span>
-              </div>
-            </div>
-            <div
-              className="absolute w-[300px] h-[300px] rounded-[2rem] transform -rotate-6 translate-x-12 translate-y-12 flex items-center justify-center z-20"
-              style={{
-                background: 'rgba(255,255,255,0.7)',
-                backdropFilter: 'blur(20px)',
-                borderTop: '1px solid rgba(255,255,255,0.4)',
-                borderLeft: '1px solid rgba(255,255,255,0.4)',
-                borderBottom: '1px solid rgba(0,0,0,0.05)',
-                borderRight: '1px solid rgba(0,0,0,0.05)',
-              }}
-            >
-              <div className="w-24 h-24 bg-[#0058c3] rounded-xl flex items-center justify-center shadow-2xl">
-                <span
-                  className="material-symbols-outlined text-white text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  bolt
-                </span>
-              </div>
-            </div>
-            <div
-              className="absolute w-[200px] h-[200px] rounded-[2rem] transform rotate-45 -translate-y-48 translate-x-32 flex items-center justify-center opacity-60"
-              style={{
-                background: 'rgba(255,255,255,0.7)',
-                backdropFilter: 'blur(20px)',
-                borderTop: '1px solid rgba(255,255,255,0.4)',
-                borderLeft: '1px solid rgba(255,255,255,0.4)',
-                borderBottom: '1px solid rgba(0,0,0,0.05)',
-                borderRight: '1px solid rgba(0,0,0,0.05)',
-              }}
-            >
-              <span className="material-symbols-outlined text-[#0058c3] text-3xl">smart_toy</span>
-            </div>
+              <HeroScene />
+            </Suspense>
           </div>
         </div>
       </section>

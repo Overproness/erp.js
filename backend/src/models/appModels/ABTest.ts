@@ -279,10 +279,7 @@ const abTestSchema = new mongoose.Schema({
   
   // Company ID
   companyID: {
-    type: String,
-    index: true,
-    sparse: true
-  }
+    type: String,  }
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -296,7 +293,7 @@ abTestSchema.index({ owner: 1, status: 1 });
 abTestSchema.index({ createdAt: -1 });
 abTestSchema.index({ controlUrl: 1 });
 abTestSchema.index({ 'variants.url': 1 });
-abTestSchema.index({ companyID: 1 }); // Index for companyID
+abTestSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual for test duration in days
 abTestSchema.virtual('durationDays').get(function() {

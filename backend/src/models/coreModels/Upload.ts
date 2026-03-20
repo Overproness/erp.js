@@ -70,13 +70,10 @@ const uploadSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
-uploadSchema.index({ companyID: 1 }); // Index for companyID
+uploadSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Upload = mongoose.model('Upload ', uploadSchema);
 export default Upload;

@@ -47,17 +47,14 @@ const AuditTrailSchema = new mongoose.Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   { timestamps: { createdAt: 'timestamp', updatedAt: false } }
 );
 
 // Compound index for efficient querying
 AuditTrailSchema.index({ documentId: 1, timestamp: -1 });
-AuditTrailSchema.index({ companyID: 1 }); // Index for companyID
+AuditTrailSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Export the model - ensure it's only registered once
 module.exports = mongoose.models.AuditTrail || mongoose.model('AuditTrail', AuditTrailSchema);

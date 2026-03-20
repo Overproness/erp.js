@@ -103,10 +103,7 @@ const aiAssistantSchema = new mongoose.Schema({
     default: Date.now,
   },
   companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-  },
+    type: String,  },
 });
 
 aiAssistantSchema.pre('save', function (next) {
@@ -115,7 +112,7 @@ aiAssistantSchema.pre('save', function (next) {
 });
 
 aiAssistantSchema.index({ name: 'text', description: 'text' });
-aiAssistantSchema.index({ companyID: 1 });
+aiAssistantSchema.index({ companyID: 1 }, { sparse: true });
 
 const exportedModel = mongoose.model('AiAssistant', aiAssistantSchema);
 export default exportedModel;

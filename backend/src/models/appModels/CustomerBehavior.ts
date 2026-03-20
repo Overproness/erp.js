@@ -71,9 +71,7 @@ const customerBehaviorSchema = new Schema(
     },
     campaign: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Campaign',
-      sparse: true,
-    },
+      ref: 'Campaign',    },
     source: {
       type: String,
       trim: true,
@@ -152,10 +150,7 @@ const customerBehaviorSchema = new Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   {
     timestamps: true,
@@ -166,7 +161,7 @@ const customerBehaviorSchema = new Schema(
 customerBehaviorSchema.index({ owner: 1, customer: 1, eventType: 1, timestamp: -1 });
 customerBehaviorSchema.index({ owner: 1, anonymousId: 1, timestamp: -1 });
 customerBehaviorSchema.index({ campaign: 1, eventType: 1, timestamp: -1 });
-customerBehaviorSchema.index({ companyID: 1 }); // Index for companyID
+customerBehaviorSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Methods
 customerBehaviorSchema.methods.markAsProcessed = function () {

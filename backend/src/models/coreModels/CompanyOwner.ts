@@ -42,7 +42,6 @@ const companyOwnerSchema = new Schema({
     type: String,
     unique: true,
     sparse: true,
-    index: true,
   },
 });
 

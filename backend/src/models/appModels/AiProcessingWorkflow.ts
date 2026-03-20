@@ -117,17 +117,14 @@ const aiProcessingWorkflowSchema = new mongoose.Schema({
     default: Date.now,
   },
   companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-  },
+    type: String,  },
 });
 
 // Indexes
 aiProcessingWorkflowSchema.index({ owner: 1, removed: 1 });
 aiProcessingWorkflowSchema.index({ category: 1, enabled: 1 });
 aiProcessingWorkflowSchema.index({ triggerType: 1, enabled: 1 });
-aiProcessingWorkflowSchema.index({ companyID: 1 }); // Index for companyID
+aiProcessingWorkflowSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual fields
 aiProcessingWorkflowSchema.virtual('success_rate').get(function() {

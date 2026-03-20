@@ -90,10 +90,7 @@ const reviewTemplateSchema = new Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
@@ -101,7 +98,7 @@ reviewTemplateSchema.index({ business: 1, sentimentType: 1 });
 reviewTemplateSchema.index({ business: 1, platform: 1 });
 reviewTemplateSchema.index({ business: 1, isDefault: 1 });
 reviewTemplateSchema.index({ owner: 1, removed: false });
-reviewTemplateSchema.index({ companyID: 1 }); // Index for companyID
+reviewTemplateSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Text index for searching templates
 reviewTemplateSchema.index({ 

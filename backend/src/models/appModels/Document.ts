@@ -132,10 +132,7 @@ const DocumentSchema = new Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
     extractedText: {
       type: String,
       // Stores extracted text content from the document for search and AI features
@@ -205,7 +202,7 @@ DocumentSchema.index(
   }
 );
 
-DocumentSchema.index({ companyID: 1 }); // Index for companyID
+DocumentSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Export model with a different name to avoid conflict
 const exportedModel = mongoose.model('AppDocument', DocumentSchema);

@@ -2,15 +2,12 @@ import { DataImportButton } from '@/components/DataEntry';
 import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';
 import { useDate } from '@/settings';
-import { CrownOutlined, StarOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Statistic, Tag, Typography } from 'antd';
+import { Col, Row, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CustomerDataTableModule from './CustomerModule/CustomerDataTableModule';
-
-const { Title, Text } = Typography;
 
 export default function Customer() {
   const dispatch = useDispatch();
@@ -69,38 +66,51 @@ export default function Customer() {
       title: translate('Name'),
       dataIndex: 'name',
       render: (text) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <UserOutlined style={{ color: '#8b45ff' }} />
-          <span style={{ fontWeight: '600', color: '#2c2c2c' }}>{text}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#0058c314', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#0058c3' }}>person</span>
+          </div>
+          <span style={{ fontWeight: 600, color: '#191c1d', fontSize: '13px' }}>{text}</span>
         </div>
       ),
     },
     {
       title: translate('Email'),
       dataIndex: 'email',
-      render: (text) => <span style={{ fontWeight: '500', color: '#2c2c2c' }}>{text}</span>,
+      render: (text) => <span style={{ fontWeight: 500, color: '#414754', fontSize: '13px' }}>{text}</span>,
     },
     {
       title: translate('Phone'),
       dataIndex: 'phone',
-      render: (text) => <span style={{ fontSize: '13px', color: '#6b7280' }}>{text}</span>,
+      render: (text) => <span style={{ fontSize: '13px', color: '#71767f' }}>{text}</span>,
     },
     {
       title: translate('Company'),
       dataIndex: 'company',
-      render: (text) => <span style={{ fontSize: '13px', color: '#6b7280' }}>{text || 'N/A'}</span>,
+      render: (text) => <span style={{ fontSize: '13px', color: '#71767f' }}>{text || 'N/A'}</span>,
     },
     {
       title: translate('Status'),
       dataIndex: 'enabled',
       render: (enabled) => {
-        const config = enabled
-          ? { color: '#52c41a', text: 'Active' }
-          : { color: '#ff4d4f', text: 'Inactive' };
-        return (
-          <Tag color={config.color} style={{ borderRadius: '6px', fontWeight: '500' }}>
-            {translate(config.text)}
-          </Tag>
+        return enabled ? (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600,
+            background: '#10b98114', color: '#10b981',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+            Active
+          </span>
+        ) : (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600,
+            background: '#ef444414', color: '#ef4444',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444' }} />
+            Inactive
+          </span>
         );
       },
     },
@@ -108,7 +118,7 @@ export default function Customer() {
       title: translate('Created'),
       dataIndex: 'created',
       render: (date) => (
-        <span style={{ fontSize: '13px', color: '#6b7280' }}>{dayjs(date).format(dateFormat)}</span>
+        <span style={{ fontSize: '13px', color: '#71767f' }}>{dayjs(date).format(dateFormat)}</span>
       ),
     },
   ];
@@ -135,59 +145,84 @@ export default function Customer() {
   };
 
   return (
-    <div style={{ padding: '0' }}>
+    <div style={{ fontFamily: "'Inter', -apple-system, sans-serif" }}>
       {/* Header Section */}
-      <div style={{ marginBottom: '32px' }}>
-        <div style={{ marginBottom: '24px' }}>
-          <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
-            {translate('Customers')}
-          </Title>
-          <Text style={{ color: '#6b7280', fontSize: '16px' }}>
-            Manage your customer relationships and contact information
-          </Text>
+      <div style={{ marginBottom: '24px' }}>
+        {/* Breadcrumb */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '16px', fontSize: '13px', color: '#71767f' }}>
+          <span>CRM</span>
+          <span style={{ color: '#c4c7cc' }}>/</span>
+          <span style={{ color: '#191c1d', fontWeight: 600 }}>{translate('Customers')}</span>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+          <div>
+            <h1 style={{ margin: '0 0 4px 0', color: '#191c1d', fontWeight: 700, fontSize: '24px', letterSpacing: '-0.02em' }}>
+              {translate('Customers')}
+            </h1>
+            <p style={{ margin: 0, color: '#71767f', fontSize: '14px' }}>
+              Manage your customer relationships and contact information
+            </p>
+          </div>
         </div>
 
         {/* Statistics Cards */}
-        <Row gutter={[12, 12]}>
-          <Col xs={24} sm={6} lg={6}>
-            <Card>
-              <Statistic
-                title={translate('Total Customers')}
-                value={totalCustomers}
-                valueStyle={{ color: '#8b45ff' }}
-                prefix={<UserOutlined />}
-              />
-            </Card>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={6}>
+            <div style={{
+              background: '#ffffff', borderRadius: '14px', padding: '20px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#71767f', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Total Customers</span>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#0058c314', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#0058c3' }}>group</span>
+                </div>
+              </div>
+              <span style={{ fontSize: '24px', fontWeight: 700, color: '#191c1d' }}>{totalCustomers}</span>
+            </div>
           </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <Card>
-              <Statistic
-                title={translate('Active')}
-                value={activeCustomers}
-                valueStyle={{ color: '#52c41a' }}
-                prefix={<TeamOutlined />}
-              />
-            </Card>
+          <Col xs={24} sm={6}>
+            <div style={{
+              background: '#ffffff', borderRadius: '14px', padding: '20px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#71767f', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Active</span>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#10b98114', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#10b981' }}>check_circle</span>
+                </div>
+              </div>
+              <span style={{ fontSize: '24px', fontWeight: 700, color: '#191c1d' }}>{activeCustomers}</span>
+            </div>
           </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <Card>
-              <Statistic
-                title={translate('New This Month')}
-                value={recentCustomers}
-                valueStyle={{ color: '#faad14' }}
-                prefix={<StarOutlined />}
-              />
-            </Card>
+          <Col xs={24} sm={6}>
+            <div style={{
+              background: '#ffffff', borderRadius: '14px', padding: '20px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#71767f', textTransform: 'uppercase', letterSpacing: '0.04em' }}>New This Month</span>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#f59e0b14', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#f59e0b' }}>person_add</span>
+                </div>
+              </div>
+              <span style={{ fontSize: '24px', fontWeight: 700, color: '#191c1d' }}>{recentCustomers}</span>
+            </div>
           </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <Card>
-              <Statistic
-                title={translate('VIP Customers')}
-                value={8}
-                valueStyle={{ color: '#d48806' }}
-                prefix={<CrownOutlined />}
-              />
-            </Card>
+          <Col xs={24} sm={6}>
+            <div style={{
+              background: '#ffffff', borderRadius: '14px', padding: '20px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#71767f', textTransform: 'uppercase', letterSpacing: '0.04em' }}>VIP Customers</span>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#8b5cf614', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#8b5cf6' }}>star</span>
+                </div>
+              </div>
+              <span style={{ fontSize: '24px', fontWeight: 700, color: '#191c1d' }}>8</span>
+            </div>
           </Col>
         </Row>
       </div>

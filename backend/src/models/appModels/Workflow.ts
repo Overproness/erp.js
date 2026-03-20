@@ -101,10 +101,7 @@ const workflowSchema = new mongoose.Schema(
     ],
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   {
     timestamps: true,
@@ -117,7 +114,7 @@ workflowSchema.index({ name: 1 });
 workflowSchema.index({ status: 1 });
 workflowSchema.index({ triggerType: 1 });
 workflowSchema.index({ tags: 1 });
-workflowSchema.index({ companyID: 1 }); // Index for companyID
+workflowSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual for parsed definition
 workflowSchema.virtual('parsedDefinition').get(function () {

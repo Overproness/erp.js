@@ -127,17 +127,14 @@ const customerSegmentSchema = new Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 customerSegmentSchema.index({ owner: 1, removed: 1 });
 customerSegmentSchema.index({ owner: 1, name: 1 });
 customerSegmentSchema.index({ owner: 1, tags: 1 });
-customerSegmentSchema.index({ companyID: 1 }); // Index for companyID
+customerSegmentSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Pre-save middleware
 customerSegmentSchema.pre('save', function(next) {

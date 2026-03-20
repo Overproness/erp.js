@@ -63,7 +63,6 @@ export default function ErpCrmApp() {
       <TeamPanelProvider>
         <MarketingProvider>
           <div style={{ position: 'relative' }}>
-            <HeaderContent />
             <Navigation />
 
             {isMobile ? (
@@ -73,16 +72,17 @@ export default function ErpCrmApp() {
                     margin: '0',
                     overflow: 'initial',
                     width: '100%',
-                    padding: '24px',
+                    padding: '0',
                     background: '#f8f9fa',
-                    minHeight: 'calc(100vh - 64px)',
+                    minHeight: '100vh',
                   }}
                 >
                   <AppRouter />
                 </Content>
               </Layout>
             ) : (
-              <Layout style={{ minHeight: '100vh', marginLeft: '70px' }}>
+              <Layout style={{ minHeight: '100vh', marginLeft: '220px' }}>
+                <HeaderContent />
                 <Content
                   style={{
                     margin: '0',

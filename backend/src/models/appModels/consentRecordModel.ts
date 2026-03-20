@@ -48,10 +48,7 @@ const ConsentRecordSchema = new mongoose.Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
   },
   { timestamps: { createdAt: 'created', updatedAt: 'updated' } }
 );
@@ -59,7 +56,7 @@ const ConsentRecordSchema = new mongoose.Schema(
 // Add indexes for faster lookups
 ConsentRecordSchema.index({ user: 1, purpose: 1 });
 ConsentRecordSchema.index({ expiration: 1 }, { sparse: true }); // For finding expired consents
-ConsentRecordSchema.index({ companyID: 1 }); // Index for companyID
+ConsentRecordSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('ConsentRecord', ConsentRecordSchema);
 export default exportedModel;

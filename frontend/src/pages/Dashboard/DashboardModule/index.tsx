@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import useLanguage from '@/locale/useLanguage';
-import { ExperimentOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Space, Typography } from 'antd';
+import { Col, Row, Spin } from 'antd';
 
 import { useMoney } from '@/settings';
 
@@ -20,17 +19,17 @@ import { request } from '@/request';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 
 import PreviewCard from './components/PreviewCard';
-import SummaryCard from './components/SummaryCard';
 
 import { N8N_URL } from '@/config/serverApiConfig';
 import { selectMoneyFormat } from '@/redux/settings/selectors';
 import { useSelector } from 'react-redux';
-const { Title, Text } = Typography;
+import { useNavigate } from 'react-router-dom';
 
 export default function DashboardModule() {
   const translate = useLanguage();
   const { moneyFormatter } = useMoney();
   const money_format_settings = useSelector(selectMoneyFormat);
+  const navigate = useNavigate();
 
   const currentAdmin = useSelector(selectCurrentAdmin);
 
@@ -302,323 +301,286 @@ export default function DashboardModule() {
   });
 
   if (money_format_settings) {
-    return (
-      <div style={{ backgroundColor: '#fafbfc', minHeight: '100vh' }}>
-        {/* Header */}
-        <div
-          style={{
-            marginBottom: '20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <div>
-            <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
-              {`Welcome Back, ${currentAdmin?.name} ${currentAdmin?.surname}`}
-            </Title>
-            <Text style={{ color: '#6b7280', fontSize: '16px' }}>
-              Here's what's happening with your business today.
-            </Text>
-          </div>
+    const today = new Date();
+    const dateString = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-          <Space>
-            <Button
-              type="primary"
-              icon={<ExperimentOutlined />}
+    // KPI card component
+    const KpiCard = ({ title, value, subtitle, icon, loading, color = '#0058c3' }) => (
+      <div
+        style={{
+          background: '#ffffff',
+          borderRadius: '14px',
+          padding: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+          transition: 'box-shadow 0.2s ease',
+          cursor: 'default',
+          fontFamily: "'Inter', -apple-system, sans-serif",
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#71767f', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{title}</span>
+          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '20px', color }}>{icon}</span>
+          </div>
+        </div>
+        {loading ? (
+          <Spin size="small" />
+        ) : (
+          <>
+            <span style={{ fontSize: '28px', fontWeight: 700, color: '#191c1d', letterSpacing: '-0.02em', lineHeight: 1 }}>{value}</span>
+            <span style={{ fontSize: '12px', color: '#71767f' }}>{subtitle}</span>
+          </>
+        )}
+      </div>
+    );
+
+    return (
+      <div style={{ fontFamily: "'Inter', -apple-system, sans-serif" }}>
+        {/* Header */}
+        <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h1 style={{ margin: '0 0 4px 0', color: '#191c1d', fontWeight: 700, fontSize: '24px', letterSpacing: '-0.02em' }}>
+              System Overview
+            </h1>
+            <p style={{ margin: 0, color: '#71767f', fontSize: '14px' }}>
+              {dateString}
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
               onClick={() => {
-                const companyId = currentAdmin?._id;
-                if (companyId) {
-                  window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
-                }
+                refreshDashboard();
+                refreshClients();
+                refreshInvoices();
+                refreshQuotes();
+                refreshPayments();
               }}
               style={{
-                backgroundColor: '#7ED957',
-                borderColor: '#7ED957',
-                color: '#fff',
+                display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px',
+                borderRadius: '10px', border: '1.5px solid #e1e3e4', background: '#ffffff',
+                color: '#414754', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                transition: 'all 0.2s ease', fontFamily: "'Inter', -apple-system, sans-serif",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0058c3'; e.currentTarget.style.color = '#0058c3'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e1e3e4'; e.currentTarget.style.color = '#414754'; }}
             >
-              WorkFlow Module
-            </Button>
-          </Space>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>refresh</span>
+              Refresh
+            </button>
+          </div>
         </div>
 
-        {/* Statistics Cards Row */}
-        {/* <Row gutter={[12, 12]} style={{ marginBottom: '20px' }}>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title="Total Revenue"
-              prefix={translate('This month')}
-              isLoading={dashboardLoading}
-              data={
-                dashboardStats?.invoices?.thisMonthAmount ||
-                dashboardStats?.invoices?.totalAmount ||
-                0
-              }
-              trend="up"
-              showError={!dashboardLoading && !dashboardStats}
-            />
-          </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title="Total Profit"
-              prefix={translate('This month')}
-              isLoading={dashboardLoading}
-              data={
-                dashboardStats?.payments?.thisMonth?.total ||
-                dashboardStats?.payments?.totalAmount ||
-                0
-              }
-              trend="up"
-              showError={!dashboardLoading && !dashboardStats}
-            />
-          </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
+        {/* KPI Cards Row */}
+        <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
+          <Col xs={24} sm={12} lg={6}>
+            <KpiCard
               title="Total Invoices"
-              prefix={translate('This month')}
-              isLoading={dashboardLoading}
-              data={dashboardStats?.invoices?.thisMonth || dashboardStats?.invoices?.total || 0}
-              isRawNumber={true}
-              trend="up"
-              showError={!dashboardLoading && !dashboardStats}
+              value={moneyFormatter({ amount: invoiceData.total, currency_code: money_format_settings.currency_code })}
+              subtitle={`${invoiceData.totalCount} invoices this period`}
+              icon="receipt_long"
+              loading={isInvoicesLoading}
+              color="#0058c3"
             />
           </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title="Total Clients"
-              prefix={translate('This month')}
-              isLoading={dashboardLoading}
-              data={dashboardStats?.clients?.newThisMonth || dashboardStats?.clients?.total || 0}
-              isRawNumber={true}
-              trend="up"
-              showError={!dashboardLoading && !dashboardStats}
+          <Col xs={24} sm={12} lg={6}>
+            <KpiCard
+              title="Pending Quotes"
+              value={moneyFormatter({ amount: quoteData.total, currency_code: money_format_settings.currency_code })}
+              subtitle={`${quoteData.totalCount} quotes pending`}
+              icon="request_quote"
+              loading={isQuotesLoading}
+              color="#f59e0b"
             />
           </Col>
-        </Row> */}
-
-        {/* Original Statistics Cards Row */}
-        <Row gutter={[12, 12]} style={{ marginBottom: '20px' }}>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title={translate('Invoices')}
-              prefix={translate('This month')}
-              isLoading={isInvoicesLoading}
-              data={invoiceData.total}
-              subtitle={`${invoiceData.totalCount} ${translate('invoices')}`}
-              trend={invoiceData.thisMonth > 0 ? 'up' : 'stable'}
+          <Col xs={24} sm={12} lg={6}>
+            <KpiCard
+              title="Net Revenue"
+              value={moneyFormatter({ amount: paymentData.total, currency_code: money_format_settings.currency_code })}
+              subtitle={`${paymentData.totalCount} payments received`}
+              icon="trending_up"
+              loading={isPaymentsLoading}
+              color="#10b981"
             />
           </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title={translate('Quote')}
-              prefix={translate('This month')}
-              isLoading={isQuotesLoading}
-              data={quoteData.total}
-              subtitle={`${quoteData.totalCount} ${translate('quotes')}`}
-              trend={quoteData.thisMonth > 0 ? 'up' : 'stable'}
-            />
-          </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title={translate('paid')}
-              prefix={translate('This month')}
-              isLoading={isPaymentsLoading}
-              data={paymentData.total}
-              subtitle={`${paymentData.totalCount} ${translate('payments')}`}
-              trend={paymentData.thisMonth > 0 ? 'up' : 'stable'}
-            />
-          </Col>
-          <Col xs={24} sm={6} lg={6}>
-            <SummaryCard
-              title={translate('Unpaid')}
-              prefix={translate('Outstanding')}
-              isLoading={isInvoicesLoading}
-              data={invoiceData.unpaid}
-              subtitle={`${translate('amount due')}`}
-              trend={'down'} // We want unpaid to go down
-              showWarning={invoiceData.unpaid > 0}
+          <Col xs={24} sm={12} lg={6}>
+            <KpiCard
+              title="Active Clients"
+              value={clientData.total?.toLocaleString() || '0'}
+              subtitle={`${clientData.new} new this month`}
+              icon="group"
+              loading={isClientsLoading}
+              color="#8b5cf6"
             />
           </Col>
         </Row>
 
-        {/* Growth Statistics Row */}
+        {/* Growth Stats Row */}
         {dashboardStats && (
-          <Row gutter={[12, 12]} style={{ marginBottom: '20px' }}>
-            <Col xs={24} sm={6} lg={6}>
-              <SummaryCard
+          <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
+            <Col xs={24} sm={12} lg={6}>
+              <KpiCard
                 title="Revenue Growth"
-                prefix="This month"
-                isLoading={dashboardLoading}
-                data={dashboardStats.performance?.conversionRate || 0}
-                isPercentage={true}
-                trend={dashboardStats.performance?.conversionRate > 0 ? 'up' : 'stable'}
+                value={`${(dashboardStats.performance?.conversionRate || 0).toFixed(1)}%`}
+                subtitle="Conversion rate this month"
+                icon="show_chart"
+                loading={dashboardLoading}
+                color="#0058c3"
               />
             </Col>
-            <Col xs={24} sm={6} lg={6}>
-              <SummaryCard
+            <Col xs={24} sm={12} lg={6}>
+              <KpiCard
                 title="Payment Efficiency"
-                prefix="This month"
-                isLoading={dashboardLoading}
-                data={dashboardStats.performance?.paymentEfficiency || 0}
-                isPercentage={true}
-                trend={
-                  dashboardStats.performance?.paymentEfficiency > 50
-                    ? 'up'
-                    : dashboardStats.performance?.paymentEfficiency > 25
-                      ? 'stable'
-                      : 'down'
-                }
+                value={`${(dashboardStats.performance?.paymentEfficiency || 0).toFixed(1)}%`}
+                subtitle="Collection rate"
+                icon="speed"
+                loading={dashboardLoading}
+                color="#10b981"
               />
             </Col>
-            <Col xs={24} sm={6} lg={6}>
-              <SummaryCard
+            <Col xs={24} sm={12} lg={6}>
+              <KpiCard
                 title="Avg Invoice Value"
-                prefix="Per invoice"
-                isLoading={dashboardLoading}
-                data={dashboardStats.performance?.averageInvoiceValue || 0}
-                trend="stable"
+                value={moneyFormatter({ amount: dashboardStats.performance?.averageInvoiceValue || 0, currency_code: money_format_settings.currency_code })}
+                subtitle="Per invoice average"
+                icon="calculate"
+                loading={dashboardLoading}
+                color="#f59e0b"
               />
             </Col>
-            <Col xs={24} sm={6} lg={6}>
-              <SummaryCard
-                title="Avg Quote Value"
-                prefix="Per quote"
-                isLoading={dashboardLoading}
-                data={dashboardStats.performance?.averageQuoteValue || 0}
-                trend="stable"
+            <Col xs={24} sm={12} lg={6}>
+              <KpiCard
+                title="Unpaid Amount"
+                value={moneyFormatter({ amount: invoiceData.unpaid, currency_code: money_format_settings.currency_code })}
+                subtitle="Outstanding balance"
+                icon="warning"
+                loading={isInvoicesLoading}
+                color="#ef4444"
               />
             </Col>
           </Row>
         )}
 
-        {/* Performance Overview and Preview Cards - Full Width */}
-        <Row gutter={[20, 20]} style={{ marginBottom: '24px', height: '440px' }}>
+        {/* Preview Cards + N8N CTA */}
+        <Row gutter={[20, 20]} style={{ marginBottom: '24px' }}>
           {statisticCards}
         </Row>
-        {/* Customer Preview Card moved below */}
-        {/* <Row gutter={[20, 20]} style={{ marginBottom: '24px' }}>
-          <Col xs={24} lg={24}>
-            <CustomerPreviewCard
-              isLoading={isClientsLoading}
-              activeCustomer={clientData.active}
-              newCustomer={clientData.new}
-              totalCustomers={clientData.total}
-              stats={clientStats?.clients}
-            />
-          </Col>
-        </Row> */}
-        {/* Recent Tables - filtered by status if set */}
-        {/* <Row gutter={[20, 20]}>
-          <Col xs={24} lg={12}>
+
+        {/* N8N Workflow CTA Card */}
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #0058c3 0%, #0070f3 50%, #38bdf8 100%)',
+            borderRadius: '16px',
+            padding: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '24px',
+            color: '#ffffff',
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: 700, color: '#ffffff' }}>
+              N8N Workflow Automation
+            </h3>
+            <p style={{ margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.85)', maxWidth: '500px' }}>
+              Automate your business processes with powerful N8N workflows. Connect invoicing, CRM, and marketing in one seamless pipeline.
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              const companyId = currentAdmin?._id;
+              if (companyId) {
+                window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
+              }
+            }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 24px',
+              borderRadius: '12px', border: '2px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.15)',
+              color: '#ffffff', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+              backdropFilter: 'blur(10px)', transition: 'all 0.2s ease', whiteSpace: 'nowrap',
+              fontFamily: "'Inter', -apple-system, sans-serif",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>bolt</span>
+            Open Workflows
+          </button>
+          {/* Decorative circles */}
+          <div style={{ position: 'absolute', right: '-40px', top: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
+          <div style={{ position: 'absolute', right: '80px', bottom: '-60px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(255,255,255,0.04)' }} />
+        </div>
+
+        {/* Quick Actions */}
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={8}>
             <div
+              onClick={() => navigate('/invoice/create')}
               style={{
-                background: '#fff',
-                border: '1px solid #7ED957',
-                borderRadius: '12px',
-                padding: '24px',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
-                minHeight: '420px',
-                display: 'flex',
-                flexDirection: 'column',
+                background: '#ffffff', borderRadius: '14px', padding: '20px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: '14px', transition: 'box-shadow 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
             >
-              <div
-                style={{
-                  borderBottom: '2px solid #f0f0f0',
-                  paddingBottom: '16px',
-                  marginBottom: '20px',
-                  flexShrink: 0,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 700,
-                    color: '#262626',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {translate('Recent Invoices')}
-                </div>
-                <div
-                  style={{
-                    fontSize: '13px',
-                    color: '#8c8c8c',
-                  }}
-                >
-                  Latest invoice activity
-                </div>
+              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#0058c314', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: '#0058c3' }}>add_circle</span>
               </div>
-              <div
-                style={{
-                  flex: 1,
-                  overflow: 'hidden',
-                }}
-              >
-                <RecentTable
-                  entity={'invoice'}
-                  dataTableColumns={dataTableColumns}
-                  statusFilter={activeFilters.invoice}
-                />
+              <div>
+                <span style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}>New Invoice</span>
+                <span style={{ fontSize: '12px', color: '#71767f' }}>Create a new invoice</span>
               </div>
             </div>
           </Col>
-          <Col xs={24} lg={12}>
+          <Col xs={24} sm={8}>
             <div
+              onClick={() => navigate('/client/create')}
               style={{
-                background: '#fff',
-                border: '1px solid #7ED957',
-                borderRadius: '12px',
-                padding: '24px',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
-                minHeight: '420px',
-                display: 'flex',
-                flexDirection: 'column',
+                background: '#ffffff', borderRadius: '14px', padding: '20px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: '14px', transition: 'box-shadow 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
             >
-              <div
-                style={{
-                  borderBottom: '2px solid #f0f0f0',
-                  paddingBottom: '16px',
-                  marginBottom: '20px',
-                  flexShrink: 0,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 700,
-                    color: '#262626',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {translate('Recent Quotes')}
-                </div>
-                <div
-                  style={{
-                    fontSize: '13px',
-                    color: '#8c8c8c',
-                  }}
-                >
-                  Latest quote activity
-                </div>
+              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#8b5cf614', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: '#8b5cf6' }}>person_add</span>
               </div>
-              <div
-                style={{
-                  flex: 1,
-                  overflow: 'hidden',
-                }}
-              >
-                <RecentTable
-                  entity={'quote'}
-                  dataTableColumns={dataTableColumns}
-                  statusFilter={activeFilters.quote}
-                />
+              <div>
+                <span style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}>Add Client</span>
+                <span style={{ fontSize: '12px', color: '#71767f' }}>Register a new client</span>
               </div>
             </div>
           </Col>
-        </Row> */}
+          <Col xs={24} sm={8}>
+            <div
+              onClick={() => navigate('/quote/create')}
+              style={{
+                background: '#ffffff', borderRadius: '14px', padding: '20px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: '14px', transition: 'box-shadow 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)'; }}
+            >
+              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f59e0b14', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: '#f59e0b' }}>edit_note</span>
+              </div>
+              <div>
+                <span style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#191c1d' }}>Create Quote</span>
+                <span style={{ fontSize: '12px', color: '#71767f' }}>Draft a new quote</span>
+              </div>
+            </div>
+          </Col>
+        </Row>
       </div>
     );
   } else {

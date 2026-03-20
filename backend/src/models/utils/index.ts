@@ -37,12 +37,19 @@ for (const filePath of appModelsFiles) {
 
   const controllerName = fileNameLowerCaseFirstChar + 'Controller';
   const controllerFolderPath = `./src/controllers/appControllers/${controllerName}`;
-  const indexFilePath = fs.existsSync(`${controllerFolderPath}/index.ts`) 
-    ? `${controllerFolderPath}/index.ts` 
-    : `${controllerFolderPath}/index.js`;
+  const indexFilePath_ts = `${controllerFolderPath}/index.ts`;
+  const indexFilePath_js = `${controllerFolderPath}/index.js`;
+  const singleFilePath_ts = `./src/controllers/appControllers/${controllerName}.ts`;
+  const singleFilePath_js = `./src/controllers/appControllers/${controllerName}.js`;
 
-  // ✅ Check if the controller *folder* and its index file exist
-  if (fs.existsSync(indexFilePath)) {
+  // ✅ Check if the controller exists as either a folder/index or a single file
+  const controllerExists =
+    fs.existsSync(indexFilePath_ts) ||
+    fs.existsSync(indexFilePath_js) ||
+    fs.existsSync(singleFilePath_ts) ||
+    fs.existsSync(singleFilePath_js);
+
+  if (controllerExists) {
     constrollersList.push(controllerName);
     appModelsList.push(modelName);
     entityList.push(entity);
@@ -51,8 +58,6 @@ for (const filePath of appModelsFiles) {
       modelName: modelName,
       controllerName: controllerName,
     });
-  } else {
-    console.warn(`[WARN] Skipping ${controllerName} — index.js not found at ${indexFilePath}`);
   }
 }
 

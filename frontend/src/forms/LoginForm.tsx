@@ -1,62 +1,76 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
-
+import { Form, Input } from 'antd';
 import useLanguage from '@/locale/useLanguage';
 
 export default function LoginForm() {
   const translate = useLanguage();
   return (
-    <div>
+    <div className="space-y-1">
       <Form.Item
-        label={translate('email')}
         name="email"
         rules={[
-          {
-            required: true,
-          },
-          {
-            type: 'email',
-          },
+          { required: true, message: translate('Please enter your email') },
+          { type: 'email', message: translate('Please enter a valid email') },
         ]}
       >
         <Input
-          prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder={'admin@demo.com'}
+          placeholder="Email address"
           type="email"
           size="large"
+          style={{
+            background: '#e1e3e4',
+            border: '1.5px solid transparent',
+            borderRadius: '0.5rem',
+            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+          }}
+          onFocus={(e) => {
+            e.target.style.border = '1.5px solid #0058c3';
+            e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
+          }}
+          onBlur={(e) => {
+            e.target.style.border = '1.5px solid transparent';
+            e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+          }}
         />
       </Form.Item>
       <Form.Item
-        label={translate('password')}
         name="password"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
+        rules={[{ required: true, message: translate('Please enter your password') }]}
       >
         <Input.Password
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          placeholder={'admin123'}
+          placeholder="Password"
           size="large"
+          style={{
+            background: '#e1e3e4',
+            border: '1.5px solid transparent',
+            borderRadius: '0.5rem',
+            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+          }}
+          onFocus={(e) => {
+            const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
+            if (el) { el.style.border = '1.5px solid #0058c3'; el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'; }
+          }}
+          onBlur={(e) => {
+            const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
+            if (el) { el.style.border = '1.5px solid transparent'; el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)'; }
+          }}
         />
       </Form.Item>
 
-      <Form.Item>
+      <div className="flex items-center justify-between mb-2">
         <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>{translate('Remember me')}</Checkbox>
+          <label className="flex items-center gap-2 cursor-pointer text-sm" style={{ color: '#414754' }}>
+            <input type="checkbox" className="rounded" />
+            {translate('Remember me')}
+          </label>
         </Form.Item>
-        <a className="login-form-forgot" href="/forgetpassword" style={{ marginLeft: '0px' }}>
-          {translate('Forgot password')}
+        <a
+          href="/forgetpassword"
+          className="text-sm font-medium no-underline hover:underline"
+          style={{ color: '#0058c3' }}
+        >
+          {translate('Forgot password?')}
         </a>
-      </Form.Item>
-      <hr />
-      <Form.Item style={{ textAlign: 'center' }}>
-        <span style={{ marginRight: '8px' }}>{translate("Don't have an account?")}</span>
-        <Button type="link" href="/signup">
-          {translate('Sign up')}
-        </Button>
-      </Form.Item>
+      </div>
     </div>
   );
 }

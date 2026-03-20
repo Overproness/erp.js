@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const navLinks = [
@@ -10,16 +11,20 @@ const navLinks = [
 
 export default function WebsiteNavbar() {
   const { pathname } = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 h-14">
+    <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 h-16">
       <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
         <div className="flex items-center gap-8">
           <Link
             to="/"
-            className="text-xl font-bold tracking-tighter text-slate-900 font-inter no-underline"
+            className="flex items-center gap-2.5 no-underline"
           >
-            ERP.js
+            <img src="/logo-bg-remove.png" alt="ERP.js" className="h-8 w-8 object-contain" />
+            <span className="text-2xl font-bold tracking-tighter text-slate-900 font-inter">
+              ERP.js
+            </span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => {
@@ -28,12 +33,12 @@ export default function WebsiteNavbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`font-inter text-sm font-medium tracking-tight no-underline transition-colors ${
+                  className={`font-inter text-[15px] font-medium tracking-tight no-underline transition-colors ${
                     isActive
                       ? 'text-blue-600 border-b-2 border-blue-600'
                       : 'text-slate-600 hover:text-blue-500'
                   }`}
-                  style={{ lineHeight: '3.5rem' }}
+                  style={{ lineHeight: '4rem' }}
                 >
                   {link.label}
                 </Link>
@@ -44,18 +49,51 @@ export default function WebsiteNavbar() {
         <div className="flex items-center gap-4">
           <Link
             to="/login"
-            className="text-slate-600 hover:text-blue-500 transition-colors font-inter text-sm font-medium no-underline"
+            className="text-slate-600 hover:text-blue-500 transition-colors font-inter text-[15px] font-medium no-underline hidden sm:inline"
           >
             Sign In
           </Link>
           <Link
             to="/signup"
-            className="bg-gradient-to-br from-[#0058c3] to-[#0070f3] text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-all active:scale-95 shadow-sm no-underline font-inter"
+            className="bg-gradient-to-br from-[#0058c3] to-[#0070f3] text-white px-5 py-2 rounded-lg text-[15px] font-semibold hover:opacity-90 transition-all active:scale-95 shadow-sm no-underline font-inter"
           >
             Get Started
           </Link>
+          <button
+            className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-slate-100 transition-colors border-none bg-transparent cursor-pointer"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span className="material-symbols-outlined text-slate-700">{mobileOpen ? 'close' : 'menu'}</span>
+          </button>
         </div>
       </div>
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 px-6 py-4 space-y-1">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileOpen(false)}
+                className={`block py-2.5 px-3 rounded-lg text-[15px] font-medium no-underline transition-colors ${
+                  isActive ? 'text-blue-600 bg-blue-50' : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <Link
+            to="/login"
+            onClick={() => setMobileOpen(false)}
+            className="block py-2.5 px-3 rounded-lg text-[15px] font-medium text-slate-600 hover:bg-slate-50 no-underline sm:hidden"
+          >
+            Sign In
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }

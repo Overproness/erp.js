@@ -60,10 +60,7 @@ const SavedSearchSchema = new Schema(
       index: true,
     },
     companyID: {
-      type: String,
-      index: true,
-      sparse: true,
-    },
+      type: String,    },
 
     // Audit fields
     createdBy: {
@@ -104,7 +101,7 @@ SavedSearchSchema.index({ owner: 1, entityType: 1 });
 SavedSearchSchema.index({ owner: 1, isPublic: 1 });
 SavedSearchSchema.index({ owner: 1, name: 1 });
 SavedSearchSchema.index({ createdBy: 1 });
-SavedSearchSchema.index({ companyID: 1 }); // Index for companyID
+SavedSearchSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Pre-save middleware to ensure owner is set
 SavedSearchSchema.pre('save', function (next) {

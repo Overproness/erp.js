@@ -5,10 +5,7 @@ const invoiceSchema = new mongoose.Schema({
   ...commonFields,
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
   number: {
     type: Number,
     required: true,
@@ -221,7 +218,7 @@ invoiceSchema.pre('save', async function (next) {
   next();
 });
 
-invoiceSchema.index({ companyID: 1 }); // Index for companyID
+invoiceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Invoice', invoiceSchema);
 export default exportedModel;

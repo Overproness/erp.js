@@ -45,31 +45,38 @@ const reminderScheduler = require('./services/reminderScheduler');
 const app = require('./app');
 
 mongoose.connection.once('open', async () => {
+  // Settings initialization (non-critical)
   try {
     await migrateSetting();
     await initDefaultSettings();
-
-    try {
-      await (app as any).setupGraphQL();
-    } catch (error: any) {
-      console.error('⚠️ GraphQL initialization failed (non-fatal):', error.message);
-    }
-
-    try {
-      initializeCopilotModules();
-    } catch (error: any) {
-      console.error('⚠️ Copilot modules initialization failed (non-fatal):', error.message);
-    }
-
-    await initializeAIServices();
-
-    try {
-      reminderScheduler.start();
-    } catch (error: any) {
-      console.error('⚠️ Reminder scheduler start failed (non-fatal):', error.message);
-    }
   } catch (error: any) {
-    console.error('⚠️ Initialization warning (non-fatal):', error.message);
+    console.error('⚠️ Settings initialization warning (non-fatal):', error.message);
+  }
+
+  // GraphQL MUST be initialized for the app to work
+  try {
+    await (app as any).setupGraphQL();
+  } catch (error: any) {
+    console.error('❌ GraphQL initialization failed:', error.message);
+    console.error('Stack:', error.stack);
+  }
+
+  try {
+    initializeCopilotModules();
+  } catch (error: any) {
+    console.error('⚠️ Copilot modules initialization failed (non-fatal):', error.message);
+  }
+
+  try {
+    await initializeAIServices();
+  } catch (error: any) {
+    console.error('⚠️ AI services initialization failed (non-fatal):', error.message);
+  }
+
+  try {
+    reminderScheduler.start();
+  } catch (error: any) {
+    console.error('⚠️ Reminder scheduler start failed (non-fatal):', error.message);
   }
 });
 

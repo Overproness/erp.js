@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
 
 import { useLogin } from '@/hooks/useAuthGql';
-import { Button, Form } from 'antd';
+import { Form } from 'antd';
 
 import Loading from '@/components/Loading';
 import LoginForm from '@/forms/LoginForm';
@@ -50,16 +50,14 @@ const LoginPage = () => {
         >
           <LoginForm />
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              loading={isLoading}
-              size="large"
-              block
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3 rounded-lg font-semibold text-white text-base border-none cursor-pointer transition-all hover:opacity-90 active:scale-[0.98]"
+              style={{ background: 'linear-gradient(135deg, #0058c3 0%, #0070f3 100%)' }}
             >
-              {translate('Log in')}
-            </Button>
+              {isLoading ? 'Signing in...' : translate('Log in')}
+            </button>
           </Form.Item>
         </Form>
       </Loading>

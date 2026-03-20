@@ -29,10 +29,7 @@ const schema = new mongoose.Schema(
     },
     companyID: {
       type: String,
-      index: true,
-      sparse: true,
-      // Used for list/summary methods
-    },
+                },
 
     // New profile fields
     customerType: {
@@ -198,7 +195,7 @@ schema.index({ industry: 1, owner: 1 }); // For industry filtering
 schema.index({ 'demographics.location': 1, owner: 1 }); // For location filtering
 schema.index({ name: 1, owner: 1 }); // For name filtering
 schema.index({ enabled: 1, owner: 1, removed: 1 }); // For enabled client queries
-schema.index({ companyID: 1 }); // Index for companyID
+schema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 schema.plugin(require('mongoose-autopopulate'));
 const exportedModel = mongoose.model('Client', schema);

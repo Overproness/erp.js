@@ -175,17 +175,14 @@ const campaignSchema = new Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 campaignSchema.index({ owner: 1, removed: 1 });
 campaignSchema.index({ status: 1, startDate: 1, endDate: 1 });
 campaignSchema.index({ 'channels.type': 1 });
-campaignSchema.index({ companyID: 1 }); // Index for companyID
+campaignSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Pre-save middleware
 campaignSchema.pre('save', function(next) {

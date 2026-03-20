@@ -157,7 +157,7 @@ const chatRoomSchema = new mongoose.Schema(
 // Indexes for performance
 chatRoomSchema.index({ employee: 1, status: 1 });
 chatRoomSchema.index({ customer: 1, status: 1 });
-chatRoomSchema.index({ accessToken: 1 });
+
 chatRoomSchema.index({ createdAt: -1 });
 
 // Virtual for unread count

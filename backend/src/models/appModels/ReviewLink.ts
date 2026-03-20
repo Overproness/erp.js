@@ -112,18 +112,15 @@ const reviewLinkSchema = new Schema({
     default: false,
   },
   companyID: {
-    type: String,
-    index: true,
-    sparse: true,
-  }
+    type: String,  }
 });
 
 // Indexes
-reviewLinkSchema.index({ linkId: 1 }, { unique: true });
+
 reviewLinkSchema.index({ business: 1, created: -1 });
 reviewLinkSchema.index({ owner: 1, removed: false });
 reviewLinkSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-reviewLinkSchema.index({ companyID: 1 }); // Index for companyID
+reviewLinkSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Pre-save middleware
 reviewLinkSchema.pre('save', function(next) {

@@ -22,7 +22,7 @@ export default function WebsiteLayout({ children, title }: WebsiteLayoutProps) {
         }}
       >
         <WebsiteNavbar />
-        <main className="pt-14">{children}</main>
+        <main className="pt-16">{children}</main>
         <WebsiteFooter />
       </div>
     </>

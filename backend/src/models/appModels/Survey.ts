@@ -206,7 +206,7 @@ const surveySchema = new Schema(
 
 // Indexes
 surveySchema.index({ owner: 1, status: 1 });
-surveySchema.index({ 'customUrl.shortCode': 1 });
+
 surveySchema.index({ createdAt: -1 });
 surveySchema.index({ 'distribution.startDate': 1, 'distribution.endDate': 1 });
 

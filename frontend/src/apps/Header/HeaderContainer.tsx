@@ -1,4 +1,5 @@
 import { Avatar, Dropdown, Layout, Space } from 'antd';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -15,8 +16,8 @@ export default function HeaderContent() {
   const currentAdmin = useSelector(selectCurrentAdmin);
   const { Header } = Layout;
   const navigate = useNavigate();
-
   const translate = useLanguage();
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const ProfileDropdown = () => {
     const navigate = useNavigate();
@@ -39,8 +40,8 @@ export default function HeaderContent() {
           className="last"
           src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : undefined}
           style={{
-            background: '#eaf4ff', // light blue bg
-            color: '#1e3a8a', // dark blue text
+            background: '#eaf4ff',
+            color: '#0058c3',
             border: 'none',
             boxShadow: 'none',
             display: 'flex',
@@ -57,7 +58,7 @@ export default function HeaderContent() {
               margin: 0,
               fontWeight: '600',
               fontSize: '14px',
-              color: '#2c2c2c',
+              color: '#191c1d',
               lineHeight: 1.2,
             }}
           >
@@ -67,7 +68,7 @@ export default function HeaderContent() {
             style={{
               margin: 0,
               fontSize: '12px',
-              color: '#6b7280',
+              color: '#71767f',
               lineHeight: 1.2,
             }}
           >
@@ -91,7 +92,7 @@ export default function HeaderContent() {
       type: 'divider',
     },
     {
-      icon: <UserOutlined style={{ color: '#1e3a8a' }} />,
+      icon: <UserOutlined style={{ color: '#0058c3' }} />,
       key: 'settingProfile',
       label: (
         <Link to={'/profile'} style={{ textDecoration: 'none' }}>
@@ -100,7 +101,7 @@ export default function HeaderContent() {
       ),
     },
     {
-      icon: <ToolOutlined style={{ color: '#1e3a8a' }} />,
+      icon: <ToolOutlined style={{ color: '#0058c3' }} />,
       key: 'settingApp',
       label: (
         <Link to={'/settings'} style={{ textDecoration: 'none' }}>
@@ -127,53 +128,72 @@ export default function HeaderContent() {
       className="header-no-shadow"
       style={{
         padding: '0 32px',
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '70px',
+        height: '64px',
         position: 'sticky',
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 1002,
-        boxShadow: '0 0 0px rgba(0, 0, 0, 0)',
+        zIndex: 1001,
+        boxShadow: 'none',
+        fontFamily: "'Inter', -apple-system, sans-serif",
       }}
     >
-      {/* Logo Section */}
+      {/* Search Bar */}
       <div
-        className="logo"
-        onClick={() => navigate('/')}
         style={{
-          cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
+          gap: '10px',
+          background: searchFocused ? '#ffffff' : '#f3f4f5',
+          borderRadius: '10px',
+          padding: '0 14px',
+          height: '40px',
+          width: '340px',
+          maxWidth: '40%',
+          border: searchFocused ? '1.5px solid #0058c3' : '1.5px solid transparent',
+          boxShadow: searchFocused
+            ? 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'
+            : 'inset 0 2px 4px rgba(0,0,0,0.06)',
+          transition: 'all 0.2s ease',
         }}
       >
-        <img
-          src="/logo.png"
-          alt="Logo"
+        <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#71767f' }}>search</span>
+        <input
+          placeholder="Quick search transactions..."
+          onFocus={() => setSearchFocused(true)}
+          onBlur={() => setSearchFocused(false)}
           style={{
-            height: '32px',
-            filter: 'none',
+            border: 'none',
+            background: 'transparent',
+            outline: 'none',
+            fontSize: '13px',
+            color: '#191c1d',
+            width: '100%',
+            fontFamily: "'Inter', -apple-system, sans-serif",
           }}
         />
-        <span
+        <kbd
           style={{
-            marginLeft: '12px',
-            color: '#1a1a1a',
-            fontSize: '18px',
-            fontWeight: '700',
-            letterSpacing: '0.5px',
+            fontSize: '10px',
+            color: '#71767f',
+            background: '#e1e3e4',
+            padding: '2px 6px',
+            borderRadius: '4px',
+            fontFamily: "'Inter', -apple-system, sans-serif",
+            whiteSpace: 'nowrap',
           }}
         >
-          ERP.js
-        </span>
+          Ctrl K
+        </kbd>
       </div>
 
-      <Space size="large" align="center">
+      <Space size="middle" align="center">
         <NotificationBell />
 
         <Dropdown
@@ -189,27 +209,48 @@ export default function HeaderContent() {
             },
           }}
         >
-          <Avatar
-            className="last"
-            src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : undefined}
+          <div
             style={{
-              background: '#eaf4ff',
-              color: '#1e3a8a',
-              cursor: 'pointer',
-              border: 'none',
-              boxShadow: 'none',
-              transition: 'all 0.3s ease',
-              width: 44,
-              height: 44,
-              fontSize: 24,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              gap: '10px',
+              cursor: 'pointer',
+              padding: '4px 8px',
+              borderRadius: '10px',
+              transition: 'background 0.2s ease',
             }}
-            size={44}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#f3f4f5'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
           >
-            {currentAdmin?.name?.charAt(0)?.toUpperCase()}
-          </Avatar>
+            <Avatar
+              className="last"
+              src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : undefined}
+              style={{
+                background: '#eaf4ff',
+                color: '#0058c3',
+                cursor: 'pointer',
+                border: 'none',
+                boxShadow: 'none',
+                width: 36,
+                height: 36,
+                fontSize: 16,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              size={36}
+            >
+              {currentAdmin?.name?.charAt(0)?.toUpperCase()}
+            </Avatar>
+            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#191c1d' }}>
+                {currentAdmin?.name}
+              </span>
+              <span style={{ fontSize: '11px', color: '#71767f' }}>
+                {currentAdmin?.role || 'Admin'}
+              </span>
+            </div>
+          </div>
         </Dropdown>
       </Space>
     </Header>

@@ -5,10 +5,7 @@ const quoteSchema = new mongoose.Schema({
   ...commonFields,
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
   number: {
     type: Number,
     required: true,
@@ -181,7 +178,7 @@ quoteSchema.pre('save', async function (next) {
   next();
 });
 
-quoteSchema.index({ companyID: 1 }); // Index for companyID
+quoteSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Quote', quoteSchema);
 export default exportedModel;

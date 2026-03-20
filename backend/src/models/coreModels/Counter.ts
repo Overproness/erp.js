@@ -21,10 +21,7 @@ const counterSchema = mongoose.Schema(
       default: 1,
     },
     companyID: {
-      type: String,
-      index: true,
-      sparse: true, // Used for list/summary methods
-    },
+      type: String,    },
   },
   {
     timestamps: true,
@@ -33,7 +30,7 @@ const counterSchema = mongoose.Schema(
 
 // Compound index to ensure uniqueness per name/owner/year combination
 counterSchema.index({ name: 1, owner: 1, year: 1 }, { unique: true });
-counterSchema.index({ companyID: 1 }); // Index for companyID
+counterSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Counter = mongoose.model('Counter', counterSchema);
 export default Counter;

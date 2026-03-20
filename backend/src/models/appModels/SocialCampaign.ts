@@ -252,17 +252,14 @@ const socialCampaignSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 socialCampaignSchema.index({ owner: 1, removed: 1 });
 socialCampaignSchema.index({ status: 1, startDate: 1, endDate: 1 });
 socialCampaignSchema.index({ platforms: 1 });
-socialCampaignSchema.index({ companyID: 1 }); // Index for companyID
+socialCampaignSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Middleware
 socialCampaignSchema.pre('save', function(next) {

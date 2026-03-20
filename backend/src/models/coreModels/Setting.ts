@@ -42,15 +42,12 @@ const settingSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Ensure one settings object per category per owner
 settingSchema.index({ category: 1, owner: 1 }, { unique: true });
-settingSchema.index({ companyID: 1 }); // Index for companyID
+settingSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Setting = mongoose.model('Setting', settingSchema);
 export default Setting;

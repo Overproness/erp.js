@@ -102,17 +102,14 @@ const socialAccountSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 socialAccountSchema.index({ owner: 1, removed: 1 });
 socialAccountSchema.index({ platform: 1, platformAccountId: 1 }, { unique: true });
 socialAccountSchema.index({ owner: 1, platform: 1 });
-socialAccountSchema.index({ companyID: 1 }); // Index for companyID
+socialAccountSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Middleware
 socialAccountSchema.pre('save', function(next) {

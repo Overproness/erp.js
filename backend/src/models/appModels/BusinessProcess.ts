@@ -153,7 +153,7 @@ const processExecutionSchema = new mongoose.Schema({
       },
     },
   ],
-});
+}, { suppressReservedKeysWarning: true });
 
 const businessProcessSchema = new mongoose.Schema(
   {

@@ -231,10 +231,7 @@ const socialAnalyticsSchema = new mongoose.Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
@@ -243,7 +240,7 @@ socialAnalyticsSchema.index({ post: 1, platform: 1 });
 socialAnalyticsSchema.index({ campaign: 1, platform: 1 });
 socialAnalyticsSchema.index({ account: 1, recordedAt: -1 });
 socialAnalyticsSchema.index({ platform: 1, recordedAt: -1 });
-socialAnalyticsSchema.index({ companyID: 1 }); // Index for companyID
+socialAnalyticsSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual fields
 socialAnalyticsSchema.virtual('engagementRate').get(function() {

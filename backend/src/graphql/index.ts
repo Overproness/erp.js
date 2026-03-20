@@ -3,9 +3,25 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 import typeDefs from './typeDefs';
 import { initializeResolvers } from './resolvers';
 import { GraphQLContext, AdminUser } from '../types/context';
+
+/** Remove resolver entries that have no matching field in the schema */
+function filterResolversToSchema(resolvers: any, schema: any) {
+  const queryFields = new Set(Object.keys(schema.getQueryType()?.getFields() ?? {}));
+  const mutationFields = new Set(Object.keys(schema.getMutationType()?.getFields() ?? {}));
+  return {
+    ...resolvers,
+    Query: Object.fromEntries(
+      Object.entries(resolvers.Query ?? {}).filter(([k]) => queryFields.has(k))
+    ),
+    Mutation: Object.fromEntries(
+      Object.entries(resolvers.Mutation ?? {}).filter(([k]) => mutationFields.has(k))
+    ),
+  };
+}
 
 async function createApolloServer(): Promise<ApolloServer> {
   // Import all app controllers and wire them into the resolvers
@@ -21,9 +37,13 @@ async function createApolloServer(): Promise<ApolloServer> {
     adminController,
   });
 
+  // Build a schema from typeDefs alone to know which Query/Mutation fields exist
+  const typeDefsOnlySchema = makeExecutableSchema({ typeDefs });
+  const filteredResolvers = filterResolversToSchema(resolvers, typeDefsOnlySchema);
+
   const server = new ApolloServer({
     typeDefs,
-    resolvers,
+    resolvers: filteredResolvers,
     formatError: (formattedError: any) => {
       if (process.env.NODE_ENV === 'production') {
         if (formattedError.extensions?.code === 'INTERNAL_SERVER_ERROR') {

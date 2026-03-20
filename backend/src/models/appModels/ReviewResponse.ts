@@ -107,17 +107,14 @@ const reviewResponseSchema = new Schema({
   },
   companyID: {
     type: String,
-    index: true,
-    sparse: true,
-    // Used for list/summary methods
-  },
+          },
 });
 
 // Indexes
 reviewResponseSchema.index({ review: 1 }, { unique: true });
 reviewResponseSchema.index({ business: 1, status: 1 });
 reviewResponseSchema.index({ business: 1, created: -1 });
-reviewResponseSchema.index({ companyID: 1 }); // Index for companyID
+reviewResponseSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Pre-save middleware
 reviewResponseSchema.pre('save', function(next) {

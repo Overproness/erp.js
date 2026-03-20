@@ -59,6 +59,10 @@
 
 /* Modern header styling */
 .ant-layout-header {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
-  border-bottom: 1px solid #f0f0f0 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.header-no-shadow {
+  box-shadow: none !important;
 }

@@ -200,7 +200,7 @@ workflowExecutionSchema.index({ workflowId: 1, status: 1, createdAt: -1 });
 workflowExecutionSchema.index({ status: 1, createdAt: -1 });
 workflowExecutionSchema.index({ initiatedBy: 1, createdAt: -1 });
 workflowExecutionSchema.index({ 'trigger.type': 1, createdAt: -1 });
-workflowExecutionSchema.index({ executionId: 1 }, { unique: true });
+
 
 // Virtual for execution duration in human readable format
 workflowExecutionSchema.virtual('duration').get(function () {
