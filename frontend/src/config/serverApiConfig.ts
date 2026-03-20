@@ -1,0 +1,23 @@
+const API_BASE_URL: string =
+  import.meta.env.PROD || import.meta.env.VITE_DEV_REMOTE == 'remote'
+    ? import.meta.env.VITE_BACKEND_SERVER + 'api/'
+    : 'http://localhost:8888/api/';
+export const BASE_URL: string =
+  import.meta.env.PROD || import.meta.env.VITE_DEV_REMOTE
+    ? import.meta.env.VITE_BACKEND_SERVER
+    : 'http://localhost:8888/';
+
+export const WEBSITE_URL: string = import.meta.env.PROD
+  ? import.meta.env.VITE_FRONTEND_URL
+  : 'http://localhost:3000/';
+export const DOWNLOAD_BASE_URL: string =
+  import.meta.env.PROD || import.meta.env.VITE_DEV_REMOTE
+    ? import.meta.env.VITE_BACKEND_SERVER + 'download/'
+    : 'http://localhost:8888/download/';
+const ACCESS_TOKEN_NAME = 'x-auth-token';
+
+export const FILE_BASE_URL: string = import.meta.env.VITE_FILE_BASE_URL;
+
+export const N8N_URL: string = import.meta.env.VITE_N8N_URL;
+
+export { ACCESS_TOKEN_NAME, API_BASE_URL };

@@ -50,6 +50,20 @@ echo } >> "%FRONTEND_VERSION_FILE%"
 echo    Frontend Build: !FRONTEND_BUILD! -^> !NEW_FRONTEND_BUILD!
 
 REM =========================================
+REM Build Backend TypeScript
+REM =========================================
+echo [2.5/5] Building backend TypeScript...
+cd backend
+call npm run build
+if errorlevel 1 (
+    echo ERROR: Backend TypeScript build failed
+    cd ..
+    exit /b 1
+)
+cd ..
+echo    Backend build completed successfully
+
+REM =========================================
 REM Git Add
 REM =========================================
 echo [3/5] Adding files to git...

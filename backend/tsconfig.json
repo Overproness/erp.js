@@ -21,10 +21,17 @@
       "@graphql/*": ["./graphql/*"],
       "@config/*": ["./config/*"],
       "@utils/*": ["./utils/*"],
-      "@types/*": ["./types/*"]
+      "@types/*": ["./types/*"],
+      "@helpers/*": ["./helpers/*"],
+      "@controllers/*": ["./controllers/*"],
+      "@routes/*": ["./routes/*"],
+      "@validators/*": ["./validators/*"]
     },
-    "allowJs": true
+    "allowJs": false,
+    "checkJs": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

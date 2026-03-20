@@ -1,0 +1,62 @@
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+
+const DocumentAuditSchema = new Schema(
+  {
+    document: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Document',
+      required: true,
+    },
+    action: {
+      type: String,
+      required: true,
+      enum: [
+        'created',
+        'viewed',
+        'downloaded',
+        'updated',
+        'deleted',
+        'restored',
+        'permission_changed',
+        'version_created',
+        'reverted',
+        'compliance_updated',
+        'signed',
+      ],
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Admin',
+      required: true,
+    },
+    ipAddress: {
+      type: String,
+    },
+    userAgent: {
+      type: String,
+    },
+    details: {
+      type: Object,
+    },
+    created: {
+      type: Date,
+      default: Date.now,
+    },
+    companyID: {
+      type: String,
+      index: true,
+      sparse: true,
+      // Used for list/summary methods
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+DocumentAuditSchema.index({ companyID: 1 }); // Index for companyID
+
+const exportedModel = mongoose.model('DocumentAudit', DocumentAuditSchema);
+export default exportedModel;
+module.exports = exportedModel;
