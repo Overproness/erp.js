@@ -25,12 +25,15 @@ export default function ContactPage() {
       <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-inter">
         {/* Hero Header */}
         <header className="mb-16 text-center md:text-left">
-          <h1 className="text-5xl font-bold tracking-tight mb-4 leading-tight" style={{ color: '#191c1d' }}>
+          <h1
+            className="text-5xl font-bold tracking-tight mb-4 leading-tight"
+            style={{ color: '#191c1d' }}
+          >
             Connect with our <span className="text-[#0058c3]">Engineering</span> Team
           </h1>
           <p className="max-w-2xl leading-relaxed" style={{ color: '#414754' }}>
-            Whether you&apos;re scaling a startup or re-architecting an enterprise, our team is ready
-            to help you integrate the automation engine into your workflow.
+            Whether you&apos;re scaling a startup or re-architecting an enterprise, our team is
+            ready to help you integrate the automation engine into your workflow.
           </p>
         </header>
 
@@ -136,15 +139,36 @@ export default function ContactPage() {
           <div className="lg:col-span-5 space-y-12">
             {/* Office Locations */}
             <section>
-              <h3 className="text-xs font-semibold mb-6 uppercase tracking-wider flex items-center gap-2" style={{ color: '#414754' }}>
+              <h3
+                className="text-xs font-semibold mb-6 uppercase tracking-wider flex items-center gap-2"
+                style={{ color: '#414754' }}
+              >
                 <span className="material-symbols-outlined text-[#0058c3] text-sm">public</span>
                 Global Hubs
               </h3>
               <div className="grid grid-cols-1 gap-4">
                 {[
-                  { city: 'San Francisco', address: 'Market Street, Suite 400', icon: 'apartment', color: '#d8e2ff', iconColor: '#0058c3' },
-                  { city: 'London', address: 'Shoreditch Tech Hub', icon: 'corporate_fare', color: '#a6c1fe', iconColor: '#435d94' },
-                  { city: 'Tokyo', address: 'Minato City Tower', icon: 'location_city', color: '#ffdbcd', iconColor: '#a23d00' },
+                  {
+                    city: 'San Francisco',
+                    address: 'Market Street, Suite 400',
+                    icon: 'apartment',
+                    color: '#d8e2ff',
+                    iconColor: '#0058c3',
+                  },
+                  {
+                    city: 'London',
+                    address: 'Shoreditch Tech Hub',
+                    icon: 'corporate_fare',
+                    color: '#a6c1fe',
+                    iconColor: '#435d94',
+                  },
+                  {
+                    city: 'Tokyo',
+                    address: 'Minato City Tower',
+                    icon: 'location_city',
+                    color: '#ffdbcd',
+                    iconColor: '#a23d00',
+                  },
                 ].map((office) => (
                   <div
                     key={office.city}
@@ -165,10 +189,17 @@ export default function ContactPage() {
                       <span className="material-symbols-outlined">{office.icon}</span>
                     </div>
                     <div>
-                      <h4 className="font-bold" style={{ color: '#191c1d' }}>{office.city}</h4>
-                      <p className="text-xs" style={{ color: '#414754' }}>{office.address}</p>
+                      <h4 className="font-bold" style={{ color: '#191c1d' }}>
+                        {office.city}
+                      </h4>
+                      <p className="text-xs" style={{ color: '#414754' }}>
+                        {office.address}
+                      </p>
                     </div>
-                    <span className="material-symbols-outlined ml-auto opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#c1c6d7' }}>
+                    <span
+                      className="material-symbols-outlined ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ color: '#c1c6d7' }}
+                    >
                       north_east
                     </span>
                   </div>
@@ -179,7 +210,9 @@ export default function ContactPage() {
             {/* Support Card */}
             <div className="bg-[#0058c3]/5 rounded-xl p-8 border border-[#0058c3]/10 relative overflow-hidden">
               <div className="relative z-10">
-                <h3 className="font-bold mb-2" style={{ color: '#191c1d' }}>Priority Support?</h3>
+                <h3 className="font-bold mb-2" style={{ color: '#191c1d' }}>
+                  Priority Support?
+                </h3>
                 <p className="text-sm mb-6" style={{ color: '#414754' }}>
                   Enterprise customers get a dedicated Slack channel and 1-hour SLA response times.
                 </p>
@@ -193,7 +226,10 @@ export default function ContactPage() {
                   </span>
                 </Link>
               </div>
-              <span className="material-symbols-outlined absolute -right-4 -bottom-4 text-[#0058c3]/10 rotate-12" style={{ fontSize: '120px' }}>
+              <span
+                className="material-symbols-outlined absolute -right-4 -bottom-4 text-[#0058c3]/10 rotate-12"
+                style={{ fontSize: '120px' }}
+              >
                 support_agent
               </span>
             </div>
@@ -216,7 +252,9 @@ export default function ContactPage() {
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-[#edeeef] transition-colors bg-transparent border-none cursor-pointer"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-semibold" style={{ color: '#191c1d' }}>{faq.q}</span>
+                  <span className="font-semibold" style={{ color: '#191c1d' }}>
+                    {faq.q}
+                  </span>
                   <span
                     className="material-symbols-outlined transition-colors"
                     style={{ color: openFaq === i ? '#0058c3' : '#414754' }}

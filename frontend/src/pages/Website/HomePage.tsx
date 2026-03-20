@@ -5,7 +5,10 @@ export default function HomePage() {
   return (
     <WebsiteLayout>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden px-6 lg:px-20" style={{ background: '#f8f9fa' }}>
+      <section
+        className="relative min-h-[90vh] flex items-center overflow-hidden px-6 lg:px-20"
+        style={{ background: '#f8f9fa' }}
+      >
         {/* Background Decorative Elements */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-[#0058c3]/10 rounded-full blur-[120px]"></div>
@@ -112,9 +115,15 @@ export default function HomePage() {
       </section>
 
       {/* Social Proof */}
-      <section className="py-12 border-y border-[#c1c6d7]/10 overflow-hidden" style={{ background: '#f3f4f5' }}>
+      <section
+        className="py-12 border-y border-[#c1c6d7]/10 overflow-hidden"
+        style={{ background: '#f3f4f5' }}
+      >
         <div className="container mx-auto px-6">
-          <p className="text-center text-[10px] font-bold uppercase tracking-widest mb-10" style={{ color: '#414754' }}>
+          <p
+            className="text-center text-[10px] font-bold uppercase tracking-widest mb-10"
+            style={{ color: '#414754' }}
+          >
             Trusted by high-growth engineering teams
           </p>
           <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40">
@@ -131,12 +140,15 @@ export default function HomePage() {
       <section className="py-24 px-6" style={{ background: '#f8f9fa' }}>
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+            <h2
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
+              style={{ color: '#191c1d' }}
+            >
               One engine. Total <span className="text-[#0058c3]">Clarity</span>.
             </h2>
             <p className="max-w-2xl mx-auto" style={{ color: '#414754' }}>
-              Eliminate tool sprawl with a unified system built on the most advanced data engine in the
-              market.
+              Eliminate tool sprawl with a unified system built on the most advanced data engine in
+              the market.
             </p>
           </div>
 
@@ -154,14 +166,19 @@ export default function HomePage() {
               }}
             >
               <div className="relative z-10">
-                <span className="material-symbols-outlined text-[#0058c3] mb-4 text-3xl">contacts</span>
+                <span className="material-symbols-outlined text-[#0058c3] mb-4 text-3xl">
+                  contacts
+                </span>
                 <h3 className="text-2xl font-bold mb-2">High-Velocity CRM</h3>
                 <p className="max-w-sm mb-6" style={{ color: '#414754' }}>
                   Manage pipeline complexity with an interface designed for speed and real-time
                   synchronization.
                 </p>
               </div>
-              <div className="mt-auto h-48 rounded-xl border border-[#c1c6d7]/30 p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 overflow-hidden" style={{ background: '#e7e8e9' }}>
+              <div
+                className="mt-auto h-48 rounded-xl border border-[#c1c6d7]/30 p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 overflow-hidden"
+                style={{ background: '#e7e8e9' }}
+              >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                   <div className="w-3 h-3 rounded-full bg-orange-500"></div>
@@ -188,10 +205,13 @@ export default function HomePage() {
               <span className="material-symbols-outlined mb-4 text-3xl">psychology</span>
               <h3 className="text-2xl font-bold mb-2">Predictive AI</h3>
               <p className="text-[#d8e2ff] leading-relaxed mb-6">
-                Automate routine decision-making with built-in machine learning models that learn from
-                your data.
+                Automate routine decision-making with built-in machine learning models that learn
+                from your data.
               </p>
-              <Link to="/features" className="mt-auto flex items-center gap-2 font-semibold text-sm text-white no-underline">
+              <Link
+                to="/features"
+                className="mt-auto flex items-center gap-2 font-semibold text-sm text-white no-underline"
+              >
                 Explore AI Engine{' '}
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
               </Link>
@@ -207,17 +227,25 @@ export default function HomePage() {
                 borderLeft: '1px solid rgba(255,255,255,0.4)',
               }}
             >
-              <span className="material-symbols-outlined text-[#0058c3] mb-4 text-3xl">account_tree</span>
+              <span className="material-symbols-outlined text-[#0058c3] mb-4 text-3xl">
+                account_tree
+              </span>
               <h3 className="text-xl font-bold mb-2">Workflows</h3>
               <p className="text-sm mb-6" style={{ color: '#414754' }}>
                 Low-code automation for high-impact operations. Drag, drop, deploy.
               </p>
               <div className="flex flex-col gap-2 opacity-50">
-                <div className="flex items-center gap-3 p-2 rounded" style={{ background: '#f3f4f5' }}>
+                <div
+                  className="flex items-center gap-3 p-2 rounded"
+                  style={{ background: '#f3f4f5' }}
+                >
                   <span className="material-symbols-outlined text-sm">check_circle</span>
                   <span className="text-xs font-medium">If &apos;Invoice Paid&apos;</span>
                 </div>
-                <div className="flex items-center gap-3 p-2 rounded translate-x-4" style={{ background: '#f3f4f5' }}>
+                <div
+                  className="flex items-center gap-3 p-2 rounded translate-x-4"
+                  style={{ background: '#f3f4f5' }}
+                >
                   <span className="material-symbols-outlined text-sm">bolt</span>
                   <span className="text-xs font-medium">Then &apos;Notify Slack&apos;</span>
                 </div>
@@ -232,7 +260,9 @@ export default function HomePage() {
               }}
             >
               <div className="flex-1">
-                <span className="material-symbols-outlined text-[#0058c3] mb-4 text-3xl">analytics</span>
+                <span className="material-symbols-outlined text-[#0058c3] mb-4 text-3xl">
+                  analytics
+                </span>
                 <h3 className="text-2xl font-bold mb-2">Deep Analytics</h3>
                 <p style={{ color: '#414754' }}>
                   Real-time business intelligence with zero latency. Turn complex data points into
@@ -256,15 +286,24 @@ export default function HomePage() {
       {/* Call to Action */}
       <section className="py-24 px-6">
         <div className="container mx-auto max-w-5xl">
-          <div className="rounded-[2rem] p-12 md:p-20 text-center relative overflow-hidden" style={{ background: '#2e3132' }}>
+          <div
+            className="rounded-[2rem] p-12 md:p-20 text-center relative overflow-hidden"
+            style={{ background: '#2e3132' }}
+          >
             <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
               <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#0058c3] rounded-full blur-[100px]"></div>
               <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#a6c1fe] rounded-full blur-[100px]"></div>
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-6 relative z-10" style={{ color: '#f0f1f2' }}>
+            <h2
+              className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-6 relative z-10"
+              style={{ color: '#f0f1f2' }}
+            >
               Ready to rebuild your ops?
             </h2>
-            <p className="max-w-xl mx-auto mb-10 text-lg relative z-10" style={{ color: '#c1c6d7' }}>
+            <p
+              className="max-w-xl mx-auto mb-10 text-lg relative z-10"
+              style={{ color: '#c1c6d7' }}
+            >
               Join thousands of enterprises running their entire operation on Quickmation. Scale
               without the technical debt.
             </p>

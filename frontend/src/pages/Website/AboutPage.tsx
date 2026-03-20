@@ -43,7 +43,10 @@ export default function AboutPage() {
           <span className="text-xs font-semibold uppercase tracking-wider text-[#0058c3] mb-4 block">
             Our Vision
           </span>
-          <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-8 max-w-4xl" style={{ color: '#191c1d' }}>
+          <h1
+            className="text-6xl md:text-7xl font-bold tracking-tighter mb-8 max-w-4xl"
+            style={{ color: '#191c1d' }}
+          >
             Engineering the{' '}
             <span
               className="bg-clip-text text-transparent"
@@ -54,9 +57,9 @@ export default function AboutPage() {
             for global scale.
           </h1>
           <p className="max-w-2xl leading-relaxed text-lg" style={{ color: '#414754' }}>
-            We believe complex enterprise systems shouldn&apos;t feel like a black box. Our mission is
-            to refract data through a clear lens, providing the precision of a high-performance engine
-            with the clarity of glass.
+            We believe complex enterprise systems shouldn&apos;t feel like a black box. Our mission
+            is to refract data through a clear lens, providing the precision of a high-performance
+            engine with the clarity of glass.
           </p>
         </div>
         {/* Decorative isometric element */}
@@ -71,20 +74,27 @@ export default function AboutPage() {
       <section className="py-20 px-6" style={{ background: '#f3f4f5' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div className="md:col-span-7 p-10 rounded-xl shadow-sm border border-[#c1c6d7]/10" style={{ background: '#fff' }}>
+            <div
+              className="md:col-span-7 p-10 rounded-xl shadow-sm border border-[#c1c6d7]/10"
+              style={{ background: '#fff' }}
+            >
               <span
                 className="material-symbols-outlined text-[#0058c3] text-4xl mb-6"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 account_tree
               </span>
-              <h2 className="text-3xl font-semibold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+              <h2
+                className="text-3xl font-semibold tracking-tight mb-4"
+                style={{ color: '#191c1d' }}
+              >
                 The Mission
               </h2>
               <p className="leading-relaxed text-lg" style={{ color: '#414754' }}>
                 To decentralize enterprise operational power. By building an open, modular, and
-                developer-first automation suite, we empower teams to build exactly what they need, not
-                what a vendor forces upon them. We prioritize technical excellence over market fluff.
+                developer-first automation suite, we empower teams to build exactly what they need,
+                not what a vendor forces upon them. We prioritize technical excellence over market
+                fluff.
               </p>
             </div>
             <div className="md:col-span-5 bg-gradient-to-br from-[#0058c3] to-[#0070f3] p-10 rounded-xl flex flex-col justify-end text-white">
@@ -94,21 +104,37 @@ export default function AboutPage() {
                 API.
               </p>
             </div>
-            <div className="md:col-span-4 p-8 rounded-xl border border-[#c1c6d7]/10" style={{ background: '#fff' }}>
-              <h4 className="font-bold mb-2" style={{ color: '#191c1d' }}>Transparency</h4>
+            <div
+              className="md:col-span-4 p-8 rounded-xl border border-[#c1c6d7]/10"
+              style={{ background: '#fff' }}
+            >
+              <h4 className="font-bold mb-2" style={{ color: '#191c1d' }}>
+                Transparency
+              </h4>
               <p style={{ color: '#414754' }}>
                 Real-time telemetry for every business logic process, visualized through our glass
                 interface.
               </p>
             </div>
-            <div className="md:col-span-4 p-8 rounded-xl border border-[#c1c6d7]/10" style={{ background: '#fff' }}>
-              <h4 className="font-bold mb-2" style={{ color: '#191c1d' }}>Velocity</h4>
+            <div
+              className="md:col-span-4 p-8 rounded-xl border border-[#c1c6d7]/10"
+              style={{ background: '#fff' }}
+            >
+              <h4 className="font-bold mb-2" style={{ color: '#191c1d' }}>
+                Velocity
+              </h4>
               <p style={{ color: '#414754' }}>
-                Deploy mission-critical workflows in minutes, not months. The engine is built for speed.
+                Deploy mission-critical workflows in minutes, not months. The engine is built for
+                speed.
               </p>
             </div>
-            <div className="md:col-span-4 p-8 rounded-xl border border-[#c1c6d7]/10" style={{ background: '#fff' }}>
-              <h4 className="font-bold mb-2" style={{ color: '#191c1d' }}>Integrity</h4>
+            <div
+              className="md:col-span-4 p-8 rounded-xl border border-[#c1c6d7]/10"
+              style={{ background: '#fff' }}
+            >
+              <h4 className="font-bold mb-2" style={{ color: '#191c1d' }}>
+                Integrity
+              </h4>
               <p style={{ color: '#414754' }}>
                 Immutable ledger systems ensure that your business data remains the single source of
                 truth.
@@ -145,7 +171,10 @@ export default function AboutPage() {
                   borderRight: '1px solid rgba(0,0,0,0.05)',
                 }}
               >
-                <div className="aspect-square w-full rounded-lg mb-6 overflow-hidden relative" style={{ background: '#e1e3e4' }}>
+                <div
+                  className="aspect-square w-full rounded-lg mb-6 overflow-hidden relative"
+                  style={{ background: '#e1e3e4' }}
+                >
                   <img
                     alt={member.name}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
@@ -153,9 +182,15 @@ export default function AboutPage() {
                   />
                   <div className="absolute inset-0 bg-[#0058c3]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
-                <h3 className="font-bold mb-1" style={{ color: '#191c1d' }}>{member.name}</h3>
-                <p className="text-xs text-[#0058c3] mb-4 tracking-widest uppercase">{member.role}</p>
-                <p className="text-sm leading-relaxed" style={{ color: '#414754' }}>{member.bio}</p>
+                <h3 className="font-bold mb-1" style={{ color: '#191c1d' }}>
+                  {member.name}
+                </h3>
+                <p className="text-xs text-[#0058c3] mb-4 tracking-widest uppercase">
+                  {member.role}
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: '#414754' }}>
+                  {member.bio}
+                </p>
               </div>
             ))}
           </div>

@@ -156,7 +156,7 @@ export function Scene() {
 
     // Convert Spherical coordinates to Cartesian for the camera (all 3 axes inverted)
     state.camera.position.x = -(radius * Math.cos(phi) * Math.sin(theta));
-    state.camera.position.y = (radius * Math.sin(phi));
+    state.camera.position.y = radius * Math.sin(phi);
     state.camera.position.z = -(radius * Math.cos(phi) * Math.cos(theta));
 
     // Always look at the center of the structure

@@ -18,7 +18,10 @@ export default function TermsPage() {
         {/* Sticky Sidebar */}
         <aside className="hidden md:block md:col-span-3">
           <div className="sticky top-28 space-y-1">
-            <p className="text-[0.6875rem] font-semibold uppercase tracking-wider mb-4 px-3" style={{ color: '#727786' }}>
+            <p
+              className="text-[0.6875rem] font-semibold uppercase tracking-wider mb-4 px-3"
+              style={{ color: '#727786' }}
+            >
               On this page
             </p>
             <nav className="flex flex-col gap-1">
@@ -37,8 +40,13 @@ export default function TermsPage() {
                 </a>
               ))}
             </nav>
-            <div className="mt-8 p-4 rounded-xl border border-[#c1c6d7]/10" style={{ background: '#f3f4f5' }}>
-              <p className="text-xs font-semibold mb-2" style={{ color: '#191c1d' }}>Need clarification?</p>
+            <div
+              className="mt-8 p-4 rounded-xl border border-[#c1c6d7]/10"
+              style={{ background: '#f3f4f5' }}
+            >
+              <p className="text-xs font-semibold mb-2" style={{ color: '#191c1d' }}>
+                Need clarification?
+              </p>
               <p className="text-[11px] mb-4 leading-relaxed" style={{ color: '#414754' }}>
                 Contact our legal team for specific enterprise licensing queries.
               </p>
@@ -60,10 +68,16 @@ export default function TermsPage() {
               <span className="material-symbols-outlined text-[14px]">gavel</span>
               Legal Documentation
             </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-4" style={{ color: '#191c1d' }}>
+            <h1
+              className="text-4xl md:text-5xl font-black tracking-tighter mb-4"
+              style={{ color: '#191c1d' }}
+            >
               Terms of Service
             </h1>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm" style={{ color: '#414754' }}>
+            <div
+              className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm"
+              style={{ color: '#414754' }}
+            >
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[18px]">calendar_today</span>
                 Last Updated: June 14, 2024
@@ -76,62 +90,96 @@ export default function TermsPage() {
           </div>
 
           {/* Intro Card */}
-          <div className="p-6 border border-[#c1c6d7]/20 rounded-xl shadow-sm mb-12" style={{ background: '#fff' }}>
+          <div
+            className="p-6 border border-[#c1c6d7]/20 rounded-xl shadow-sm mb-12"
+            style={{ background: '#fff' }}
+          >
             <p className="leading-relaxed" style={{ color: '#191c1d' }}>
               Please read these Terms of Service (&ldquo;Terms&rdquo;) carefully before using the{' '}
               <strong className="text-[#0058c3]">Quickmation Automation Suite</strong>. These Terms
               constitute a legally binding agreement between you (&ldquo;Licensee&rdquo;) and
-              Quickmation Corp regarding your access to and use of our enterprise automation platform.
+              Quickmation Corp regarding your access to and use of our enterprise automation
+              platform.
             </p>
           </div>
 
           {/* Sections */}
           <div className="space-y-16">
             <section id="acceptance" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">01</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  01
+                </span>
                 Acceptance of Terms
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  By accessing or using any part of the Quickmation ecosystem, you agree to become bound
-                  by the terms and conditions of this agreement. If you do not agree to all the terms
-                  and conditions of this agreement, then you may not access the Website or use any
-                  services.
+                  By accessing or using any part of the Quickmation ecosystem, you agree to become
+                  bound by the terms and conditions of this agreement. If you do not agree to all
+                  the terms and conditions of this agreement, then you may not access the Website or
+                  use any services.
                 </p>
                 <p>
                   The platform is intended for professional use by entities and organizations. Users
-                  represent and warrant that they have the legal authority to bind their employer or the
-                  entity they represent to these Terms.
+                  represent and warrant that they have the legal authority to bind their employer or
+                  the entity they represent to these Terms.
                 </p>
               </div>
             </section>
 
             <section id="services" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">02</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  02
+                </span>
                 Service Description
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  Quickmation provides a high-performance, developer-centric suite of enterprise tools
-                  including but not limited to:
+                  Quickmation provides a high-performance, developer-centric suite of enterprise
+                  tools including but not limited to:
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 list-none p-0">
                   {[
-                    { icon: 'analytics', title: 'Real-time Analytics', desc: 'Stream processing of organizational data.' },
-                    { icon: 'shield', title: 'Security Guardrails', desc: 'Automated compliance and audit logging.' },
-                    { icon: 'hub', title: 'Module Orchestration', desc: 'Seamless linking of distributed services.' },
-                    { icon: 'database', title: 'Data Persistence', desc: 'Redundant distributed storage solutions.' },
+                    {
+                      icon: 'analytics',
+                      title: 'Real-time Analytics',
+                      desc: 'Stream processing of organizational data.',
+                    },
+                    {
+                      icon: 'shield',
+                      title: 'Security Guardrails',
+                      desc: 'Automated compliance and audit logging.',
+                    },
+                    {
+                      icon: 'hub',
+                      title: 'Module Orchestration',
+                      desc: 'Seamless linking of distributed services.',
+                    },
+                    {
+                      icon: 'database',
+                      title: 'Data Persistence',
+                      desc: 'Redundant distributed storage solutions.',
+                    },
                   ].map((item) => (
                     <li
                       key={item.title}
                       className="flex items-start gap-3 p-3 rounded-lg border-l-4 border-[#0058c3]"
                       style={{ background: '#f3f4f5' }}
                     >
-                      <span className="material-symbols-outlined text-[#0058c3] text-[20px]">{item.icon}</span>
+                      <span className="material-symbols-outlined text-[#0058c3] text-[20px]">
+                        {item.icon}
+                      </span>
                       <div>
-                        <p className="text-xs font-bold" style={{ color: '#191c1d' }}>{item.title}</p>
+                        <p className="text-xs font-bold" style={{ color: '#191c1d' }}>
+                          {item.title}
+                        </p>
                         <p className="text-[11px]">{item.desc}</p>
                       </div>
                     </li>
@@ -141,8 +189,13 @@ export default function TermsPage() {
             </section>
 
             <section id="accounts" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">03</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  03
+                </span>
                 User Accounts
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
@@ -154,8 +207,8 @@ export default function TermsPage() {
                     Maintaining the <strong>confidentiality</strong> of your account credentials.
                   </li>
                   <li>
-                    Promptly notifying Quickmation of any <strong>unauthorized use</strong> or security
-                    breach.
+                    Promptly notifying Quickmation of any <strong>unauthorized use</strong> or
+                    security breach.
                   </li>
                   <li>
                     Ensuring all user-generated data complies with local and international{' '}
@@ -173,15 +226,20 @@ export default function TermsPage() {
             </section>
 
             <section id="licensing" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">04</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  04
+                </span>
                 Proprietary Rights
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  The Service and its original content, features, and functionality are and will remain
-                  the exclusive property of Quickmation and its licensors. Our intellectual property is
-                  protected by copyright, trademark, and other laws.
+                  The Service and its original content, features, and functionality are and will
+                  remain the exclusive property of Quickmation and its licensors. Our intellectual
+                  property is protected by copyright, trademark, and other laws.
                 </p>
                 <p>
                   Your license is <strong>non-exclusive, non-transferable, and revocable</strong>,
@@ -191,12 +249,23 @@ export default function TermsPage() {
             </section>
 
             <section id="restrictions" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">05</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  05
+                </span>
                 Usage Restrictions
               </h2>
-              <div className="p-6 rounded-xl border-t-2 border-[#0058c3]" style={{ background: '#e7e8e9' }}>
-                <p className="text-sm font-bold mb-4 uppercase tracking-widest" style={{ color: '#191c1d' }}>
+              <div
+                className="p-6 rounded-xl border-t-2 border-[#0058c3]"
+                style={{ background: '#e7e8e9' }}
+              >
+                <p
+                  className="text-sm font-bold mb-4 uppercase tracking-widest"
+                  style={{ color: '#191c1d' }}
+                >
                   The &ldquo;No-Breach&rdquo; Protocol
                 </p>
                 <ul className="space-y-3 list-none p-0">
@@ -206,7 +275,9 @@ export default function TermsPage() {
                     'No sharing of single-user licenses across multiple employees.',
                   ].map((rule) => (
                     <li key={rule} className="flex items-center gap-3 text-sm">
-                      <span className="material-symbols-outlined text-[#0058c3] text-sm">check_circle</span>
+                      <span className="material-symbols-outlined text-[#0058c3] text-sm">
+                        check_circle
+                      </span>
                       <span>{rule}</span>
                     </li>
                   ))}
@@ -215,32 +286,47 @@ export default function TermsPage() {
             </section>
 
             <section id="liability" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">06</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  06
+                </span>
                 Limitation of Liability
               </h2>
-              <div className="p-6 rounded-xl font-mono text-xs leading-relaxed uppercase" style={{ background: '#2e3132', color: '#f0f1f2' }}>
-                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL QUICKMATION, ITS
-                AFFILIATES, AGENTS, DIRECTORS, OR EMPLOYEES BE LIABLE FOR ANY INDIRECT, PUNITIVE,
-                INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING WITHOUT LIMITATION
-                DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE LOSSES.
+              <div
+                className="p-6 rounded-xl font-mono text-xs leading-relaxed uppercase"
+                style={{ background: '#2e3132', color: '#f0f1f2' }}
+              >
+                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL QUICKMATION,
+                ITS AFFILIATES, AGENTS, DIRECTORS, OR EMPLOYEES BE LIABLE FOR ANY INDIRECT,
+                PUNITIVE, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING WITHOUT
+                LIMITATION DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE
+                LOSSES.
               </div>
             </section>
 
             <section id="termination" style={{ scrollMarginTop: '6rem' }}>
-              <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3" style={{ color: '#191c1d' }}>
-                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">07</span>
+              <h2
+                className="text-xl font-bold tracking-tight mb-4 flex items-center gap-3"
+                style={{ color: '#191c1d' }}
+              >
+                <span className="w-8 h-8 rounded bg-[#0070f3] text-white flex items-center justify-center text-xs">
+                  07
+                </span>
                 Termination
               </h2>
               <div className="space-y-4 leading-relaxed" style={{ color: '#414754' }}>
                 <p>
-                  We may terminate or suspend your account and bar access to the Service immediately,
-                  without prior notice or liability, under our sole discretion, for any reason
-                  whatsoever and without limitation, including but not limited to a breach of the Terms.
+                  We may terminate or suspend your account and bar access to the Service
+                  immediately, without prior notice or liability, under our sole discretion, for any
+                  reason whatsoever and without limitation, including but not limited to a breach of
+                  the Terms.
                 </p>
                 <p>
-                  If you wish to terminate your account, you may simply discontinue using the Service or
-                  contact our support team for account deletion.
+                  If you wish to terminate your account, you may simply discontinue using the
+                  Service or contact our support team for account deletion.
                 </p>
               </div>
             </section>

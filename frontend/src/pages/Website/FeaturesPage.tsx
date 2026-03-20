@@ -9,12 +9,15 @@ export default function FeaturesPage() {
           <div className="inline-block px-3 py-1 rounded-full bg-[#d8e2ff] text-[#2a467b] text-[0.6875rem] font-bold uppercase tracking-wider mb-6">
             Platform Capabilities
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6" style={{ color: '#191c1d' }}>
+          <h1
+            className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6"
+            style={{ color: '#191c1d' }}
+          >
             Engineered for <span className="text-[#0058c3]">Precision</span>.
           </h1>
           <p className="max-w-2xl mx-auto text-lg leading-relaxed" style={{ color: '#414754' }}>
-            Experience the next evolution of enterprise resource planning. A crystalline suite of tools
-            designed for the modern developer-led organization.
+            Experience the next evolution of enterprise resource planning. A crystalline suite of
+            tools designed for the modern developer-led organization.
           </p>
         </section>
 
@@ -33,12 +36,22 @@ export default function FeaturesPage() {
                 highlight high-priority deals without cluttering your workspace.
               </p>
               <ul className="space-y-4">
-                <li className="flex items-center gap-3 text-sm font-medium" style={{ color: '#191c1d' }}>
-                  <span className="material-symbols-outlined text-[#0058c3] text-lg">check_circle</span>
+                <li
+                  className="flex items-center gap-3 text-sm font-medium"
+                  style={{ color: '#191c1d' }}
+                >
+                  <span className="material-symbols-outlined text-[#0058c3] text-lg">
+                    check_circle
+                  </span>
                   Automated Lead Scoring
                 </li>
-                <li className="flex items-center gap-3 text-sm font-medium" style={{ color: '#191c1d' }}>
-                  <span className="material-symbols-outlined text-[#0058c3] text-lg">check_circle</span>
+                <li
+                  className="flex items-center gap-3 text-sm font-medium"
+                  style={{ color: '#191c1d' }}
+                >
+                  <span className="material-symbols-outlined text-[#0058c3] text-lg">
+                    check_circle
+                  </span>
                   Real-time Revenue Forecasting
                 </li>
               </ul>
@@ -90,7 +103,10 @@ export default function FeaturesPage() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-bl from-[#435d94]/20 to-transparent blur-3xl opacity-30 rounded-full"></div>
-              <div className="rounded-xl p-8 shadow-xl relative overflow-hidden border border-[#c1c6d7]/20" style={{ background: '#f3f4f5' }}>
+              <div
+                className="rounded-xl p-8 shadow-xl relative overflow-hidden border border-[#c1c6d7]/20"
+                style={{ background: '#f3f4f5' }}
+              >
                 <div className="grid grid-cols-2 gap-4">
                   <div
                     className="p-4 rounded-lg"
@@ -147,13 +163,19 @@ export default function FeaturesPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg" style={{ background: '#e1e3e4' }}>
                   <div className="text-xl font-bold text-[#0058c3] mb-1">98%</div>
-                  <div className="text-[0.6875rem] font-bold uppercase tracking-wider" style={{ color: '#414754' }}>
+                  <div
+                    className="text-[0.6875rem] font-bold uppercase tracking-wider"
+                    style={{ color: '#414754' }}
+                  >
                     Deliverability
                   </div>
                 </div>
                 <div className="p-4 rounded-lg" style={{ background: '#e1e3e4' }}>
                   <div className="text-xl font-bold text-[#0058c3] mb-1">12x</div>
-                  <div className="text-[0.6875rem] font-bold uppercase tracking-wider" style={{ color: '#414754' }}>
+                  <div
+                    className="text-[0.6875rem] font-bold uppercase tracking-wider"
+                    style={{ color: '#414754' }}
+                  >
                     ROI Increase
                   </div>
                 </div>
@@ -213,7 +235,9 @@ export default function FeaturesPage() {
                 </div>
                 <div className="p-4 bg-[#0058c3]/5 rounded-lg border border-[#0058c3]/10">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-[#0058c3] text-sm">auto_awesome</span>
+                    <span className="material-symbols-outlined text-[#0058c3] text-sm">
+                      auto_awesome
+                    </span>
                     <span className="text-[0.6875rem] font-bold text-[#0058c3] uppercase tracking-widest">
                       AI Insight
                     </span>
@@ -239,7 +263,10 @@ export default function FeaturesPage() {
                     <div className="h-4 w-32 bg-slate-900 rounded"></div>
                     <div className="h-2 w-24 bg-slate-200 rounded"></div>
                   </div>
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#edeeef' }}>
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center"
+                    style={{ background: '#edeeef' }}
+                  >
                     <span className="material-symbols-outlined text-slate-400">draw</span>
                   </div>
                 </div>
@@ -268,15 +295,25 @@ export default function FeaturesPage() {
               </p>
               <div className="flex items-center gap-6">
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold" style={{ color: '#191c1d' }}>SOC2</span>
-                  <span className="text-[0.6875rem] uppercase font-bold tracking-widest" style={{ color: '#414754' }}>
+                  <span className="text-2xl font-bold" style={{ color: '#191c1d' }}>
+                    SOC2
+                  </span>
+                  <span
+                    className="text-[0.6875rem] uppercase font-bold tracking-widest"
+                    style={{ color: '#414754' }}
+                  >
                     Compliant
                   </span>
                 </div>
                 <div className="h-10 w-[1px]" style={{ background: '#c1c6d7' }}></div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold" style={{ color: '#191c1d' }}>AES-256</span>
-                  <span className="text-[0.6875rem] uppercase font-bold tracking-widest" style={{ color: '#414754' }}>
+                  <span className="text-2xl font-bold" style={{ color: '#191c1d' }}>
+                    AES-256
+                  </span>
+                  <span
+                    className="text-[0.6875rem] uppercase font-bold tracking-widest"
+                    style={{ color: '#414754' }}
+                  >
                     Encryption
                   </span>
                 </div>

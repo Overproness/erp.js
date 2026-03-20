@@ -29,7 +29,10 @@ export default function PricingPage() {
       <div className="pt-20 pb-24 px-6 max-w-7xl mx-auto font-inter">
         {/* Hero Header */}
         <header className="text-center mb-20">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tighter mb-6" style={{ color: '#191c1d' }}>
+          <h1
+            className="text-5xl md:text-6xl font-extrabold tracking-tighter mb-6"
+            style={{ color: '#191c1d' }}
+          >
             Pricing that scales <br />
             with your growth.
           </h1>
@@ -54,26 +57,39 @@ export default function PricingPage() {
             }}
           >
             <div className="mb-8">
-              <span className="text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded" style={{ color: '#414754', background: '#e7e8e9' }}>
+              <span
+                className="text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded"
+                style={{ color: '#414754', background: '#e7e8e9' }}
+              >
                 Starter
               </span>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>$49</span>
+                <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>
+                  $49
+                </span>
                 <span style={{ color: '#414754' }}>/mo</span>
               </div>
-              <p className="mt-2 text-sm" style={{ color: '#414754' }}>Perfect for emerging teams.</p>
+              <p className="mt-2 text-sm" style={{ color: '#414754' }}>
+                Perfect for emerging teams.
+              </p>
             </div>
             <ul className="space-y-4 mb-10 flex-grow list-none p-0">
               <li className="flex items-center gap-3 text-sm">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg">check_circle</span>
+                <span className="material-symbols-outlined text-[#0058c3] text-lg">
+                  check_circle
+                </span>
                 10 Users
               </li>
               <li className="flex items-center gap-3 text-sm">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg">check_circle</span>
+                <span className="material-symbols-outlined text-[#0058c3] text-lg">
+                  check_circle
+                </span>
                 CRM
               </li>
               <li className="flex items-center gap-3 text-sm">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg">check_circle</span>
+                <span className="material-symbols-outlined text-[#0058c3] text-lg">
+                  check_circle
+                </span>
                 Basic Workflows
               </li>
               <li className="flex items-center gap-3 text-sm opacity-40">
@@ -107,32 +123,48 @@ export default function PricingPage() {
                 Pro
               </span>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>$149</span>
+                <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>
+                  $149
+                </span>
                 <span style={{ color: '#414754' }}>/mo</span>
               </div>
-              <p className="mt-2 text-sm" style={{ color: '#414754' }}>Advanced tools for scaling ops.</p>
+              <p className="mt-2 text-sm" style={{ color: '#414754' }}>
+                Advanced tools for scaling ops.
+              </p>
             </div>
             <ul className="space-y-4 mb-10 flex-grow list-none p-0">
               <li className="flex items-center gap-3 text-sm font-medium">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                <span
+                  className="material-symbols-outlined text-[#0058c3] text-lg"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
                   check_circle
                 </span>
                 Unlimited Users
               </li>
               <li className="flex items-center gap-3 text-sm font-medium">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                <span
+                  className="material-symbols-outlined text-[#0058c3] text-lg"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
                   check_circle
                 </span>
                 CRM + Automation
               </li>
               <li className="flex items-center gap-3 text-sm font-medium">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                <span
+                  className="material-symbols-outlined text-[#0058c3] text-lg"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
                   auto_awesome
                 </span>
                 AI Assistant
               </li>
               <li className="flex items-center gap-3 text-sm font-medium">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                <span
+                  className="material-symbols-outlined text-[#0058c3] text-lg"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
                   analytics
                 </span>
                 Advanced Analytics
@@ -159,13 +191,20 @@ export default function PricingPage() {
             }}
           >
             <div className="mb-8">
-              <span className="text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded" style={{ color: '#414754', background: '#e7e8e9' }}>
+              <span
+                className="text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded"
+                style={{ color: '#414754', background: '#e7e8e9' }}
+              >
                 Enterprise
               </span>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>Custom</span>
+                <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>
+                  Custom
+                </span>
               </div>
-              <p className="mt-2 text-sm" style={{ color: '#414754' }}>Bespoke engine for large scale.</p>
+              <p className="mt-2 text-sm" style={{ color: '#414754' }}>
+                Bespoke engine for large scale.
+              </p>
             </div>
             <ul className="space-y-4 mb-10 flex-grow list-none p-0">
               <li className="flex items-center gap-3 text-sm">
@@ -173,7 +212,9 @@ export default function PricingPage() {
                 Custom Solutions
               </li>
               <li className="flex items-center gap-3 text-sm">
-                <span className="material-symbols-outlined text-[#0058c3] text-lg">support_agent</span>
+                <span className="material-symbols-outlined text-[#0058c3] text-lg">
+                  support_agent
+                </span>
                 24/7 Priority Support
               </li>
               <li className="flex items-center gap-3 text-sm">
@@ -198,7 +239,9 @@ export default function PricingPage() {
         {/* Feature Comparison Table */}
         <section className="mb-32">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>Compare Features</h3>
+            <h3 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+              Compare Features
+            </h3>
             <p style={{ color: '#414754' }}>Find the perfect plan for your organizational goals.</p>
           </div>
           <div
@@ -215,72 +258,161 @@ export default function PricingPage() {
             <table className="w-full border-collapse min-w-[700px]">
               <thead>
                 <tr style={{ background: '#f3f4f5' }}>
-                  <th className="p-6 text-sm font-bold uppercase tracking-wider text-left w-1/4" style={{ color: '#414754' }}>Feature</th>
-                  <th className="p-6 text-sm font-bold uppercase tracking-wider text-center w-1/4" style={{ color: '#414754' }}>Starter</th>
-                  <th className="p-6 text-sm font-bold uppercase tracking-wider text-center w-1/4 text-[#0058c3]">Pro</th>
-                  <th className="p-6 text-sm font-bold uppercase tracking-wider text-center w-1/4" style={{ color: '#414754' }}>Enterprise</th>
+                  <th
+                    className="p-6 text-sm font-bold uppercase tracking-wider text-left w-1/4"
+                    style={{ color: '#414754' }}
+                  >
+                    Feature
+                  </th>
+                  <th
+                    className="p-6 text-sm font-bold uppercase tracking-wider text-center w-1/4"
+                    style={{ color: '#414754' }}
+                  >
+                    Starter
+                  </th>
+                  <th className="p-6 text-sm font-bold uppercase tracking-wider text-center w-1/4 text-[#0058c3]">
+                    Pro
+                  </th>
+                  <th
+                    className="p-6 text-sm font-bold uppercase tracking-wider text-center w-1/4"
+                    style={{ color: '#414754' }}
+                  >
+                    Enterprise
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr style={{ background: 'rgba(255,255,255,0.3)' }}>
-                  <td colSpan={4} className="p-6 text-sm font-bold" style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}>CRM &amp; Sales</td>
+                  <td
+                    colSpan={4}
+                    className="p-6 text-sm font-bold"
+                    style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}
+                  >
+                    CRM &amp; Sales
+                  </td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Contact Management</td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Contact Management
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Lead Scoring</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Lead Scoring
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
                 </tr>
                 <tr style={{ background: 'rgba(255,255,255,0.3)' }}>
-                  <td colSpan={4} className="p-6 text-sm font-bold" style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}>Workflows</td>
+                  <td
+                    colSpan={4}
+                    className="p-6 text-sm font-bold"
+                    style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}
+                  >
+                    Workflows
+                  </td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Automated Rules</td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Automated Rules
+                  </td>
                   <td className="p-6 text-center text-sm">Up to 10</td>
                   <td className="p-6 text-center text-sm">Unlimited</td>
                   <td className="p-6 text-center text-sm">Unlimited</td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Custom Engine</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Custom Engine
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
                 </tr>
                 <tr style={{ background: 'rgba(255,255,255,0.3)' }}>
-                  <td colSpan={4} className="p-6 text-sm font-bold" style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}>Artificial Intelligence</td>
+                  <td
+                    colSpan={4}
+                    className="p-6 text-sm font-bold"
+                    style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}
+                  >
+                    Artificial Intelligence
+                  </td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>AI Copilot</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    AI Copilot
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
                   <td className="p-6 text-center text-sm">Standard</td>
                   <td className="p-6 text-center text-sm">Advanced</td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Predictive Analytics</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Predictive Analytics
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
                 </tr>
                 <tr style={{ background: 'rgba(255,255,255,0.3)' }}>
-                  <td colSpan={4} className="p-6 text-sm font-bold" style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}>Support</td>
+                  <td
+                    colSpan={4}
+                    className="p-6 text-sm font-bold"
+                    style={{ color: '#191c1d', background: 'rgba(255,255,255,0.5)' }}
+                  >
+                    Support
+                  </td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Response Time</td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Response Time
+                  </td>
                   <td className="p-6 text-center text-sm">48h</td>
                   <td className="p-6 text-center text-sm">12h</td>
                   <td className="p-6 text-center text-sm">1h (SLA)</td>
                 </tr>
                 <tr className="border-t border-[#c1c6d7]/30">
-                  <td className="p-6 text-sm" style={{ color: '#414754' }}>Personal Account Manager</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
-                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>—</td>
-                  <td className="p-6 text-center"><span className="material-symbols-outlined text-[#0058c3]">check</span></td>
+                  <td className="p-6 text-sm" style={{ color: '#414754' }}>
+                    Personal Account Manager
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
+                  <td className="p-6 text-center text-xs" style={{ color: '#414754' }}>
+                    —
+                  </td>
+                  <td className="p-6 text-center">
+                    <span className="material-symbols-outlined text-[#0058c3]">check</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -313,7 +445,9 @@ export default function PricingPage() {
                   className="p-6 flex justify-between items-center cursor-pointer w-full text-left bg-transparent border-none"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-semibold" style={{ color: '#191c1d' }}>{faq.q}</span>
+                  <span className="font-semibold" style={{ color: '#191c1d' }}>
+                    {faq.q}
+                  </span>
                   <span
                     className="material-symbols-outlined text-[#0058c3] transition-transform"
                     style={{ transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)' }}
