@@ -18,10 +18,7 @@ module.exports = {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
-      extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
-      ],
+      extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
       rules: {
         'no-console': 0,
         'no-irregular-whitespace': 'off',
