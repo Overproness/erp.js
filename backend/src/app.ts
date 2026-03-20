@@ -244,10 +244,10 @@ if (fs.existsSync(frontendBuildPath)) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Error Handling
+// NOTE: Error handlers (notFound, productionErrors) are registered
+// in server.ts AFTER setupGraphQL() so the /graphql route sits
+// before the 404 handler in Express's middleware stack.
 // ─────────────────────────────────────────────────────────────
-app.use(errorHandlers.notFound);
-app.use(errorHandlers.productionErrors);
 
 // ─────────────────────────────────────────────────────────────
 // Ensure Upload Directory Exists

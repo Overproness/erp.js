@@ -47,6 +47,7 @@ const { initializeAIServices } = require('./services/aiServicesInitializer');
 const reminderScheduler = require('./services/reminderScheduler');
 
 const app = require('./app');
+const errorHandlers = require('./handlers/errorHandlers');
 
 mongoose.connection.once('open', async () => {
   // Settings initialization (non-critical)
@@ -64,6 +65,19 @@ mongoose.connection.once('open', async () => {
     console.error('❌ GraphQL initialization failed:', error.message);
     console.error('Stack:', error.stack);
   }
+
+  // Register error handlers AFTER GraphQL so /graphql sits before
+  // the 404 handler in Express's middleware stack.
+  app.use(errorHandlers.notFound);
+  app.use(errorHandlers.productionErrors);
+
+  // Start listening only after GraphQL and error handlers are fully wired up
+  server.listen(PORT, () => {
+    const addr = server.address();
+    const port = typeof addr === 'string' ? addr : addr?.port;
+    console.log(`🚀 Express server running → PORT: ${port}`);
+    console.log(`🔌 Socket.io server ready for real-time notifications and chat`);
+  });
 
   try {
     initializeCopilotModules();
@@ -103,13 +117,9 @@ global.io = io;
 
 require('./sockets/notificationSocket')(io);
 require('./sockets/chatSocket')(io);
-
-server.listen(PORT, () => {
-  const addr = server.address();
-  const port = typeof addr === 'string' ? addr : addr?.port;
-  console.log(`🚀 Express server running → PORT: ${port}`);
-  console.log(`🔌 Socket.io server ready for real-time notifications and chat`);
-});
+// server.listen() is called inside mongoose.connection.once('open') after
+// setupGraphQL() completes — ensuring the server is fully ready before
+// accepting any requests.
 
 // ─────────────────────────────────────────────────────────────
 // Global Error Handlers - Keep Server Running

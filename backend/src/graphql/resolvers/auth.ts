@@ -25,7 +25,22 @@ function createAuthResolvers(authController) {
         try {
           const loginHandler = require('../../controllers/coreControllers/adminAuth/login');
           await loginHandler(req, res);
-          return getResponse().data || { success: false, result: null, message: 'Login failed' };
+          const responseData = getResponse().data;
+          if (!responseData) return { success: false, result: null, message: 'Login failed' };
+
+          // Reshape flat result from REST controller into GraphQL AuthResult shape { token, admin }
+          if (responseData.success && responseData.result) {
+            const { token: resultToken, maxAge, ...adminFields } = responseData.result;
+            return {
+              success: responseData.success,
+              message: responseData.message,
+              result: {
+                token: responseData.token || resultToken,
+                admin: adminFields,
+              },
+            };
+          }
+          return responseData;
         } catch (error) {
           return { success: false, result: null, message: error.message };
         }
