@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, Layout, Space } from 'antd';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,18 @@ export default function HeaderContent() {
   const navigate = useNavigate();
   const translate = useLanguage();
   const [searchFocused, setSearchFocused] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const ProfileDropdown = () => {
     const navigate = useNavigate();
@@ -156,6 +168,7 @@ export default function HeaderContent() {
           height: '40px',
           width: '340px',
           maxWidth: '40%',
+          overflow: 'hidden',
           border: searchFocused ? '1.5px solid #0058c3' : '1.5px solid transparent',
           boxShadow: searchFocused
             ? 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'
@@ -167,6 +180,7 @@ export default function HeaderContent() {
           search
         </span>
         <input
+          ref={searchInputRef}
           placeholder="Quick search transactions..."
           onFocus={() => setSearchFocused(true)}
           onBlur={() => setSearchFocused(false)}
@@ -189,6 +203,8 @@ export default function HeaderContent() {
             borderRadius: '4px',
             fontFamily: "'Inter', -apple-system, sans-serif",
             whiteSpace: 'nowrap',
+            flexShrink: 0,
+            lineHeight: '16px',
           }}
         >
           Ctrl K

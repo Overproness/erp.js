@@ -7,12 +7,17 @@ export default function useOnFetch() {
 
   let onFetch = async (callback) => {
     setIsLoading(true);
-
-    const data = await callback;
-    setResult(data.result);
-    if (data.success === true) {
-      setIsSuccess(true);
-    } else {
+    try {
+      const data = await callback;
+      setResult(data.result);
+      if (data.success === true) {
+        setIsSuccess(true);
+      } else {
+        setIsSuccess(false);
+      }
+    } catch (error) {
+      console.error('useOnFetch error:', error);
+      setResult(null);
       setIsSuccess(false);
     }
     setIsLoading(false);

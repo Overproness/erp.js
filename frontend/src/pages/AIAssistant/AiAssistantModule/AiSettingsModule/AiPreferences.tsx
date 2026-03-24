@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form, Switch, Select, InputNumber, Button, Divider, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserPreferences, updateUserPreferences } from '@/redux/ai/aiThunks';
@@ -14,8 +14,11 @@ const AiPreferences = () => {
   
   const preferences = useSelector(selectUserPreferences);
   const isLoading = useSelector(selectSettingsLoading);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(fetchUserPreferences());
   }, [dispatch]);
 

@@ -21,16 +21,25 @@ export const fetchRetargetingLists = createAsyncThunk(
   'retargeting/fetchRetargetingLists',
   async (params = {}, { rejectWithValue }) => {
     try {
-      // retargeting lists don't have a dedicated GraphQL query; keep REST
-      const { request } = await import('@/request');
-      const response = await request.list({
-        entity: 'marketing/retargeting/lists',
-        options: params
+      const { data } = await apolloClient.query({
+        query: GET_RETARGETING_CAMPAIGNS,
+        variables: {
+          page: params.page || 1,
+          limit: params.items || 10,
+          sortBy: params.sortBy || 'createdAt',
+          sortValue: params.sortValue || 'desc',
+        },
+        fetchPolicy: 'cache-first',
       });
-      return response.result;
+      return data.retargetingList?.result || [];
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch retargeting lists');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().retargeting?.lists?.loading;
+    },
   }
 );
 
@@ -38,12 +47,11 @@ export const createRetargetingList = createAsyncThunk(
   'retargeting/createRetargetingList',
   async (list, { rejectWithValue }) => {
     try {
-      const { request } = await import('@/request');
-      const response = await request.create({
-        entity: 'marketing/retargeting/lists',
-        jsonData: list
+      const { data } = await apolloClient.mutate({
+        mutation: CREATE_RETARGETING_CAMPAIGN,
+        variables: { input: list },
       });
-      return response.result;
+      return data.retargetingCreate?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to create retargeting list');
     }
@@ -52,15 +60,13 @@ export const createRetargetingList = createAsyncThunk(
 
 export const updateRetargetingList = createAsyncThunk(
   'retargeting/updateRetargetingList',
-  async ({ id, data }, { rejectWithValue }) => {
+  async ({ id, data: updateData }, { rejectWithValue }) => {
     try {
-      const { request } = await import('@/request');
-      const response = await request.update({
-        entity: 'marketing/retargeting/lists',
-        id,
-        jsonData: data
+      const { data } = await apolloClient.mutate({
+        mutation: UPDATE_RETARGETING_CAMPAIGN,
+        variables: { id, input: updateData },
       });
-      return response.result;
+      return data.retargetingUpdate?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to update retargeting list');
     }
@@ -71,8 +77,10 @@ export const deleteRetargetingList = createAsyncThunk(
   'retargeting/deleteRetargetingList',
   async (id, { rejectWithValue }) => {
     try {
-      const { request } = await import('@/request');
-      await request.delete({ entity: 'marketing/retargeting/lists', id });
+      await apolloClient.mutate({
+        mutation: DELETE_RETARGETING_CAMPAIGN,
+        variables: { id },
+      });
       return id;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to delete retargeting list');
@@ -92,12 +100,17 @@ export const fetchRetargetingCampaigns = createAsyncThunk(
           sortBy: params.sortBy || 'createdAt',
           sortValue: params.sortValue || 'desc',
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
-      return data.retargetingCampaignList?.result;
+      return data.retargetingList?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch retargeting campaigns');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().retargeting?.campaigns?.loading;
+    },
   }
 );
 
@@ -109,7 +122,7 @@ export const createRetargetingCampaign = createAsyncThunk(
         mutation: CREATE_RETARGETING_CAMPAIGN,
         variables: { input: campaign },
       });
-      return data.retargetingCampaignCreate?.result;
+      return data.retargetingCreate?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to create retargeting campaign');
     }
@@ -124,7 +137,7 @@ export const updateRetargetingCampaign = createAsyncThunk(
         mutation: UPDATE_RETARGETING_CAMPAIGN,
         variables: { id, input: updateData },
       });
-      return data.retargetingCampaignUpdate?.result;
+      return data.retargetingUpdate?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to update retargeting campaign');
     }
@@ -154,7 +167,7 @@ export const launchRetargetingCampaign = createAsyncThunk(
         mutation: LAUNCH_RETARGETING_CAMPAIGN,
         variables: { id },
       });
-      return data.retargetingCampaignLaunch?.result;
+      return data.retargetingLaunch?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to launch retargeting campaign');
     }
@@ -169,7 +182,7 @@ export const pauseRetargetingCampaign = createAsyncThunk(
         mutation: PAUSE_RETARGETING_CAMPAIGN,
         variables: { id },
       });
-      return data.retargetingCampaignPause?.result;
+      return data.retargetingPause?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to pause retargeting campaign');
     }
@@ -183,7 +196,7 @@ export const fetchRetargetingStatistics = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: RETARGETING_ANALYTICS,
         variables: { id },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return { id, statistics: data.retargetingAnalytics?.result };
     } catch (error) {

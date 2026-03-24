@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Tabs, Button, Space, Typography, Row, Col, Statistic } from 'antd';
 import { 
@@ -29,8 +29,11 @@ const DataProcessorModule = () => {
   
   const analyticsData = useSelector(selectAnalyticsData);
   const loading = useSelector(selectAnalyticsLoading);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(fetchProcessingStats());
   }, [dispatch]);
 

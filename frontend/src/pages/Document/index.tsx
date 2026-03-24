@@ -35,7 +35,7 @@ import {
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { crud } from '../../redux/crud/actions';
@@ -69,6 +69,7 @@ export default function Document() {
   const [advancedSearchVisible, setAdvancedSearchVisible] = useState(false);
   const [shareModalVisible, setShareModalVisible] = useState(false);
   const [selectedDocumentForShare, setSelectedDocumentForShare] = useState(null);
+  const loadedRef = useRef(false);
 
   const handleRefreshList = () => {
     dispatch(
@@ -120,6 +121,8 @@ export default function Document() {
 
   // Fetch documents on mount
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(
       crud.list({
         entity: 'document',

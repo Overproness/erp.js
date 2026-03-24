@@ -104,3 +104,15 @@ export const DATA_ENTRY_HISTORY = gql`
     }
   }
 `;
+
+export const DATA_ENTRY_IMPORT_FROM_URL = gql`
+  mutation DataEntryImportFromUrl($url: String!, $options: JSON) {
+    dataEntryImportFromUrl(url: $url, options: $options) { success result message }
+  }
+`;
+
+export const DATA_ENTRY_SAVE = gql`
+  mutation DataEntrySave($input: JSON!) {
+    dataEntrySave(input: $input) { success result message }
+  }
+`;

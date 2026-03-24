@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, List, Button, Tag, Typography, Space, Empty, Spin, Alert } from 'antd';
 import { 
@@ -19,13 +19,15 @@ const AutomationSuggestions = () => {
   const suggestions = useSelector(selectCurrentSuggestions);
   const loading = useSelector(selectSuggestionsLoading);
   const [implementedSuggestions, setImplementedSuggestions] = useState([]);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
-    // Fetch automation suggestions
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(fetchSuggestions({ 
       module: 'automation',
       data: { type: 'workflow_automation' },
-      assistantId: 'default' // This should come from selected assistant
+      assistantId: 'default'
     }));
   }, [dispatch]);
 

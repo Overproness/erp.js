@@ -104,7 +104,8 @@ const list = async (req, res) => {
       message: 'Surveys retrieved successfully',
       result: surveys,
       pagination: {
-        current: parseInt(page),
+        page: parseInt(page),
+        count: surveys.length,
         pages: Math.ceil(total / parseInt(limit)),
         total,
       },

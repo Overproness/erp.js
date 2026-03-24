@@ -28,7 +28,7 @@ const MemberPerformanceModal = ({ visible, onClose, teamId, memberId, memberName
       const { data } = await apolloClient.query({
         query: TEAM_MEMBER_PERFORMANCE,
         variables: { id: teamId, memberId },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
 
       if (data.teamMemberPerformance.success) {

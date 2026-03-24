@@ -145,7 +145,7 @@ export const DELETE_REVIEW_RESPONSE = gql`
 // Retargeting
 export const GET_RETARGETING_CAMPAIGNS = gql`
   query GetRetargetingCampaigns($page: Int, $limit: Int, $sortBy: String, $sortValue: String) {
-    retargetingCampaignList(page: $page, limit: $limit, sortBy: $sortBy, sortValue: $sortValue) {
+    retargetingList(page: $page, limit: $limit, sortBy: $sortBy, sortValue: $sortValue) {
       success result pagination { page count pages total } message
     }
   }
@@ -153,7 +153,7 @@ export const GET_RETARGETING_CAMPAIGNS = gql`
 
 export const GET_RETARGETING_CAMPAIGN = gql`
   query GetRetargetingCampaign($id: ID!) {
-    retargetingCampaignRead(id: $id) { success result message }
+    retargetingRead(id: $id) { success result message }
   }
 `;
 
@@ -165,30 +165,30 @@ export const RETARGETING_ANALYTICS = gql`
 
 export const CREATE_RETARGETING_CAMPAIGN = gql`
   mutation CreateRetargetingCampaign($input: RetargetingCampaignCreateInput!) {
-    retargetingCampaignCreate(input: $input) { success result message }
+    retargetingCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_RETARGETING_CAMPAIGN = gql`
   mutation UpdateRetargetingCampaign($id: ID!, $input: RetargetingCampaignUpdateInput!) {
-    retargetingCampaignUpdate(id: $id, input: $input) { success result message }
+    retargetingUpdate(id: $id, input: $input) { success result message }
   }
 `;
 
 export const DELETE_RETARGETING_CAMPAIGN = gql`
   mutation DeleteRetargetingCampaign($id: ID!) {
-    retargetingCampaignDelete(id: $id) { success result message }
+    retargetingDelete(id: $id) { success result message }
   }
 `;
 
 export const LAUNCH_RETARGETING_CAMPAIGN = gql`
   mutation LaunchRetargetingCampaign($id: ID!) {
-    retargetingCampaignLaunch(id: $id) { success result message }
+    retargetingLaunch(id: $id) { success result message }
   }
 `;
 
 export const PAUSE_RETARGETING_CAMPAIGN = gql`
   mutation PauseRetargetingCampaign($id: ID!) {
-    retargetingCampaignPause(id: $id) { success result message }
+    retargetingPause(id: $id) { success result message }
   }
 `;

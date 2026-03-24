@@ -90,3 +90,9 @@ export const DELETE_REMINDER = gql`
     reminderDelete(id: $id) { success result message }
   }
 `;
+
+export const ADD_TASK_COMMENT = gql`
+  mutation AddTaskComment($id: ID!, $content: String!) {
+    taskAddComment(id: $id, content: $content) { success result message }
+  }
+`;

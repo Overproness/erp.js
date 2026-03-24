@@ -9,7 +9,9 @@ import {
   UPDATE_TASK,
   DELETE_TASK,
   AI_PRIORITIZE_TASK,
+  ADD_TASK_COMMENT,
 } from '@/graphql/operations/task';
+import { GET_STATISTICS } from '@/graphql/operations/analytics';
 
 /**
  * Task API Request Service — bridged to GraphQL
@@ -61,16 +63,13 @@ export const taskRequest = {
     return data.taskSummary;
   },
 
-  // statistics — no direct GraphQL query, keep REST
-  statistics: async (params = {}) => {
-    const axios = (await import('axios')).default;
-    const { API_BASE_URL } = await import('@/config/serverApiConfig');
-    const token = window.localStorage.getItem('auth_token');
-    const response = await axios.get(`${API_BASE_URL}stats/tasks`, {
-      headers: { Authorization: token ? `Bearer ${token}` : undefined },
-      params,
+  // statistics — use GraphQL
+  statistics: async (params: { timeframe?: string } = {}) => {
+    const { data } = await apolloClient.query({
+      query: GET_STATISTICS,
+      variables: { entity: 'task', period: params.timeframe },
     });
-    return response.data;
+    return data.statisticsGet;
   },
 
   // addCollaborator — no direct GraphQL mutation, use update
@@ -85,43 +84,35 @@ export const taskRequest = {
     return data.taskUpdate;
   },
 
-  // addComment — no direct GraphQL mutation, keep REST
+  // addComment — GraphQL mutation
   addComment: async (taskId, content) => {
-    const axios = (await import('axios')).default;
-    const { API_BASE_URL } = await import('@/config/serverApiConfig');
-    const token = window.localStorage.getItem('auth_token');
-    const response = await axios.post(
-      `${API_BASE_URL}task/${taskId}/comments`,
-      { content },
-      { headers: { Authorization: token ? `Bearer ${token}` : undefined } }
-    );
-    return response.data;
+    const { data } = await apolloClient.mutate({
+      mutation: ADD_TASK_COMMENT,
+      variables: { id: taskId, content },
+    });
+    return data.taskAddComment;
   },
 
-  // getAIPrioritySuggestions — use AI_PRIORITIZE_TASK or REST fallback
+  // getAIPrioritySuggestions — use AI_PRIORITIZE_TASK mutation
   getAIPrioritySuggestions: async (tasks) => {
-    const axios = (await import('axios')).default;
-    const { API_BASE_URL } = await import('@/config/serverApiConfig');
-    const token = window.localStorage.getItem('auth_token');
-    const response = await axios.post(
-      `${API_BASE_URL}task/ai/prioritize`,
-      { tasks },
-      { headers: { Authorization: token ? `Bearer ${token}` : undefined } }
+    const results = await Promise.all(
+      tasks.map((t) =>
+        apolloClient.mutate({ mutation: AI_PRIORITIZE_TASK, variables: { id: t._id || t.id } })
+          .then(({ data: d }) => d.taskAiPrioritize)
+      )
     );
-    return response.data;
+    return { success: true, result: results };
   },
 
-  // batchUpdatePriorities — no batch mutation, keep REST
+  // batchUpdatePriorities — use sequential update mutations
   batchUpdatePriorities: async (updates) => {
-    const axios = (await import('axios')).default;
-    const { API_BASE_URL } = await import('@/config/serverApiConfig');
-    const token = window.localStorage.getItem('auth_token');
-    const response = await axios.patch(
-      `${API_BASE_URL}task/batch/priorities`,
-      { updates },
-      { headers: { Authorization: token ? `Bearer ${token}` : undefined } }
+    const results = await Promise.all(
+      updates.map((u) =>
+        apolloClient.mutate({ mutation: UPDATE_TASK, variables: { id: u.id, input: { priority: u.priority } } })
+          .then(({ data: d }) => d.taskUpdate)
+      )
     );
-    return response.data;
+    return { success: true, result: results };
   },
 };
 

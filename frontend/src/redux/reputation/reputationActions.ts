@@ -28,12 +28,17 @@ export const fetchReviews = createAsyncThunk(
           sortBy: params?.sortBy || 'createdAt',
           sortValue: params?.sortValue || 'desc',
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.reviewList?.result || [];
     } catch (error) {
       return rejectWithValue(error?.message || 'Failed to fetch reviews');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().reputation?.reviews?.loading;
+    },
   }
 );
 
@@ -125,12 +130,17 @@ export const fetchReviewLinks = createAsyncThunk(
           page: params?.page || 1,
           limit: params?.items || 20,
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.reviewLinkList?.result || [];
     } catch (error) {
       return rejectWithValue(error?.message || 'Failed to fetch review links');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().reputation?.links?.loading;
+    },
   }
 );
 
@@ -235,12 +245,17 @@ export const fetchResponseTemplates = createAsyncThunk(
           page: params?.page || 1,
           limit: params?.items || 20,
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.reviewTemplateList?.result || [];
     } catch (error) {
       return rejectWithValue(error?.message || 'Failed to fetch response templates');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().reputation?.templates?.loading;
+    },
   }
 );
 
@@ -297,7 +312,7 @@ export const fetchAnalytics = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: gql`query ReviewAnalyticsSummary($period: String) { reviewAnalyticsSummary(period: $period) { success result message } }`,
         variables: { period: params.period },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.reviewAnalyticsSummary?.result;
     } catch (error) {
@@ -313,7 +328,7 @@ export const fetchSentimentAnalysis = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: gql`query ReviewAnalyticsSentiment($period: String) { reviewAnalyticsSentiment(period: $period) { success result message } }`,
         variables: { period: params.period },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.reviewAnalyticsSentiment?.result;
     } catch (error) {
@@ -328,7 +343,7 @@ export const fetchReviewTrends = createAsyncThunk(
     try {
       const { data } = await apolloClient.query({
         query: gql`query ReviewAnalyticsByPlatform { reviewAnalyticsByPlatform { success result message } }`,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.reviewAnalyticsByPlatform?.result;
     } catch (error) {

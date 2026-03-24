@@ -63,12 +63,17 @@ export default function AutoCompleteAsync({
   );
 
   const asyncSearch = async (options) => {
-    const { data } = await apolloClient.query({
-      query: getSearchQuery(entity),
-      variables: { q: options.q || '', fields: options.fields },
-    });
-    const key = `${entity}Search`;
-    return data[key] || { success: true, result: [] };
+    try {
+      const { data } = await apolloClient.query({
+        query: getSearchQuery(entity),
+        variables: { q: options.q || '', fields: options.fields },
+      });
+      const key = `${entity}Search`;
+      return data[key] || { success: true, result: [] };
+    } catch (error) {
+      console.error(`AutoCompleteAsync search failed for entity "${entity}":`, error);
+      return { success: false, result: [] };
+    }
   };
 
   let { onFetch, result, isSuccess, isLoading } = useOnFetch();

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Divider, Form, Tag, message } from 'antd';
@@ -37,8 +37,11 @@ export default function CreateItem({ config, CreateForm }) {
   const translate = useLanguage();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const settingsLoadedRef = useRef(false);
 
   useEffect(() => {
+    if (settingsLoadedRef.current) return;
+    settingsLoadedRef.current = true;
     dispatch(settingsAction.list({ entity: 'setting' }));
   }, []);
   let { entity } = config;

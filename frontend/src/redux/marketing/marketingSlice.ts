@@ -27,12 +27,17 @@ export const fetchCampaigns = createAsyncThunk(
           sortBy: params.sortBy || 'createdAt',
           sortValue: params.sortValue || 'desc',
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.campaignList;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch campaigns');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().marketing?.campaigns?.loading;
+    },
   }
 );
 
@@ -88,7 +93,7 @@ export const fetchCampaignDetails = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: GET_CAMPAIGN,
         variables: { id },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.campaignRead;
     } catch (error) {
@@ -122,12 +127,17 @@ export const fetchSegments = createAsyncThunk(
           page: params.page || 1,
           limit: params.items || 20,
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.customerSegmentList;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch segments');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().marketing?.segments?.loading;
+    },
   }
 );
 
@@ -186,7 +196,7 @@ export const fetchCampaignAnalytics = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: CAMPAIGN_ANALYTICS,
         variables: { id: campaignId },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.campaignAnalytics;
     } catch (error) {

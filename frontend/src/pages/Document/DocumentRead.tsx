@@ -15,7 +15,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, Descriptions, Divider, message, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -31,8 +31,11 @@ export default function DocumentRead() {
   const [documentData, setDocumentData] = useState(null);
   const [auditTrailVisible, setAuditTrailVisible] = useState(false);
   const [shareModalVisible, setShareModalVisible] = useState(false);
+  const loadedRef = useRef('');
 
   useEffect(() => {
+    if (loadedRef.current === id) return;
+    loadedRef.current = id;
     dispatch(erp.read({ entity: 'document', id }));
   }, [id, dispatch]);
 

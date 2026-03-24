@@ -58,6 +58,42 @@ export const GET_STATISTICS = gql`
   }
 `;
 
+export const GET_STATISTICS_DOCUMENTS = gql`
+  query GetStatisticsDocuments($period: String) {
+    statisticsDocuments(period: $period) { success result message }
+  }
+`;
+
+export const GET_STATISTICS_PAYMENT_MODES = gql`
+  query GetStatisticsPaymentModes($period: String) {
+    statisticsPaymentModes(period: $period) { success result message }
+  }
+`;
+
+export const GET_STATISTICS_WORKFLOWS = gql`
+  query GetStatisticsWorkflows($period: String) {
+    statisticsWorkflows(period: $period) { success result message }
+  }
+`;
+
+export const GET_STATISTICS_TAXES = gql`
+  query GetStatisticsTaxes($period: String) {
+    statisticsTaxes(period: $period) { success result message }
+  }
+`;
+
+export const GET_REALTIME_ANALYTICS = gql`
+  query GetRealtimeAnalytics {
+    globalAnalyticsRealtime { success result message }
+  }
+`;
+
+export const GET_MODULE_ANALYTICS = gql`
+  query GetModuleAnalytics($module: String!, $period: String) {
+    globalAnalyticsModule(module: $module, period: $period) { success result message }
+  }
+`;
+
 export const GET_STATISTICS_COMPARISON = gql`
   query GetStatisticsComparison($entity: String!, $period1: String!, $period2: String!) {
     statisticsComparison(entity: $entity, period1: $period1, period2: $period2) {

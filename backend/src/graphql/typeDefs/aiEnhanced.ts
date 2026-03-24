@@ -7,6 +7,9 @@ const aiEnhancedTypeDefs = gql`
     aiEnhancedInsights(context: JSON): MutationResponse!
     aiEnhancedRecommendations(entityType: String!, entityId: ID): MutationResponse!
     aiEnhancedForecast(metric: String!, period: String): MutationResponse!
+    aiEnhancedQueueStatus(queueId: ID): MutationResponse!
+    aiEnhancedQueueStatistics: MutationResponse!
+    aiEnhancedLearningStats: MutationResponse!
   }
 
   extend type Mutation {
@@ -16,6 +19,8 @@ const aiEnhancedTypeDefs = gql`
     aiEnhancedAutoTag(entityType: String!, entityId: ID!): MutationResponse!
     aiEnhancedSentimentAnalysis(input: JSON!): MutationResponse!
     aiEnhancedLeadScoring(clientId: ID!): MutationResponse!
+    aiEnhancedQueueMessage(input: JSON!): MutationResponse!
+    aiEnhancedRecordFeedback(learningId: ID!, input: JSON!): MutationResponse!
   }
 `;
 

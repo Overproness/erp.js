@@ -7,7 +7,7 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import { Card, Col, Row, Spin, Statistic, Typography } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useTaxStats } from '@/hooks/useStatistics';
@@ -27,6 +27,7 @@ export default function Taxes() {
   const dispatch = useDispatch();
   const { isLoading, isSuccess } = useSelector(selectCreatedItem);
   const entity = 'taxes';
+  const loadedRef = useRef(false);
 
   // Use dynamic statistics from API
   const {
@@ -47,17 +48,16 @@ export default function Taxes() {
     averageRate: taxStats?.averageRate || 0,
   };
 
-  const state = useSelector((state) => state);
-
   // Load taxes on component mount
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(crud.list({ entity }));
   }, []);
 
-  // Reset create action and refresh list when creation is successful
+  // Reset create action when creation is successful
   useEffect(() => {
     if (isSuccess) {
-      dispatch(crud.list({ entity }));
       dispatch(crud.resetAction({ actionType: 'create' }));
     }
   }, [isSuccess]);

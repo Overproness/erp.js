@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Card, 
   Row, 
@@ -60,8 +60,11 @@ const Overview = () => {
   const { analytics, isLoading, loadAnalytics } = useAnalytics();
   const [period, setPeriod] = useState('7d');
   const [dateRange, setDateRange] = useState(null);
+  const prevPeriodRef = useRef('');
 
   useEffect(() => {
+    if (prevPeriodRef.current === period) return;
+    prevPeriodRef.current = period;
     loadAnalytics(period);
   }, [period]);
 

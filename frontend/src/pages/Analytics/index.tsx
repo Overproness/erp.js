@@ -1,6 +1,6 @@
 import PageLoader from '@/components/PageLoader';
 import apolloClient from '@/graphql/client';
-import { GENERATE_ANALYTICS_REPORT, GET_ANALYTICS_OVERVIEW } from '@/graphql/operations/analytics';
+import { GENERATE_ANALYTICS_REPORT, GET_ANALYTICS_OVERVIEW, GET_REALTIME_ANALYTICS, GET_MODULE_ANALYTICS } from '@/graphql/operations/analytics';
 import {
   BarChartOutlined,
   CheckCircleOutlined,
@@ -89,10 +89,12 @@ export default function AnalyticsReporting() {
 
   const fetchRealTimeData = async () => {
     try {
-      const { request } = await import('@/request');
-      const response = await request.get('/global-analytics/real-time');
-      if (response.success) {
-        setRealTimeData(response.data);
+      const { data } = await apolloClient.query({
+        query: GET_REALTIME_ANALYTICS,
+        fetchPolicy: 'cache-first',
+      });
+      if (data.globalAnalyticsRealtime?.success) {
+        setRealTimeData(data.globalAnalyticsRealtime.result);
       }
     } catch (error) {
       console.error('Error fetching real-time data:', error);
@@ -101,14 +103,13 @@ export default function AnalyticsReporting() {
 
   const fetchModuleData = async (module) => {
     try {
-      const { request } = await import('@/request');
-      const params = {
-        startDate: dateRange[0].toISOString(),
-        endDate: dateRange[1].toISOString(),
-      };
-      const response = await request.get(`/global-analytics/module/${module}`, { params });
-      if (response.success) {
-        setModuleData(response.data);
+      const { data } = await apolloClient.query({
+        query: GET_MODULE_ANALYTICS,
+        variables: { module, period: dateRange ? `${dateRange[0].toISOString()}_${dateRange[1].toISOString()}` : undefined },
+        fetchPolicy: 'cache-first',
+      });
+      if (data.globalAnalyticsModule?.success) {
+        setModuleData(data.globalAnalyticsModule.result);
       }
     } catch (error) {
       console.error('Error fetching module data:', error);

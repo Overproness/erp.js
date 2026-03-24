@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Button, Card, Form, Spin, Tabs, App } from 'antd';
@@ -20,8 +20,11 @@ export default function DocumentUpdate() {
 
   // Check if we should show the AI analyzer (passed in location state)
   const showAiAnalyzer = location.state?.showAiAnalyzer || false;
+  const loadedRef = useRef('');
 
   useEffect(() => {
+    if (loadedRef.current === id) return;
+    loadedRef.current = id;
     dispatch(erp.read({ entity: 'document', id }));
   }, [dispatch, id]);
 

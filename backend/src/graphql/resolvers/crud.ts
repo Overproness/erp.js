@@ -30,6 +30,15 @@ function createReqRes(args: any, context: GraphQLContext): ReqResResult {
     headers: context.req?.headers || {},
     ...context,
     admin: context.admin,
+    companyOwner: context.admin ? {
+      _id: context.admin._id,
+      companyID: context.admin.companyID,
+      email: (context.admin as any).email,
+    } : undefined,
+    user: context.admin ? {
+      _id: context.admin._id,
+      companyID: context.admin.companyID,
+    } : undefined,
     companyID: context.admin?.companyID || '',
   };
 
@@ -87,7 +96,18 @@ function wrapController(controllerMethod: Function) {
     try {
       await controllerMethod(req, res);
       const response = getResponse();
-      return response.data || { success: false, message: 'No response from controller' };
+      const data = response.data || { success: false, message: 'No response from controller' };
+      // Controllers return result as { items: [...], pagination: {...} }
+      // but ListResponse expects result to be [JSON]. Unwrap items array.
+      if (data.result && !Array.isArray(data.result) && Array.isArray(data.result.items)) {
+        return {
+          success: data.success,
+          result: data.result.items,
+          pagination: data.result.pagination || data.pagination,
+          message: data.message,
+        };
+      }
+      return data;
     } catch (error: any) {
       return {
         success: false,
@@ -138,7 +158,19 @@ function generateCRUDResolvers(entityName: string, controller: CRUDController) {
       req.query.items = args.limit;
       try {
         await controller.search!(req, res);
-        return getResponse().data || { success: false, result: [], message: 'No response' };
+        const data = getResponse().data;
+        if (!data) return { success: false, result: [], message: 'No response' };
+        // The search controller returns result as { items: [...], pagination: {...} }
+        // but ListResponse expects result to be [JSON]. Unwrap items array.
+        if (data.result && !Array.isArray(data.result) && Array.isArray(data.result.items)) {
+          return {
+            success: data.success,
+            result: data.result.items,
+            pagination: data.result.pagination || data.pagination,
+            message: data.message,
+          };
+        }
+        return data;
       } catch (error: any) {
         return { success: false, result: [], message: error.message || 'Search failed' };
       }

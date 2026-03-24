@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Table, 
   Tag, 
@@ -42,8 +42,11 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateRange, setDateRange] = useState(null);
   
+  const loadedRef = useRef(false);
   // Use dummy data or API data based on what's available
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     if (typeof refreshPosts === 'function') {
       refreshPosts();
     }

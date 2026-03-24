@@ -23,7 +23,7 @@ import {
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const { Title, Text } = Typography;
@@ -72,7 +72,10 @@ export default function ConsentManagement() {
     }
   };
 
+  const loadedRef = useRef(false);
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     fetchUsers();
   }, []);
 

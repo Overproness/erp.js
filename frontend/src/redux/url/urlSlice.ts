@@ -31,12 +31,17 @@ export const fetchUrls = createAsyncThunk(
           sortBy: options.sortBy || 'createdAt',
           sortValue: options.sortValue || 'desc',
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.urlList;
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().url?.list?.isLoading;
+    },
   }
 );
 
@@ -92,7 +97,7 @@ export const fetchUrlDetails = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: getReadQuery('url'),
         variables: { id },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.urlRead;
     } catch (error) {
@@ -113,7 +118,7 @@ export const fetchUrlAnalytics = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: URL_ANALYTICS,
         variables: { id: urlId, period },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return { urlId, data: data.urlAnalytics };
     } catch (error) {
@@ -181,12 +186,17 @@ export const fetchABTests = createAsyncThunk(
           sortBy: options.sortBy || 'createdAt',
           sortValue: options.sortValue || 'desc',
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.abTestList;
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().url?.abTests?.isLoading;
+    },
   }
 );
 

@@ -8,15 +8,23 @@ const dataEntryTypeDefs = gql`
     options: JSON
   }
 
+  input DataEntryValidateInput {
+    data: [JSON!]!
+    module: String!
+    options: JSON
+  }
+
   extend type Query {
     dataEntryTemplates(entityType: String!): MutationResponse!
-    dataEntryValidate(entityType: String!, data: [JSON!]!): MutationResponse!
   }
 
   extend type Mutation {
     dataEntryImport(input: DataEntryImportInput!): MutationResponse!
     dataEntryBulkImport(input: DataEntryImportInput!): MutationResponse!
     dataEntryExport(entityType: String!, format: String, filters: JSON): MutationResponse!
+    dataEntryImportFromUrl(entityType: String!, url: String!, options: JSON): MutationResponse!
+    dataEntrySave(entityType: String!, data: [JSON!]!): MutationResponse!
+    dataEntryValidate(input: DataEntryValidateInput!): MutationResponse!
   }
 `;
 

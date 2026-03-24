@@ -178,3 +178,34 @@ export const AI_KNOWLEDGE_BASE_INGEST = gql`
     aiKnowledgeBaseIngest(id: $id, input: $input) { success result message }
   }
 `;
+
+// AI Enhanced — Queue & Feedback
+export const AI_QUEUE_MESSAGE = gql`
+  mutation AiQueueMessage($input: JSON!) {
+    aiEnhancedQueueMessage(input: $input) { success result message }
+  }
+`;
+
+export const AI_QUEUE_STATUS = gql`
+  query AiQueueStatus {
+    aiEnhancedQueueStatus { success result message }
+  }
+`;
+
+export const AI_QUEUE_STATISTICS = gql`
+  query AiQueueStatistics {
+    aiEnhancedQueueStatistics { success result message }
+  }
+`;
+
+export const AI_RECORD_FEEDBACK = gql`
+  mutation AiRecordFeedback($input: JSON!) {
+    aiEnhancedRecordFeedback(input: $input) { success result message }
+  }
+`;
+
+export const AI_LEARNING_STATS = gql`
+  query AiLearningStats {
+    aiEnhancedLearningStats { success result message }
+  }
+`;

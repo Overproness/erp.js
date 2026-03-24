@@ -31,7 +31,7 @@ export const permissions = {
     try {
       const { data: gqlData } = await apolloClient.query({
         query: USER_PERMISSIONS,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       const data = gqlData.userPermissions;
       

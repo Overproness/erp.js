@@ -15,7 +15,7 @@ import {
   Table,
   Typography,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useColumns from './columns';
 
@@ -26,6 +26,7 @@ export default function UrlDataTableModule({ config, extra }) {
   const translate = useLanguage();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const loadedRef = useRef(false);
   const [dataSource, setDataSource] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -84,7 +85,7 @@ export default function UrlDataTableModule({ config, extra }) {
       const { data } = await apolloClient.query({
         query: GET_URLS,
         variables: params,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       const response = data.urlList;
 
@@ -107,7 +108,7 @@ export default function UrlDataTableModule({ config, extra }) {
 
   const fetchSummary = async () => {
     try {
-      const { data } = await apolloClient.query({ query: URL_SUMMARY, fetchPolicy: 'network-only' });
+      const { data } = await apolloClient.query({ query: URL_SUMMARY, fetchPolicy: 'cache-first' });
       const response = data.urlSummary;
       if (response.success) {
         setSummary(response.result);
@@ -122,6 +123,8 @@ export default function UrlDataTableModule({ config, extra }) {
   }, [pagination.current, pagination.pageSize, filters]);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     fetchSummary();
   }, []);
 

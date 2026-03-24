@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, List, Button, Tag, Space, Typography, Progress, Spin, Empty } from 'antd';
 import { 
@@ -20,8 +20,11 @@ const ProcessOptimization = () => {
   
   const suggestions = useSelector(selectSuggestions);
   const loading = useSelector(selectSuggestionsLoading);
+  const prevProcessRef = useRef('');
 
   useEffect(() => {
+    if (prevProcessRef.current === selectedProcess) return;
+    prevProcessRef.current = selectedProcess;
     dispatch(fetchSuggestions({ 
       module: selectedProcess, 
       type: 'optimization',

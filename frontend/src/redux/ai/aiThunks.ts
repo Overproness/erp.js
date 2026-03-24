@@ -32,12 +32,19 @@ export const fetchAssistants = createAsyncThunk(
           sortBy: 'createdAt',
           sortValue: 'desc',
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiAssistantList;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch assistants');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.assistants?.loading;
+    },
   }
 );
 
@@ -93,7 +100,7 @@ export const fetchAssistant = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: getReadQuery('aiAssistant'),
         variables: { id },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiAssistantRead?.result;
     } catch (error) {
@@ -136,12 +143,19 @@ export const fetchConversations = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: gql`query AiConversationList($page: Int, $limit: Int) { aiConversationList(page: $page, limit: $limit) { success result message } }`,
         variables: { page: 1, limit: 50 },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiConversationList?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch conversations');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.chat?.loading;
+    },
   }
 );
 
@@ -152,7 +166,7 @@ export const fetchConversation = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: gql`query AiConversationHistory($id: ID!) { aiConversationHistory(id: $id) { success result message } }`,
         variables: { id: conversationId },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiConversationHistory?.result;
     } catch (error) {
@@ -184,12 +198,19 @@ export const fetchAnalytics = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: gql`query AiSuggestions($context: String!, $type: String) { aiSuggestions(context: $context, type: $type) { success result message } }`,
         variables: { context: 'analytics', type: 'summary' },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiSuggestions?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch analytics');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.analytics?.loading;
+    },
   }
 );
 
@@ -197,13 +218,22 @@ export const fetchUsageMetrics = createAsyncThunk(
   'ai/fetchUsageMetrics',
   async (params = {}, { rejectWithValue }) => {
     try {
-      // Keep REST — no dedicated usage metrics GraphQL query
-      const { request } = await import('@/request');
-      const response = await request.list({ entity: 'aiAnalytics', options: params });
-      return response.result;
+      const { data } = await apolloClient.query({
+        query: getListQuery('aiAnalytics'),
+        variables: { page: params.page || 1, limit: params.limit || 50 },
+        fetchPolicy: 'cache-first',
+      });
+      return data.aiAnalyticsList?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch usage metrics');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.analytics?.loading;
+    },
   }
 );
 
@@ -215,12 +245,19 @@ export const fetchSuggestions = createAsyncThunk(
       const { data } = await apolloClient.query({
         query: gql`query AiSuggestions($context: String!, $type: String) { aiSuggestions(context: $context, type: $type) { success result message } }`,
         variables: { context: JSON.stringify({ module, data: inputData, assistantId }), type: module },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiSuggestions?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch suggestions');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.suggestions?.loading;
+    },
   }
 );
 
@@ -265,12 +302,19 @@ export const fetchKnowledgeBase = createAsyncThunk(
           page: params.page || 1,
           limit: params.limit || 20,
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiKnowledgeBaseList?.result;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch knowledge base');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.knowledgeBase?.loading;
+    },
   }
 );
 
@@ -296,12 +340,19 @@ export const fetchUserPreferences = createAsyncThunk(
     try {
       const { data } = await apolloClient.query({
         query: GET_AI_PREFERENCES,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       return data.aiPreferencesRead?.result || {};
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch user preferences');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.settings?.loading;
+    },
   }
 );
 
@@ -363,13 +414,11 @@ export const createExtractionTemplate = createAsyncThunk(
   'ai/createExtractionTemplate',
   async (templateData, { rejectWithValue }) => {
     try {
-      // Keep REST — no dedicated template creation GraphQL mutation
-      const { request } = await import('@/request');
-      const response = await request.post({
-        entity: 'ai/templates',
-        data: templateData,
+      const { data } = await apolloClient.mutate({
+        mutation: getCreateMutation('aiTemplate'),
+        variables: { input: templateData },
       });
-      return response;
+      return data.aiTemplateCreate;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Template creation failed');
     }
@@ -380,15 +429,22 @@ export const fetchExtractionTemplates = createAsyncThunk(
   'ai/fetchExtractionTemplates',
   async (_, { rejectWithValue }) => {
     try {
-      // Keep REST — no dedicated template list GraphQL query
-      const { request } = await import('@/request');
-      const response = await request.list({
-        entity: 'ai/templates',
+      const { data } = await apolloClient.query({
+        query: getListQuery('aiTemplate'),
+        variables: { page: 1, limit: 100 },
+        fetchPolicy: 'cache-first',
       });
-      return response;
+      return data.aiTemplateList;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch templates');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.dataProcessor?.loading;
+    },
   }
 );
 
@@ -396,13 +452,11 @@ export const processWorkflow = createAsyncThunk(
   'ai/processWorkflow',
   async ({ workflowId, data: inputData }, { rejectWithValue }) => {
     try {
-      // Keep REST — no dedicated workflow process GraphQL mutation 
-      const { request } = await import('@/request');
-      const response = await request.post({
-        entity: 'ai/workflows/process',
-        data: { workflowId, data: inputData },
+      const { data } = await apolloClient.mutate({
+        mutation: gql`mutation AiProcessData($input: AiDataProcessInput!) { aiProcessData(input: $input) { success result message } }`,
+        variables: { input: { type: 'workflow', workflowId, data: inputData } },
       });
-      return response;
+      return data.aiProcessData;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Workflow processing failed');
     }
@@ -413,16 +467,22 @@ export const fetchProcessingStats = createAsyncThunk(
   'ai/fetchProcessingStats',
   async (_, { rejectWithValue }) => {
     try {
-      // Keep REST — no dedicated processing stats GraphQL query
-      const { request } = await import('@/request');
-      const response = await request.get({
-        entity: 'ai/processing/stats',
+      const { data } = await apolloClient.query({
+        query: gql`query AiQueueStatistics { aiEnhancedQueueStatistics { success result message } }`,
+        fetchPolicy: 'cache-first',
       });
-      return response;
+      return data.aiEnhancedQueueStatistics;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Failed to fetch processing statistics'
       );
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { aiUi } = getState();
+      const ai = aiUi || getState().ai;
+      return !ai?.dataProcessor?.loading;
+    },
   }
 );

@@ -47,7 +47,8 @@ const MarketingDataTableModule = () => {
   const navigate = useNavigate();
 
   // Redux state
-  const { campaigns = [], loading = false } = useSelector((state) => state.campaign || {});
+  const campaigns = useSelector((state) => state.campaign?.campaigns ?? []);
+  const loading = useSelector((state) => state.campaign?.loading ?? false);
 
   // Local state for filtering and table management
   const [searchText, setSearchText] = useState('');

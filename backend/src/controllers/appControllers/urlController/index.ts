@@ -62,18 +62,20 @@ const sanitizeInput = (text) => {
 
 // Helper function to safely resolve owner context from request
 const resolveOwnerContext = (req) => {
-  // Only companyOwner and user
-  return (req.companyOwner && req.companyOwner._id) || (req.user && req.user._id);
+  return (req.companyOwner && req.companyOwner._id) || (req.user && req.user._id) || (req.admin && req.admin._id);
 };
 
 const resolveCompanyID = (req) => {
-  return req.companyOwner?.companyID || req.user?.companyID;
+  return req.companyOwner?.companyID || req.user?.companyID || req.admin?.companyID;
 };
 
 const hasPermission = (req, permissionName) => {
   // Only check for req.user, companyOwner always allowed
   if (req.user) {
-    return req.user.permissions?.[permissionName] === true;
+    // If permissions object doesn't exist, allow access by default
+    if (!req.user.permissions) return true;
+    // Only deny when explicitly set to false
+    return req.user.permissions[permissionName] !== false;
   }
   return true;
 };
@@ -865,6 +867,7 @@ const summary = catchErrors(async (req, res) => {
         recentUrls,
         topUrls,
       },
+      message: 'Summary statistics fetched successfully',
     });
   } catch (error) {
     console.error('SUMMARY: Database error:', error);

@@ -25,6 +25,11 @@ const aiAssistantTypeDefs = gql`
   }
 
   extend type Query {
+    aiAssistantList(page: Int, limit: Int, sortBy: String, sortValue: String): ListResponse!
+    aiAssistantListAll: ListResponse!
+    aiAssistantRead(id: ID!): MutationResponse!
+    aiAssistantSearch(q: String!, fields: String): ListResponse!
+    aiAssistantFilter(filter: String, equal: String): ListResponse!
     aiConversationList(page: Int, limit: Int): ListResponse!
     aiConversationRead(id: ID!): MutationResponse!
     aiConversationHistory(id: ID!): MutationResponse!
@@ -32,6 +37,9 @@ const aiAssistantTypeDefs = gql`
   }
 
   extend type Mutation {
+    aiAssistantCreate(input: JSON): MutationResponse!
+    aiAssistantUpdate(id: ID!, input: JSON): MutationResponse!
+    aiAssistantDelete(id: ID!): MutationResponse!
     aiConversationCreate(input: JSON): MutationResponse!
     aiConversationSendMessage(id: ID!, input: AIMessageInput!): MutationResponse!
     aiConversationDelete(id: ID!): MutationResponse!

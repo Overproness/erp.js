@@ -41,10 +41,29 @@ async function createApolloServer(): Promise<ApolloServer> {
   const typeDefsOnlySchema = makeExecutableSchema({ typeDefs });
   const filteredResolvers = filterResolversToSchema(resolvers, typeDefsOnlySchema);
 
+  // Add fallback resolvers for schema fields that have no resolver
+  // This prevents "Cannot return null for non-nullable field" errors
+  const queryFields = typeDefsOnlySchema.getQueryType()?.getFields() ?? {};
+  const mutationFields = typeDefsOnlySchema.getMutationType()?.getFields() ?? {};
+  for (const fieldName of Object.keys(queryFields)) {
+    if (!filteredResolvers.Query[fieldName]) {
+      console.warn(`[GraphQL] Missing resolver for Query.${fieldName}, adding fallback`);
+      filteredResolvers.Query[fieldName] = () => ({ success: false, result: [], message: `${fieldName} is not implemented` });
+    }
+  }
+  for (const fieldName of Object.keys(mutationFields)) {
+    if (!filteredResolvers.Mutation[fieldName]) {
+      console.warn(`[GraphQL] Missing resolver for Mutation.${fieldName}, adding fallback`);
+      filteredResolvers.Mutation[fieldName] = () => ({ success: false, result: null, message: `${fieldName} is not implemented` });
+    }
+  }
+
   const server = new ApolloServer({
     typeDefs,
     resolvers: filteredResolvers,
     formatError: (formattedError: any) => {
+      // Always log the real error for debugging
+      console.error('[GraphQL Error]', formattedError.message, formattedError.path, formattedError.extensions?.code);
       if (process.env.NODE_ENV === 'production') {
         if (formattedError.extensions?.code === 'INTERNAL_SERVER_ERROR') {
           return {

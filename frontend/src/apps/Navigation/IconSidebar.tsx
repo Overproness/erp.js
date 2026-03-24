@@ -303,6 +303,8 @@ export default function IconSidebar() {
         setCurrentPath('paymentMode');
       } else if (path === 'settings' || path.startsWith('settings/')) {
         setCurrentPath('generalSettings');
+      } else if (path === 'ai-enhanced/follow-ups' || path.startsWith('ai-enhanced/follow-ups/')) {
+        setCurrentPath('follow-ups');
       } else if (path === 'marketing/behavior-triggers') {
         setCurrentPath('marketing-behavior');
       } else if (path === 'marketing/audiences') {

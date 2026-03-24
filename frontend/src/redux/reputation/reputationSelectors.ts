@@ -277,15 +277,9 @@ export const selectIsPlatformConnected = createSelector(
 
 
 // Add any missing selectors that might be referenced
-export const selectAnalytics = createSelector(
-  selectAnalyticsState,
-  (analyticsState) => analyticsState
-);
+export const selectAnalytics = selectAnalyticsState;
 
-export const selectPlatforms = createSelector(
-  selectPlatformsState,
-  (platformsState) => platformsState
-);
+export const selectPlatforms = selectPlatformsState;
 
 export const selectAnalyticsMetrics = createSelector(
   selectAnalyticsState,

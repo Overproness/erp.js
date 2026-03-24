@@ -8,7 +8,7 @@ import { settingsAction } from '@/redux/settings/actions';
 import AuthRouter from '@/router/AuthRouter';
 import ProtectedRoutes from '@/router/ProtectedRoutes';
 import { App as AntdApp, notification } from 'antd';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -52,13 +52,14 @@ export default function ErpOs() {
   // Add a settings reload when user comes online
   const dispatch = useDispatch(); // Use the useDispatch hook from react-redux
   const location = useLocation(); // <-- Add this line
+  const settingsLoadedRef = useRef(false);
   // Make sure we log that the dispatch is available
   useEffect(() => {
     if (isLoggedIn && isOnline) {
-      // Dispatch settings reload when coming back online
+      if (settingsLoadedRef.current) return;
+      settingsLoadedRef.current = true;
 
       try {
-        // Use the imported settingsAction from the top of the file
         dispatch(settingsAction.list({ entity: 'setting' }));
       } catch (error) {
         console.error('Error reloading settings:', error);

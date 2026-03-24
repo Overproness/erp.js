@@ -1,6 +1,5 @@
-import { API_BASE_URL } from '@/config/serverApiConfig';
 import apolloClient from '@/graphql/client';
-import { GET_DOCUMENT, DOCUMENT_VERSIONS, DOCUMENT_ESIGN, DOCUMENT_REVERT } from '@/graphql/operations/document';
+import { GET_DOCUMENT, DOCUMENT_VERSIONS, DOCUMENT_ESIGN, DOCUMENT_REVERT, DOCUMENT_GET_CONTENT, DOCUMENT_EDIT_CONTENT } from '@/graphql/operations/document';
 import {
   FileTextOutlined,
   HistoryOutlined,
@@ -44,29 +43,20 @@ const DocumentEditor = () => {
         if (docData.documentRead.success) {
           setDocument(docData.documentRead.result);
 
-          // Fetch document content separately (no GraphQL op — use REST)
+          // Fetch document content via GraphQL
           try {
-            const axios = (await import('axios')).default;
-            const contentResponse = await axios.get(`${API_BASE_URL}document/content/${id}`);
+            const { data: contentData } = await apolloClient.query({
+              query: DOCUMENT_GET_CONTENT,
+              variables: { id },
+            });
 
-            if (contentResponse.data.success) {
-              setContent(contentResponse.data.result.content);
-              setContentType(contentResponse.data.result.contentType);
+            if (contentData.documentGetContent.success) {
+              setContent(contentData.documentGetContent.result.content);
+              setContentType(contentData.documentGetContent.result.contentType);
             }
           } catch (contentError) {
-            // If first attempt fails, try alternative endpoint format
-            try {
-              const axios = (await import('axios')).default;
-              const altContentResponse = await axios.get(`${API_BASE_URL}document/${id}/download`);
-              if (altContentResponse.data.success) {
-                setContent(altContentResponse.data.result.content);
-                setContentType(altContentResponse.data.result.contentType || 'text');
-              }
-            } catch (altContentError) {
-              console.error('Error fetching document content:', contentError);
-              console.error('Alternative endpoint also failed:', altContentError);
-              message.warning('Unable to load document content for editing');
-            }
+            console.error('Error fetching document content:', contentError);
+            message.warning('Unable to load document content for editing');
           }
         } else {
           message.error('Failed to load document');
@@ -96,16 +86,15 @@ const DocumentEditor = () => {
   const handleSave = async () => {
     try {
       setLoading(true);
-      const axios = (await import('axios')).default;
-      const response = await axios.post(`${API_BASE_URL}document/edit/${id}`, {
-        content,
-        editSummary: editSummary || 'Document updated',
+      const { data: editData } = await apolloClient.mutate({
+        mutation: DOCUMENT_EDIT_CONTENT,
+        variables: { id, input: { content, editSummary: editSummary || 'Document updated' } },
       });
 
-      if (response.data.success) {
+      if (editData.documentEdit.success) {
         message.success('Document saved successfully');
         // Refresh versions
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
@@ -133,19 +122,22 @@ const DocumentEditor = () => {
         message.success('Document signed successfully');
         setSignModalVisible(false);
 
-        // Refresh content
+        // Refresh content via GraphQL
         try {
-          const axios = (await import('axios')).default;
-          const docResponse = await axios.get(`${API_BASE_URL}document/content/${id}`);
-          if (docResponse.data.success) {
-            setContent(docResponse.data.result.content);
-            setContentType(docResponse.data.result.contentType);
+          const { data: contentData } = await apolloClient.query({
+            query: DOCUMENT_GET_CONTENT,
+            variables: { id },
+            fetchPolicy: 'cache-first',
+          });
+          if (contentData.documentGetContent.success) {
+            setContent(contentData.documentGetContent.result.content);
+            setContentType(contentData.documentGetContent.result.contentType);
           }
         } catch (contentError) {
           console.error('Error refreshing content:', contentError);
         }
 
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
@@ -197,19 +189,22 @@ const DocumentEditor = () => {
           `Reverted to ${versionNumber === 0 ? 'original document' : `version ${versionNumber}`}`
         );
 
-        // Refresh document and versions
+        // Refresh document content via GraphQL
         try {
-          const axios = (await import('axios')).default;
-          const docResponse = await axios.get(`${API_BASE_URL}document/content/${id}`);
-          if (docResponse.data.success) {
-            setContent(docResponse.data.result.content);
-            setContentType(docResponse.data.result.contentType);
+          const { data: contentData } = await apolloClient.query({
+            query: DOCUMENT_GET_CONTENT,
+            variables: { id },
+            fetchPolicy: 'cache-first',
+          });
+          if (contentData.documentGetContent.success) {
+            setContent(contentData.documentGetContent.result.content);
+            setContentType(contentData.documentGetContent.result.contentType);
           }
         } catch (contentError) {
           console.error('Error refreshing content after revert:', contentError);
         }
 
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }

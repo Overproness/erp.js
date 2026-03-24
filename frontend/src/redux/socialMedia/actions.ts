@@ -22,7 +22,7 @@ export const loadAccounts = () => async (dispatch) => {
     dispatch({ type: 'SOCIAL_MEDIA_ACCOUNTS_LOADING' });
     const { data } = await apolloClient.query({
       query: GET_SOCIAL_ACCOUNTS,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
     });
     const response = data.socialAccountList;
     dispatch({
@@ -89,7 +89,7 @@ export const loadPosts =
       const { data } = await apolloClient.query({
         query: GET_SOCIAL_POSTS,
         variables: { page: options.page || 1, limit: options.limit || 20 },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       const response = data.socialPostList;
       dispatch({
@@ -166,7 +166,7 @@ export const loadAnalytics =
       const { data } = await apolloClient.query({
         query: gql`query SocialAnalyticsOverview($period: String) { socialAnalyticsOverview(period: $period) { success result message } }`,
         variables: { period },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       const response = data.socialAnalyticsOverview;
       dispatch({
@@ -188,7 +188,7 @@ export const loadCampaigns = () => async (dispatch) => {
   try {
     const { data } = await apolloClient.query({
       query: GET_SOCIAL_CAMPAIGNS,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
     });
     const response = data.socialCampaignList;
     dispatch({
@@ -295,7 +295,7 @@ export const loadMentions =
       const { data } = await apolloClient.query({
         query: GET_SOCIAL_MENTIONS,
         variables: { page: options.page || 1, limit: options.limit || 20 },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       const response = data.socialMentionList;
       dispatch({

@@ -4,7 +4,7 @@ import { crud } from '@/redux/crud/actions';
 import { useDate } from '@/settings';
 import { Col, Row, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CustomerDataTableModule from './CustomerModule/CustomerDataTableModule';
@@ -19,6 +19,7 @@ export default function Customer() {
   const [searchText, setSearchText] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [filterStatus, setFilterStatus] = useState('all');
+  const loadedRef = useRef(false);
 
   // Get data from Redux store
   const { result: customers, isLoading, pagination } = useSelector((state) => state.crud.list);
@@ -27,7 +28,8 @@ export default function Customer() {
   const customerList = Array.isArray(customers?.items) ? customers.items : [];
 
   useEffect(() => {
-    // Add error handling and ensure the dispatch doesn't fail
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     try {
       dispatch(crud.list({ entity: 'client' }));
     } catch (error) {

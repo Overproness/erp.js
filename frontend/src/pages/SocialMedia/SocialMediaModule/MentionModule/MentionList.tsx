@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Card, 
   Table, 
@@ -156,15 +156,13 @@ const MentionList = ({ onViewMention }) => {
     }
   ]);
 
+  const loadedRef = useRef(false);
   useEffect(() => {
-    refreshMentions();
-    
-    // Use dummy data for demo purposes
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     if (typeof refreshMentions === 'function') {
-      // Only use API data if refreshMentions is properly implemented
       refreshMentions();
     } else {
-      // Otherwise use dummy data
       setFilteredMentions(dummyMentions);
     }
   }, []);

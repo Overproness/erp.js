@@ -8,6 +8,8 @@ const globalAnalyticsTypeDefs = gql`
     globalAnalyticsKPI(period: String): MutationResponse!
     globalAnalyticsComparison(periods: [String!]!): MutationResponse!
     globalAnalyticsExport(format: String!, period: String): MutationResponse!
+    globalAnalyticsRealtime: MutationResponse!
+    globalAnalyticsModule(module: String!, period: String): MutationResponse!
   }
 `;
 

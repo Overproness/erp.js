@@ -24,7 +24,7 @@ import {
   Typography,
 } from '@mui/material';
 import { format, formatDistanceToNow } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Bar,
@@ -247,7 +247,12 @@ const WorkflowMonitoringDashboard = () => {
   };
 
   // Load data based on active tab
+  const prevTabKeyRef = useRef('');
   useEffect(() => {
+    const tabKey = `${activeTab}_${workflowFilter}_${statusFilter}_${dateRange}_${page}_${limit}`;
+    if (prevTabKeyRef.current === tabKey) return;
+    prevTabKeyRef.current = tabKey;
+
     const loadTabData = async () => {
       setLoading(true);
       setError(null);

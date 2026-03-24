@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Calendar, Badge, Card, Button, Modal, List, Avatar, Tag, Space, Select, Radio } from 'antd';
 import { PlusOutlined, FacebookOutlined, InstagramOutlined, TwitterOutlined, FilterOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { usePostManagement } from '@/hooks/useSocialMedia';
@@ -17,8 +17,11 @@ const PostCalendar = ({ onEditPost, onCreatePost }) => {
   const [filterPlatform, setFilterPlatform] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
 
+  const loadedRef = useRef(false);
   // Use dummy data or API data based on what's available
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     if (typeof refreshPosts === 'function') {
       refreshPosts();
     }

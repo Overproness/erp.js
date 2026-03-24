@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Card, Statistic, Tabs, Select, DatePicker, Space, Progress, Typography, Spin, List, Avatar } from 'antd';
 import { 
@@ -29,8 +29,12 @@ const AnalyticsDashboard = () => {
   
   const analyticsData = useSelector(selectAnalyticsData);
   const loading = useSelector(selectAnalyticsLoading);
+  const prevParamsRef = useRef('');
 
   useEffect(() => {
+    const key = `${timeframe}_${selectedAssistant}`;
+    if (prevParamsRef.current === key) return;
+    prevParamsRef.current = key;
     dispatch(fetchAnalytics({ timeframe, assistantId: selectedAssistant }));
   }, [dispatch, timeframe, selectedAssistant]);
 

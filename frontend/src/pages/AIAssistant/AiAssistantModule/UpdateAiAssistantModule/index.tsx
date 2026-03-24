@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Button, message, Spin, Alert } from 'antd';
@@ -19,9 +19,11 @@ const UpdateAiAssistantModule = () => {
   
   const assistant = useSelector(selectCurrentAssistant);
   const loading = useSelector(selectAssistantsLoading);
+  const loadedRef = useRef('');
 
   useEffect(() => {
-    if (id) {
+    if (id && loadedRef.current !== id) {
+      loadedRef.current = id;
       dispatch(fetchAssistant(id));
     }
   }, [dispatch, id]);

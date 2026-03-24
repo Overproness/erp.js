@@ -4,8 +4,8 @@ const Model = mongoose.model('Task');
 
 const listAll = async (req, res) => {
   try {
-    // Permission check for listAll
-    if (req.user && !req.user.permissions?.canViewTasks) {
+    // Permission check for listAll - only deny if permissions are explicitly set and deny access
+    if (req.user?.permissions && req.user.permissions.canViewTasks === false) {
       return res.status(403).json({
         success: false,
         result: null,

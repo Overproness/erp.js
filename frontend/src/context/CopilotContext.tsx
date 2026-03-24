@@ -51,7 +51,7 @@ export const CopilotProvider = ({ children }) => {
     try {
       const { data } = await apolloClient.query({
         query: AI_AVAILABLE_MODELS,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
 
       const response = data?.aiAvailableModels;

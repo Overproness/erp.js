@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Card, 
@@ -56,8 +56,11 @@ const ProcessingAnalytics = () => {
   
   const processingStats = useSelector(selectProcessingStats);
   const loading = useSelector(selectProcessingStatsLoading);
+  const prevTimeframeRef = useRef('');
 
   useEffect(() => {
+    if (prevTimeframeRef.current === timeframe) return;
+    prevTimeframeRef.current = timeframe;
     dispatch(fetchProcessingStats({ timeframe }));
   }, [dispatch, timeframe]);
 

@@ -65,13 +65,10 @@ export default function AILearningDashboard() {
   const loadLearningStats = async () => {
     setLoading(true);
     try {
-      const { request } = await import('../../request');
-      const response = await request.get({
-        entity: 'ai-enhanced/learning',
-        endpoint: 'statistics',
-      });
+      const { getLearnedInsights } = await import('../../services/aiEnhancedService');
+      const response = await getLearnedInsights();
 
-      if (response.success) {
+      if (response?.success) {
         setStats(response.result);
       }
     } catch {
@@ -83,15 +80,11 @@ export default function AILearningDashboard() {
 
   const loadInsights = async () => {
     try {
-      const { request } = await import('../../request');
-      const response = await request.get({
-        entity: 'ai-enhanced/insights',
-        endpoint: 'learned',
-        options: { module: 'general' },
-      });
+      const { getLearnedInsights } = await import('../../services/aiEnhancedService');
+      const response = await getLearnedInsights('general');
 
-      if (response.success) {
-        setInsights(response.result || []);
+      if (response?.success && response.result?.insights) {
+        setInsights(response.result.insights || []);
       }
     } catch {
       // AI insights endpoint may not be available yet
@@ -100,18 +93,11 @@ export default function AILearningDashboard() {
 
   const loadRecentInteractions = async () => {
     try {
-      const { request } = await import('../../request');
-      const response = await request.get({
-        entity: 'ai-enhanced/learning',
-        endpoint: 'interactions',
-        options: {
-          limit: 20,
-          sort: '-created',
-        },
-      });
+      const { getLearnedInsights } = await import('../../services/aiEnhancedService');
+      const response = await getLearnedInsights();
 
-      if (response.success) {
-        setRecentInteractions(response.result || []);
+      if (response?.success && response.result?.recentInteractions) {
+        setRecentInteractions(response.result.recentInteractions || []);
       }
     } catch {
       // AI interactions endpoint may not be available yet

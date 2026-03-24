@@ -1,4 +1,6 @@
 import { API_BASE_URL } from '@/config/serverApiConfig';
+import apolloClient from '@/graphql/client';
+import { DATA_ENTRY_IMPORT_FROM_URL, DATA_ENTRY_VALIDATE, DATA_ENTRY_SAVE } from '@/graphql/operations/misc';
 import storePersist from '@/redux/storePersist';
 import {
   AlertTriangle,
@@ -483,35 +485,24 @@ const DataImportWizard = ({ moduleName, onImportComplete, onCancel, className = 
     setError(null);
 
     try {
-      const authData = storePersist.get('auth');
-      const token = authData?.current?.token;
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      };
-
-      const axios = (await import('axios')).default;
-      const response = await axios.post(
-        `${API_BASE_URL}data-entry/url/${moduleName}`,
-        {
+      const { data } = await apolloClient.mutate({
+        mutation: DATA_ENTRY_IMPORT_FROM_URL,
+        variables: {
           url: url,
-          options: {
-            useAI: true,
-            validateResult: true,
-          },
+          options: { useAI: true, validateResult: true, module: moduleName },
         },
-        { headers }
-      );
+      });
 
-      if (response.data.success) {
-        setExtractedData([response.data.data]);
+      const result = data.dataEntryImportFromUrl;
+      if (result.success) {
+        setExtractedData([result.result]);
         setStep(3);
       } else {
-        setError(response.data.error || 'URL import failed');
+        setError(result.message || 'URL import failed');
       }
     } catch (err) {
       console.error('URL error:', err);
-      setError(err.response?.data?.error || 'Failed to import from URL');
+      setError(err.message || 'Failed to import from URL');
     } finally {
       setLoading(false);
     }
@@ -523,37 +514,27 @@ const DataImportWizard = ({ moduleName, onImportComplete, onCancel, className = 
     setError(null);
 
     try {
-      const authData = storePersist.get('auth');
-      const token = authData?.current?.token;
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      };
-
-      const axios = (await import('axios')).default;
-      const response = await axios.post(
-        `${API_BASE_URL}data-entry/validate/${moduleName}`,
-        {
-          data: extractedData,
-          options: {
-            enhanceWithAI: true,
-            autoFix: true,
-            categorize: true,
-            deduplication: true,
+      const { data } = await apolloClient.mutate({
+        mutation: DATA_ENTRY_VALIDATE,
+        variables: {
+          input: {
+            data: extractedData,
+            module: moduleName,
+            options: { enhanceWithAI: true, autoFix: true, categorize: true, deduplication: true },
           },
         },
-        { headers }
-      );
+      });
 
-      if (response.data.success) {
-        setValidationResults(response.data);
+      const result = data.dataEntryValidate;
+      if (result.success) {
+        setValidationResults(result.result);
         setStep(4);
       } else {
         setError('Validation failed');
       }
     } catch (err) {
       console.error('Validation error:', err);
-      setError(err.response?.data?.error || 'Failed to validate data');
+      setError(err.message || 'Failed to validate data');
     } finally {
       setLoading(false);
     }
@@ -565,35 +546,25 @@ const DataImportWizard = ({ moduleName, onImportComplete, onCancel, className = 
     setError(null);
 
     try {
-      const authData = storePersist.get('auth');
-      const token = authData?.current?.token;
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      };
-
-      const axios = (await import('axios')).default;
       // Use enhanced data if available
       const dataToSave = validationResults?.items
         ? validationResults.items.filter((item) => item.valid).map((item) => item.enhanced)
         : extractedData;
 
-      const response = await axios.post(
-        `${API_BASE_URL}data-entry/save/${moduleName}`,
-        {
-          data: dataToSave,
-        },
-        { headers }
-      );
+      const { data } = await apolloClient.mutate({
+        mutation: DATA_ENTRY_SAVE,
+        variables: { input: { data: dataToSave, module: moduleName } },
+      });
 
-      if (response.data.success) {
-        onImportComplete?.(response.data);
+      const result = data.dataEntrySave;
+      if (result.success) {
+        onImportComplete?.(result);
       } else {
         setError('Failed to save data');
       }
     } catch (err) {
       console.error('Save error:', err);
-      setError(err.response?.data?.error || 'Failed to save data');
+      setError(err.message || 'Failed to save data');
     } finally {
       setLoading(false);
     }

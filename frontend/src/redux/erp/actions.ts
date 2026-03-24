@@ -15,6 +15,7 @@ import {
   getMailMutation,
   getConvertMutation,
 } from '@/graphql/operations/crudFactory';
+import { DOCUMENT_REVERT_TO_ORIGINAL, DOCUMENT_REVERT, DOCUMENT_ANALYZE, DOCUMENT_AUDIT_TRAIL } from '@/graphql/operations/document';
 
 export const erp = {
   resetState: () => (dispatch) => {
@@ -50,7 +51,11 @@ export const erp = {
     },
   list:
     ({ entity, options = { page: 1, items: 10 } }) =>
-    async (dispatch) => {
+    async (dispatch, getState) => {
+      // Prevent duplicate in-flight requests
+      const { erp: erpState } = getState();
+      if (erpState.list.isLoading) return;
+
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'list',
@@ -66,7 +71,7 @@ export const erp = {
             sortBy: options.sortBy || 'createdAt',
             sortValue: options.sortValue || 'desc',
           },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
         const data = gqlData[`${entity}List`];
         if (data.success === true) {
@@ -204,7 +209,7 @@ export const erp = {
         const { data: gqlData } = await apolloClient.query({
           query: getReadQuery(entity),
           variables: { id },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
         const data = gqlData[`${entity}Read`];
 
@@ -330,7 +335,7 @@ export const erp = {
         const { data: gqlData } = await apolloClient.query({
           query: getSearchQuery(entity),
           variables: { q: options.q || '', fields: options.fields },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
         const data = gqlData[`${entity}Search`];
 
@@ -369,7 +374,7 @@ export const erp = {
         const { data: gqlData } = await apolloClient.query({
           query: getFilterQuery(entity),
           variables: { filter: options },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
         const data = gqlData[`${entity}Filter`];
 
@@ -411,7 +416,7 @@ export const erp = {
       try {
         const { data: gqlData } = await apolloClient.query({
           query: getSummaryQuery(entity),
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
         const data = gqlData[`${entity}Summary`];
 
@@ -527,8 +532,12 @@ export const erp = {
       });
 
       try {
-        // Use the updated request method for reverting to original
-        const data = await request.revertToOriginal({ entity, id });
+        // Use GraphQL mutation for reverting to original
+        const { data: gqlData } = await apolloClient.mutate({
+          mutation: DOCUMENT_REVERT_TO_ORIGINAL,
+          variables: { id },
+        });
+        const data = gqlData.documentRevertToOriginal;
 
         if (data && data.success === true) {
           dispatch({
@@ -587,7 +596,11 @@ export const erp = {
           throw new Error('Invalid version number. Must be a positive integer.');
         }
 
-        const data = await request.revertToVersion({ entity, id, versionNumber: numVersion });
+        const { data: gqlData } = await apolloClient.mutate({
+          mutation: DOCUMENT_REVERT,
+          variables: { id, version: numVersion },
+        });
+        const data = gqlData.documentRevertToVersion;
 
         if (data && data.success === true) {
           dispatch({
@@ -634,11 +647,12 @@ export const erp = {
       });
 
       try {
-        // The API endpoint is /:id/analyze, not /analyze/:id
-        const data = await request.get({
-          entity,
-          endpoint: `${id}/analyze`,
+        // Use GraphQL mutation for document analysis
+        const { data: gqlData } = await apolloClient.mutate({
+          mutation: DOCUMENT_ANALYZE,
+          variables: { id },
         });
+        const data = gqlData.documentAnalyze;
 
         if (data && data.success === true) {
           dispatch({
@@ -673,7 +687,11 @@ export const erp = {
       });
 
       try {
-        const data = await request.getAuditTrail({ entity, id, page, limit, filter });
+        const { data: gqlData } = await apolloClient.query({
+          query: DOCUMENT_AUDIT_TRAIL,
+          variables: { id },
+        });
+        const data = gqlData.documentAuditTrail;
 
         if (data.success === true) {
           dispatch({

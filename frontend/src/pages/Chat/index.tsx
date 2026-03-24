@@ -1,5 +1,6 @@
 import apolloClient from '@/graphql/client';
 import { GET_CHAT_MESSAGES, GET_CHAT_ROOMS, SEND_CHAT_MESSAGE } from '@/graphql/operations/chat';
+import { GET_ADMIN_LIST } from '@/graphql/operations/auth';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import {
   MessageOutlined,
@@ -324,15 +325,17 @@ export default function Chat() {
         setConversations(conversationsRes.data.chatRoomList.result);
       }
 
-      // Try to load company users, but don't fail if endpoint doesn't exist
+      // Try to load company users via GraphQL
       try {
-        const { request } = await import('@/request');
-        const usersRes = await request.get('/chat/users');
-        if (usersRes.success) {
-          setCompanyUsers(usersRes.result);
+        const { data: usersData } = await apolloClient.query({
+          query: GET_ADMIN_LIST,
+          variables: { page: 1, limit: 1000 },
+        });
+        if (usersData.adminList?.success) {
+          setCompanyUsers(usersData.adminList.result);
         }
       } catch {
-        // /chat/users endpoint not available - this is expected until backend route is created
+        // adminList not available — not critical for chat
       }
     } catch (error) {
       console.error('Error loading chat data:', error);

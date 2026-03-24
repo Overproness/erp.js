@@ -36,7 +36,7 @@ import {
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -52,8 +52,11 @@ export default function FollowUpManagement() {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [form] = Form.useForm();
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     loadFollowUps();
     loadCustomers();
     loadAnalytics();
@@ -64,7 +67,7 @@ export default function FollowUpManagement() {
     try {
       const { data } = await apolloClient.query({
         query: getListQuery('customerFollowUp'),
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       if (data.customerFollowUpList?.success) {
         setFollowUps(data.customerFollowUpList.result || []);
@@ -91,7 +94,7 @@ export default function FollowUpManagement() {
     try {
       const { data } = await apolloClient.query({
         query: getListQuery('client'),
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       if (data.clientList?.success) {
         setCustomers(data.clientList.result || []);

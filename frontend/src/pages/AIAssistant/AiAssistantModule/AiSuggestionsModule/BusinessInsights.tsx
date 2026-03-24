@@ -11,7 +11,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Alert, Button, Card, Col, Empty, Row, Space, Spin, Statistic, Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const { Title, Text, Paragraph } = Typography;
@@ -23,8 +23,11 @@ const BusinessInsights = () => {
 
   const suggestions = useSelector(selectSuggestions);
   const loading = useSelector(selectSuggestionsLoading);
+  const prevTimeframeRef = useRef('');
 
   useEffect(() => {
+    if (prevTimeframeRef.current === timeframe) return;
+    prevTimeframeRef.current = timeframe;
     dispatch(
       fetchSuggestions({
         module: 'business_intelligence',

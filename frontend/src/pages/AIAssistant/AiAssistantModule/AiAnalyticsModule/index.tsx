@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Card, Statistic, Typography, Space, Button } from 'antd';
 import { ArrowLeftOutlined, RobotOutlined, MessageOutlined, DollarOutlined, ClockCircleOutlined } from '@ant-design/icons';
@@ -21,9 +21,11 @@ const AiAnalyticsModule = () => {
   
   const analyticsData = useSelector(selectAnalyticsData);
   const loading = useSelector(selectAnalyticsLoading);
+  const loadedRef = useRef(false);
 
 useEffect(() => {
-  console.log("Dispatching fetchAnalytics...");
+  if (loadedRef.current) return;
+  loadedRef.current = true;
   dispatch(fetchAnalytics());
 }, [dispatch]);
 

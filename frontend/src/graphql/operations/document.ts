@@ -95,3 +95,21 @@ export const DOCUMENT_SUMMARIZE = gql`
     documentSummarize(id: $id) { success result message }
   }
 `;
+
+export const DOCUMENT_GET_CONTENT = gql`
+  query DocumentGetContent($id: ID!) {
+    documentGetContent(id: $id) { success result message }
+  }
+`;
+
+export const DOCUMENT_EDIT_CONTENT = gql`
+  mutation DocumentEditContent($id: ID!, $input: JSON!) {
+    documentEdit(id: $id, input: $input) { success result message }
+  }
+`;
+
+export const DOCUMENT_REVERT_TO_ORIGINAL = gql`
+  mutation DocumentRevertToOriginal($id: ID!) {
+    documentRevertToOriginal(id: $id) { success result message }
+  }
+`;

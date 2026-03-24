@@ -84,6 +84,7 @@ const taskTypeDefs = gql`
     taskReassign(id: ID!, userId: ID!): MutationResponse!
     taskAiPrioritize(id: ID!): MutationResponse!
     taskBatchUpdatePriorities(input: JSON!): MutationResponse!
+    taskAddComment(id: ID!, content: String!): MutationResponse!
   }
 `;
 

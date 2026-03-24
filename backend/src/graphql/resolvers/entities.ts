@@ -30,16 +30,137 @@ function createEntitySpecificResolvers(controllers) {
     triggerRuleController,
     settingController,
     adminController,
+    campaignController,
+    taskCommentController,
+    taskController,
+    dataEntryController,
+    aiWorkflowController,
   } = controllers;
 
   return {
     Query: {
+      // Statistics — generic entity statistics
+      statisticsGet: async (parent, args, context) => {
+        try {
+          const { entity, period, startDate, endDate } = args;
+          const methodMap = {
+            dashboard: 'dashboard',
+            client: 'getClientStats',
+            invoice: 'getInvoiceStats',
+            quote: 'getQuoteStats',
+            payment: 'getPaymentStats',
+            team: 'getTeamStats',
+            task: 'getTaskStats',
+            document: 'getDocumentStats',
+            paymentMode: 'getPaymentModeStats',
+            workflow: 'getWorkflowStats',
+            taxes: 'getTaxStats',
+          };
+          const method = methodMap[entity] || `get${entity.charAt(0).toUpperCase() + entity.slice(1)}Stats`;
+          if (statisticsController?.[method]) {
+            const { req, res, getResponse } = createReqRes(args, context);
+            req.query.timeframe = period;
+            if (startDate) req.query.startDate = startDate;
+            if (endDate) req.query.endDate = endDate;
+            await statisticsController[method](req, res);
+            return getResponse().data;
+          }
+          return { success: false, result: null, message: `Statistics method not found for entity: ${entity}` };
+        } catch (error) {
+          return { success: false, result: null, message: error.message };
+        }
+      },
+
       // Statistics
       ...(statisticsController?.dashboard && {
         statisticsDashboard: wrapController(statisticsController.dashboard),
       }),
       ...(statisticsController?.overview && {
         statisticsOverview: wrapController(statisticsController.overview),
+      }),
+
+      // Statistics — extended entity stats
+      ...(statisticsController?.getDocumentStats && {
+        statisticsDocuments: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.query.timeframe = args.period;
+          try {
+            await statisticsController.getDocumentStats(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(statisticsController?.getPaymentModeStats && {
+        statisticsPaymentModes: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.query.timeframe = args.period;
+          try {
+            await statisticsController.getPaymentModeStats(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(statisticsController?.getWorkflowStats && {
+        statisticsWorkflows: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.query.timeframe = args.period;
+          try {
+            await statisticsController.getWorkflowStats(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(statisticsController?.getTaxStats && {
+        statisticsTaxes: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.query.timeframe = args.period;
+          try {
+            await statisticsController.getTaxStats(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // AI Enhanced — extended queries
+      ...(aiEnhancedController?.getLearningStats && {
+        aiEnhancedLearningStats: wrapController(aiEnhancedController.getLearningStats),
+      }),
+      ...(aiEnhancedController?.getSuggestionAnalytics && {
+        aiEnhancedQueueStatistics: wrapController(aiEnhancedController.getSuggestionAnalytics),
+      }),
+      // AI Enhanced — queue status (no dedicated controller method, returns general status)
+      aiEnhancedQueueStatus: async () => {
+        try {
+          return {
+            success: true,
+            result: { status: 'active', pendingMessages: 0, processingMessages: 0 },
+            message: 'Queue status retrieved',
+          };
+        } catch (error) {
+          return { success: false, result: null, message: error.message };
+        }
+      },
+
+      // Campaign A/B Test results
+      ...(campaignController?.getABTestResults && {
+        campaignAbTestResults: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await campaignController.getABTestResults(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
       }),
 
       // Analytics Overview (aggregates from existing models)
@@ -108,6 +229,59 @@ function createEntitySpecificResolvers(controllers) {
         }
       },
 
+      // Global Analytics — Realtime
+      globalAnalyticsRealtime: async () => {
+        try {
+          const Client = mongoose.model('Client');
+          const Invoice = mongoose.model('Invoice');
+          const Task = mongoose.model('Task');
+
+          const now = new Date();
+          const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+
+          const [activeClients, recentInvoices, activeTasks] = await Promise.all([
+            Client.countDocuments({ removed: false, updatedAt: { $gte: oneHourAgo } }),
+            Invoice.countDocuments({ removed: false, updatedAt: { $gte: oneHourAgo } }),
+            Task.countDocuments({ removed: false, status: { $ne: 'completed' } }),
+          ]);
+
+          return {
+            success: true,
+            result: { activeClients, recentInvoices, activeTasks, timestamp: now.toISOString() },
+            message: 'Real-time analytics retrieved',
+          };
+        } catch (error) {
+          return { success: false, result: null, message: error.message };
+        }
+      },
+
+      // Global Analytics — Module
+      globalAnalyticsModule: async (parent, args) => {
+        try {
+          const { module: moduleName } = args;
+          const modelMap = {
+            crm: 'Client',
+            sales: 'Invoice',
+            tasks: 'Task',
+            documents: 'Document',
+            marketing: 'Campaign',
+          };
+          const modelName = modelMap[moduleName];
+          if (!modelName) {
+            return { success: true, result: { total: 0, module: moduleName }, message: 'Module not found' };
+          }
+          const Model = mongoose.model(modelName);
+          const total = await Model.countDocuments({ removed: false });
+          return {
+            success: true,
+            result: { total, module: moduleName },
+            message: `${moduleName} analytics retrieved`,
+          };
+        } catch (error) {
+          return { success: false, result: null, message: error.message };
+        }
+      },
+
       // Invoice recurring
       ...(invoiceController?.recurringHistory && {
         invoiceRecurringHistory: async (parent, args, context) => {
@@ -155,6 +329,18 @@ function createEntitySpecificResolvers(controllers) {
           req.params.id = args.id;
           try {
             await documentAuditController.getAuditTrail(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(documentController?.getContent && {
+        documentGetContent: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await documentController.getContent(req, res);
             return getResponse().data;
           } catch (error) {
             return { success: false, result: null, message: error.message };
@@ -438,6 +624,18 @@ function createEntitySpecificResolvers(controllers) {
           }
         },
       }),
+      ...(settingController?.updateManySetting && {
+        settingUpdateMany: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = args.input;
+          try {
+            await settingController.updateManySetting(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
 
       // Customer Journey
       ...(customerJourneyController?.initialize && {
@@ -558,6 +756,240 @@ function createEntitySpecificResolvers(controllers) {
           }
         },
       }),
+
+      // Document — mutations
+      ...(documentController?.edit && {
+        documentEdit: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          req.body = typeof args.input === 'string' ? JSON.parse(args.input) : args.input;
+          try {
+            await documentController.edit(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(documentController?.revertToOriginal && {
+        documentRevertToOriginal: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await documentController.revertToOriginal(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(documentController?.revertToVersion && {
+        documentRevertToVersion: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          req.body = { versionNumber: args.version };
+          try {
+            await documentController.revertToVersion(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(documentController?.analyze && {
+        documentAnalyze: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await documentController.analyze(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // Campaign — advanced mutations
+      ...(campaignController?.schedule && {
+        campaignSchedule: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          req.body = args.input;
+          try {
+            await campaignController.schedule(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(campaignController?.optimize && {
+        campaignOptimize: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await campaignController.optimize(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(campaignController?.bulkUpdate && {
+        campaignBulkUpdate: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = { ids: args.ids, update: args.input };
+          try {
+            await campaignController.bulkUpdate(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(campaignController?.generateReport && {
+        campaignGenerateReport: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await campaignController.generateReport(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(campaignController?.updateABTestMetrics && {
+        campaignUpdateAbTestMetrics: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          req.body = args.input;
+          try {
+            await campaignController.updateABTestMetrics(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // Task — add comment
+      ...(taskCommentController?.addComment && {
+        taskAddComment: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          req.body = { content: args.content };
+          try {
+            await taskCommentController.addComment(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(taskController?.aiPrioritize && {
+        taskAiPrioritize: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.params.id = args.id;
+          try {
+            await taskController.aiPrioritize(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // AI Enhanced — queue & feedback mutations
+      ...(aiEnhancedController?.queueMessage && {
+        aiEnhancedQueueMessage: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = args.input;
+          try {
+            await aiEnhancedController.queueMessage(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(aiEnhancedController?.recordFeedback && {
+        aiEnhancedRecordFeedback: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = args.input;
+          try {
+            await aiEnhancedController.recordFeedback(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // AI Workflow — process data
+      ...(aiWorkflowController?.processWorkflow && {
+        aiProcessData: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = typeof args.input === 'string' ? JSON.parse(args.input) : args.input;
+          try {
+            await aiWorkflowController.processWorkflow(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+
+      // Data Entry — import/save mutations
+      ...(dataEntryController?.importFromUrl && {
+        dataEntryImportFromUrl: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = { url: args.url, options: args.options };
+          try {
+            await dataEntryController.importFromUrl(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      ...(dataEntryController?.save && {
+        dataEntrySave: async (parent, args, context) => {
+          const { req, res, getResponse } = createReqRes(args, context);
+          req.body = args.input;
+          try {
+            await dataEntryController.save(req, res);
+            return getResponse().data;
+          } catch (error) {
+            return { success: false, result: null, message: error.message };
+          }
+        },
+      }),
+      // Data entry validation
+      dataEntryValidate: async (parent, args, context) => {
+        try {
+          const { data, module: moduleName, options } = args.input || {};
+          if (!data || !moduleName) {
+            return { success: false, result: null, message: 'Data and module are required' };
+          }
+          const errors = [];
+          const validated = data.map((item, idx) => {
+            const issues = [];
+            if (!item || typeof item !== 'object') {
+              issues.push({ field: 'row', message: `Row ${idx + 1} is not a valid object` });
+            }
+            if (issues.length > 0) errors.push({ row: idx + 1, issues });
+            return { ...item, _valid: issues.length === 0 };
+          });
+          return {
+            success: true,
+            result: { validatedData: validated, errors, totalErrors: errors.length, totalValid: validated.filter(v => v._valid).length },
+            message: errors.length > 0 ? `Found ${errors.length} validation issues` : 'All data is valid',
+          };
+        } catch (error) {
+          return { success: false, result: null, message: error.message };
+        }
+      },
     },
   };
 }

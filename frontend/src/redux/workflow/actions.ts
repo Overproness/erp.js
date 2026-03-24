@@ -22,7 +22,7 @@ export const listWorkflows =
       const { data } = await apolloClient.query({
         query: GET_WORKFLOWS,
         variables: { page, limit, sortBy: 'createdAt', sortValue: 'desc' },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       const response = data.workflowList;
       dispatch({
@@ -46,7 +46,7 @@ export const readWorkflow = (id) => async (dispatch) => {
     const { data } = await apolloClient.query({
       query: GET_WORKFLOW,
       variables: { id },
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
     });
     const response = data.workflowRead;
     dispatch({

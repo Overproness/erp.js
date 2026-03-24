@@ -146,7 +146,11 @@ export const settingsAction = {
     (
       { entity, forceRefresh = true } // Always force refresh by default
     ) =>
-    async (dispatch) => {
+    async (dispatch, getState) => {
+      // Prevent duplicate in-flight requests
+      const { settings } = getState();
+      if (settings.isLoading) return;
+
       dispatch({
         type: actionTypes.REQUEST_LOADING,
       });

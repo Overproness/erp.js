@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Dropdown, Input, Table } from 'antd';
-import { cloneElement, isValidElement, useCallback, useContext, useEffect, useMemo } from 'react';
+import { cloneElement, isValidElement, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { generate as uniqueId } from 'shortid';
@@ -210,7 +210,10 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
     [entity]
   );
 
+  const loadedRef = useRef('');
   useEffect(() => {
+    if (loadedRef.current === entity) return;
+    loadedRef.current = entity;
     dispatch(actions.list({ entity }));
   }, [entity]);
 

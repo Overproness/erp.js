@@ -1,11 +1,11 @@
 // Module for handling saving settings in the onboarding process
 import { message } from 'antd';
-import { request } from '@/request';
 import * as actionTypes from '@/redux/auth/types';
 import storePersist from '@/redux/storePersist';
 import { settingsAction } from '@/redux/settings/actions';
 import apolloClient from '@/graphql/client';
 import { COMPLETE_SETUP, UPDATE_PROFILE } from '@/graphql/operations/auth';
+import { UPDATE_MANY_SETTINGS } from '@/graphql/operations/settings';
 
 /**
  * Save all settings from the onboarding process
@@ -170,14 +170,14 @@ const saveAllSettings = async (data, { setIsSubmitting, dispatch, navigate, tran
     // Use the admin-specific batch update endpoint for settings, which ensures proper admin ownership
     // This approach is preferred over updateMany since it creates settings with the correct admin owner
     try {
-      // First attempt to use the batch endpoint which is admin-aware
-      await request.post({
-        entity: 'setting/batch',
-        jsonData: { settings: settingsToUpdate }
+      // Use GraphQL settingUpdateMany mutation
+      await apolloClient.mutate({
+        mutation: UPDATE_MANY_SETTINGS,
+        variables: { input: settingsToUpdate },
       });
-      console.log('Settings saved using batch endpoint');
+      console.log('Settings saved using GraphQL settingUpdateMany');
     } catch (batchError) {
-      console.error('Error using batch endpoint:', batchError);
+      console.error('Error using GraphQL settingUpdateMany:', batchError);
       
       // Fallback to redux action if batch fails
       await dispatch(
@@ -241,16 +241,14 @@ const saveAllSettings = async (data, { setIsSubmitting, dispatch, navigate, tran
         } catch (setupError) {
           console.error('Error using completeCompanySetup endpoint:', setupError);
           
-          // Fallback to using setting/batch endpoint which properly sets owner
-          console.log('Falling back to setting/batch endpoint for admin settings');
+          // Fallback to using GraphQL settingUpdateMany which properly sets owner
+          console.log('Falling back to GraphQL settingUpdateMany for admin settings');
           
           try {
-            // This endpoint properly sets the admin as the owner of the settings
-            await request.post({
-              entity: 'setting/batch',
-              jsonData: { 
-                settings: settingsToUpdate 
-              }
+            // Use GraphQL mutation to update settings in batch
+            await apolloClient.mutate({
+              mutation: UPDATE_MANY_SETTINGS,
+              variables: { input: settingsToUpdate },
             });
             
             // Then update admin record via GraphQL

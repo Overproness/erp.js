@@ -89,7 +89,7 @@ export const fetchTriggers = createAsyncThunk(
           page: params.page || 1,
           limit: params.items || 50,
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
       if (data.triggerRuleList?.success) {
         return data.triggerRuleList.result;

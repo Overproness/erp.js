@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Table, Button, Tag, Space, Dropdown, Avatar, Tooltip } from 'antd';
@@ -34,12 +34,16 @@ const AiAssistantDataTableModule = () => {
   
   const assistants = useSelector(selectAssistantsList);
   const isLoading = useSelector(selectAssistantsLoading);
-  const pagination = useSelector(selectAssistantsPagination);
+  const rawPagination = useSelector(selectAssistantsPagination);
+  const pagination = rawPagination || { current: 1, pageSize: 10, total: 0 };
 
   // Ensure assistants is always an array
   const safeAssistants = Array.isArray(assistants) ? assistants : [];
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(fetchAssistants());
   }, [dispatch]);
 

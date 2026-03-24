@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, useCallback, useEffect } from 'react';
+import { cloneElement, isValidElement, useCallback, useEffect, useRef } from 'react';
 
 import {
   ArrowLeftOutlined,
@@ -176,16 +176,12 @@ export default function DataTable({ config, extra = [] }) {
     dispatch(crud.list({ entity, options }));
   };
 
-  const dispatcher = () => {
-    dispatch(crud.list({ entity }));
-  };
+  const loadedRef = useRef(false);
 
   useEffect(() => {
-    const controller = new AbortController();
-    dispatcher();
-    return () => {
-      controller.abort();
-    };
+    if (loadedRef.current) return;
+    loadedRef.current = true;
+    dispatch(crud.list({ entity }));
   }, []);
 
   return (

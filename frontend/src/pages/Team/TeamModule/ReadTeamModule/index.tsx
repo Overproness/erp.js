@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { erp } from '@/redux/erp/actions';
@@ -11,9 +11,11 @@ const ReadTeamModule = () => {
   const { id } = useParams();
 
   const { result: currentResult } = useSelector(selectCurrentItem);
+  const loadedRef = useRef('');
   
   useEffect(() => {
-    if (id) {
+    if (id && loadedRef.current !== id) {
+      loadedRef.current = id;
       dispatch(erp.read({ entity: TEAM_ENTITY, id }));
     }
   }, [id, dispatch]);

@@ -132,7 +132,7 @@ const DocumentEditor = () => {
 
         // Refresh versions
         try {
-          const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+          const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
           if (verData.documentListVersions.success) {
             setVersions(verData.documentListVersions.result.items);
           }
@@ -172,13 +172,13 @@ const DocumentEditor = () => {
         setSignModalVisible(false);
 
         // Refresh document
-        const { data: docData } = await apolloClient.query({ query: GET_DOCUMENT, variables: { id }, fetchPolicy: 'network-only' });
+        const { data: docData } = await apolloClient.query({ query: GET_DOCUMENT, variables: { id }, fetchPolicy: 'cache-first' });
         if (docData.documentRead.success) {
           setDocument(docData.documentRead.result);
         }
 
         // Refresh versions
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
@@ -220,7 +220,7 @@ const DocumentEditor = () => {
         setEditSummary('');
 
         // Refresh versions
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
@@ -280,7 +280,7 @@ const DocumentEditor = () => {
         // Refresh document and content
         try {
           // Get updated document metadata
-          const { data: docData } = await apolloClient.query({ query: GET_DOCUMENT, variables: { id }, fetchPolicy: 'network-only' });
+          const { data: docData } = await apolloClient.query({ query: GET_DOCUMENT, variables: { id }, fetchPolicy: 'cache-first' });
           if (docData.documentRead.success) {
             setDocument(docData.documentRead.result);
 
@@ -301,7 +301,7 @@ const DocumentEditor = () => {
           }
 
           // Refresh versions list
-          const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'network-only' });
+          const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
           if (verData.documentListVersions.success) {
             setVersions(verData.documentListVersions.result.items);
           }

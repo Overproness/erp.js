@@ -1,10 +1,8 @@
 import apolloClient from '@/graphql/client';
-import { AI_PREDICT, AI_SUGGEST } from '@/graphql/operations/ai';
+import { AI_PREDICT, AI_SUGGEST, AI_QUEUE_MESSAGE, AI_QUEUE_STATUS, AI_QUEUE_STATISTICS, AI_RECORD_FEEDBACK, AI_LEARNING_STATS } from '@/graphql/operations/ai';
 
 /**
  * Enhanced AI Services for Queue, Follow-ups, Automation, and Learning
- * Most specialized AI-enhanced endpoints don't have direct GraphQL resolvers,
- * so they use dynamic REST imports as fallback.
  */
 
 /**
@@ -12,12 +10,11 @@ import { AI_PREDICT, AI_SUGGEST } from '@/graphql/operations/ai';
  */
 export const queueChatMessage = async (message, context = {}, priority = 'normal') => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.post({
-      entity: 'ai-enhanced/chat-queue',
-      jsonData: { message, context, priority },
+    const { data } = await apolloClient.mutate({
+      mutation: AI_QUEUE_MESSAGE,
+      variables: { input: { message, context, priority } },
     });
-    return response;
+    return data.aiEnhancedQueueMessage;
   } catch (error) {
     console.error('Queue message error:', error);
     return { success: false, error: error.message };
@@ -29,11 +26,11 @@ export const queueChatMessage = async (message, context = {}, priority = 'normal
  */
 export const getQueueStatus = async (queueId) => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.get({
-      entity: `ai-enhanced/chat-queue/${queueId}/status`,
+    const { data } = await apolloClient.query({
+      query: AI_QUEUE_STATUS,
+      variables: { id: queueId },
     });
-    return response;
+    return data.aiEnhancedQueueStatus;
   } catch (error) {
     console.error('Get queue status error:', error);
     return { success: false, error: error.message };
@@ -45,11 +42,10 @@ export const getQueueStatus = async (queueId) => {
  */
 export const getQueueStatistics = async () => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.get({
-      entity: 'ai-enhanced/chat-queue/statistics',
+    const { data } = await apolloClient.query({
+      query: AI_QUEUE_STATISTICS,
     });
-    return response;
+    return data.aiEnhancedQueueStatistics;
   } catch (error) {
     console.error('Get queue statistics error:', error);
     return { success: false, error: error.message };
@@ -61,12 +57,11 @@ export const getQueueStatistics = async () => {
  */
 export const recordAIFeedback = async (learningId, feedbackData) => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.post({
-      entity: `ai-enhanced/learning/${learningId}/feedback`,
-      jsonData: feedbackData,
+    const { data } = await apolloClient.mutate({
+      mutation: AI_RECORD_FEEDBACK,
+      variables: { input: { learningId, ...feedbackData } },
     });
-    return response;
+    return data.aiEnhancedRecordFeedback;
   } catch (error) {
     console.error('Record feedback error:', error);
     return { success: false, error: error.message };
@@ -78,12 +73,11 @@ export const recordAIFeedback = async (learningId, feedbackData) => {
  */
 export const getEnhancedContext = async (module, data) => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.post({
-      entity: 'ai-enhanced/context/enhanced',
-      jsonData: { module, data },
+    const { data: result } = await apolloClient.mutate({
+      mutation: AI_SUGGEST,
+      variables: { input: { type: 'enhanced_context', module, data } },
     });
-    return response;
+    return result.aiSuggest;
   } catch (error) {
     console.error('Get enhanced context error:', error);
     return { success: false, error: error.message };
@@ -95,12 +89,10 @@ export const getEnhancedContext = async (module, data) => {
  */
 export const getLearnedInsights = async (module = 'general') => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.get({
-      entity: 'ai-enhanced/insights/learned',
-      options: { module },
+    const { data } = await apolloClient.query({
+      query: AI_LEARNING_STATS,
     });
-    return response;
+    return data.aiEnhancedLearningStats;
   } catch (error) {
     console.error('Get learned insights error:', error);
     return { success: false, error: error.message };
@@ -128,12 +120,11 @@ export const getAutomationSuggestions = async (limit = 10) => {
  */
 export const implementSuggestion = async (suggestionId, options = {}) => {
   try {
-    const { request } = await import('@/request');
-    const response = await request.post({
-      entity: `ai-enhanced/automation/suggestions/${suggestionId}/implement`,
-      jsonData: options,
+    const { data } = await apolloClient.mutate({
+      mutation: AI_SUGGEST,
+      variables: { input: { type: 'implement_suggestion', suggestionId, ...options } },
     });
-    return response;
+    return data.aiSuggest;
   } catch (error) {
     console.error('Implement suggestion error:', error);
     return { success: false, error: error.message };
@@ -161,10 +152,10 @@ export const predictCustomerBehavior = async (clientId) => {
  */
 export const getLearningStatistics = async () => {
   try {
-    const response = await request.get({
-      entity: 'ai-enhanced/learning/statistics',
+    const { data } = await apolloClient.query({
+      query: AI_LEARNING_STATS,
     });
-    return response;
+    return data.aiEnhancedLearningStats;
   } catch (error) {
     console.error('Get learning statistics error:', error);
     return { success: false, error: error.message };

@@ -20,7 +20,7 @@ import {
   Typography,
   message,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import task API request service
 import taskRequest from '@/request/taskRequest';
@@ -52,9 +52,12 @@ export default function Tasks() {
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
   const [aiModalVisible, setAiModalVisible] = useState(false);
+  const loadedRef = useRef(false);
 
   // Load tasks from API on component mount
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     loadTasks();
     loadTaskStats();
   }, []);
@@ -64,35 +67,20 @@ export default function Tasks() {
     setLoading(true);
     try {
       const response = await taskRequest.list();
-      console.log('Tasks API response:', response);
 
       if (response.success) {
-        // Handle both paginated and non-paginated responses
         const taskData = response.result?.items || response.result || [];
-        console.log('Task data extracted:', taskData);
-        console.log('First task assignedTo:', taskData[0]?.assignedTo);
-        console.log('First task full object:', JSON.stringify(taskData[0], null, 2));
         setTasks(Array.isArray(taskData) ? taskData : []);
       } else if (response.message === 'Collection is Empty') {
-        // Collection is empty - not an error, just no tasks yet
-        console.log('No tasks found - collection is empty');
         setTasks([]);
       } else {
-        // Actual error
-        console.error('API returned success: false', response);
         message.error(translate(response.message || 'Failed to load tasks'));
         setTasks([]);
       }
     } catch (error) {
-      console.error('Error loading tasks:', error);
-      console.error('Error details:', error.response?.data || error.message);
-
-      // Check if it's an empty collection response
       if (error.response?.data?.message === 'Collection is Empty') {
-        console.log('No tasks found - collection is empty (from error)');
         setTasks([]);
       } else {
-        // Show more specific error message for actual errors
         const errorMsg = error.response?.data?.message || error.message || 'Failed to load tasks';
         message.error(translate(errorMsg));
         setTasks([]);
@@ -107,7 +95,6 @@ export default function Tasks() {
     setStatsLoading(true);
     try {
       const response = await taskRequest.statistics();
-      console.log('Task stats API response:', response);
 
       if (response.success && response.result) {
         setTaskStatistics({
@@ -118,9 +105,6 @@ export default function Tasks() {
         });
       }
     } catch (error) {
-      console.error('Error loading task stats:', error);
-      console.error('Stats error details:', error.response?.data || error.message);
-      // Use default stats on error (don't show error message for stats)
       setTaskStatistics({
         totalTasks: 0,
         completedTasks: 0,

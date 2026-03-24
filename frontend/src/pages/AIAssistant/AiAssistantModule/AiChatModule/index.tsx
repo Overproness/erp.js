@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Spin, Row, Col } from 'antd';
@@ -17,8 +17,11 @@ const AiChatModule = () => {
   const assistants = useSelector(selectAssistantsList);
   const isLoading = useSelector(selectAssistantsLoading);
   const [selectedAssistant, setSelectedAssistant] = useState(null);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(fetchAssistants());
   }, [dispatch]);
 

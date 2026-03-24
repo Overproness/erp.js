@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from 'antd';
@@ -26,24 +26,18 @@ export default function ErpCrmApp() {
   const translate = useLanguage();
 
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
-    // Always load fresh settings from backend on app start
-    dispatch(settingsAction.list({ entity: 'setting', forceRefresh: true }));
-  }, [dispatch]);
 
   // Also reload settings when authentication changes
   const { current: authData } = useSelector((state) => state.auth);
 
+  // Single settings load on app start / auth change
   useEffect(() => {
-    if (authData?._id) {
-      dispatch(settingsAction.list({ entity: 'setting', forceRefresh: true }));
-    }
+    dispatch(settingsAction.list({ entity: 'setting', forceRefresh: true }));
   }, [authData?._id, dispatch]);
 
   // Add network reconnect handler to reload settings when connection is restored
   useEffect(() => {
     const handleOnline = () => {
-      // Force a refresh of settings when network reconnects
       dispatch(settingsAction.list({ entity: 'setting', forceRefresh: true }));
     };
 

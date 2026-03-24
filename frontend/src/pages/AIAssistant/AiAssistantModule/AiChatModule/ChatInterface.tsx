@@ -35,21 +35,13 @@ const ChatInterface = ({ assistant }) => {
   const [context, setContext] = useState({});
   const [hasApiKey, setHasApiKey] = useState(false);
 
-  // Fetch conversations when assistant changes
+  // Fetch conversations and load the most recent one when assistant changes
   useEffect(() => {
     if (assistant?._id) {
-      dispatch(fetchConversations(assistant._id));
-    }
-  }, [assistant, dispatch]);
-
-  useEffect(() => {
-    // When assistant changes, fetch the most recent conversation for this assistant
-    if (assistant) {
       dispatch(fetchConversations(assistant._id))
         .unwrap()
         .then((conversations) => {
           if (conversations && conversations.length > 0) {
-            // Load the most recent conversation
             const mostRecentConversation = conversations[0];
             dispatch(
               fetchConversation({
@@ -61,18 +53,14 @@ const ChatInterface = ({ assistant }) => {
               .then((conversationData) => {
                 dispatch(loadConversation(conversationData));
               })
-              .catch((error) => {
-                console.error('Failed to load conversation:', error);
-                // If loading fails, just start with empty chat
+              .catch(() => {
                 dispatch(resetChat());
               });
           } else {
-            // No existing conversations, start fresh
             dispatch(resetChat());
           }
         })
-        .catch((error) => {
-          console.error('Failed to fetch conversations:', error);
+        .catch(() => {
           dispatch(resetChat());
         });
     }

@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import { Alert, Badge, Card, Empty, Space, Table, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const { Title, Text } = Typography;
@@ -34,7 +34,10 @@ export default function AuditTrail({ documentId }) {
       }
   );
 
+  const loadedRef = useRef('');
   useEffect(() => {
+    if (loadedRef.current === documentId) return;
+    loadedRef.current = documentId;
     loadAuditTrail(1, 20);
   }, [documentId]);
 

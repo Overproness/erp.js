@@ -228,7 +228,7 @@ export default function ReadItem({ config, selectedItem, clientId: propClientId 
       const { data } = await apolloClient.query({
         query: GET_CUSTOMER_JOURNEY,
         variables: { clientId },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
       });
 
       if (data.globalAnalyticsCustomerJourney.success) {

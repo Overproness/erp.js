@@ -50,7 +50,7 @@ const CreateABTest = ({ onSubmit, onCancel }) => {
         const { data } = await apolloClient.query({
           query: GET_URLS,
           variables: { page: 1, limit: 1000 },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
         if (data.urlList?.success) {
           setUrls(Array.isArray(data.urlList.result) ? data.urlList.result : []);

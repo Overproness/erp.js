@@ -43,6 +43,7 @@ const aiDataProcessorTypeDefs = gql`
     aiClassifyDocument(input: JSON!): MutationResponse!
     aiDetectAnomalies(input: JSON!): MutationResponse!
     aiPredictTrend(input: JSON!): MutationResponse!
+    aiProcessData(input: JSON!): MutationResponse!
   }
 `;
 

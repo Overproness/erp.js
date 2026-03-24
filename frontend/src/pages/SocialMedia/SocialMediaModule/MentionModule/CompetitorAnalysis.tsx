@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Card, 
   Table, 
@@ -62,8 +62,11 @@ const CompetitorAnalysis = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('7d');
   const [searchText, setSearchText] = useState('');
   const [newCompetitor, setNewCompetitor] = useState('');
+  const prevPeriodRef = useRef('');
 
   useEffect(() => {
+    if (prevPeriodRef.current === selectedPeriod) return;
+    prevPeriodRef.current = selectedPeriod;
     refreshAnalytics(selectedPeriod);
   }, [selectedPeriod, refreshAnalytics]);
 

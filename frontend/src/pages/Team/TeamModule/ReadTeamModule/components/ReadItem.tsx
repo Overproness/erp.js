@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined, UserAddOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Descriptions, Divider, Space, Table, Tabs, Tag, Typography, message } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -27,8 +27,11 @@ export const ReadItem = ({ config }) => {
   const [activeTabKey, setActiveTabKey] = useState('members');
   const [performanceModalVisible, setPerformanceModalVisible] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
+  const loadedRef = useRef('');
 
   useEffect(() => {
+    if (loadedRef.current === id) return;
+    loadedRef.current = id;
     dispatch(erp.read({ entity: TEAM_ENTITY, id }));
   }, [id]);
 

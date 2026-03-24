@@ -2,8 +2,8 @@ import { gql } from '@apollo/client';
 
 // Customer Segments
 export const GET_CUSTOMER_SEGMENTS = gql`
-  query GetCustomerSegments($page: Int, $limit: Int, $sortBy: String, $sortValue: String) {
-    customerSegmentList(page: $page, limit: $limit, sortBy: $sortBy, sortValue: $sortValue) {
+  query GetCustomerSegments($page: Int, $limit: Int) {
+    customerSegmentList(page: $page, limit: $limit) {
       success result pagination { page count pages total } message
     }
   }

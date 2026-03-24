@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Dropdown, Table } from 'antd';
-import { cloneElement, isValidElement, useEffect } from 'react';
+import { cloneElement, isValidElement, useEffect, useRef } from 'react';
 
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 import { useErpContext } from '@/context/erp';
@@ -171,12 +171,11 @@ export default function DataTable({ config, extra = [] }) {
     dispatch(erp.list({ entity }));
   };
 
+  const loadedRef = useRef(false);
   useEffect(() => {
-    const controller = new AbortController();
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatcher();
-    return () => {
-      controller.abort();
-    };
   }, []);
 
   const filterTable = (value) => {

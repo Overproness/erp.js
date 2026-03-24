@@ -91,3 +91,39 @@ export const AI_GENERATE_CAMPAIGN = gql`
     campaignAiGenerate(input: $input) { success result message }
   }
 `;
+
+export const SCHEDULE_CAMPAIGN = gql`
+  mutation ScheduleCampaign($id: ID!, $input: JSON!) {
+    campaignSchedule(id: $id, input: $input) { success result message }
+  }
+`;
+
+export const OPTIMIZE_CAMPAIGN = gql`
+  mutation OptimizeCampaign($id: ID!) {
+    campaignOptimize(id: $id) { success result message }
+  }
+`;
+
+export const BULK_UPDATE_CAMPAIGNS = gql`
+  mutation BulkUpdateCampaigns($ids: [ID!]!, $input: JSON!) {
+    campaignBulkUpdate(ids: $ids, input: $input) { success result message }
+  }
+`;
+
+export const GENERATE_CAMPAIGN_REPORT = gql`
+  mutation GenerateCampaignReport($id: ID!) {
+    campaignGenerateReport(id: $id) { success result message }
+  }
+`;
+
+export const GET_CAMPAIGN_AB_TEST_RESULTS = gql`
+  query GetCampaignAbTestResults($id: ID!) {
+    campaignAbTestResults(id: $id) { success result message }
+  }
+`;
+
+export const UPDATE_CAMPAIGN_AB_TEST_METRICS = gql`
+  mutation UpdateCampaignAbTestMetrics($id: ID!, $input: JSON!) {
+    campaignUpdateAbTestMetrics(id: $id, input: $input) { success result message }
+  }
+`;

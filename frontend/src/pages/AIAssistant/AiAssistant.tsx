@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Row, Col, Statistic, Card, Button, Space } from 'antd';
@@ -29,6 +29,7 @@ export default function AiAssistant() {
   const assistants = useSelector(selectAssistantsList);
   const loading = useSelector(selectAssistantsLoading);
   const error = useSelector(selectAssistantsError);
+  const loadedRef = useRef(false);
 
   const [stats, setStats] = useState({
     totalAssistants: 0,
@@ -38,6 +39,8 @@ export default function AiAssistant() {
   });
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(fetchAssistants());
   }, [dispatch]);
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Card,
   Button,
@@ -78,7 +78,10 @@ const ABTestModule = () => {
     dispatch(fetchABTests());
   }, [dispatch]);
 
+  const loadedRef = useRef(false);
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     refreshTests();
   }, [refreshTests]);
 

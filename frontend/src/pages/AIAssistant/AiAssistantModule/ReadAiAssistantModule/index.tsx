@@ -29,7 +29,7 @@ import {
   Tag,
   Typography,
 } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -47,8 +47,10 @@ const ReadAiAssistantModule = () => {
 
   console.log(assistant);
 
+  const loadedRef = useRef('');
   useEffect(() => {
-    if (id) {
+    if (id && loadedRef.current !== id) {
+      loadedRef.current = id;
       dispatch(fetchAssistant(id));
     }
   }, [dispatch, id]);

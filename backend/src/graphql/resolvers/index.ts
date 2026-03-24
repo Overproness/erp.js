@@ -57,6 +57,7 @@ function initializeResolvers(controllers) {
     { name: 'reviewLink', controller: controllers.reviewLinkController },
     { name: 'reviewTemplate', controller: controllers.reviewTemplateController },
     // AI
+    { name: 'aiAssistant', controller: controllers.aiAssistantController },
     { name: 'aiKnowledgeBase', controller: controllers.aiKnowledgeBaseController },
     // Compliance
     { name: 'consentRecord', controller: controllers.consentRecordController },

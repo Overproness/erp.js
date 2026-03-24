@@ -1,27 +1,25 @@
 import { API_BASE_URL } from '@/config/serverApiConfig';
 
 import axios from 'axios';
+import apolloClient from '@/graphql/client';
+import { LOGIN, REGISTER, LOGOUT, FORGOT_PASSWORD, RESET_PASSWORD } from '@/graphql/operations/auth';
 import errorHandler from '@/request/errorHandler';
 import successHandler from '@/request/successHandler';
 import storePersist from '@/redux/storePersist';
 
 export const login = async ({ loginData }) => {
   try {
-    const response = await axios.post(
-      API_BASE_URL + `login?timestamp=${new Date().getTime()}`,
-      loginData
-    );
+    const { data } = await apolloClient.mutate({
+      mutation: LOGIN,
+      variables: { input: loginData },
+    });
 
-    const { status, data } = response;
-
+    const result = data.login;
     successHandler(
-      { data, status },
-      {
-        notifyOnSuccess: false,
-        notifyOnFailed: true,
-      }
+      { data: result, status: 200 },
+      { notifyOnSuccess: false, notifyOnFailed: true }
     );
-    return data;
+    return result;
   } catch (error) {
     return errorHandler(error);
   }
@@ -29,27 +27,19 @@ export const login = async ({ loginData }) => {
 
 export const register = async ({ registerData }) => {
   try {
-    console.log('Sending registration request with data:', registerData);
-    
-    // Add a timestamp to prevent caching issues
-    const response = await axios.post(
-      API_BASE_URL + `register?timestamp=${new Date().getTime()}`, 
-      registerData
-    );
+    const { data } = await apolloClient.mutate({
+      mutation: REGISTER,
+      variables: { input: registerData },
+    });
 
-    const { status, data } = response;
-    console.log('Registration response:', status, data);
-
+    const result = data.register;
     successHandler(
-      { data, status },
-      {
-        notifyOnSuccess: true,
-        notifyOnFailed: true,
-      }
+      { data: result, status: 200 },
+      { notifyOnSuccess: true, notifyOnFailed: true }
     );
-    return data;
+    return result;
   } catch (error) {
-    console.error('Registration failed:', error.response?.data || error.message);
+    console.error('Registration failed:', error.message);
     return errorHandler(error);
   }
 };
@@ -75,83 +65,59 @@ export const verify = async ({ userId, emailToken }) => {
 
 export const resetPassword = async ({ resetPasswordData }) => {
   try {
-    const response = await axios.post(API_BASE_URL + `resetpassword`, resetPasswordData);
+    const { data } = await apolloClient.mutate({
+      mutation: RESET_PASSWORD,
+      variables: { input: resetPasswordData },
+    });
 
-    const { status, data } = response;
-
+    const result = data.resetPassword;
     successHandler(
-      { data, status },
-      {
-        notifyOnSuccess: true,
-        notifyOnFailed: true,
-      }
+      { data: result, status: 200 },
+      { notifyOnSuccess: true, notifyOnFailed: true }
     );
-    return data;
+    return result;
   } catch (error) {
     return errorHandler(error);
   }
 };
 export const logout = async () => {
   // Always clear local auth data first to ensure client-side logout happens
-  // even if the server request fails
   storePersist.remove('auth');
   storePersist.remove('auth_token');
   localStorage.removeItem('auth');
   localStorage.removeItem('persist:root');
-  
+
   // Clean up axios authorization headers right away
   delete axios.defaults.headers.common['Authorization'];
-  
+
   try {
-    // Create a separate axios instance that won't use interceptors
-    const publicAxios = axios.create({
-      baseURL: API_BASE_URL,
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-Public-Request': 'true'
-      }
-    });
-    
-    // Timestamp to prevent caching
-    const timestamp = new Date().getTime();
-    
-    // Send a logout request without any auth headers
-    const response = await publicAxios.post(
-      `logout?timestamp=${timestamp}`, 
-      {} // Empty body
-    );
-    
-    // Only log success, don't show notifications for logout
-    if (response.data && response.data.success) {
+    const { data } = await apolloClient.mutate({ mutation: LOGOUT });
+    const result = data.logout;
+    if (result && result.success) {
       console.log('Server logout successful');
     }
-    
-    return response.data || { success: true };  // Always return success
+    // Clear Apollo cache on logout
+    await apolloClient.clearStore();
+    return result || { success: true };
   } catch (error) {
     console.log('Logout failed on server, but local logout completed successfully');
-    
-    // Don't show error notification for logout failures - just log out locally
     return { success: true, message: 'Logged out locally' };
   }
 };
 
 export const forgotPassword = async ({ email }) => {
   try {
-    const response = await axios.post(
-      API_BASE_URL + `forgetpassword?timestamp=${new Date().getTime()}`,
-      { email }
-    );
+    const { data } = await apolloClient.mutate({
+      mutation: FORGOT_PASSWORD,
+      variables: { input: { email } },
+    });
 
-    const { status, data } = response;
-
+    const result = data.forgetPassword;
     successHandler(
-      { data, status },
-      {
-        notifyOnSuccess: true,
-        notifyOnFailed: true,
-      }
+      { data: result, status: 200 },
+      { notifyOnSuccess: true, notifyOnFailed: true }
     );
-    return data;
+    return result;
   } catch (error) {
     return errorHandler(error);
   }

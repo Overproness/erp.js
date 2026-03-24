@@ -257,7 +257,7 @@ const ReviewAnalyticsModule = () => {
       {/* Main Content - Streamlined without tabs */}
       <Grid container spacing={3}>
         {/* Review Trend Analysis Section */}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 2, mb: 3 }}>
             <Typography variant="h5" gutterBottom fontWeight="medium">
               Review Trends
@@ -331,7 +331,7 @@ const ReviewAnalyticsModule = () => {
         </Grid>
         
         {/* Rating Distribution & Sentiment Analysis Side by Side */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, height: '100%', borderRadius: 2, boxShadow: 2 }}>
             <Typography variant="h5" gutterBottom fontWeight="medium">
               Rating Distribution
@@ -379,7 +379,7 @@ const ReviewAnalyticsModule = () => {
           </Paper>
         </Grid>
         
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, height: '100%', borderRadius: 2, boxShadow: 2 }}>
             <Typography variant="h5" gutterBottom fontWeight="medium">
               Sentiment Distribution
@@ -428,7 +428,7 @@ const ReviewAnalyticsModule = () => {
         </Grid>
 
         {/* Added Sentiment Keywords Section */}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 2, mb: 3 }}>
             <Typography variant="h5" gutterBottom fontWeight="medium">
               Sentiment Keywords
@@ -440,7 +440,7 @@ const ReviewAnalyticsModule = () => {
               <Skeleton variant="rectangular" height={150} />
             ) : (
               <Grid container spacing={3} sx={{ mt: 1 }}>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Typography variant="subtitle1" fontWeight="medium" sx={{ mb: 2, color: 'success.main' }}>
                     Top Positive Keywords
                   </Typography>
@@ -457,7 +457,7 @@ const ReviewAnalyticsModule = () => {
                     ))}
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Typography variant="subtitle1" fontWeight="medium" sx={{ mb: 2, color: 'error.main' }}>
                     Top Negative Keywords
                   </Typography>
@@ -480,7 +480,7 @@ const ReviewAnalyticsModule = () => {
         </Grid>
         
         {/* Platform Performance Section */}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 2 }}>
             <Typography variant="h5" gutterBottom fontWeight="medium">
               Platform Performance
@@ -494,7 +494,7 @@ const ReviewAnalyticsModule = () => {
               <Box sx={{ mt: 3 }}>
                 <Grid container spacing={3}>
                   {displayPlatformPerformance.map(platform => (
-                    <Grid item xs={12} md={4} key={platform.id}>
+                    <Grid size={{ xs: 12, md: 4 }} key={platform.id}>
                       <Card sx={{ 
                         borderRadius: 2, 
                         boxShadow: 1, 
@@ -514,15 +514,15 @@ const ReviewAnalyticsModule = () => {
                         </Typography>
                         
                         <Grid container spacing={2} sx={{ mt: 1 }}>
-                          <Grid item xs={4}>
+                          <Grid size={4}>
                             <Typography variant="body2" color="text.secondary">Reviews</Typography>
                             <Typography variant="h6">{platform.count}</Typography>
                           </Grid>
-                          <Grid item xs={4}>
+                          <Grid size={4}>
                             <Typography variant="body2" color="text.secondary">Avg. Rating</Typography>
                             <Typography variant="h6">{platform.avgRating.toFixed(1)}</Typography>
                           </Grid>
-                          <Grid item xs={4}>
+                          <Grid size={4}>
                             <Typography variant="body2" color="text.secondary">Response Rate</Typography>
                             <Typography variant="h6">{platform.responseRate}%</Typography>
                           </Grid>
@@ -567,7 +567,7 @@ const ReviewAnalyticsModule = () => {
         </Grid>
         
         {/* Key Insights Section */}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 2 }}>
             <Typography variant="h5" gutterBottom fontWeight="medium">
               Review Insights
@@ -580,7 +580,7 @@ const ReviewAnalyticsModule = () => {
               <Skeleton variant="rectangular" height={200} />
             ) : (
               <Grid container spacing={3} sx={{ mt: 1 }}>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Card sx={{ p: 2, borderRadius: 2, bgcolor: 'success.light', color: 'success.contrastText' }}>
                     <Typography variant="subtitle1" fontWeight="bold">Key Findings</Typography>
                     <Divider sx={{ my: 1, borderColor: 'success.contrastText', opacity: 0.3 }} />
@@ -596,7 +596,7 @@ const ReviewAnalyticsModule = () => {
                   </Card>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Card sx={{ p: 2, borderRadius: 2, bgcolor: 'info.light', color: 'info.contrastText' }}>
                     <Typography variant="subtitle1" fontWeight="bold">Action Items</Typography>
                     <Divider sx={{ my: 1, borderColor: 'info.contrastText', opacity: 0.3 }} />
@@ -621,7 +621,7 @@ const ReviewAnalyticsModule = () => {
                   Recent Performance
                 </Typography>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} md={4}>
+                  <Grid size={{ xs: 12, md: 4 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <StarIcon sx={{ color: 'warning.main', mr: 1 }} />
                       <Typography variant="body2" color="text.secondary">
@@ -632,7 +632,7 @@ const ReviewAnalyticsModule = () => {
                       {displayComparisonMetrics.ratingChange.trend === 'up' ? 'Improved by' : 'Decreased by'} {displayComparisonMetrics.ratingChange.absolute.toFixed(1)} stars recently
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} md={4}>
+                  <Grid size={{ xs: 12, md: 4 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <CommentIcon sx={{ color: 'info.main', mr: 1 }} />
                       <Typography variant="body2" color="text.secondary">
@@ -643,7 +643,7 @@ const ReviewAnalyticsModule = () => {
                       40% 5-star, 20% 4-star, 40% 2-star or below
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} md={4}>
+                  <Grid size={{ xs: 12, md: 4 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <MessageIcon sx={{ color: 'success.main', mr: 1 }} />
                       <Typography variant="body2" color="text.secondary">

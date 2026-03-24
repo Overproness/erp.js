@@ -27,7 +27,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const { Title, Paragraph } = Typography;
 const { Step } = Steps;
@@ -42,8 +42,11 @@ export default function AutomationSuggestions() {
   const [analytics, setAnalytics] = useState(null);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [implementing, setImplementing] = useState(false);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     loadSuggestions();
     loadAnalytics();
   }, []);

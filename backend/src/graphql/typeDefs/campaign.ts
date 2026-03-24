@@ -63,6 +63,7 @@ const campaignTypeDefs = gql`
     campaignFilter(filter: String, equal: String): ListResponse!
     campaignSummary: MutationResponse!
     campaignAnalytics(id: ID!): MutationResponse!
+    campaignAbTestResults(id: ID!): MutationResponse!
   }
 
   extend type Mutation {
@@ -75,6 +76,11 @@ const campaignTypeDefs = gql`
     campaignResume(id: ID!): MutationResponse!
     campaignStop(id: ID!): MutationResponse!
     campaignDuplicate(id: ID!): MutationResponse!
+    campaignSchedule(id: ID!, input: JSON!): MutationResponse!
+    campaignOptimize(id: ID!, input: JSON): MutationResponse!
+    campaignBulkUpdate(input: JSON!): MutationResponse!
+    campaignGenerateReport(id: ID!, input: JSON): MutationResponse!
+    campaignUpdateAbTestMetrics(id: ID!, input: JSON!): MutationResponse!
   }
 `;
 

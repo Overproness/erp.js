@@ -1,5 +1,6 @@
 import apolloClient from '@/graphql/client';
 import { getListQuery, getReadQuery, getCreateMutation, getUpdateMutation, getDeleteMutation, getSearchQuery } from '@/graphql/operations/crudFactory';
+import { DOCUMENT_AUDIT_TRAIL } from '@/graphql/operations/document';
 import { request } from '@/request';
 import * as actionTypes from './types';
 
@@ -39,7 +40,11 @@ export const crud = {
     },
   list:
     ({ entity, options = { page: 1, items: 10 } }) =>
-    async (dispatch) => {
+    async (dispatch, getState) => {
+      // Prevent duplicate in-flight requests
+      const { crud: crudState } = getState();
+      if (crudState.list.isLoading) return;
+
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'list',
@@ -55,7 +60,7 @@ export const crud = {
             sortBy: options.sortBy,
             sortValue: options.sortValue,
           },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
 
         const queryResult = data?.[`${entity}List`];
@@ -152,7 +157,7 @@ export const crud = {
         const { data } = await apolloClient.query({
           query: getReadQuery(entity),
           variables: { id },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
 
         const result = data?.[`${entity}Read`];
@@ -284,7 +289,7 @@ export const crud = {
         const { data } = await apolloClient.query({
           query: getSearchQuery(entity),
           variables: { q: options.q || '', fields: options.fields },
-          fetchPolicy: 'network-only',
+          fetchPolicy: 'cache-first',
         });
 
         const result = data?.[`${entity}Search`];
@@ -392,7 +397,11 @@ export const crud = {
       });
 
       try {
-        const data = await request.getAuditTrail({ entity, id, page, limit, filter });
+        const { data: gqlData } = await apolloClient.query({
+          query: DOCUMENT_AUDIT_TRAIL,
+          variables: { id },
+        });
+        const data = gqlData.documentAuditTrail;
 
         if (data.success === true) {
           dispatch({

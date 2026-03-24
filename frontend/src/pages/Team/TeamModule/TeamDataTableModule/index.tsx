@@ -8,7 +8,7 @@ import { DeleteOutlined, EditOutlined, EyeOutlined, MailOutlined } from '@ant-de
 import { PageHeader } from '@ant-design/pro-layout';
 import { Button, Dropdown, Table, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TEAM_ENTITY } from './config';
@@ -151,12 +151,11 @@ const TeamDataTableModule = ({ config = {} }) => {
     dispatch(erp.list({ entity }));
   };
 
+  const loadedRef = useRef(false);
   useEffect(() => {
-    const controller = new AbortController();
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatcher();
-    return () => {
-      controller.abort();
-    };
   }, []);
   return (
     <>

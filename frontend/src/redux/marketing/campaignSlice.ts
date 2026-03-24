@@ -11,6 +11,11 @@ export const fetchCampaigns = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err.message || 'Failed to fetch campaigns');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      return !getState().campaigns?.loading;
+    },
   }
 );
 

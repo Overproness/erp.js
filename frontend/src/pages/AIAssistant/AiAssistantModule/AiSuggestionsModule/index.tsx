@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Tabs, Button, Space, Typography } from 'antd';
 import { ArrowLeftOutlined, BulbOutlined, SettingOutlined, BarChartOutlined } from '@ant-design/icons';
@@ -21,15 +21,18 @@ const AiSuggestionsModule = () => {
   const suggestions = useSelector(selectCurrentSuggestions);
   const loading = useSelector(selectSuggestionsLoading);
   const [activeTab, setActiveTab] = useState('automation');
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     // Fetch suggestions for all modules
     const modules = ['client', 'invoice', 'quote', 'workflow'];
     modules.forEach(module => {
       dispatch(fetchSuggestions({ 
         module, 
         data: {},
-        assistantId: 'default' // This would be selected assistant
+        assistantId: 'default'
       }));
     });
   }, [dispatch]);

@@ -18,6 +18,7 @@ const aiKnowledgeBaseController = require('./aiKnowledgeBaseController');
 const aiWorkflowController = require('./aiWorkflowController');
 const aiExtractionTemplateController = require('./aiExtractionTemplateController');
 const aiUserPreferenceController = require('./aiUserPreferenceController');
+const surveyController = require('./surveyController');
 
 // Additional controllers
 const workflowController = require('./workflowController');
@@ -189,4 +190,6 @@ module.exports = {
   // AI / Copilot
   copilotController,
   aiEnhancedController,
+  // Survey
+  surveyController,
 };
