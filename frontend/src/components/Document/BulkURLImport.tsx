@@ -127,7 +127,7 @@ export default function BulkURLImport({ onSuccess }) {
           </Button>,
         ]}
         width={800}
-        bodyStyle={{ maxHeight: '70vh', overflowY: 'auto' }}
+        styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
       >
         {!results ? (
           <div>

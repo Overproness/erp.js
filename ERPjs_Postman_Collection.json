@@ -1,0 +1,1166 @@
+{
+	"info": {
+		"_postman_id": "erpjs-api-collection",
+		"name": "ERPjs API Collection",
+		"description": "Comprehensive API collection for ERPjs backend. Includes REST endpoints and all GraphQL queries/mutations.\n\nBase URL: http://localhost:8888\nGraphQL endpoint: http://localhost:8888/graphql\n\nAuthentication: Bearer token (obtained via login)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8888",
+			"type": "string"
+		},
+		{
+			"key": "graphql_url",
+			"value": "http://localhost:8888/graphql",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-set auth token from collection variable",
+					"if (pm.collectionVariables.get('auth_token')) {",
+					"    pm.request.headers.add({",
+					"        key: 'Authorization',",
+					"        value: 'Bearer ' + pm.collectionVariables.get('auth_token')",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "01 - Authentication (REST)",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.result && jsonData.result.token) {",
+									"    pm.collectionVariables.set('auth_token', jsonData.result.token);",
+									"    pm.test('Token saved', function() {",
+									"        pm.expect(jsonData.success).to.be.true;",
+									"    });",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@demo.com\",\n  \"password\": \"@Admin123\",\n  \"remember\": true\n}"
+						},
+						"url": { "raw": "{{base_url}}/api/login", "host": ["{{base_url}}"], "path": ["api", "login"] }
+					}
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"name\": \"John\",\n  \"surname\": \"Doe\",\n  \"companyName\": \"My Company\"\n}"
+						},
+						"url": { "raw": "{{base_url}}/api/register", "host": ["{{base_url}}"], "path": ["api", "register"] }
+					}
+				},
+				{
+					"name": "Forget Password",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@demo.com\"\n}" },
+						"url": { "raw": "{{base_url}}/api/forgetpassword", "host": ["{{base_url}}"], "path": ["api", "forgetpassword"] }
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"password\": \"NewPassword123!\",\n  \"token\": \"<reset_token>\"\n}" },
+						"url": { "raw": "{{base_url}}/api/resetpassword", "host": ["{{base_url}}"], "path": ["api", "resetpassword"] }
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"url": { "raw": "{{base_url}}/api/logout", "host": ["{{base_url}}"], "path": ["api", "logout"] }
+					}
+				},
+				{
+					"name": "Verify Token",
+					"request": {
+						"method": "GET",
+						"url": { "raw": "{{base_url}}/api/verify-token", "host": ["{{base_url}}"], "path": ["api", "verify-token"] }
+					}
+				}
+			]
+		},
+		{
+			"name": "02 - Health & Status (REST)",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "GET",
+						"url": { "raw": "{{base_url}}/api/health", "host": ["{{base_url}}"], "path": ["api", "health"] }
+					}
+				}
+			]
+		},
+		{
+			"name": "03 - URL Shortener (REST Public)",
+			"item": [
+				{
+					"name": "Redirect Short URL",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "GET",
+						"url": { "raw": "{{base_url}}/api/s/:shortCode", "host": ["{{base_url}}"], "path": ["api", "s", ":shortCode"], "variable": [{ "key": "shortCode", "value": "abc123" }] }
+					}
+				},
+				{
+					"name": "Preview Short URL",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "GET",
+						"url": { "raw": "{{base_url}}/api/s/:shortCode/preview", "host": ["{{base_url}}"], "path": ["api", "s", ":shortCode", "preview"], "variable": [{ "key": "shortCode", "value": "abc123" }] }
+					}
+				},
+				{
+					"name": "Generate QR Code",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "GET",
+						"url": { "raw": "{{base_url}}/api/s/:shortCode/qr", "host": ["{{base_url}}"], "path": ["api", "s", ":shortCode", "qr"], "variable": [{ "key": "shortCode", "value": "abc123" }] }
+					}
+				},
+				{
+					"name": "Check Password-Protected URL",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"password\": \"urlpassword\"\n}" },
+						"url": { "raw": "{{base_url}}/api/s/:shortCode/password", "host": ["{{base_url}}"], "path": ["api", "s", ":shortCode", "password"], "variable": [{ "key": "shortCode", "value": "abc123" }] }
+					}
+				},
+				{
+					"name": "Public URL Access",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "GET",
+						"url": { "raw": "{{base_url}}/api/public/url/s/:shortCode", "host": ["{{base_url}}"], "path": ["api", "public", "url", "s", ":shortCode"], "variable": [{ "key": "shortCode", "value": "abc123" }] }
+					}
+				}
+			]
+		},
+		{
+			"name": "04 - Social Media Webhooks (REST Public)",
+			"item": [
+				{
+					"name": "Facebook Webhook (GET - Subscribe)",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/social-media/webhooks/facebook", "host": ["{{base_url}}"], "path": ["api", "public", "social-media", "webhooks", "facebook"] } }
+				},
+				{
+					"name": "Facebook Webhook (POST - Event)",
+					"request": { "auth": { "type": "noauth" }, "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{base_url}}/api/public/social-media/webhooks/facebook", "host": ["{{base_url}}"], "path": ["api", "public", "social-media", "webhooks", "facebook"] } }
+				},
+				{
+					"name": "Instagram Webhook (GET)",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/social-media/webhooks/instagram", "host": ["{{base_url}}"], "path": ["api", "public", "social-media", "webhooks", "instagram"] } }
+				},
+				{
+					"name": "Twitter Webhook (GET - CRC)",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/social-media/webhooks/twitter", "host": ["{{base_url}}"], "path": ["api", "public", "social-media", "webhooks", "twitter"] } }
+				},
+				{
+					"name": "Facebook OAuth Callback",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/social-media/oauth/facebook/callback", "host": ["{{base_url}}"], "path": ["api", "public", "social-media", "oauth", "facebook", "callback"] } }
+				},
+				{
+					"name": "Social Media Status",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/social-media/status", "host": ["{{base_url}}"], "path": ["api", "public", "social-media", "status"] } }
+				}
+			]
+		},
+		{
+			"name": "05 - Team Public (REST)",
+			"item": [
+				{
+					"name": "Get Invitation Details",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/team/:token", "host": ["{{base_url}}"], "path": ["api", "public", "team", ":token"], "variable": [{ "key": "token", "value": "<invitation_token>" }] } }
+				},
+				{
+					"name": "Accept Invitation",
+					"request": { "auth": { "type": "noauth" }, "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"John\",\n  \"surname\": \"Doe\",\n  \"password\": \"SecurePass123!\"\n}" }, "url": { "raw": "{{base_url}}/api/public/team/:token/accept", "host": ["{{base_url}}"], "path": ["api", "public", "team", ":token", "accept"], "variable": [{ "key": "token", "value": "<invitation_token>" }] } }
+				}
+			]
+		},
+		{
+			"name": "06 - Document Public (REST)",
+			"item": [
+				{
+					"name": "Access Shared Document",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/document/shared/:shortCode", "host": ["{{base_url}}"], "path": ["api", "public", "document", "shared", ":shortCode"], "variable": [{ "key": "shortCode", "value": "<share_code>" }] } }
+				},
+				{
+					"name": "Access Password-Protected Document",
+					"request": { "auth": { "type": "noauth" }, "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"password\": \"docpassword\"\n}" }, "url": { "raw": "{{base_url}}/api/public/document/shared/:shortCode", "host": ["{{base_url}}"], "path": ["api", "public", "document", "shared", ":shortCode"], "variable": [{ "key": "shortCode", "value": "<share_code>" }] } }
+				},
+				{
+					"name": "Download Shared Document",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/document/shared/:shortCode/download", "host": ["{{base_url}}"], "path": ["api", "public", "document", "shared", ":shortCode", "download"], "variable": [{ "key": "shortCode", "value": "<share_code>" }] } }
+				}
+			]
+		},
+		{
+			"name": "07 - Public Survey (REST)",
+			"item": [
+				{
+					"name": "Get Public Survey",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/public/survey/:shortCode", "host": ["{{base_url}}"], "path": ["api", "public", "survey", ":shortCode"], "variable": [{ "key": "shortCode", "value": "<survey_code>" }] } }
+				},
+				{
+					"name": "Submit Survey Response",
+					"request": { "auth": { "type": "noauth" }, "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"answers\": []\n}" }, "url": { "raw": "{{base_url}}/api/public/survey/:shortCode/submit", "host": ["{{base_url}}"], "path": ["api", "public", "survey", ":shortCode", "submit"], "variable": [{ "key": "shortCode", "value": "<survey_code>" }] } }
+				},
+				{
+					"name": "Save Partial Survey Response",
+					"request": { "auth": { "type": "noauth" }, "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"answers\": []\n}" }, "url": { "raw": "{{base_url}}/api/public/survey/:shortCode/save", "host": ["{{base_url}}"], "path": ["api", "public", "survey", ":shortCode", "save"], "variable": [{ "key": "shortCode", "value": "<survey_code>" }] } }
+				}
+			]
+		},
+		{
+			"name": "08 - Customer Chat (REST)",
+			"item": [
+				{
+					"name": "Get Room by Access Token (Public)",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/api/customer-chat/room?accessToken=<token>", "host": ["{{base_url}}"], "path": ["api", "customer-chat", "room"], "query": [{ "key": "accessToken", "value": "<token>" }] } }
+				},
+				{
+					"name": "Generate Customer Chat URL",
+					"request": { "method": "POST", "url": { "raw": "{{base_url}}/api/customer-chat/:id/generate", "host": ["{{base_url}}"], "path": ["api", "customer-chat", ":id", "generate"], "variable": [{ "key": "id", "value": "<client_id>" }] } }
+				},
+				{
+					"name": "Get Room by ID",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/customer-chat/room/:roomId", "host": ["{{base_url}}"], "path": ["api", "customer-chat", "room", ":roomId"], "variable": [{ "key": "roomId", "value": "<room_id>" }] } }
+				},
+				{
+					"name": "Get My Chat Rooms",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/customer-chat/my-rooms", "host": ["{{base_url}}"], "path": ["api", "customer-chat", "my-rooms"] } }
+				},
+				{
+					"name": "Get Customer Chat Rooms",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/customer-chat/:id/rooms", "host": ["{{base_url}}"], "path": ["api", "customer-chat", ":id", "rooms"], "variable": [{ "key": "id", "value": "<client_id>" }] } }
+				},
+				{
+					"name": "Close Chat Room",
+					"request": { "method": "POST", "url": { "raw": "{{base_url}}/api/customer-chat/room/:roomId/close", "host": ["{{base_url}}"], "path": ["api", "customer-chat", "room", ":roomId", "close"], "variable": [{ "key": "roomId", "value": "<room_id>" }] } }
+				},
+				{
+					"name": "Chat Stats",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/customer-chat/stats", "host": ["{{base_url}}"], "path": ["api", "customer-chat", "stats"] } }
+				}
+			]
+		},
+		{
+			"name": "09 - Document Upload (REST Protected)",
+			"item": [
+				{
+					"name": "List Documents",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/document/list", "host": ["{{base_url}}"], "path": ["api", "document", "list"] } }
+				},
+				{
+					"name": "Create Document (File Upload)",
+					"request": { "method": "POST", "body": { "mode": "formdata", "formdata": [{ "key": "file", "type": "file", "src": "" }, { "key": "title", "value": "My Document", "type": "text" }, { "key": "category", "value": "general", "type": "text" }] }, "url": { "raw": "{{base_url}}/api/document/create", "host": ["{{base_url}}"], "path": ["api", "document", "create"] } }
+				},
+				{
+					"name": "Search Documents",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/document/search?q=test", "host": ["{{base_url}}"], "path": ["api", "document", "search"], "query": [{ "key": "q", "value": "test" }] } }
+				},
+				{
+					"name": "Read Document",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/document/read/:id", "host": ["{{base_url}}"], "path": ["api", "document", "read", ":id"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				},
+				{
+					"name": "Update Document",
+					"request": { "method": "PATCH", "body": { "mode": "formdata", "formdata": [{ "key": "title", "value": "Updated Title", "type": "text" }] }, "url": { "raw": "{{base_url}}/api/document/update/:id", "host": ["{{base_url}}"], "path": ["api", "document", "update", ":id"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				},
+				{
+					"name": "Delete Document",
+					"request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/document/delete/:id", "host": ["{{base_url}}"], "path": ["api", "document", "delete", ":id"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				},
+				{
+					"name": "Download Document",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/document/download/:id", "host": ["{{base_url}}"], "path": ["api", "document", "download", ":id"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				},
+				{
+					"name": "AI Analyze Document",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/document/analyze/:id", "host": ["{{base_url}}"], "path": ["api", "document", "analyze", ":id"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				},
+				{
+					"name": "Generate Share URL",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": { "raw": "{{base_url}}/api/document/:id/share-url", "host": ["{{base_url}}"], "path": ["api", "document", ":id", "share-url"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				},
+				{
+					"name": "E-Sign Document",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{base_url}}/api/document/:id/esign", "host": ["{{base_url}}"], "path": ["api", "document", ":id", "esign"], "variable": [{ "key": "id", "value": "<doc_id>" }] } }
+				}
+			]
+		},
+		{
+			"name": "10 - Data Entry (REST Protected)",
+			"item": [
+				{
+					"name": "Get Available Modules",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/data-entry/modules", "host": ["{{base_url}}"], "path": ["api", "data-entry", "modules"] } }
+				},
+				{
+					"name": "Get Module Schema",
+					"request": { "method": "GET", "url": { "raw": "{{base_url}}/api/data-entry/modules/:moduleName/schema", "host": ["{{base_url}}"], "path": ["api", "data-entry", "modules", ":moduleName", "schema"], "variable": [{ "key": "moduleName", "value": "client" }] } }
+				},
+				{
+					"name": "OCR Single File Import",
+					"request": { "method": "POST", "body": { "mode": "formdata", "formdata": [{ "key": "file", "type": "file", "src": "" }] }, "url": { "raw": "{{base_url}}/api/data-entry/ocr/:moduleName", "host": ["{{base_url}}"], "path": ["api", "data-entry", "ocr", ":moduleName"], "variable": [{ "key": "moduleName", "value": "client" }] } }
+				},
+				{
+					"name": "Import from CSV/Excel",
+					"request": { "method": "POST", "body": { "mode": "formdata", "formdata": [{ "key": "file", "type": "file", "src": "" }] }, "url": { "raw": "{{base_url}}/api/data-entry/spreadsheet/:moduleName", "host": ["{{base_url}}"], "path": ["api", "data-entry", "spreadsheet", ":moduleName"], "variable": [{ "key": "moduleName", "value": "client" }] } }
+				},
+				{
+					"name": "Validate Bulk Data",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"data\": []\n}" }, "url": { "raw": "{{base_url}}/api/data-entry/validate/:moduleName", "host": ["{{base_url}}"], "path": ["api", "data-entry", "validate", ":moduleName"], "variable": [{ "key": "moduleName", "value": "client" }] } }
+				},
+				{
+					"name": "Save Validated Data",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"data\": []\n}" }, "url": { "raw": "{{base_url}}/api/data-entry/save/:moduleName", "host": ["{{base_url}}"], "path": ["api", "data-entry", "save", ":moduleName"], "variable": [{ "key": "moduleName", "value": "client" }] } }
+				}
+			]
+		},
+		{
+			"name": "11 - Download (REST)",
+			"item": [
+				{
+					"name": "Download File",
+					"request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{base_url}}/download/:directory/:file", "host": ["{{base_url}}"], "path": ["download", ":directory", ":file"], "variable": [{ "key": "directory", "value": "invoice" }, { "key": "file", "value": "sample.pdf" }] } }
+				}
+			]
+		},
+		{
+			"name": "12 - Event Tracking (REST)",
+			"item": [
+				{
+					"name": "Track Custom Event",
+					"request": { "auth": { "type": "noauth" }, "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"event\": \"page_view\",\n  \"data\": {}\n}" }, "url": { "raw": "{{base_url}}/api/track/event", "host": ["{{base_url}}"], "path": ["api", "track", "event"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Auth",
+			"item": [
+				{
+					"name": "Login (GraphQL)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.login && jsonData.data.login.success) {",
+									"    pm.collectionVariables.set('auth_token', jsonData.data.login.result.token);",
+									"    pm.test('Token saved from GraphQL login', function() {",
+									"        pm.expect(jsonData.data.login.success).to.be.true;",
+									"    });",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation Login($input: LoginInput!) { login(input: $input) { success result { token admin { _id email name surname role photo companyName companyID hasCompanySetup onboardingComplete } } message } }\",\n  \"variables\": {\n    \"input\": {\n      \"email\": \"admin@demo.com\",\n      \"password\": \"@Admin123\",\n      \"remember\": true\n    }\n  }\n}" },
+						"url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] }
+					}
+				},
+				{
+					"name": "Register (GraphQL)",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation Register($input: RegisterInput!) { register(input: $input) { success result { token admin { _id email name } } message } }\",\n  \"variables\": {\n    \"input\": {\n      \"email\": \"newuser@example.com\",\n      \"password\": \"SecurePass123!\",\n      \"name\": \"John\",\n      \"surname\": \"Doe\",\n      \"companyName\": \"My Company\"\n    }\n  }\n}" },
+						"url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] }
+					}
+				},
+				{
+					"name": "Verify Token (GraphQL)",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"query\": \"query VerifyToken { verifyToken { success result { _id email name surname role photo companyName companyID hasCompanySetup onboardingComplete } message } }\"\n}" },
+						"url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] }
+					}
+				},
+				{
+					"name": "Logout (GraphQL)",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation Logout { logout { success message } }\"\n}" },
+						"url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] }
+					}
+				},
+				{
+					"name": "Forget Password (GraphQL)",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ForgetPassword($input: ForgetPasswordInput!) { forgetPassword(input: $input) { success message } }\",\n  \"variables\": { \"input\": { \"email\": \"admin@demo.com\" } }\n}" },
+						"url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] }
+					}
+				},
+				{
+					"name": "Reset Password (GraphQL)",
+					"request": {
+						"auth": { "type": "noauth" },
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ResetPassword($input: ResetPasswordInput!) { resetPassword(input: $input) { success message } }\",\n  \"variables\": { \"input\": { \"password\": \"NewPass123!\", \"token\": \"<reset_token>\" } }\n}" },
+						"url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] }
+					}
+				}
+			]
+		},
+		{
+			"name": "GQL - Admin & Users",
+			"item": [
+				{
+					"name": "Admin Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AdminRead($id: ID!) { adminRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<admin_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Admin List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AdminList($page: Int, $limit: Int) { adminList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Admin Update",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AdminUpdate($id: ID!, $input: AdminUpdateInput!) { adminUpdate(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<admin_id>\", \"input\": { \"name\": \"Updated Name\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation UserCreate($input: UserCreateInput!) { userCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"email\": \"user@example.com\", \"name\": \"Jane\", \"surname\": \"Smith\", \"role\": \"staff\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UserList($page: Int, $limit: Int) { userList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UserRead($id: ID!) { userRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<user_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Update",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation UserUpdate($id: ID!, $input: UserUpdateInput!) { userUpdate(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<user_id>\", \"input\": { \"name\": \"Updated\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Delete",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation UserDelete($id: ID!) { userDelete(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<user_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Profile",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UserProfile { userProfile { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Permissions",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UserPermissions { userPermissions { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "User Search",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UserSearch($q: String!) { userSearch(q: $q) { success result message } }\",\n  \"variables\": { \"q\": \"john\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Complete Setup",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AdminCompleteSetup($input: JSON!) { adminCompleteSetup(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"companyName\": \"My Company\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Clients",
+			"item": [
+				{
+					"name": "Client Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ClientCreate($input: ClientCreateInput!) { clientCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"company\": \"Acme Corp\", \"managerName\": \"John Manager\", \"email\": \"john@acme.com\", \"phone\": \"+1234567890\", \"type\": \"company\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ClientList($page: Int, $limit: Int, $sortBy: String, $sortValue: String) { clientList(page: $page, limit: $limit, sortBy: $sortBy, sortValue: $sortValue) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10, \"sortBy\": \"createdAt\", \"sortValue\": \"desc\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ClientRead($id: ID!) { clientRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<client_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Update",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ClientUpdate($id: ID!, $input: ClientUpdateInput!) { clientUpdate(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<client_id>\", \"input\": { \"company\": \"Acme Corp Updated\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Delete",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ClientDelete($id: ID!) { clientDelete(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<client_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client List All",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ClientListAll { clientListAll { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Search",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ClientSearch($q: String!, $fields: String) { clientSearch(q: $q, fields: $fields) { success result message } }\",\n  \"variables\": { \"q\": \"acme\", \"fields\": \"company,email\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Filter",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ClientFilter($filter: String, $equal: String) { clientFilter(filter: $filter, equal: $equal) { success result message } }\",\n  \"variables\": { \"filter\": \"type\", \"equal\": \"company\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Summary",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ClientSummary { clientSummary { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Bulk Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ClientBulkCreate($input: [ClientCreateInput!]!) { clientBulkCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": [{ \"company\": \"Corp A\", \"email\": \"a@corp.com\", \"type\": \"company\" }, { \"company\": \"Corp B\", \"email\": \"b@corp.com\", \"type\": \"company\" }] }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Client Calculate Lead Score",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ClientCalculateLeadScore($id: ID!) { clientCalculateLeadScore(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<client_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Invoices",
+			"item": [
+				{
+					"name": "Invoice Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation InvoiceCreate($input: InvoiceCreateInput!) { invoiceCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"client\": \"<client_id>\", \"items\": [{ \"itemName\": \"Service\", \"description\": \"Consulting\", \"quantity\": 1, \"price\": 100, \"total\": 100 }], \"subTotal\": 100, \"taxRate\": 10, \"taxTotal\": 10, \"total\": 110, \"discount\": 0, \"currency\": \"USD\", \"status\": \"draft\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Invoice List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query InvoiceList($page: Int, $limit: Int) { invoiceList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Invoice Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query InvoiceRead($id: ID!) { invoiceRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<invoice_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Invoice Update",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation InvoiceUpdate($id: ID!, $input: InvoiceUpdateInput!) { invoiceUpdate(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<invoice_id>\", \"input\": { \"status\": \"sent\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Invoice Delete",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation InvoiceDelete($id: ID!) { invoiceDelete(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<invoice_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Invoice Summary",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query InvoiceSummary { invoiceSummary { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Invoice Mail",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation InvoiceMail($id: ID!, $input: JSON) { invoiceMail(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<invoice_id>\", \"input\": {} }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Quotes",
+			"item": [
+				{
+					"name": "Quote Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation QuoteCreate($input: QuoteCreateInput!) { quoteCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"client\": \"<client_id>\", \"items\": [{ \"itemName\": \"Service\", \"description\": \"Consulting\", \"quantity\": 1, \"price\": 200, \"total\": 200 }], \"subTotal\": 200, \"taxRate\": 10, \"taxTotal\": 20, \"total\": 220, \"discount\": 0, \"currency\": \"USD\", \"status\": \"draft\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query QuoteList($page: Int, $limit: Int) { quoteList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query QuoteRead($id: ID!) { quoteRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<quote_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote Update",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation QuoteUpdate($id: ID!, $input: QuoteUpdateInput!) { quoteUpdate(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<quote_id>\", \"input\": { \"status\": \"sent\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote Delete",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation QuoteDelete($id: ID!) { quoteDelete(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<quote_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote Summary",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query QuoteSummary { quoteSummary { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote Convert to Invoice",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation QuoteConvert($id: ID!) { quoteConvert(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<quote_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Quote Send",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation QuoteSend($id: ID!) { quoteSend(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<quote_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Payments",
+			"item": [
+				{
+					"name": "Payment Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation PaymentCreate($input: PaymentCreateInput!) { paymentCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"client\": \"<client_id>\", \"invoice\": \"<invoice_id>\", \"amount\": 100, \"currency\": \"USD\", \"paymentMode\": \"bank_transfer\", \"paymentDate\": \"2026-03-23\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Payment List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query PaymentList($page: Int, $limit: Int) { paymentList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Payment Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query PaymentRead($id: ID!) { paymentRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<payment_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Payment Summary",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query PaymentSummary { paymentSummary { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Tasks",
+			"item": [
+				{
+					"name": "Task Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation TaskCreate($input: TaskCreateInput!) { taskCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"title\": \"New Task\", \"description\": \"Task description\", \"status\": \"todo\", \"priority\": \"medium\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Task List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TaskList($page: Int, $limit: Int) { taskList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Task Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TaskRead($id: ID!) { taskRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<task_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Task Update",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation TaskUpdate($id: ID!, $input: TaskUpdateInput!) { taskUpdate(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<task_id>\", \"input\": { \"status\": \"in_progress\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Task Delete",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation TaskDelete($id: ID!) { taskDelete(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<task_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Task Summary",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TaskSummary { taskSummary { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Teams",
+			"item": [
+				{
+					"name": "Team Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation TeamCreate($input: TeamCreateInput!) { teamCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"Sales Team\", \"description\": \"Sales department\", \"department\": \"sales\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Team List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TeamList($page: Int, $limit: Int) { teamList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Team Invite Member",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation TeamInviteMember($id: ID!, $input: TeamMemberInput!) { teamInviteMember(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<team_id>\", \"input\": { \"email\": \"member@example.com\", \"role\": \"member\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Team List Members",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TeamListMembers($id: ID!) { teamListMembers(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<team_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Projects",
+			"item": [
+				{
+					"name": "Project Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ProjectCreate($input: ProjectCreateInput!) { projectCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"New Project\", \"description\": \"Project description\", \"status\": \"planning\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Project List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ProjectList($page: Int, $limit: Int) { projectList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Documents",
+			"item": [
+				{
+					"name": "Document List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query DocumentList($page: Int, $limit: Int) { documentList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Document Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query DocumentRead($id: ID!) { documentRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<doc_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Document Analyze (AI)",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation DocumentAnalyze($id: ID!) { documentAnalyze(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<doc_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Document Summarize (AI)",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation DocumentSummarize($id: ID!) { documentSummarize(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<doc_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Surveys",
+			"item": [
+				{
+					"name": "Survey Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation SurveyCreate($input: SurveyCreateInput!) { surveyCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"title\": \"Customer Satisfaction\", \"description\": \"Rate our service\", \"questions\": [{ \"questionText\": \"How was your experience?\", \"questionType\": \"rating\", \"required\": true, \"order\": 1 }], \"isPublic\": true } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Survey List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SurveyList($page: Int, $limit: Int) { surveyList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Survey Publish",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation SurveyPublish($id: ID!) { surveyPublish(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<survey_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Survey Analytics",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SurveyAnalytics($id: ID!) { surveyAnalytics(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<survey_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - URLs & A/B Testing",
+			"item": [
+				{
+					"name": "URL Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation UrlCreate($input: URLCreateInput!) { urlCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"originalUrl\": \"https://example.com\", \"title\": \"Example Link\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "URL List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UrlList($page: Int, $limit: Int) { urlList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "URL Analytics",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query UrlAnalytics($id: ID!, $period: String) { urlAnalytics(id: $id, period: $period) { success result message } }\",\n  \"variables\": { \"id\": \"<url_id>\", \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "A/B Test Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AbTestCreate($input: ABTestCreateInput!) { abTestCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"Homepage Test\", \"variants\": [{ \"name\": \"Variant A\", \"url\": \"https://example.com/a\", \"weight\": 50 }, { \"name\": \"Variant B\", \"url\": \"https://example.com/b\", \"weight\": 50 }], \"winningCriteria\": \"clicks\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "A/B Test List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AbTestList($page: Int, $limit: Int) { abTestList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "A/B Test Results",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AbTestResults($id: ID!) { abTestResults(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<abtest_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Notifications",
+			"item": [
+				{
+					"name": "Notification List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query NotificationList($page: Int, $limit: Int) { notificationList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 20 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Notification Unread Count",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query NotificationUnreadCount { notificationUnreadCount { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Notification Mark Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation NotificationMarkRead($id: ID!) { notificationMarkRead(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<notification_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Notification Mark All Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation NotificationMarkAllRead { notificationMarkAllRead { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Notification Clear All",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation NotificationClearAll { notificationClearAll { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Settings",
+			"item": [
+				{
+					"name": "Settings List All",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SettingListAll { settingListAll { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Settings Read By Key",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SettingReadByKey($settingKey: String!) { settingReadByKey(settingKey: $settingKey) { success result message } }\",\n  \"variables\": { \"settingKey\": \"company\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Settings Update By Key",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation SettingUpdateByKey($settingKey: String!, $input: SettingUpdateInput!) { settingUpdateByKey(settingKey: $settingKey, input: $input) { success result message } }\",\n  \"variables\": { \"settingKey\": \"company\", \"input\": { \"settingKey\": \"company\", \"settingValue\": {} } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Test OpenAI Key",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation SettingTestOpenAIKey($key: String!) { settingTestOpenAIKey(key: $key) { success result message } }\",\n  \"variables\": { \"key\": \"sk-xxxx\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Payment Modes & Taxes",
+			"item": [
+				{
+					"name": "Payment Mode List All",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query PaymentModeListAll { paymentModeListAll { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Payment Mode Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation PaymentModeCreate($input: PaymentModeCreateInput!) { paymentModeCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"Credit Card\", \"description\": \"Visa/MC\", \"isDefault\": false } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Taxes List All",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TaxesListAll { taxesListAll { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Taxes Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation TaxesCreate($input: TaxesCreateInput!) { taxesCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"taxName\": \"VAT\", \"taxValue\": 20, \"isDefault\": true } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Campaigns & Marketing",
+			"item": [
+				{
+					"name": "Campaign Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation CampaignCreate($input: CampaignCreateInput!) { campaignCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"Spring Sale\", \"description\": \"Spring promotion\", \"type\": \"email\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Campaign List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query CampaignList($page: Int, $limit: Int) { campaignList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Campaign Launch",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation CampaignLaunch($id: ID!) { campaignLaunch(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<campaign_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Campaign Analytics",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query CampaignAnalytics($id: ID!) { campaignAnalytics(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"<campaign_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Customer Segment List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query CustomerSegmentList($page: Int, $limit: Int) { customerSegmentList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Customer Journey",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query CustomerJourney($clientId: ID!) { customerJourney(clientId: $clientId) { success result message } }\",\n  \"variables\": { \"clientId\": \"<client_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Retargeting List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query RetargetingList($page: Int, $limit: Int) { retargetingList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Trigger Rule List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query TriggerRuleList($page: Int, $limit: Int) { triggerRuleList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Social Media",
+			"item": [
+				{
+					"name": "Social Account List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SocialAccountList($page: Int, $limit: Int) { socialAccountList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Social Post Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation SocialPostCreate($input: SocialPostCreateInput!) { socialPostCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"account\": \"<account_id>\", \"platform\": \"facebook\", \"content\": \"Hello world!\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Social Post List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SocialPostList($page: Int, $limit: Int) { socialPostList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Social Analytics Overview",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query SocialAnalyticsOverview($period: String) { socialAnalyticsOverview(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Workflows",
+			"item": [
+				{
+					"name": "Workflow Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation WorkflowCreate($input: WorkflowCreateInput!) { workflowCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"New Lead Workflow\", \"description\": \"Auto-process new leads\", \"isActive\": true } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Workflow List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query WorkflowList($page: Int, $limit: Int) { workflowList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Workflow Execution List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query WorkflowExecutionList($page: Int, $limit: Int) { workflowExecutionList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Appointments",
+			"item": [
+				{
+					"name": "Appointment Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AppointmentCreate($input: AppointmentCreateInput!) { appointmentCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"title\": \"Client Meeting\", \"startTime\": \"2026-03-25T10:00:00Z\", \"endTime\": \"2026-03-25T11:00:00Z\", \"type\": \"meeting\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Appointment List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AppointmentList($page: Int, $limit: Int) { appointmentList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Appointment By Date Range",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AppointmentByDateRange($startDate: DateTime!, $endDate: DateTime!) { appointmentByDateRange(startDate: $startDate, endDate: $endDate) { success result message } }\",\n  \"variables\": { \"startDate\": \"2026-03-01T00:00:00Z\", \"endDate\": \"2026-03-31T23:59:59Z\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Chat",
+			"item": [
+				{
+					"name": "Chat Room List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ChatRoomList($page: Int, $limit: Int) { chatRoomList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Chat Message Send",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ChatMessageSend($input: ChatMessageInput!) { chatMessageSend(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"room\": \"<room_id>\", \"content\": \"Hello!\", \"messageType\": \"text\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Chat Message List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ChatMessageList($roomId: ID!, $page: Int, $limit: Int) { chatMessageList(roomId: $roomId, page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"roomId\": \"<room_id>\", \"page\": 1, \"limit\": 50 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Reputation & Reviews",
+			"item": [
+				{
+					"name": "Review List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ReviewList($page: Int, $limit: Int) { reviewList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Review Respond",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ReviewRespond($id: ID!, $input: ReviewResponseInput!) { reviewRespond(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<review_id>\", \"input\": { \"content\": \"Thank you for your feedback!\", \"isPublic\": true } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Review Analytics Summary",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ReviewAnalyticsSummary($period: String) { reviewAnalyticsSummary(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Review Portal Public Link",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ReviewPortalPublicLink { reviewPortalPublicLink { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Analytics & Statistics",
+			"item": [
+				{
+					"name": "Analytics Overview",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AnalyticsOverview($period: String) { analyticsOverview(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Analytics Dashboard",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AnalyticsDashboard { analyticsDashboard { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Statistics Dashboard",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query StatisticsDashboard { statisticsDashboard { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Statistics Revenue",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query StatisticsRevenue($period: String) { statisticsRevenue(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Global Analytics Overview",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query GlobalAnalyticsOverview($period: String) { globalAnalyticsOverview(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Global Analytics KPI",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query GlobalAnalyticsKPI($period: String) { globalAnalyticsKPI(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - AI Assistant & Copilot",
+			"item": [
+				{
+					"name": "AI Conversation Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AiConversationCreate($input: JSON) { aiConversationCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"title\": \"New Chat\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Send Message",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AiConversationSendMessage($id: ID!, $input: AIMessageInput!) { aiConversationSendMessage(id: $id, input: $input) { success result message } }\",\n  \"variables\": { \"id\": \"<conversation_id>\", \"input\": { \"content\": \"Hello AI!\", \"role\": \"user\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Conversation List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiConversationList($page: Int, $limit: Int) { aiConversationList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Suggestions",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiSuggestions($context: String!, $type: String) { aiSuggestions(context: $context, type: $type) { success result message } }\",\n  \"variables\": { \"context\": \"client management\", \"type\": \"action\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Preferences Read",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiPreferencesRead { aiPreferencesRead { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Knowledge Base List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiKnowledgeBaseList($page: Int, $limit: Int) { aiKnowledgeBaseList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Knowledge Base Search",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiKnowledgeBaseSearch($q: String!, $limit: Int) { aiKnowledgeBaseSearch(q: $q, limit: $limit) { success result message } }\",\n  \"variables\": { \"q\": \"onboarding\", \"limit\": 5 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Copilot Session Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation CopilotSessionCreate { copilotSessionCreate { success result message } }\"\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Copilot Send Prompt",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation CopilotSendPrompt($input: CopilotPromptInput!) { copilotSendPrompt(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"message\": \"How do I create an invoice?\", \"sessionId\": \"<session_id>\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - AI Data Processing",
+			"item": [
+				{
+					"name": "AI Processing Job Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation AiProcessingJobCreate($input: AIProcessingJobInput!) { aiProcessingJobCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"type\": \"entity_extraction\", \"inputData\": { \"text\": \"John Doe at Acme Corp, email john@acme.com\" } } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Processing Job List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiProcessingJobList($page: Int, $limit: Int) { aiProcessingJobList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "AI Enhanced Analytics",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AiEnhancedAnalytics($entityType: String!, $period: String) { aiEnhancedAnalytics(entityType: $entityType, period: $period) { success result message } }\",\n  \"variables\": { \"entityType\": \"client\", \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Compliance & Audit",
+			"item": [
+				{
+					"name": "Consent Record List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ConsentRecordList($page: Int, $limit: Int) { consentRecordList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Data Retention Policy List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query DataRetentionPolicyList($page: Int, $limit: Int) { dataRetentionPolicyList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Compliance Report",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ComplianceReport($period: String) { complianceReport(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"30d\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Audit Trail List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AuditTrailList($page: Int, $limit: Int) { auditTrailList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Audit Trail By Entity",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query AuditTrailByEntity($entityType: String!, $entityId: ID!) { auditTrailByEntity(entityType: $entityType, entityId: $entityId) { success result message } }\",\n  \"variables\": { \"entityType\": \"client\", \"entityId\": \"<entity_id>\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Reminders",
+			"item": [
+				{
+					"name": "Reminder Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation ReminderCreate($input: ReminderCreateInput!) { reminderCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"title\": \"Follow up\", \"message\": \"Follow up with client\", \"type\": \"follow_up\", \"triggerType\": \"date\", \"triggerDate\": \"2026-03-25T10:00:00Z\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Reminder List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query ReminderList($page: Int, $limit: Int) { reminderList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Business Processes",
+			"item": [
+				{
+					"name": "Business Process Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation BusinessProcessCreate($input: BusinessProcessCreateInput!) { businessProcessCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"name\": \"Client Onboarding\", \"description\": \"Onboard new clients\", \"processType\": \"onboarding\", \"priority\": \"high\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Business Process List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query BusinessProcessList($page: Int, $limit: Int) { businessProcessList(page: $page, limit: $limit) { success result pagination { page count pages total } message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - CRM URLs",
+			"item": [
+				{
+					"name": "CRM URL List",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query CrmUrlList($page: Int, $limit: Int) { crmUrlList(page: $page, limit: $limit) { success result message } }\",\n  \"variables\": { \"page\": 1, \"limit\": 10 }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "CRM URL Create",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation CrmUrlCreate($input: CrmUrlCreateInput!) { crmUrlCreate(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"entityType\": \"client\", \"entityId\": \"<entity_id>\", \"type\": \"portal\" } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		},
+		{
+			"name": "GQL - Data Entry (GraphQL)",
+			"item": [
+				{
+					"name": "Data Entry Templates",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"query DataEntryTemplates($entityType: String!) { dataEntryTemplates(entityType: $entityType) { success result message } }\",\n  \"variables\": { \"entityType\": \"client\" }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				},
+				{
+					"name": "Data Entry Import",
+					"request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"query\": \"mutation DataEntryImport($input: DataEntryImportInput!) { dataEntryImport(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"entityType\": \"client\", \"data\": [{ \"company\": \"Test Corp\", \"email\": \"test@corp.com\" }] } }\n}" }, "url": { "raw": "{{graphql_url}}", "host": ["{{graphql_url}}"] } }
+				}
+			]
+		}
+	]
+}

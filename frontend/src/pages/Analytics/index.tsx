@@ -16,7 +16,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, Col, DatePicker, message, Row, Select, Statistic } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -49,8 +49,11 @@ export default function AnalyticsReporting() {
   const [reportBuilderVisible, setReportBuilderVisible] = useState(false);
   const [predictiveModalVisible, setPredictiveModalVisible] = useState(false);
   const [realTimeData, setRealTimeData] = useState(null);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     fetchDashboardData();
     // Set up real-time updates every 30 seconds
     const interval = setInterval(fetchRealTimeData, 30000);
@@ -79,7 +82,6 @@ export default function AnalyticsReporting() {
       }
     } catch (error) {
       console.error('Error fetching dashboard:', error);
-      message.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }

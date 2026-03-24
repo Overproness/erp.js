@@ -430,7 +430,7 @@ export default function BehaviorTriggers() {
         onCancel={handleModalCancel}
         width={1200} // Increased width for better settings display
         footer={null}
-        destroyOnClose
+        destroyOnHidden
       >
         <BehaviorTriggersModule
           trigger={editingTrigger}

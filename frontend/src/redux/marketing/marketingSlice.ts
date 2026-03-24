@@ -308,9 +308,9 @@ const marketingSlice = createSlice({
       })
       .addCase(fetchCampaigns.fulfilled, (state, action) => {
         state.campaigns.loading = false;
-        state.campaigns.data = action.payload.data?.campaigns || [];
-        if (action.payload.data?.pagination) {
-          state.campaigns.pagination = action.payload.data.pagination;
+        state.campaigns.data = action.payload?.result || [];
+        if (action.payload?.pagination) {
+          state.campaigns.pagination = action.payload.pagination;
         }
       })
       .addCase(fetchCampaigns.rejected, (state, action) => {
@@ -325,8 +325,10 @@ const marketingSlice = createSlice({
       })
       .addCase(createCampaign.fulfilled, (state, action) => {
         state.currentCampaign.loading = false;
-        state.currentCampaign.data = action.payload.data;
-        state.campaigns.data = [action.payload.data, ...state.campaigns.data];
+        state.currentCampaign.data = action.payload?.result;
+        if (action.payload?.result) {
+          state.campaigns.data = [action.payload.result, ...state.campaigns.data];
+        }
       })
       .addCase(createCampaign.rejected, (state, action) => {
         state.currentCampaign.loading = false;
@@ -340,12 +342,14 @@ const marketingSlice = createSlice({
       })
       .addCase(updateCampaign.fulfilled, (state, action) => {
         state.currentCampaign.loading = false;
-        state.currentCampaign.data = action.payload.data;
+        state.currentCampaign.data = action.payload?.result;
 
         // Update in the campaigns list
-        const index = state.campaigns.data.findIndex((c) => c._id === action.payload.data._id);
-        if (index !== -1) {
-          state.campaigns.data[index] = action.payload.data;
+        if (action.payload?.result) {
+          const index = state.campaigns.data.findIndex((c) => c._id === action.payload.result._id);
+          if (index !== -1) {
+            state.campaigns.data[index] = action.payload.result;
+          }
         }
       })
       .addCase(updateCampaign.rejected, (state, action) => {
@@ -383,8 +387,8 @@ const marketingSlice = createSlice({
       })
       .addCase(fetchCampaignDetails.fulfilled, (state, action) => {
         state.currentCampaign.loading = false;
-        state.currentCampaign.data = action.payload.data;
-        state.currentCampaignDetails = action.payload.data; // Store in both places for compatibility
+        state.currentCampaign.data = action.payload?.result;
+        state.currentCampaignDetails = action.payload?.result; // Store in both places for compatibility
       })
       .addCase(fetchCampaignDetails.rejected, (state, action) => {
         state.currentCampaign.loading = false;
@@ -393,18 +397,18 @@ const marketingSlice = createSlice({
 
       // Update Campaign Status
       .addCase(updateCampaignStatus.fulfilled, (state, action) => {
-        // Update in the campaigns list
-        const index = state.campaigns.data.findIndex((c) => c._id === action.payload.data._id);
-        if (index !== -1) {
-          state.campaigns.data[index].status = action.payload.data.status;
-        }
+        const updated = action.payload?.result;
+        if (updated) {
+          // Update in the campaigns list
+          const index = state.campaigns.data.findIndex((c) => c._id === updated._id);
+          if (index !== -1) {
+            state.campaigns.data[index].status = updated.status;
+          }
 
-        // Update current campaign if it's the one being updated
-        if (
-          state.currentCampaign.data &&
-          state.currentCampaign.data._id === action.payload.data._id
-        ) {
-          state.currentCampaign.data.status = action.payload.data.status;
+          // Update current campaign if it's the one being updated
+          if (state.currentCampaign.data && state.currentCampaign.data._id === updated._id) {
+            state.currentCampaign.data.status = updated.status;
+          }
         }
       })
 
@@ -458,7 +462,9 @@ const marketingSlice = createSlice({
 
       // Duplicate Campaign
       .addCase(duplicateCampaign.fulfilled, (state, action) => {
-        state.campaigns.data.unshift(action.payload.data);
+        if (action.payload?.result) {
+          state.campaigns.data.unshift(action.payload.result);
+        }
       })
 
       // Handle analytics actions

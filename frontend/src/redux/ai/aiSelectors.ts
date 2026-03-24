@@ -1,13 +1,16 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const selectAiState = (state) => state.ai;
+const EMPTY_OBJ = {};
+const EMPTY_ARR = [];
+
+const selectAiState = (state) => state.ai || EMPTY_OBJ;
 
 // AI Assistants Selectors
-export const selectAssistants = createSelector([selectAiState], (ai) => ai.assistants);
+export const selectAssistants = createSelector([selectAiState], (ai) => ai.assistants || EMPTY_OBJ);
 
 export const selectAssistantsList = createSelector(
   [selectAssistants],
-  (assistants) => assistants.list
+  (assistants) => assistants.list || EMPTY_ARR
 );
 
 export const selectCurrentAssistant = createSelector(
@@ -17,7 +20,7 @@ export const selectCurrentAssistant = createSelector(
 
 export const selectAssistantsLoading = createSelector(
   [selectAssistants],
-  (assistants) => assistants.loading
+  (assistants) => assistants.loading || false
 );
 
 export const selectAssistantsError = createSelector(
@@ -31,30 +34,30 @@ export const selectAssistantsPagination = createSelector(
 );
 
 // Chat Selectors
-export const selectChat = createSelector([selectAiState], (ai) => ai.chat);
+export const selectChat = createSelector([selectAiState], (ai) => ai.chat || EMPTY_OBJ);
 
-export const selectChatMessages = createSelector([selectChat], (chat) => chat.messages);
+export const selectChatMessages = createSelector([selectChat], (chat) => chat.messages || EMPTY_ARR);
 
 export const selectCurrentConversation = createSelector(
   [selectChat],
   (chat) => chat.currentConversation
 );
 
-export const selectChatLoading = createSelector([selectChat], (chat) => chat.loading);
+export const selectChatLoading = createSelector([selectChat], (chat) => chat.loading || false);
 
-export const selectChatTyping = createSelector([selectChat], (chat) => chat.typing);
+export const selectChatTyping = createSelector([selectChat], (chat) => chat.typing || false);
 
 export const selectChatError = createSelector([selectChat], (chat) => chat.error);
 
-export const selectConversations = createSelector([selectChat], (chat) => chat.conversations);
+export const selectConversations = createSelector([selectChat], (chat) => chat.conversations || EMPTY_ARR);
 
 export const selectChatConversations = createSelector(
   [selectChat],
-  (chat) => chat.conversations || []
+  (chat) => chat.conversations || EMPTY_ARR
 );
 
 // Analytics Selectors
-export const selectAnalytics = createSelector([selectAiState], (ai) => ai.analytics);
+export const selectAnalytics = createSelector([selectAiState], (ai) => ai.analytics || EMPTY_OBJ);
 
 export const selectAnalyticsData = createSelector([selectAnalytics], (analytics) => analytics.data);
 
@@ -70,7 +73,7 @@ export const selectUsageMetrics = createSelector(
 
 export const selectAnalyticsLoading = createSelector(
   [selectAnalytics],
-  (analytics) => analytics.loading
+  (analytics) => analytics.loading || false
 );
 
 export const selectAnalyticsError = createSelector(
@@ -79,16 +82,16 @@ export const selectAnalyticsError = createSelector(
 );
 
 // Suggestions Selectors
-export const selectSuggestions = createSelector([selectAiState], (ai) => ai.suggestions);
+export const selectSuggestions = createSelector([selectAiState], (ai) => ai.suggestions || EMPTY_OBJ);
 
 export const selectCurrentSuggestions = createSelector(
   [selectSuggestions],
-  (suggestions) => suggestions.list
+  (suggestions) => suggestions.list || EMPTY_ARR
 );
 
 export const selectSuggestionsLoading = createSelector(
   [selectSuggestions],
-  (suggestions) => suggestions.loading
+  (suggestions) => suggestions.loading || false
 );
 
 export const selectSuggestionsError = createSelector(

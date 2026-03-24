@@ -108,7 +108,7 @@ const CustomerChatPage = () => {
       }}
     >
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <Card style={{ marginBottom: 16 }} bodyStyle={{ padding: 16 }}>
+        <Card style={{ marginBottom: 16 }} styles={{ body: { padding: 16 } }}>
           <Space direction="vertical" size={4}>
             <Title level={4} style={{ margin: 0 }}>
               <MessageOutlined style={{ marginRight: 8, color: '#1890ff' }} />

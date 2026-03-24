@@ -85,7 +85,7 @@ const RichTextEditor = ({ value, onChange, placeholder, readOnly = false }) => {
   };
 
   return (
-    <Card bordered={false} className="rich-text-editor">
+    <Card variant="borderless" className="rich-text-editor">
       <Editor
         editorState={editorState}
         onChange={handleChange}

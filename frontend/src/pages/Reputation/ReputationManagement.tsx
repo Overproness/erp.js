@@ -20,7 +20,6 @@ import { ErpLayout } from '@/layout';
 // Updated to use default import instead of named import
 
 
-const { TabPane } = Tabs;
 const { Title, Text } = Typography;
 
 const ReputationManagement = () => {
@@ -126,47 +125,45 @@ const ReputationManagement = () => {
             size="large"
             type="card"
             tabBarStyle={{ marginBottom: '16px', fontWeight: 'bold' }}
-          >
-            <TabPane 
-              tab={
-                <span className='text-sm'>
-                  <DashboardOutlined />&nbsp;
-                  {translate('Dashboard')}
-                </span>
-              } 
-              key="dashboard"
-            />
-            
-            <TabPane 
-              tab={
-                <span className='text-sm'>
-                  <StarOutlined />&nbsp;
-                  {translate('Reviews')}
-                </span>
-              } 
-              key="reviews"
-            />
-            
-            <TabPane 
-              tab={
-                <span className='text-sm'>
-                  <MessageOutlined />&nbsp;
-                  {translate('Response')}
-                </span>
-              } 
-              key="response"
-            />
-            
-            <TabPane 
-              tab={
-                <span className='text-sm'>
-                  <ApiOutlined />&nbsp;
-                  {translate('Integration')}
-                </span>
-              } 
-              key="integration"
-            />
-          </Tabs>
+            items={[
+              {
+                key: 'dashboard',
+                label: (
+                  <span className='text-sm'>
+                    <DashboardOutlined />&nbsp;
+                    {translate('Dashboard')}
+                  </span>
+                ),
+              },
+              {
+                key: 'reviews',
+                label: (
+                  <span className='text-sm'>
+                    <StarOutlined />&nbsp;
+                    {translate('Reviews')}
+                  </span>
+                ),
+              },
+              {
+                key: 'response',
+                label: (
+                  <span className='text-sm'>
+                    <MessageOutlined />&nbsp;
+                    {translate('Response')}
+                  </span>
+                ),
+              },
+              {
+                key: 'integration',
+                label: (
+                  <span className='text-sm'>
+                    <ApiOutlined />&nbsp;
+                    {translate('Integration')}
+                  </span>
+                ),
+              },
+            ]}
+          />
           
           {/* Module Content */}
           <div className="tab-content">

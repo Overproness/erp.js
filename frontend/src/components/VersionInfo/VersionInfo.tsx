@@ -50,7 +50,7 @@ const VersionInfo = () => {
           <span>{translate('Build Information')}</span>
         </Space>
       }
-      bordered={false}
+      variant="borderless"
       style={{ marginBottom: 24 }}
     >
       <Row gutter={[24, 24]}>

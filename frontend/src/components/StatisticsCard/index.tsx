@@ -176,13 +176,13 @@ const StatisticsCard = ({
   return (
     <Card
       style={{ ...getCardStyle(), ...style }}
-      bodyStyle={{
+      styles={{ body: {
         padding: 0,
         height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-      }}
+      } }}
       hoverable={!!onRefresh}
       onClick={handleCardClick}
       {...props}

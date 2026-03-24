@@ -7,11 +7,9 @@ export const fetchCampaigns = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await campaignApi.getCampaigns(params);
-      console.log('API Response:', response.data);
-      return response.data.data; // Backend returns { success, data: { campaigns, pagination } }
+      return { campaigns: response?.result || [], pagination: response?.pagination };
     } catch (err) {
-      console.error('Campaign API Error:', err);
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to fetch campaigns');
     }
   }
 );
@@ -21,9 +19,9 @@ export const fetchCampaignById = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await campaignApi.getCampaignById(id);
-      return response.data.data; // Backend returns { success, data: campaign }
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to fetch campaign');
     }
   }
 );
@@ -33,9 +31,9 @@ export const createCampaign = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await campaignApi.createCampaign(data);
-      return response.data.data; // Backend returns { success, data: campaign }
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to create campaign');
     }
   }
 );
@@ -45,9 +43,9 @@ export const updateCampaign = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const response = await campaignApi.updateCampaign(id, data);
-      return response.data.result;
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to update campaign');
     }
   }
 );
@@ -69,9 +67,9 @@ export const startCampaign = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await campaignApi.startCampaign(id);
-      return response.data.result;
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to start campaign');
     }
   }
 );
@@ -81,9 +79,9 @@ export const pauseCampaign = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await campaignApi.pauseCampaign(id);
-      return response.data.result;
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to pause campaign');
     }
   }
 );
@@ -117,9 +115,9 @@ export const duplicateCampaign = createAsyncThunk(
   async ({ id, name, modifications }, { rejectWithValue }) => {
     try {
       const response = await campaignApi.duplicateCampaign({ id, name, modifications });
-      return response.data.result;
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to duplicate campaign');
     }
   }
 );
@@ -141,9 +139,9 @@ export const fetchCampaignAnalytics = createAsyncThunk(
   async ({ id, params }, { rejectWithValue }) => {
     try {
       const response = await campaignApi.getCampaignAnalytics(id, params);
-      return response.data.result;
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to fetch analytics');
     }
   }
 );
@@ -165,9 +163,9 @@ export const createABTest = createAsyncThunk(
   async ({ id, abTestData }, { rejectWithValue }) => {
     try {
       const response = await campaignApi.createABTest(id, abTestData);
-      return response.data.result;
+      return response?.result;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue(err.message || 'Failed to create A/B test');
     }
   }
 );

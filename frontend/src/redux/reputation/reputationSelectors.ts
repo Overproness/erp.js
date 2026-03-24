@@ -1,14 +1,15 @@
 import { createSelector } from 'reselect';
 import { determineSentiment, filterReviews, sortReviews } from '../../utils/reputation/reviewUtils';
 
-// Base selectors
-const selectReputationState = (state) => state.reputation;
-const selectReviewsState = (state) => state.reputation.reviews;
-const selectLinksState = (state) => state.reputation.links;
-const selectTemplatesState = (state) => state.reputation.templates;
-const selectAnalyticsState = (state) => state.reputation.analytics;
-const selectPlatformsState = (state) => state.reputation.platforms;
-const selectUiState = (state) => state.reputation.ui;
+// Base selectors - with safe defaults to prevent crashes when state is not initialized
+const EMPTY_OBJ = {};
+const selectReputationState = (state) => state.reputation || EMPTY_OBJ;
+const selectReviewsState = (state) => state.reputation?.reviews || EMPTY_OBJ;
+const selectLinksState = (state) => state.reputation?.links || EMPTY_OBJ;
+const selectTemplatesState = (state) => state.reputation?.templates || EMPTY_OBJ;
+const selectAnalyticsState = (state) => state.reputation?.analytics || EMPTY_OBJ;
+const selectPlatformsState = (state) => state.reputation?.platforms || EMPTY_OBJ;
+const selectUiState = (state) => state.reputation?.ui || EMPTY_OBJ;
 
 // Derived selectors for reviews
 export const selectReviews = createSelector(

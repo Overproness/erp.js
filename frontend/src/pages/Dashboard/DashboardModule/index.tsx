@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import useLanguage from '@/locale/useLanguage';
 import { Col, Row, Spin } from 'antd';
 
 import { useMoney } from '@/settings';
 
-import useFetch from '@/hooks/useFetch';
-import useOnFetch from '@/hooks/useOnFetch';
 import {
   useClientStats,
   useDashboardStats,
@@ -14,7 +12,6 @@ import {
   usePaymentStats,
   useQuoteStats,
 } from '@/hooks/useStatistics';
-import { request } from '@/request';
 
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 
@@ -76,120 +73,57 @@ export default function DashboardModule() {
     timeframe: '30',
   });
 
-  // Legacy API calls (keeping for backward compatibility during transition)
-  const getStatsData = async ({ entity, currency }) => {
-    return await request.summary({
-      entity,
-      options: { currency },
-    });
-  };
 
-  const {
-    result: invoiceResult,
-    isLoading: invoiceResultLoading,
-    onFetch: fetchInvoicesStats,
-  } = useOnFetch();
 
-  const {
-    result: quoteResult,
-    isLoading: quoteResultLoading,
-    onFetch: fetchQuotesStats,
-  } = useOnFetch();
-
-  const {
-    result: paymentResult,
-    isLoading: paymentResultLoading,
-    onFetch: fetchPayemntsStats,
-  } = useOnFetch();
-
-  const { result: clientResult, isLoading: clientResultLoading } = useFetch(() =>
-    request.summary({ entity: 'client' })
-  );
+  const prevCurrencyRef = useRef(money_format_settings?.currency_code);
 
   useEffect(() => {
-    const currency = money_format_settings?.currency_code || 'JPY';
-
-    if (currency) {
-      // Keep legacy calls for backward compatibility during transition
-      fetchInvoicesStats(getStatsData({ entity: 'invoice', currency }));
-      fetchQuotesStats(getStatsData({ entity: 'quote', currency }));
-      fetchPayemntsStats(getStatsData({ entity: 'payment', currency }));
-
-      // Refresh new statistics
+    const currency = money_format_settings?.currency_code;
+    if (currency && prevCurrencyRef.current !== currency) {
+      prevCurrencyRef.current = currency;
       refreshDashboard();
       refreshClients();
       refreshInvoices();
       refreshQuotes();
       refreshPayments();
     }
-  }, [money_format_settings.currency_code]);
+  }, [money_format_settings?.currency_code]);
 
-  // Determine loading states (combine legacy and new)
-  const isInvoicesLoading = invoiceLoading || invoiceResultLoading;
-  const isQuotesLoading = quoteLoading || quoteResultLoading;
-  const isPaymentsLoading = paymentLoading || paymentResultLoading;
-  const isClientsLoading = clientLoading || clientResultLoading;
+  const isInvoicesLoading = invoiceLoading;
+  const isQuotesLoading = quoteLoading;
+  const isPaymentsLoading = paymentLoading;
+  const isClientsLoading = clientLoading;
 
-  // Get statistical data (prioritize new API, fallback to legacy)
   const getInvoiceData = () => {
-    if (invoiceStats?.invoices) {
-      return {
-        total: invoiceStats.invoices.totalAmount || 0,
-        totalCount: invoiceStats.invoices.total || 0,
-        thisMonth: invoiceStats.invoices.thisMonth || 0,
-        unpaid: invoiceStats.invoices.unpaid?.total || 0,
-      };
-    }
     return {
-      total: invoiceResult?.total || 0,
-      totalCount: invoiceResult?.total || 0,
-      thisMonth: invoiceResult?.total || 0,
-      unpaid: invoiceResult?.total_undue || 0,
+      total: invoiceStats?.invoices?.totalAmount || 0,
+      totalCount: invoiceStats?.invoices?.total || 0,
+      thisMonth: invoiceStats?.invoices?.thisMonth || 0,
+      unpaid: invoiceStats?.invoices?.unpaid?.total || 0,
     };
   };
 
   const getQuoteData = () => {
-    if (quoteStats?.quotes) {
-      return {
-        total: quoteStats.quotes.totalAmount || 0,
-        totalCount: quoteStats.quotes.total || 0,
-        thisMonth: quoteStats.quotes.thisMonth || 0,
-      };
-    }
     return {
-      total: quoteResult?.total || 0,
-      totalCount: quoteResult?.total || 0,
-      thisMonth: quoteResult?.total || 0,
+      total: quoteStats?.quotes?.totalAmount || 0,
+      totalCount: quoteStats?.quotes?.total || 0,
+      thisMonth: quoteStats?.quotes?.thisMonth || 0,
     };
   };
 
   const getPaymentData = () => {
-    if (paymentStats?.payments) {
-      return {
-        total: paymentStats.payments.totalAmount || 0,
-        totalCount: paymentStats.payments.total || 0,
-        thisMonth: paymentStats.payments.thisMonth?.total || 0,
-      };
-    }
     return {
-      total: paymentResult?.total || 0,
-      totalCount: paymentResult?.total || 0,
-      thisMonth: paymentResult?.total || 0,
+      total: paymentStats?.payments?.totalAmount || 0,
+      totalCount: paymentStats?.payments?.total || 0,
+      thisMonth: paymentStats?.payments?.thisMonth?.total || 0,
     };
   };
 
   const getClientData = () => {
-    if (clientStats?.clients) {
-      return {
-        active: clientStats.clients.active || 0,
-        new: clientStats.clients.newThisMonth || 0,
-        total: clientStats.clients.total || 0,
-      };
-    }
     return {
-      active: clientResult?.active || 0,
-      new: clientResult?.new || 0,
-      total: clientResult?.total || 0,
+      active: clientStats?.clients?.active || 0,
+      new: clientStats?.clients?.newThisMonth || 0,
+      total: clientStats?.clients?.total || 0,
     };
   };
 
@@ -229,14 +163,14 @@ export default function DashboardModule() {
 
   const entityData = [
     {
-      result: invoiceStats?.invoices || invoiceResult,
+      result: invoiceStats?.invoices,
       isLoading: isInvoicesLoading,
       entity: 'invoice',
       title: translate('Invoices'),
       stats: invoiceStats?.invoices,
     },
     {
-      result: quoteStats?.quotes || quoteResult,
+      result: quoteStats?.quotes,
       isLoading: isQuotesLoading,
       entity: 'quote',
       title: translate('quote'),
@@ -283,8 +217,6 @@ export default function DashboardModule() {
         value: item?.count,
         amount: item?.total,
       })) || [];
-
-    console.log(enhancedStats);
 
     return (
       <PreviewCard
@@ -505,7 +437,7 @@ export default function DashboardModule() {
             <Col xs={24} sm={12} lg={6}>
               <KpiCard
                 title="Revenue Growth"
-                value={`${(dashboardStats.performance?.conversionRate || 0).toFixed(1)}%`}
+                value={`${Number(dashboardStats.performance?.conversionRate || 0).toFixed(1)}%`}
                 subtitle="Conversion rate this month"
                 icon="show_chart"
                 loading={dashboardLoading}
@@ -515,7 +447,7 @@ export default function DashboardModule() {
             <Col xs={24} sm={12} lg={6}>
               <KpiCard
                 title="Payment Efficiency"
-                value={`${(dashboardStats.performance?.paymentEfficiency || 0).toFixed(1)}%`}
+                value={`${Number(dashboardStats.performance?.paymentEfficiency || 0).toFixed(1)}%`}
                 subtitle="Collection rate"
                 icon="speed"
                 loading={dashboardLoading}

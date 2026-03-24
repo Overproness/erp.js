@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { request } from '@/request';
+import apolloClient from '@/graphql/client';
+import { getListQuery, getDeleteMutation, getUpdateMutation } from '@/graphql/operations/crudFactory';
 // Behavior events/triggers use REST entities without direct GraphQL resolver matches
 // Keep REST for all behavior operations
 
@@ -81,11 +83,18 @@ export const fetchTriggers = createAsyncThunk(
   'behavior/fetchTriggers',
   async (params = {}, { rejectWithValue }) => {
     try {
-      const response = await request.list({
-        entity: 'marketing/behavior/triggers',
-        options: params
+      const { data } = await apolloClient.query({
+        query: getListQuery('triggerRule'),
+        variables: {
+          page: params.page || 1,
+          limit: params.items || 50,
+        },
+        fetchPolicy: 'network-only',
       });
-      return response.result;
+      if (data.triggerRuleList?.success) {
+        return data.triggerRuleList.result;
+      }
+      return [];
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch triggers');
     }
@@ -96,8 +105,14 @@ export const deleteTrigger = createAsyncThunk(
   'behavior/deleteTrigger',
   async (id, { rejectWithValue }) => {
     try {
-      await request.delete({ entity: 'marketing/behavior/triggers', id });
-      return id;
+      const { data } = await apolloClient.mutate({
+        mutation: getDeleteMutation('triggerRule'),
+        variables: { id },
+      });
+      if (data.triggerRuleDelete?.success) {
+        return id;
+      }
+      return rejectWithValue('Failed to delete trigger');
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to delete trigger');
     }
@@ -108,12 +123,14 @@ export const toggleTriggerStatus = createAsyncThunk(
   'behavior/toggleTriggerStatus',
   async ({ id, active }, { rejectWithValue }) => {
     try {
-      const response = await request.update({
-        entity: 'marketing/behavior/triggers/status',
-        id,
-        jsonData: { active }
+      const { data } = await apolloClient.mutate({
+        mutation: getUpdateMutation('triggerRule'),
+        variables: { id, input: { active } },
       });
-      return response.result;
+      if (data.triggerRuleUpdate?.success) {
+        return data.triggerRuleUpdate.result;
+      }
+      return rejectWithValue('Failed to toggle trigger status');
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to toggle trigger status');
     }

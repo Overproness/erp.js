@@ -1,4 +1,4 @@
-# Frontend Documentation - Quickmation Automation Suite (Odoo Project)
+# Frontend Documentation - ERP.js Automation Suite (Odoo Project)
 
 ## Table of Contents
 
@@ -42,7 +42,7 @@
 
 ## Overview
 
-The frontend application for Quickmation Automation Suite is a React-based single-page application that provides an intuitive user interface for ERP/CRM operations, connects with the backend API, and delivers a responsive experience across devices.
+The frontend application for ERP.js Automation Suite is a React-based single-page application that provides an intuitive user interface for ERP/CRM operations, connects with the backend API, and delivers a responsive experience across devices.
 
 ## Technology Stack
 
@@ -89,7 +89,7 @@ Create a `.env` file in the frontend root directory with the following variables
 
 ```
 VITE_APP_API_BASE_URL=http://localhost:8888/api
-VITE_APP_NAME=Quickmation Suite
+VITE_APP_NAME=ERP.js Suite
 VITE_APP_VERSION=1.0.0
 VITE_APP_DESCRIPTION=Automation Suite for ERP/CRM Management
 VITE_APP_PUBLIC_URL=/

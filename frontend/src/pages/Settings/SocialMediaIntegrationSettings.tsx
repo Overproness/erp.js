@@ -83,7 +83,7 @@ export default function SocialMediaIntegrationSettings() {
                   boxSizing: 'border-box',
                   padding: '0',
                 }}
-                bodyStyle={{ padding: '24px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+                styles={{ body: { padding: '24px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' } }}
               >
                 <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                   <div style={{ fontSize: '40px', marginBottom: '12px' }}>

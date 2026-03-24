@@ -26,7 +26,7 @@ import {
   Timeline,
   Typography,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -52,8 +52,11 @@ export default function AILearningDashboard() {
   const [stats, setStats] = useState(null);
   const [insights, setInsights] = useState([]);
   const [recentInteractions, setRecentInteractions] = useState([]);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     loadLearningStats();
     loadInsights();
     loadRecentInteractions();
@@ -71,8 +74,8 @@ export default function AILearningDashboard() {
       if (response.success) {
         setStats(response.result);
       }
-    } catch (error) {
-      console.error('Load stats error:', error);
+    } catch {
+      // AI learning endpoints may not be available yet
     } finally {
       setLoading(false);
     }
@@ -90,8 +93,8 @@ export default function AILearningDashboard() {
       if (response.success) {
         setInsights(response.result || []);
       }
-    } catch (error) {
-      console.error('Load insights error:', error);
+    } catch {
+      // AI insights endpoint may not be available yet
     }
   };
 
@@ -103,15 +106,15 @@ export default function AILearningDashboard() {
         endpoint: 'interactions',
         options: {
           limit: 20,
-          sort: { created: -1 },
+          sort: '-created',
         },
       });
 
       if (response.success) {
         setRecentInteractions(response.result || []);
       }
-    } catch (error) {
-      console.error('Load interactions error:', error);
+    } catch {
+      // AI interactions endpoint may not be available yet
     }
   };
 

@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 // Queries
 export const VERIFY_TOKEN = gql`
   query VerifyToken {
-    verifyToken { success result message }
+    verifyToken { success result { _id email name surname role photo companyName companyID hasCompanySetup onboardingComplete } message }
   }
 `;
 
@@ -44,7 +44,7 @@ export const SEARCH_USERS = gql`
 // Mutations
 export const LOGIN = gql`
   mutation Login($input: LoginInput!) {
-    login(input: $input) { success result { token admin { _id email name surname role } } message }
+    login(input: $input) { success result { token admin { _id email name surname role photo companyName companyID hasCompanySetup onboardingComplete } } message }
   }
 `;
 

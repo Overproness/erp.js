@@ -614,7 +614,7 @@ const ReviewMonitoringModule = () => {
           <div>
             <Row gutter={[16, 16]}>
               <Col span={24}>
-                <Card bordered={false} style={{ marginBottom: '16px' }}>
+                <Card variant="borderless" style={{ marginBottom: '16px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <Space direction="vertical" size="small">
                       <Space align="center">
@@ -664,7 +664,7 @@ const ReviewMonitoringModule = () => {
                 <Col span={24}>
                   <Card 
                     title={translate('Your Response')}
-                    bordered={false}
+                    variant="borderless"
                     style={{ background: '#f6ffed', marginBottom: '16px' }}
                   >
                     <Paragraph>

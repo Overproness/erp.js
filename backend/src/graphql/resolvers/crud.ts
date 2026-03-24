@@ -73,6 +73,12 @@ function wrapController(controllerMethod: Function) {
       req.query.items = args.pagination.limit;
       req.query.sortBy = args.pagination.sortBy;
       req.query.sortValue = args.pagination.sortValue;
+    } else {
+      // Handle flat pagination args (used by typed schemas)
+      if (args.page != null) req.query.page = args.page;
+      if (args.limit != null) req.query.items = args.limit;
+      if (args.sortBy != null) req.query.sortBy = args.sortBy;
+      if (args.sortValue != null) req.query.sortValue = args.sortValue;
     }
     if (args.filter) {
       args.filter.forEach((f: { field: string; value: string }) => {
@@ -128,14 +134,15 @@ function generateCRUDResolvers(entityName: string, controller: CRUDController) {
   if (controller.search) {
     queries[`${entityName}Search`] = async (parent: any, args: any, context: GraphQLContext) => {
       const { req, res, getResponse } = createReqRes(args, context);
-      req.query.q = args.input?.q;
-      req.query.page = args.input?.page;
-      req.query.items = args.input?.limit;
+      req.query.q = args.q;
+      req.query.fields = args.fields;
+      req.query.page = args.page;
+      req.query.items = args.limit;
       try {
         await controller.search!(req, res);
-        return getResponse().data || { items: [], pagination: null };
-      } catch (error) {
-        return { items: [], pagination: null };
+        return getResponse().data || { success: false, result: [], message: 'No response' };
+      } catch (error: any) {
+        return { success: false, result: [], message: error.message || 'Search failed' };
       }
     };
   }

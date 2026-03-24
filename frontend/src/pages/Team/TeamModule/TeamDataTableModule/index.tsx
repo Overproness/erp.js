@@ -40,8 +40,6 @@ const TeamDataTableModule = ({ config = {} }) => {
   
   const { result: listResult, isLoading: listIsLoading } = useSelector(selectListItems);
 
-  console.log("result", listResult);
-
   // Make sure to safely destructure and provide fallbacks
   const dataSource = listResult?.items || [];
   const pagination = listResult?.pagination || { current: 1, pageSize: 10, total: 0 };

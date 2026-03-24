@@ -381,7 +381,7 @@ const MemberPerformanceModal = ({ visible, onClose, teamId, memberId, memberName
       onCancel={onClose}
       footer={null}
       width={900}
-      bodyStyle={{ maxHeight: '70vh', overflowY: 'auto' }}
+      styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
     >
       {loading ? (
         <div style={{ textAlign: 'center', padding: '40px 0' }}>

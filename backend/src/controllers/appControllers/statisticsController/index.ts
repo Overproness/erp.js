@@ -7,10 +7,11 @@ const Invoice = require('../../models/appModels/Invoice');
 const Quote = require('../../models/appModels/Quote');
 const Payment = require('../../models/appModels/Payment');
 const PaymentMode = require('../../models/appModels/PaymentMode');
-const Tax = require('../../models/appModels/Tax');
+const Tax = require('../../models/appModels/Taxes');
 const Task = require('../../models/appModels/Task');
 const Team = require('../../models/appModels/Team');
 const Document = require('../../models/appModels/Document');
+const Workflow = require('../../models/appModels/Workflow');
 
 /**
  * Get dashboard statistics
@@ -877,6 +878,177 @@ const getDocumentStats = async (req, res) => {
   }
 };
 
+/**
+ * Get payment mode statistics
+ * GET /api/stats/paymentmodes
+ */
+const getPaymentModeStats = async (req, res) => {
+  try {
+    const { timeframe = '30' } = req.query;
+    const daysAgo = parseInt(timeframe);
+    const dateFrom = new Date();
+    dateFrom.setDate(dateFrom.getDate() - daysAgo);
+
+    const [modeStats, paymentsByMode] = await Promise.all([
+      PaymentMode.find({}),
+      Payment.aggregate([
+        {
+          $facet: {
+            byMode: [
+              {
+                $group: {
+                  _id: '$paymentMode',
+                  count: { $sum: 1 },
+                  total: { $sum: '$amount' },
+                },
+              },
+            ],
+            recentByMode: [
+              { $match: { date: { $gte: dateFrom } } },
+              {
+                $group: {
+                  _id: '$paymentMode',
+                  count: { $sum: 1 },
+                  total: { $sum: '$amount' },
+                },
+              },
+            ],
+          },
+        },
+      ]),
+    ]);
+
+    const result = {
+      totalModes: modeStats.length,
+      activeModes: modeStats.filter((m) => m.enabled !== false).length,
+      modes: modeStats.map((m) => ({
+        _id: m._id,
+        name: m.name,
+        description: m.description,
+        isDefault: m.isDefault,
+        enabled: m.enabled,
+      })),
+      paymentsByMode: paymentsByMode[0]?.byMode || [],
+      recentPaymentsByMode: paymentsByMode[0]?.recentByMode || [],
+      timeframe: `${timeframe} days`,
+    };
+
+    return res.status(200).json({
+      success: true,
+      result,
+      message: 'Payment mode statistics retrieved successfully',
+    });
+  } catch (error) {
+    console.error('Get Payment Mode Stats Error:', error);
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Failed to retrieve payment mode statistics',
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get tax statistics
+ * GET /api/stats/taxes
+ */
+const getTaxStats = async (req, res) => {
+  try {
+    const [total, enabled, disabled, taxRates] = await Promise.all([
+      Tax.countDocuments({ removed: false }),
+      Tax.countDocuments({ removed: false, enabled: true }),
+      Tax.countDocuments({ removed: false, enabled: false }),
+      Tax.aggregate([
+        { $match: { removed: false, enabled: true } },
+        {
+          $group: {
+            _id: null,
+            avgRate: { $avg: '$taxRate' },
+            minRate: { $min: '$taxRate' },
+            maxRate: { $max: '$taxRate' },
+          },
+        },
+      ]),
+    ]);
+
+    const rateStats = taxRates[0] || { avgRate: 0, minRate: 0, maxRate: 0 };
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        total,
+        enabled,
+        disabled,
+        avgRate: Math.round((rateStats.avgRate || 0) * 100) / 100,
+        minRate: rateStats.minRate || 0,
+        maxRate: rateStats.maxRate || 0,
+      },
+      message: 'Tax statistics retrieved successfully',
+    });
+  } catch (error) {
+    console.error('Get Tax Stats Error:', error);
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Failed to retrieve tax statistics',
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get workflow statistics
+ * GET /api/stats/workflows
+ */
+const getWorkflowStats = async (req, res) => {
+  try {
+    const [total, byStatus, recentWorkflows] = await Promise.all([
+      Workflow.countDocuments({ removed: false }),
+      Workflow.aggregate([
+        { $match: { removed: false } },
+        {
+          $group: {
+            _id: '$status',
+            count: { $sum: 1 },
+          },
+        },
+      ]),
+      Workflow.find({ removed: false })
+        .sort({ updatedAt: -1 })
+        .limit(5)
+        .select('name status triggerType updatedAt')
+        .lean(),
+    ]);
+
+    const statusMap = {};
+    byStatus.forEach((s) => {
+      statusMap[s._id] = s.count;
+    });
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        total,
+        active: statusMap['active'] || 0,
+        draft: statusMap['draft'] || 0,
+        inactive: statusMap['inactive'] || 0,
+        archived: statusMap['archived'] || 0,
+        recent: recentWorkflows,
+      },
+      message: 'Workflow statistics retrieved successfully',
+    });
+  } catch (error) {
+    console.error('Get Workflow Stats Error:', error);
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Failed to retrieve workflow statistics',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getClientStats,
@@ -886,4 +1058,7 @@ module.exports = {
   getTeamStats,
   getTaskStats,
   getDocumentStats,
+  getPaymentModeStats,
+  getTaxStats,
+  getWorkflowStats,
 };

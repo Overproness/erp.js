@@ -159,11 +159,6 @@ export default function UpdateSettingForm({ config, children, withUpload, upload
 
           // Then set the field values from settings
           form.setFieldsValue(current);
-
-          // Force a form update to make sure the UI reflects the values
-          setTimeout(() => {
-            form.validateFields().catch((e) => console.log('Validation error (expected):', e));
-          }, 100);
         } else {
           // If no settings are found, reset the form to prevent stale data
           form.resetFields();

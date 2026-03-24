@@ -209,7 +209,7 @@ const AISuggestionsModal = ({ visible, onClose, tasks, onApply }) => {
       onCancel={onClose}
       width={1200}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       <div>
         <Paragraph type="secondary" style={{ marginBottom: '16px' }}>

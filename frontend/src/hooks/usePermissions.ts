@@ -114,7 +114,6 @@ export const usePermissions = () => {
   // Fetch permissions only once when user is logged in
   useEffect(() => {
     if (isLoggedIn && authUser && !hasInitialized && !loading) {
-      console.log('Fetching permissions for user:', authUser.email);
       dispatch(permissions.fetch());
       setHasInitialized(true);
     }
@@ -128,33 +127,21 @@ export const usePermissions = () => {
 
   // Create permission checker functions that don't violate hook rules
   const hasPermission = useCallback((permission) => {
-    console.log('Checking permission:', permission, {
-      isOwner,
-      userPermissions,
-      hasInitialized: permissionsState.hasInitialized,
-      loading
-    });
-    
     // Owner always has access
     if (isOwner) return true;
     
     // If permissions haven't loaded yet or user doesn't have any permissions, deny access
     if (!permissionsState.hasInitialized || !userPermissions) {
-      console.log('Permissions not initialized or no permissions found - denying access');
       return false;
     }
     
     const backendPermission = mapPermission(permission);
     
     if (typeof userPermissions === 'object') {
-      const hasPermissionValue = Boolean(userPermissions[backendPermission]);
-      console.log(`Permission check result for ${backendPermission}:`, hasPermissionValue);
-      return hasPermissionValue;
+      return Boolean(userPermissions[backendPermission]);
     }
     
-    const hasPermissionInArray = Array.isArray(userPermissions) && userPermissions.includes(backendPermission);
-    console.log(`Array permission check result for ${backendPermission}:`, hasPermissionInArray);
-    return hasPermissionInArray;
+    return Array.isArray(userPermissions) && userPermissions.includes(backendPermission);
   }, [isOwner, userPermissions, permissionsState.hasInitialized, loading]);
 
   const hasAllPermissions = useCallback((requiredPermissions) => {

@@ -51,6 +51,8 @@ const customerChatRoutes = require('./routes/appRoutes/customerChatRoutes');
 // File upload routes (multipart form data)
 const dataEntryRoutes = require('./routes/dataEntryRoutes');
 const documentRouter = require('./routes/appRoutes/documentRoutes');
+// Statistics routes
+const statisticsRoutes = require('./routes/appRoutes/statisticsRoutes');
 
 // ─────────────────────────────────────────────────────────────
 // Create Express App
@@ -200,6 +202,7 @@ app.post('/api/track/event', behaviorTracking.trackCustomEvent);
 // ─────────────────────────────────────────────────────────────
 app.use('/api/document', adminAuth.isValidAuthToken, fileUploadMiddleware, validateFileUpload, documentRouter);
 app.use('/api/data-entry', adminAuth.isValidAuthToken, dataEntryRoutes);
+app.use('/api/stats', adminAuth.isValidAuthToken, statisticsRoutes);
 
 // ─────────────────────────────────────────────────────────────
 // GraphQL Endpoint (handles all CRUD and business logic)

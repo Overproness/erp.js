@@ -72,6 +72,59 @@ class CampaignController {
   }
 
   /**
+   * List campaigns (standard CRUD format for GraphQL)
+   */
+  async list(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.items) || parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+      const { sortBy = 'createdAt', sortValue = -1, filter, equal } = req.query;
+
+      const query = { removed: { $ne: true } };
+      if (filter && equal) {
+        query[filter] = equal;
+      }
+
+      const [result, count] = await Promise.all([
+        Campaign.find(query).sort({ [sortBy]: parseInt(sortValue) }).skip(skip).limit(limit).lean(),
+        Campaign.countDocuments(query),
+      ]);
+
+      const pages = Math.ceil(count / limit);
+
+      return res.status(200).json({
+        success: true,
+        result,
+        pagination: { page, count: result.length, pages, total: count },
+        message: 'Successfully found all documents',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        result: [],
+        message: error.message || 'Failed to fetch campaigns',
+      });
+    }
+  }
+
+  /**
+   * Read a single campaign (standard CRUD format for GraphQL)
+   */
+  async read(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await Campaign.findOne({ _id: id, removed: { $ne: true } }).lean();
+      if (!result) {
+        return res.status(404).json({ success: false, result: null, message: 'Campaign not found' });
+      }
+      return res.status(200).json({ success: true, result, message: 'Successfully found document' });
+    } catch (error) {
+      return res.status(500).json({ success: false, result: null, message: error.message });
+    }
+  }
+
+  /**
    * Get all campaigns for current user
    */
   async getAll(req, res) {

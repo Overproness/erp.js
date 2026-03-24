@@ -398,14 +398,14 @@ export default function Tasks() {
 
       {/* Modal for Create/Edit/View Task */}
       <Modal
-        visible={modalVisible}
+        open={modalVisible}
         onCancel={() => {
           setModalVisible(false);
         }}
         footer={null}
         width={modalMode === 'view' ? 1000 : 800}
-        bodyStyle={{ padding: 0 }}
-        destroyOnClose
+        styles={{ body: { padding: 0 } }}
+        destroyOnHidden
       >
         {renderModalContent()}
       </Modal>

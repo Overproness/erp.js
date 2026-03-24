@@ -15,7 +15,6 @@ import {
   DatePicker,
   Dropdown,
   Input,
-  Menu,
   message,
   Modal,
   Select,
@@ -246,57 +245,25 @@ const MarketingDataTableModule = () => {
     return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
-  const actionMenu = (record) => (
-    <Menu>
-      <Menu.Item key="edit" icon={<EditOutlined />} onClick={() => handleEdit(record)}>
-        {translate('Edit')}
-      </Menu.Item>
-      <Menu.Item
-        key="analytics"
-        icon={<BarChartOutlined />}
-        onClick={() => handleAnalytics(record.id)}
-      >
-        {translate('Analytics')}
-      </Menu.Item>
-      <Menu.Divider />
-      {record.status !== 'active' && (
-        <Menu.Item
-          key="activate"
-          icon={<PlayCircleOutlined />}
-          onClick={() => handleStatusChange(record.id, 'active')}
-        >
-          {translate('Activate')}
-        </Menu.Item>
-      )}
-      {record.status === 'active' && (
-        <Menu.Item
-          key="pause"
-          icon={<PauseCircleOutlined />}
-          onClick={() => handleStatusChange(record.id, 'paused')}
-        >
-          {translate('Pause')}
-        </Menu.Item>
-      )}
-      {(record.status === 'active' || record.status === 'paused') && (
-        <Menu.Item
-          key="complete"
-          icon={<CheckCircleOutlined />}
-          onClick={() => handleStatusChange(record.id, 'completed')}
-        >
-          {translate('Mark as Completed')}
-        </Menu.Item>
-      )}
-      <Menu.Divider />
-      <Menu.Item
-        key="delete"
-        icon={<DeleteOutlined />}
-        danger
-        onClick={() => confirmDelete(record.id)}
-      >
-        {translate('Delete')}
-      </Menu.Item>
-    </Menu>
-  );
+  const getActionMenuItems = (record) => {
+    const items = [
+      { key: 'edit', icon: <EditOutlined />, label: translate('Edit'), onClick: () => handleEdit(record) },
+      { key: 'analytics', icon: <BarChartOutlined />, label: translate('Analytics'), onClick: () => handleAnalytics(record.id) },
+      { type: 'divider' },
+    ];
+    if (record.status !== 'active') {
+      items.push({ key: 'activate', icon: <PlayCircleOutlined />, label: translate('Activate'), onClick: () => handleStatusChange(record.id, 'active') });
+    }
+    if (record.status === 'active') {
+      items.push({ key: 'pause', icon: <PauseCircleOutlined />, label: translate('Pause'), onClick: () => handleStatusChange(record.id, 'paused') });
+    }
+    if (record.status === 'active' || record.status === 'paused') {
+      items.push({ key: 'complete', icon: <CheckCircleOutlined />, label: translate('Mark as Completed'), onClick: () => handleStatusChange(record.id, 'completed') });
+    }
+    items.push({ type: 'divider' });
+    items.push({ key: 'delete', icon: <DeleteOutlined />, label: translate('Delete'), danger: true, onClick: () => confirmDelete(record.id) });
+    return items;
+  };
 
   const columns = [
     {
@@ -431,7 +398,7 @@ const MarketingDataTableModule = () => {
       key: 'actions',
       width: 80,
       render: (_, record) => (
-        <Dropdown overlay={actionMenu(record)} trigger={['click']} placement="bottomRight">
+        <Dropdown menu={{ items: getActionMenuItems(record) }} trigger={['click']} placement="bottomRight">
           <Button type="text" icon={<EllipsisOutlined />} />
         </Dropdown>
       ),

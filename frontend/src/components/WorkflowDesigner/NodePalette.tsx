@@ -153,7 +153,7 @@ const NodePalette = ({ onDragStart }) => {
               borderLeft: `4px solid ${nodeType.color}`,
               userSelect: 'none',
             }}
-            bodyStyle={{ padding: '8px 12px' }}
+            styles={{ body: { padding: '8px 12px' } }}
           >
             <Space align="start">
               <div style={{ color: nodeType.color, fontSize: '16px' }}>{nodeType.icon}</div>

@@ -1,6 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import { reducer as authReducer } from './auth';
+import { reducer as crudReducer } from './crud';
+import { reducer as erpReducer } from './erp';
 import { reducer as permissionsReducer } from './permissions';
 import { reducer as settingsReducer } from './settings';
 
@@ -21,6 +23,8 @@ import marketingUiReducer from './marketing/marketingUiSlice';
 const rootReducer = combineReducers({
   // Core slices
   auth: authReducer,
+  crud: crudReducer,
+  erp: erpReducer,
   permissions: permissionsReducer,
   settings: settingsReducer,
 

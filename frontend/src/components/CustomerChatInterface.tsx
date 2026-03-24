@@ -260,7 +260,7 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
         ) : null
       }
       style={{ height: '600px', display: 'flex', flexDirection: 'column' }}
-      bodyStyle={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 0 }}
+      styles={{ body: { flex: 1, display: 'flex', flexDirection: 'column', padding: 0 } }}
     >
       {/* Messages Area */}
       <div

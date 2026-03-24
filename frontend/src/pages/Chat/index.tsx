@@ -135,8 +135,11 @@ export default function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  // Load initial data
+  // Load initial data - use ref to prevent double calls in strict mode
+  const loadedRef = useRef(false);
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     loadChatData();
   }, []);
 
@@ -154,22 +157,25 @@ export default function Chat() {
     try {
       setLoading(true);
       
-      // Load conversations and company users in parallel
-      const [conversationsRes, usersRes] = await Promise.all([
-        apolloClient.query({ query: GET_CHAT_ROOMS }),
-        import('@/request').then(({ request }) => request.get('/chat/users'))
-      ]);
+      // Load conversations
+      const conversationsRes = await apolloClient.query({ query: GET_CHAT_ROOMS });
 
       if (conversationsRes.data?.chatRoomList?.success) {
         setConversations(conversationsRes.data.chatRoomList.result);
       }
 
-      if (usersRes.success) {
-        setCompanyUsers(usersRes.result);
+      // Try to load company users, but don't fail if endpoint doesn't exist
+      try {
+        const { request } = await import('@/request');
+        const usersRes = await request.get('/chat/users');
+        if (usersRes.success) {
+          setCompanyUsers(usersRes.result);
+        }
+      } catch {
+        // /chat/users endpoint not available - this is expected until backend route is created
       }
     } catch (error) {
       console.error('Error loading chat data:', error);
-      message.error('Failed to load chat data');
     } finally {
       setLoading(false);
     }

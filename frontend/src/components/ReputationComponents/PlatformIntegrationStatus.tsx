@@ -54,7 +54,7 @@ const PlatformIntegrationStatus = ({ platforms = [], onConnect, onSync, onDiscon
             <Card 
               size="small"
               hoverable
-              bodyStyle={{ padding: '16px', height: '120px' }}
+              styles={{ body: { padding: '16px', height: '120px' } }}
             >
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
                 <div style={{ marginRight: '12px' }}>

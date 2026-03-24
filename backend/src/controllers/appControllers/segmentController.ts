@@ -7,6 +7,52 @@ const CustomerSegment = mongoose.model('CustomerSegment');
 
 const segmentController = {
   /**
+   * List customer segments (standard CRUD format for GraphQL)
+   */
+  list: async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.items) || parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+
+      const [result, count] = await Promise.all([
+        CustomerSegment.find({}).skip(skip).limit(limit).sort({ createdAt: -1 }),
+        CustomerSegment.countDocuments({}),
+      ]);
+
+      const pages = Math.ceil(count / limit);
+
+      res.status(200).json({
+        success: true,
+        result,
+        pagination: { page, count: result.length, pages, total: count },
+        message: 'Successfully found all documents',
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        result: [],
+        message: error.message || 'Error retrieving segments',
+      });
+    }
+  },
+
+  /**
+   * Read a single segment (standard CRUD format for GraphQL)
+   */
+  read: async (req, res) => {
+    try {
+      const segment = await CustomerSegment.findById(req.params.id);
+      if (!segment) {
+        return res.status(404).json({ success: false, result: null, message: 'Segment not found' });
+      }
+      res.status(200).json({ success: true, result: segment, message: 'Successfully found document' });
+    } catch (error) {
+      res.status(500).json({ success: false, result: null, message: error.message || 'Error retrieving segment' });
+    }
+  },
+
+  /**
    * Create a new customer segment
    */
   create: async (req, res) => {

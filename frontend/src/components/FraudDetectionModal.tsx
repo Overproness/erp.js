@@ -19,7 +19,6 @@ export default function FraudDetectionModal({ visible, onCancel, invoices = [] }
   const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
-  console.log('🚀 ~ FraudDetectionModal ~ analysisResult:', analysisResult);
 
   const handleAnalyze = async () => {
     if (!selectedInvoiceId) {
@@ -108,7 +107,7 @@ export default function FraudDetectionModal({ visible, onCancel, invoices = [] }
       onCancel={handleModalClose}
       width={900}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       <div style={{ marginTop: 24 }}>
         {/* Invoice Selection */}

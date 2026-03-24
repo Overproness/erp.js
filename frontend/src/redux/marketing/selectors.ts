@@ -1,14 +1,18 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+// Stable empty references to avoid re-render on every selector call
+const EMPTY_ARRAY = [];
+const EMPTY_OBJECT = {};
+
 // Base selectors
-const selectMarketingState = (state) => state.marketing || {};
-const selectBehaviorState = (state) => state.behavior || {};
-const selectRetargetingState = (state) => state.retargeting || {};
+const selectMarketingState = (state) => state.marketing || EMPTY_OBJECT;
+const selectBehaviorState = (state) => state.behavior || EMPTY_OBJECT;
+const selectRetargetingState = (state) => state.retargeting || EMPTY_OBJECT;
 
 // Marketing campaign selectors
 export const selectCampaigns = createSelector(
   [selectMarketingState],
-  (marketing) => marketing.campaigns?.data || []
+  (marketing) => marketing.campaigns?.data || EMPTY_ARRAY
 );
 
 export const selectCampaignsLoading = createSelector(
@@ -71,7 +75,7 @@ export const selectCurrentCampaignError = createSelector(
 
 export const selectSegments = createSelector(
   [selectMarketingState],
-  (marketing) => marketing.segments?.data || []
+  (marketing) => marketing.segments?.data || EMPTY_ARRAY
 );
 
 export const selectSegmentsLoading = createSelector(
@@ -101,7 +105,7 @@ export const selectBulkOperationsSuccess = createSelector(
 
 export const selectSelectedCampaignIds = createSelector(
   [selectMarketingState],
-  (marketing) => marketing.ui?.selectedCampaignIds || []
+  (marketing) => marketing.ui?.selectedCampaignIds || EMPTY_ARRAY
 );
 
 export const selectViewMode = createSelector(
@@ -183,7 +187,7 @@ export const selectFilteredCampaigns = createSelector(
 // Behavior tracking selectors
 export const selectBehaviorEvents = createSelector(
   [selectBehaviorState],
-  (behavior) => behavior.events?.data || []
+  (behavior) => behavior.events?.data || EMPTY_ARRAY
 );
 
 export const selectBehaviorEventsLoading = createSelector(
@@ -203,12 +207,12 @@ export const selectBehaviorEventsPagination = createSelector(
 
 export const selectUserHistory = createSelector(
   [selectBehaviorState],
-  (behavior) => behavior.userHistory?.data || {}
+  (behavior) => behavior.userHistory?.data || EMPTY_OBJECT
 );
 
 export const selectUserHistoryForUser = (userId) => createSelector(
   [selectUserHistory],
-  (userHistory) => userHistory[userId] || []
+  (userHistory) => userHistory[userId] || EMPTY_ARRAY
 );
 
 export const selectUserHistoryLoading = createSelector(
@@ -223,7 +227,7 @@ export const selectUserHistoryError = createSelector(
 
 export const selectTriggers = createSelector(
   [selectBehaviorState],
-  (behavior) => behavior.triggers?.data || []
+  (behavior) => behavior.triggers?.data || EMPTY_ARRAY
 );
 
 export const selectTriggersLoading = createSelector(
@@ -273,7 +277,7 @@ export const selectEvaluationError = createSelector(
 
 export const selectEventTypes = createSelector(
   [selectBehaviorState],
-  (behavior) => behavior.eventTypes || []
+  (behavior) => behavior.eventTypes || EMPTY_ARRAY
 );
 
 // Filter active triggers
@@ -285,7 +289,7 @@ export const selectActiveTriggers = createSelector(
 // Retargeting selectors
 export const selectRetargetingLists = createSelector(
   [selectRetargetingState],
-  (retargeting) => retargeting.lists?.data || []
+  (retargeting) => retargeting.lists?.data || EMPTY_ARRAY
 );
 
 export const selectRetargetingListsLoading = createSelector(
@@ -320,7 +324,7 @@ export const selectCurrentRetargetingListError = createSelector(
 
 export const selectRetargetingCampaigns = createSelector(
   [selectRetargetingState],
-  (retargeting) => retargeting.campaigns?.data || []
+  (retargeting) => retargeting.campaigns?.data || EMPTY_ARRAY
 );
 
 export const selectRetargetingCampaignsLoading = createSelector(
@@ -355,7 +359,7 @@ export const selectCurrentRetargetingCampaignError = createSelector(
 
 export const selectRetargetingStatistics = createSelector(
   [selectRetargetingState],
-  (retargeting) => retargeting.statistics?.data || {}
+  (retargeting) => retargeting.statistics?.data || EMPTY_OBJECT
 );
 
 export const selectRetargetingStatisticsForCampaign = (campaignId) => createSelector(
@@ -375,7 +379,7 @@ export const selectRetargetingStatisticsError = createSelector(
 
 export const selectRetargetingPlatforms = createSelector(
   [selectRetargetingState],
-  (retargeting) => retargeting.platforms?.connections || {}
+  (retargeting) => retargeting.platforms?.connections || EMPTY_OBJECT
 );
 
 export const selectRetargetingPlatformsSyncing = createSelector(

@@ -289,12 +289,12 @@ export default function ChatBubble({ module = 'general', context = {} }) {
             overflow: 'hidden',
             border: '1px solid rgba(96, 165, 250, 0.2)',
           }}
-          bodyStyle={{
+          styles={{ body: {
             padding: 0,
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
-          }}
+          } }}
         >
           {/* Header */}
           <div

@@ -1,4 +1,4 @@
-# Backend Documentation - Quickmation Automation Suite (Odoo Project)
+# Backend Documentation - ERP.js Automation Suite (Odoo Project)
 
 ## Table of Contents
 
@@ -41,7 +41,7 @@
 
 ## Overview
 
-This backend system is part of the Quickmation Automation Suite for the Odoo Project. It provides a robust API infrastructure for ERP/CRM operations, integrates with various external services, and handles authentication, data processing, and file management operations.
+This backend system is part of the ERP.js Automation Suite for the Odoo Project. It provides a robust API infrastructure for ERP/CRM operations, integrates with various external services, and handles authentication, data processing, and file management operations.
 
 ## Updated Models
 
@@ -212,7 +212,7 @@ MongoDB models define the data structure and business logic:
 
 ### Core Models
 
-- **CompanyOwner**: Represents company owners/administrators 
+- **CompanyOwner**: Represents company owners/administrators
 - **CompanyOwnerPassword**: Stores secure password data for company owners
 - **Setting**: Stores application settings
 - **Token**: Manages authentication tokens
@@ -437,14 +437,12 @@ The application includes a powerful workflow system that allows creating automat
 ### Workflow Components
 
 - **Node Types**:
-
   - **Start Node**: Entry point for a workflow
   - **End Node**: Termination point for a workflow
   - **Condition Node**: Evaluates conditions to determine flow direction
   - **Action Node**: Performs specific actions (module integration, script execution, context updates)
 
 - **Edge Types**:
-
   - **Standard Edge**: Normal flow from one node to another
   - **Conditional Edge**: Flow based on condition evaluation (true/false paths)
 
@@ -459,19 +457,16 @@ The application includes a powerful workflow system that allows creating automat
 The workflow system can integrate with different modules to automate cross-module processes. The `moduleIntegrationService` handles communications between the workflow system and other modules:
 
 - **HR Module Actions**:
-
   - Approve/reject leave requests
   - Notify managers
   - Update employee records
 
 - **Sales Module Actions**:
-
   - Create invoices from deals
   - Send follow-up emails
   - Update deal statuses
 
 - **Project Module Actions**:
-
   - Assign tasks
   - Update task statuses
   - Create project milestones
@@ -526,7 +521,6 @@ The system provides the following actions for workflow integration:
 Workflows can be used to automate various business processes:
 
 1. **Leave Approval Process**:
-
    - Start when a leave request is submitted
    - Check if the employee has available leave balance
    - Route to appropriate manager for approval
@@ -534,7 +528,6 @@ Workflows can be used to automate various business processes:
    - Update leave records
 
 2. **Sales Deal Processing**:
-
    - Start when a deal reaches a specific stage
    - Create invoices automatically
    - Send confirmation emails
@@ -542,7 +535,6 @@ Workflows can be used to automate various business processes:
    - Create follow-up tasks
 
 3. **Project Management**:
-
    - Automatically assign tasks based on project milestones
    - Send notifications when tasks are completed
    - Update project status based on task completion
@@ -602,13 +594,11 @@ Deployment considerations:
 Common issues and solutions:
 
 1. **Database Connection Issues**
-
    - Verify MongoDB is running
    - Check connection string in .env file
    - Ensure network connectivity to the database server
 
 2. **Authentication Problems**
-
    - Validate JWT_SECRET is properly set
    - Check token expiration settings
    - Verify user credentials
@@ -619,7 +609,6 @@ Common issues and solutions:
      - Restart the server after updating environment variables
 
 3. **File Upload Issues**
-
    - Check directory permissions
    - Verify AWS credentials if using S3
    - Ensure proper MIME types are allowed
@@ -629,13 +618,11 @@ Common issues and solutions:
    - Implement caching strategies
    - Add database indexes for frequently queried fields
 5. **API Integration Failures**
-
    - Verify API keys are correctly configured
    - Check rate limits for external services
    - Implement proper error handling for external service failures
 
 6. **Document Upload Issues**
-
    - Check file size limits (maximum 50MB, increased from 10MB)
    - Ensure upload directories have proper permissions
    - Verify supported file types
@@ -643,7 +630,6 @@ Common issues and solutions:
    - If you receive a "413 Payload Too Large" error, your file exceeds the 50MB limit
 
 7. **Document Download Problems**
-
    - If files were downloading as text files regardless of their actual type:
      - This issue has been fixed. The system now properly sets Content-Type headers based on file extensions.
      - The backend now provides additional headers (X-Original-Filename and X-File-Extension) to help the
@@ -656,7 +642,6 @@ Common issues and solutions:
      - The token is automatically added when opening document versions in new tabs
 
 8. **Document Version Control Issues**
-
    - If document reversion was not working properly:
      - This issue has been fixed. The system now properly handles document version reversion.
      - For reverting to the original version, use: `/api/document/:id/revert/original`

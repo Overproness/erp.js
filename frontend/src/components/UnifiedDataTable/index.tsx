@@ -65,9 +65,8 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
   // useContext returns undefined safely when outside provider
   const crudContextValue = useContext(CrudContext);
   const crudContextAction = useMemo(() => {
-    if (!crudContextValue) return null;
-    const [, dispatch] = crudContextValue;
-    return crudContextActionsFactory(dispatch);
+    if (!crudContextValue || !crudContextValue.crudContextAction) return null;
+    return crudContextValue.crudContextAction;
   }, [crudContextValue]);
 
   // ErpContext is always available (wraps entire app)

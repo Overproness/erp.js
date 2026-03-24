@@ -430,7 +430,7 @@ const SocialMediaDashboard = () => {
         </Col>
 
         <Col xs={24} md={8} lg={8}>
-          <Card title={translate('Upcoming Posts')} bodyStyle={{ padding: 0 }}>
+          <Card title={translate('Upcoming Posts')} styles={{ body: { padding: 0 } }}>
             <div
               style={{
                 height: 320,

@@ -107,18 +107,18 @@ const statisticsController = {
       // Calculate performance metrics
       const performance = {
         conversionRate:
-          allQuotes.length > 0 ? ((allInvoices.length / allQuotes.length) * 100).toFixed(2) : 0,
+          allQuotes.length > 0 ? Number(((allInvoices.length / allQuotes.length) * 100).toFixed(2)) : 0,
         averageInvoiceValue:
-          allInvoices.length > 0 ? (invoiceStats.totalAmount / allInvoices.length).toFixed(2) : 0,
+          allInvoices.length > 0 ? Number((invoiceStats.totalAmount / allInvoices.length).toFixed(2)) : 0,
         averageQuoteValue:
-          allQuotes.length > 0 ? (quoteStats.totalAmount / allQuotes.length).toFixed(2) : 0,
+          allQuotes.length > 0 ? Number((quoteStats.totalAmount / allQuotes.length).toFixed(2)) : 0,
         paymentEfficiency:
           allInvoices.length > 0
-            ? (
+            ? Number((
                 (allInvoices.filter((inv) => inv.paymentStatus === 'paid').length /
                   allInvoices.length) *
                 100
-              ).toFixed(2)
+              ).toFixed(2))
             : 0,
       };
 

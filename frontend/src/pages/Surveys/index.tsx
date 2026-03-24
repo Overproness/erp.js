@@ -29,7 +29,7 @@ import {
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ export default function Survey() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const translate = useLanguage();
-  const entity = 'surveys';
+  const entity = 'survey';
 
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -48,7 +48,10 @@ export default function Survey() {
   const { result: surveys, isLoading, pagination } = useSelector((state) => state.crud.list);
   const surveyList = Array.isArray(surveys?.items) ? surveys.items : [];
 
+  const loadedRef = useRef(false);
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     dispatch(crud.list({ entity }));
   }, [dispatch]);
 

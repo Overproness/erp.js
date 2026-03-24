@@ -1,5 +1,6 @@
 // @ts-nocheck
 const { wrapController, createReqRes } = require('./crud');
+const mongoose = require('mongoose');
 
 function createEntitySpecificResolvers(controllers) {
   const {
@@ -40,6 +41,72 @@ function createEntitySpecificResolvers(controllers) {
       ...(statisticsController?.overview && {
         statisticsOverview: wrapController(statisticsController.overview),
       }),
+
+      // Analytics Overview (aggregates from existing models)
+      analyticsOverview: async (parent, args) => {
+        try {
+          const { startDate, endDate } = args;
+          const dateFilter = {};
+          if (startDate) dateFilter.$gte = new Date(startDate);
+          if (endDate) dateFilter.$lte = new Date(endDate);
+          const hasDateFilter = Object.keys(dateFilter).length > 0;
+
+          const Client = mongoose.model('Client');
+          const Invoice = mongoose.model('Invoice');
+          const Task = mongoose.model('Task');
+          const Document = mongoose.model('Document');
+
+          const [clientCount, newClients, invoiceAgg, taskAgg, docCount] = await Promise.all([
+            Client.countDocuments({ removed: false }),
+            Client.countDocuments({
+              removed: false,
+              ...(hasDateFilter ? { created: dateFilter } : {}),
+            }),
+            Invoice.aggregate([
+              { $match: { removed: false } },
+              {
+                $group: {
+                  _id: null,
+                  revenue: { $sum: '$total' },
+                  count: { $sum: 1 },
+                },
+              },
+            ]),
+            Task.aggregate([
+              { $match: { removed: false } },
+              {
+                $group: {
+                  _id: null,
+                  total: { $sum: 1 },
+                  completed: {
+                    $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] },
+                  },
+                },
+              },
+            ]),
+            Document.countDocuments({ removed: false }),
+          ]);
+
+          const inv = invoiceAgg[0] || { revenue: 0, count: 0 };
+          const tsk = taskAgg[0] || { total: 0, completed: 0 };
+          const completionRate = tsk.total > 0 ? Math.round((tsk.completed / tsk.total) * 100) : 0;
+
+          return {
+            success: true,
+            result: {
+              sales: { revenue: inv.revenue, invoiceCount: inv.count },
+              crm: { totalCustomers: clientCount, newCustomers: newClients },
+              marketing: { activeCampaigns: 0 },
+              reputation: { avgRating: 0 },
+              tasks: { completionRate, total: tsk.total, completed: tsk.completed },
+              documents: { count: docCount },
+            },
+            message: 'Analytics overview retrieved successfully',
+          };
+        } catch (error) {
+          return { success: false, result: null, message: error.message };
+        }
+      },
 
       // Invoice recurring
       ...(invoiceController?.recurringHistory && {
@@ -234,6 +301,11 @@ function createEntitySpecificResolvers(controllers) {
             return { success: false, result: null, message: error.message };
           }
         },
+      }),
+
+      // Copilot - Available Models
+      ...(copilotController?.models && {
+        aiAvailableModels: wrapController(copilotController.models),
       }),
     },
 

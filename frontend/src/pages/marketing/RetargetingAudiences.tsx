@@ -97,7 +97,7 @@ export default function RetargetingAudiences() {
   const audiences = useSelector(selectRetargetingLists);
   const isLoading = useSelector(selectRetargetingListsLoading);
   const platforms = useSelector(selectRetargetingPlatforms);
-  const isSyncing = useSelector((state) => state.retargeting.platforms?.syncing);
+  const isSyncing = useSelector((state) => state.retargeting?.platforms?.syncing);
 
   const [searchText, setSearchText] = useState('');
   const [filteredAudiences, setFilteredAudiences] = useState([]);

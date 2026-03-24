@@ -51,6 +51,12 @@ export const AI_ANALYZE_SENTIMENT = gql`
   }
 `;
 
+export const AI_AVAILABLE_MODELS = gql`
+  query AiAvailableModels {
+    aiAvailableModels { success result message }
+  }
+`;
+
 // AI Data Processing
 export const AI_PROCESS_DATA = gql`
   mutation AiProcessData($input: AiDataProcessInput!) {

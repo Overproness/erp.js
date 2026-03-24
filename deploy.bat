@@ -106,7 +106,7 @@ echo   Commit Message: %COMMIT_MSG%
 echo ====================================
 echo.
 echo GitHub Actions will now deploy to VPS...
-echo Check: https://github.com/Overproness/quickmation/actions
+echo Check: https://github.com/Overproness/ERP.js/actions
 echo.
 
 endlocal

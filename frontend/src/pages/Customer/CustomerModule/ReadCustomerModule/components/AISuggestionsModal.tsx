@@ -174,7 +174,7 @@ export default function AISuggestionsModal({ visible, onClose, customerData }) {
         dataSource={suggestions.recommendations}
         renderItem={(item) => (
           <List.Item>
-            <Card size="small" style={{ width: '100%' }} bodyStyle={{ padding: '12px' }} hoverable>
+            <Card size="small" style={{ width: '100%' }} styles={{ body: { padding: '12px' } }} hoverable>
               <Space direction="vertical" style={{ width: '100%' }} size="small">
                 <Space style={{ width: '100%', justifyContent: 'space-between' }}>
                   <Space>

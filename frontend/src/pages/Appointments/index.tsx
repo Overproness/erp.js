@@ -37,7 +37,7 @@ import {
   Tooltip,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const { Option } = Select;
 
@@ -63,9 +63,12 @@ export default function AppointmentsPage() {
     } finally {
       setLoading(false);
     }
-  }, [filterStatus, filterType]);
+  }, []);
 
+  const loadedRef = useRef(false);
   useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
     fetchAppointments();
   }, [fetchAppointments]);
 

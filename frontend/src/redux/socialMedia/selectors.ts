@@ -1,16 +1,19 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const selectSocialMediaState = (state) => state.socialMedia || {};
+const EMPTY_OBJ = {};
+const EMPTY_ARR = [];
+
+const selectSocialMediaState = (state) => state.socialMedia || EMPTY_OBJ;
 
 // ===== Accounts Selectors =====
 export const selectAccounts = createSelector(
   [selectSocialMediaState],
-  (socialMedia) => socialMedia.accounts || {}
+  (socialMedia) => socialMedia.accounts || EMPTY_OBJ
 );
 
 export const selectAccountsList = createSelector(
   [selectAccounts],
-  (accounts) => accounts.list || []
+  (accounts) => accounts.list || EMPTY_ARR
 );
 
 export const selectIsAccountsLoading = createSelector(
@@ -25,18 +28,18 @@ export const selectAccountsError = createSelector(
 
 export const selectConnectedPlatforms = createSelector(
   [selectAccounts],
-  (accounts) => accounts.connectedPlatforms || {}
+  (accounts) => accounts.connectedPlatforms || EMPTY_OBJ
 );
 
 // ===== Posts Selectors =====
 export const selectPosts = createSelector(
   [selectSocialMediaState],
-  (socialMedia) => socialMedia.posts || {}
+  (socialMedia) => socialMedia.posts || EMPTY_OBJ
 );
 
 export const selectPostsList = createSelector(
   [selectPosts],
-  (posts) => posts.list || []
+  (posts) => posts.list || EMPTY_ARR
 );
 
 export const selectIsPostsLoading = createSelector(
@@ -52,7 +55,7 @@ export const selectPostsError = createSelector(
 // ===== Analytics Selectors =====
 export const selectAnalytics = createSelector(
   [selectSocialMediaState],
-  (socialMedia) => socialMedia.analytics || {}
+  (socialMedia) => socialMedia.analytics || EMPTY_OBJ
 );
 
 export const selectIsAnalyticsLoading = createSelector(
@@ -78,12 +81,12 @@ export const selectAnalyticsPeriod = createSelector(
 // ===== Campaigns Selectors =====
 export const selectCampaigns = createSelector(
   [selectSocialMediaState],
-  (socialMedia) => socialMedia.campaigns || {}
+  (socialMedia) => socialMedia.campaigns || EMPTY_OBJ
 );
 
 export const selectCampaignsList = createSelector(
   [selectCampaigns],
-  (campaigns) => campaigns.list || []
+  (campaigns) => campaigns.list || EMPTY_ARR
 );
 
 export const selectCurrentCampaign = createSelector(
@@ -104,12 +107,12 @@ export const selectIsCampaignsLoading = createSelector(
 // ===== Mentions Selectors =====
 export const selectMentions = createSelector(
   [selectSocialMediaState],
-  (socialMedia) => socialMedia.mentions || {}
+  (socialMedia) => socialMedia.mentions || EMPTY_OBJ
 );
 
 export const selectMentionsList = createSelector(
   [selectMentions],
-  (mentions) => mentions.list || []
+  (mentions) => mentions.list || EMPTY_ARR
 );
 
 export const selectUnreadMentions = createSelector(

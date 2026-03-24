@@ -75,7 +75,7 @@ export default function ErpOs() {
   const isPublicSurvey = location.pathname.startsWith('/public/survey/');
   const isCustomerChat = location.pathname.startsWith('/chat/');
 
-  const websitePaths = ['/', '/features', '/pricing', '/about', '/contact', '/privacy', '/terms'];
+  const websitePaths = ['/features', '/pricing', '/about', '/contact', '/privacy', '/terms'];
   const isWebsitePath = websitePaths.includes(location.pathname);
 
   if (isPublicRedirect || isPublicSurvey || isCustomerChat || isWebsitePath) {

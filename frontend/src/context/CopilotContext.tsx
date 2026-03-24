@@ -4,7 +4,7 @@ import { notification } from 'antd';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import apolloClient from '@/graphql/client';
-import { AI_CHAT, AI_SUGGEST } from '@/graphql/operations/ai';
+import { AI_AVAILABLE_MODELS, AI_CHAT, AI_SUGGEST } from '@/graphql/operations/ai';
 
 const CopilotContext = createContext();
 
@@ -49,16 +49,14 @@ export const CopilotProvider = ({ children }) => {
    */
   const loadAvailableModels = useCallback(async () => {
     try {
-      // No GraphQL operation for copilot models — keep REST
-      const { request } = await import('@/request');
-      const response = await request.get({
-        entity: 'copilot',
-        endpoint: 'models',
+      const { data } = await apolloClient.query({
+        query: AI_AVAILABLE_MODELS,
+        fetchPolicy: 'network-only',
       });
 
-      // console.log('Models API response:', response);
+      const response = data?.aiAvailableModels;
 
-      if (response.success && response.result) {
+      if (response?.success && response?.result) {
         const models = response.result.models || [];
         const providers = response.result.availableProviders || [];
 

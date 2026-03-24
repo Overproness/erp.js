@@ -23,6 +23,7 @@ const authTypeDefs = gql`
     companyName: String
     companyID: String
     hasCompanySetup: Boolean
+    onboardingComplete: Boolean
   }
 
   type TokenVerification {
@@ -34,6 +35,7 @@ const authTypeDefs = gql`
   input LoginInput {
     email: String!
     password: String!
+    remember: Boolean
   }
 
   input RegisterInput {

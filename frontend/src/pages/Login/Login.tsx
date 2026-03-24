@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import useLanguage from '@/locale/useLanguage';
 
@@ -11,10 +12,12 @@ import LoginForm from '@/forms/LoginForm';
 import { useNotifications } from '@/hooks/useNotifications';
 import AuthModule from '@/pages/AuthModule';
 import storePersist from '@/redux/storePersist';
+import * as actionTypes from '@/redux/auth/types';
 
 const LoginPage = () => {
   const translate = useLanguage();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { initializeSocket } = useNotifications();
 
   const [loginMutation, { loading: isLoading, data }] = useLogin();
@@ -29,10 +32,15 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isSuccess && adminData?.token) {
-      storePersist.set('auth', {
-        current: { ...adminData.admin, token: adminData.token },
+      const current = { ...adminData.admin, token: adminData.token };
+      const authState = {
+        current,
         isLoggedIn: true,
-      });
+        isLoading: false,
+        isSuccess: true,
+      };
+      storePersist.set('auth', authState);
+      dispatch({ type: actionTypes.REQUEST_SUCCESS, payload: current });
       initializeSocket(adminData.token);
       navigate('/client');
     }

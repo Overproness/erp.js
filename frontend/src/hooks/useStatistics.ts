@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import StatisticsService from './services/statisticsService';
 
 /**
@@ -21,6 +21,7 @@ export const useStatistics = (type, options = {}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const initialFetchRef = useRef(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -109,6 +110,8 @@ export const useStatistics = (type, options = {}) => {
 
   // Initial data fetch
   useEffect(() => {
+    if (initialFetchRef.current) return;
+    initialFetchRef.current = true;
     fetchData();
   }, [fetchData]);
 

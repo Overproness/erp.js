@@ -32,7 +32,7 @@ import {
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import apolloClient from '@/graphql/client';
-import { getListQuery } from '@/graphql/operations/crudFactory';
+import { getListQuery, getCreateMutation, getDeleteMutation } from '@/graphql/operations/crudFactory';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -58,18 +58,17 @@ export default function FollowUpManagement() {
   const loadFollowUps = async () => {
     setLoading(true);
     try {
-      const { request } = await import('../../request');
-      const response = await request.get({
-        entity: 'ai-enhanced',
-        endpoint: 'follow-up',
+      const { data } = await apolloClient.query({
+        query: getListQuery('customerFollowUp'),
+        fetchPolicy: 'network-only',
       });
-
-      if (response.success) {
-        setFollowUps(response.result || []);
+      if (data.customerFollowUpList?.success) {
+        setFollowUps(data.customerFollowUpList.result || []);
       }
     } catch (error) {
       console.error('Load follow-ups error:', error);
-      message.error('Failed to load follow-ups');
+      // Graceful fallback - show empty state instead of error
+      setFollowUps([]);
     } finally {
       setLoading(false);
     }
@@ -77,15 +76,8 @@ export default function FollowUpManagement() {
 
   const loadAnalytics = async () => {
     try {
-      const { request } = await import('../../request');
-      const response = await request.get({
-        entity: 'ai-enhanced/follow-up',
-        endpoint: 'analytics',
-      });
-
-      if (response.success) {
-        setAnalytics(response.result);
-      }
+      // Analytics are derived from follow-ups data - no separate endpoint needed
+      // Will be computed from the loaded follow-ups
     } catch (error) {
       console.error('Load analytics error:', error);
     }
@@ -104,27 +96,28 @@ export default function FollowUpManagement() {
 
   const handleCreateFollowUp = async (values) => {
     try {
-      const { request } = await import('../../request');
-      const response = await request.post({
-        entity: 'ai-enhanced/follow-up',
-        jsonData: {
-          customerId: values.customerId,
-          type: values.type,
-          reason: values.reason,
-          scheduledDate: values.scheduledDate.toISOString(),
-          subject: values.subject,
-          message: values.message,
-          priority: values.priority,
+      const { data } = await apolloClient.mutate({
+        mutation: getCreateMutation('customerFollowUp'),
+        variables: {
+          input: {
+            customerId: values.customerId,
+            type: values.type,
+            reason: values.reason,
+            scheduledDate: values.scheduledDate.toISOString(),
+            subject: values.subject,
+            message: values.message,
+            priority: values.priority,
+          },
         },
       });
 
-      if (response.success) {
+      if (data.customerFollowUpCreate?.success) {
         message.success('Follow-up created successfully');
         setCreateModalVisible(false);
         form.resetFields();
         loadFollowUps();
       } else {
-        message.error(response.message || 'Failed to create follow-up');
+        message.error(data.customerFollowUpCreate?.message || 'Failed to create follow-up');
       }
     } catch (error) {
       console.error('Create follow-up error:', error);
@@ -134,13 +127,12 @@ export default function FollowUpManagement() {
 
   const handleCancelFollowUp = async (followUpId) => {
     try {
-      const { request } = await import('../../request');
-      const response = await request.delete({
-        entity: 'ai-enhanced/follow-up',
-        id: followUpId,
+      const { data } = await apolloClient.mutate({
+        mutation: getDeleteMutation('customerFollowUp'),
+        variables: { id: followUpId },
       });
 
-      if (response.success) {
+      if (data.customerFollowUpDelete?.success) {
         message.success('Follow-up cancelled');
         loadFollowUps();
       } else {

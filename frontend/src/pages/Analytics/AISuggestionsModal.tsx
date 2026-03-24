@@ -79,7 +79,7 @@ export default function AISuggestionsModal({ visible, onClose }) {
       width={800}
       footer={null}
       style={{ top: 20 }}
-      bodyStyle={{ maxHeight: '70vh', overflowY: 'auto' }}
+      styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
     >
       <div style={{ padding: '12px 0' }}>
         {!insights ? (

@@ -80,7 +80,7 @@ export default function AiFloatingButton({
         width="100%"
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
-        bodyStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
       >
         <AiChatModule />
       </Drawer>
