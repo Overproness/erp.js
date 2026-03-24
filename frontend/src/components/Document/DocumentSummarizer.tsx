@@ -1,13 +1,13 @@
-import { Button, Modal, message, Spin, Typography, Divider, Space, Tag } from 'antd';
-import {
-  FileTextOutlined,
-  RobotOutlined,
-  InfoCircleOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons';
-import { useState } from 'react';
 import apolloClient from '@/graphql/client';
 import { DOCUMENT_SUMMARIZE } from '@/graphql/operations/document';
+import {
+  CheckCircleOutlined,
+  FileTextOutlined,
+  InfoCircleOutlined,
+  RobotOutlined,
+} from '@ant-design/icons';
+import { Button, Divider, message, Modal, Space, Spin, Tag, Typography } from 'antd';
+import { useState } from 'react';
 
 const { Title, Paragraph, Text } = Typography;
 

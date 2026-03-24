@@ -1,5 +1,4 @@
 import useLanguage from '@/locale/useLanguage';
-import RetargetingModule from './MarketingModule/RetargetingModule';
 import {
   deleteRetargetingList,
   fetchRetargetingLists,
@@ -11,7 +10,6 @@ import {
   selectRetargetingPlatforms,
 } from '@/redux/marketing/selectors';
 import {
-  ArrowLeftOutlined,
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
@@ -31,7 +29,6 @@ import {
   Col,
   Input,
   Modal,
-  Progress,
   Row,
   Space,
   Statistic,
@@ -42,6 +39,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import RetargetingModule from './MarketingModule/RetargetingModule';
 
 const { Title, Text } = Typography;
 const { confirm } = Modal;

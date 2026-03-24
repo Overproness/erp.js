@@ -1,11 +1,11 @@
-import { Button, Modal, message, Spin, Tag, Space, Tooltip, List } from 'antd';
 import {
+  CheckOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
   RobotOutlined,
   TagsOutlined,
-  CheckOutlined,
-  PlusOutlined,
-  InfoCircleOutlined,
 } from '@ant-design/icons';
+import { Button, List, message, Modal, Space, Spin, Tag, Tooltip } from 'antd';
 import { useState } from 'react';
 
 /**

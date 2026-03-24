@@ -1,3 +1,5 @@
+import apolloClient from '@/graphql/client';
+import { TEAM_MEMBER_PERFORMANCE } from '@/graphql/operations/team';
 import {
   CalendarOutlined,
   CheckCircleOutlined,
@@ -9,8 +11,6 @@ import {
 } from '@ant-design/icons';
 import { Alert, Card, Col, Empty, Modal, Progress, Row, Spin, Statistic, Tabs, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import apolloClient from '@/graphql/client';
-import { TEAM_MEMBER_PERFORMANCE } from '@/graphql/operations/team';
 
 const { TabPane } = Tabs;
 

@@ -22,7 +22,6 @@ import { useDate, useMoney } from '@/settings';
 import { dataForTable } from '@/utils/dataStructure';
 
 import { CrudContext } from '@/context/crud';
-import crudContextActionsFactory from '@/context/crud/actions';
 import { crud } from '@/redux/crud/actions';
 import { selectListItems as selectCrudListItems } from '@/redux/crud/selectors';
 

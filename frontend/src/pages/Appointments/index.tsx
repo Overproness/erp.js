@@ -1,13 +1,13 @@
 import { DataImportButton } from '@/components/DataEntry';
 import AppointmentForm from '@/forms/AppointmentForm';
-import useLanguage from '@/locale/useLanguage';
 import apolloClient from '@/graphql/client';
 import {
-  GET_APPOINTMENTS,
-  DELETE_APPOINTMENT,
-  CONFIRM_APPOINTMENT,
   CANCEL_APPOINTMENT,
+  CONFIRM_APPOINTMENT,
+  DELETE_APPOINTMENT,
+  GET_APPOINTMENTS,
 } from '@/graphql/operations/appointment';
+import useLanguage from '@/locale/useLanguage';
 import {
   CalendarOutlined,
   CheckCircleOutlined,
@@ -105,7 +105,10 @@ export default function AppointmentsPage() {
 
   const handleDelete = async (id) => {
     try {
-      const { data } = await apolloClient.mutate({ mutation: DELETE_APPOINTMENT, variables: { id } });
+      const { data } = await apolloClient.mutate({
+        mutation: DELETE_APPOINTMENT,
+        variables: { id },
+      });
       if (data.appointmentDelete?.success) {
         message.success('Appointment deleted successfully');
         fetchAppointments();
@@ -117,7 +120,10 @@ export default function AppointmentsPage() {
 
   const handleConfirm = async (id) => {
     try {
-      const { data } = await apolloClient.mutate({ mutation: CONFIRM_APPOINTMENT, variables: { id } });
+      const { data } = await apolloClient.mutate({
+        mutation: CONFIRM_APPOINTMENT,
+        variables: { id },
+      });
       if (data.appointmentConfirm?.success) {
         message.success('Appointment confirmed');
         fetchAppointments();

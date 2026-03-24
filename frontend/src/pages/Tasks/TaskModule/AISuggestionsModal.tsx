@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  Button,
-  Table,
-  Tag,
-  Spin,
-  Alert,
-  Space,
-  Typography,
-  Card,
-  message,
-  Tooltip,
-  Row,
-  Col,
-  Statistic,
-} from 'antd';
+import useLanguage from '@/locale/useLanguage';
+import taskRequest from '@/request/taskRequest';
 import {
   BulbOutlined,
   CheckCircleOutlined,
   InfoCircleOutlined,
-  ThunderboltOutlined,
   RiseOutlined,
   SyncOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
-import useLanguage from '@/locale/useLanguage';
-import taskRequest from '@/request/taskRequest';
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  message,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Statistic,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
+} from 'antd';
+import { useEffect, useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;
 

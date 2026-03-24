@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { Card } from 'antd';
+import { useEffect, useState } from 'react';
 
 // Import these with try/catch to handle potential errors
 let Editor = null;
@@ -16,10 +16,10 @@ try {
   RichUtils = draftJs.RichUtils;
   convertToRaw = draftJs.convertToRaw;
   convertFromRaw = draftJs.convertFromRaw;
-  
+
   // Get the Editor component
   Editor = draftJs.Editor;
-  
+
   // Helper methods for creating editor state
   createWithContent = (contentState) => EditorState.createWithContent(contentState);
   createEmpty = () => EditorState.createEmpty();
@@ -30,20 +30,14 @@ try {
 const RichTextEditor = ({ value, onChange, placeholder, readOnly = false }) => {
   // Bail out early if the draft-js library couldn't be loaded
   if (!Editor || !EditorState) {
-    return (
-      <div className="rich-text-editor-error">
-        The rich text editor could not be loaded.
-      </div>
-    );
+    return <div className="rich-text-editor-error">The rich text editor could not be loaded.</div>;
   }
 
   const [editorState, setEditorState] = useState(() => {
     if (value) {
       try {
         // Try to parse the value as JSON
-        const contentState = convertFromRaw(
-          typeof value === 'string' ? JSON.parse(value) : value
-        );
+        const contentState = convertFromRaw(typeof value === 'string' ? JSON.parse(value) : value);
         return createWithContent(contentState);
       } catch (e) {
         console.error('Error parsing editor content:', e);
@@ -55,7 +49,11 @@ const RichTextEditor = ({ value, onChange, placeholder, readOnly = false }) => {
 
   // Update the editor state when the value prop changes
   useEffect(() => {
-    if (value && typeof value === 'string' && value !== JSON.stringify(convertToRaw(editorState.getCurrentContent()))) {
+    if (
+      value &&
+      typeof value === 'string' &&
+      value !== JSON.stringify(convertToRaw(editorState.getCurrentContent()))
+    ) {
       try {
         const contentState = convertFromRaw(JSON.parse(value));
         setEditorState(createWithContent(contentState));
@@ -67,7 +65,7 @@ const RichTextEditor = ({ value, onChange, placeholder, readOnly = false }) => {
 
   const handleChange = (state) => {
     setEditorState(state);
-    
+
     if (onChange) {
       const contentState = state.getCurrentContent();
       const rawContent = convertToRaw(contentState);

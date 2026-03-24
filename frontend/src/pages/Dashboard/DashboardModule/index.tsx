@@ -73,8 +73,6 @@ export default function DashboardModule() {
     timeframe: '30',
   });
 
-
-
   const prevCurrencyRef = useRef(money_format_settings?.currency_code);
 
   useEffect(() => {

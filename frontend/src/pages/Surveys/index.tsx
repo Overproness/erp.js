@@ -1,7 +1,12 @@
+import apolloClient from '@/graphql/client';
+import {
+  CLOSE_SURVEY,
+  DELETE_SURVEY,
+  DUPLICATE_SURVEY,
+  PUBLISH_SURVEY,
+} from '@/graphql/operations/survey';
 import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';
-import apolloClient from '@/graphql/client';
-import { PUBLISH_SURVEY, CLOSE_SURVEY, DUPLICATE_SURVEY, DELETE_SURVEY } from '@/graphql/operations/survey';
 import {
   BarChartOutlined,
   CopyOutlined,

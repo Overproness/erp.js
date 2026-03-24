@@ -1,5 +1,4 @@
 import useLanguage from '@/locale/useLanguage';
-import BehaviorTriggersModule from './MarketingModule/BehaviorTriggersModule';
 import { deleteTrigger, fetchTriggers, toggleTriggerStatus } from '@/redux/marketing/behaviorSlice';
 import {
   selectActiveTriggers,
@@ -8,7 +7,6 @@ import {
 } from '@/redux/marketing/selectors';
 import {
   ApiOutlined,
-  ArrowLeftOutlined,
   BellOutlined,
   ClockCircleOutlined,
   DeleteOutlined,
@@ -38,6 +36,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import BehaviorTriggersModule from './MarketingModule/BehaviorTriggersModule';
 
 const { Title, Text } = Typography;
 const { confirm } = Modal;

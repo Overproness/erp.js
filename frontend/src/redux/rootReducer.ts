@@ -7,17 +7,17 @@ import { reducer as permissionsReducer } from './permissions';
 import { reducer as settingsReducer } from './settings';
 
 // Import slim UI slices (Apollo Client migration)
+import aiUiReducer from './ai/aiUiSlice';
+import authUiReducer from './auth/authUiSlice';
 import crudUiReducer from './crud/crudUiSlice';
 import erpUiReducer from './erp/erpUiSlice';
-import settingsUiReducer from './settings/settingsUiSlice';
-import authUiReducer from './auth/authUiSlice';
-import permissionsUiReducer from './permissions/permissionsUiSlice';
-import aiUiReducer from './ai/aiUiSlice';
-import socialMediaUiReducer from './socialMedia/socialMediaUiSlice';
-import workflowUiReducer from './workflow/workflowUiSlice';
-import reputationUiReducer from './reputation/reputationUiSlice';
-import urlUiReducer from './url/urlUiSlice';
 import marketingUiReducer from './marketing/marketingUiSlice';
+import permissionsUiReducer from './permissions/permissionsUiSlice';
+import reputationUiReducer from './reputation/reputationUiSlice';
+import settingsUiReducer from './settings/settingsUiSlice';
+import socialMediaUiReducer from './socialMedia/socialMediaUiSlice';
+import urlUiReducer from './url/urlUiSlice';
+import workflowUiReducer from './workflow/workflowUiSlice';
 
 // Combine all reducers
 const rootReducer = combineReducers({

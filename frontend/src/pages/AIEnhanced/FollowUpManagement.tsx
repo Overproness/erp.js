@@ -1,4 +1,10 @@
 import { DataImportButton } from '@/components/DataEntry';
+import apolloClient from '@/graphql/client';
+import {
+  getCreateMutation,
+  getDeleteMutation,
+  getListQuery,
+} from '@/graphql/operations/crudFactory';
 import {
   CalendarOutlined,
   CheckCircleOutlined,
@@ -31,8 +37,6 @@ import {
 } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import apolloClient from '@/graphql/client';
-import { getListQuery, getCreateMutation, getDeleteMutation } from '@/graphql/operations/crudFactory';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -85,7 +89,10 @@ export default function FollowUpManagement() {
 
   const loadCustomers = async () => {
     try {
-      const { data } = await apolloClient.query({ query: getListQuery('client'), fetchPolicy: 'network-only' });
+      const { data } = await apolloClient.query({
+        query: getListQuery('client'),
+        fetchPolicy: 'network-only',
+      });
       if (data.clientList?.success) {
         setCustomers(data.clientList.result || []);
       }

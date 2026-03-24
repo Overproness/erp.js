@@ -1,18 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-import { EyeOutlined, EditOutlined, DeleteOutlined, MailOutlined } from '@ant-design/icons';
-import { Dropdown, Table, Button, Space, Tag } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppContext } from '@/context/appContext';
+import { useErpContext } from '@/context/erp';
+import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
 import { selectListItems } from '@/redux/erp/selectors';
-import { useErpContext } from '@/context/erp';
-import { useAppContext } from '@/context/appContext';
-import { TEAM_ENTITY } from './config';
-import { useNavigate } from 'react-router-dom';
 import { useDate } from '@/settings'; // Import from settings index
-import useLanguage from '@/locale/useLanguage';
+import { DeleteOutlined, EditOutlined, EyeOutlined, MailOutlined } from '@ant-design/icons';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Button, Dropdown, Table, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { data } from 'autoprefixer';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { TEAM_ENTITY } from './config';
 
 const TeamDataTableModule = ({ config = {} }) => {
   const translate = useLanguage();
@@ -23,21 +22,21 @@ const TeamDataTableModule = ({ config = {} }) => {
   const { panel } = erpContextAction;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   // Get date formatting settings - safely handle undefined formatDate
   const { dateFormat, formatDate: originalFormatDate } = useDate();
-  
+
   // Create a safe format date function that won't crash if the hook doesn't provide one
   const formatDate = (date) => {
     if (originalFormatDate) {
       return originalFormatDate(date);
     }
-    
+
     // Fallback date formatting using dayjs
     if (!date) return '-';
     return dayjs(date).format(dateFormat || 'DD/MM/YYYY');
   };
-  
+
   const { result: listResult, isLoading: listIsLoading } = useSelector(selectListItems);
 
   // Make sure to safely destructure and provide fallbacks
@@ -51,8 +50,8 @@ const TeamDataTableModule = ({ config = {} }) => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
-        <Button 
-          type="link" 
+        <Button
+          type="link"
           onClick={() => navigate(`/team/read/${record._id}`)}
           style={{ padding: 0, fontWeight: 'bold' }}
         >
@@ -70,10 +69,8 @@ const TeamDataTableModule = ({ config = {} }) => {
       title: 'Team Lead',
       key: 'teamLead',
       render: (_, record) => {
-        const leadMember = (record.members || []).find(m => m.role === 'lead');
-        return leadMember && leadMember.name
-          ? leadMember.name
-          : 'No team lead assigned';
+        const leadMember = (record.members || []).find((m) => m.role === 'lead');
+        return leadMember && leadMember.name ? leadMember.name : 'No team lead assigned';
       },
     },
     {
@@ -81,7 +78,9 @@ const TeamDataTableModule = ({ config = {} }) => {
       dataIndex: 'members',
       key: 'members',
       render: (members) => (
-        <Tag color="blue" key="members-count">{members?.length || 0} members</Tag>
+        <Tag color="blue" key="members-count">
+          {members?.length || 0} members
+        </Tag>
       ),
     },
     {
@@ -93,7 +92,9 @@ const TeamDataTableModule = ({ config = {} }) => {
           {enabled ? 'Active' : 'Inactive'}
         </Tag>
       ),
-    },    {      title: 'Created Date',
+    },
+    {
+      title: 'Created Date',
       dataIndex: 'created',
       key: 'created',
       render: (date) => formatDate(date),
@@ -119,7 +120,10 @@ const TeamDataTableModule = ({ config = {} }) => {
             label: 'Invite Member',
             key: 'invite',
             icon: <MailOutlined />,
-            onClick: () => panel && panel.open ? panel.open({ entity: TEAM_ENTITY, mode: 'invite', recordId: record._id }) : null,
+            onClick: () =>
+              panel && panel.open
+                ? panel.open({ entity: TEAM_ENTITY, mode: 'invite', recordId: record._id })
+                : null,
           },
           {
             label: 'Delete',
@@ -160,11 +164,7 @@ const TeamDataTableModule = ({ config = {} }) => {
         title={DATATABLE_TITLE || translate('team_list')}
         ghost={false}
         extra={[
-          <Button
-            key="1"
-            onClick={() => navigate('/team/create')}
-            type="primary"
-          >
+          <Button key="1" onClick={() => navigate('/team/create')} type="primary">
             {translate('add_team')}
           </Button>,
         ]}

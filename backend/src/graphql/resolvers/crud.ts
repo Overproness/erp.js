@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
 import { GraphQLContext } from '../../types/context';
-import { MutationResponse } from '../../types/common';
 
 interface MockRequest {
   params: Record<string, any>;
@@ -212,5 +210,6 @@ function generateCRUDResolvers(entityName: string, controller: CRUDController) {
   return { Query: queries, Mutation: mutations };
 }
 
-export { generateCRUDResolvers, wrapController, createReqRes };
+export { createReqRes, generateCRUDResolvers, wrapController };
 export type { CRUDController, MockRequest, MockResponse, ReqResResult };
+

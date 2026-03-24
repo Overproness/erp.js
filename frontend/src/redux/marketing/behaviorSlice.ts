@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { request } from '@/request';
 import apolloClient from '@/graphql/client';
-import { getListQuery, getDeleteMutation, getUpdateMutation } from '@/graphql/operations/crudFactory';
+import { getDeleteMutation, getListQuery, getUpdateMutation } from '@/graphql/operations/crudFactory';
+import { request } from '@/request';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 // Behavior events/triggers use REST entities without direct GraphQL resolver matches
 // Keep REST for all behavior operations
 

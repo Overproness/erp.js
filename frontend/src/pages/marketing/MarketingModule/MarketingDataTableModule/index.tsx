@@ -247,21 +247,52 @@ const MarketingDataTableModule = () => {
 
   const getActionMenuItems = (record) => {
     const items = [
-      { key: 'edit', icon: <EditOutlined />, label: translate('Edit'), onClick: () => handleEdit(record) },
-      { key: 'analytics', icon: <BarChartOutlined />, label: translate('Analytics'), onClick: () => handleAnalytics(record.id) },
+      {
+        key: 'edit',
+        icon: <EditOutlined />,
+        label: translate('Edit'),
+        onClick: () => handleEdit(record),
+      },
+      {
+        key: 'analytics',
+        icon: <BarChartOutlined />,
+        label: translate('Analytics'),
+        onClick: () => handleAnalytics(record.id),
+      },
       { type: 'divider' },
     ];
     if (record.status !== 'active') {
-      items.push({ key: 'activate', icon: <PlayCircleOutlined />, label: translate('Activate'), onClick: () => handleStatusChange(record.id, 'active') });
+      items.push({
+        key: 'activate',
+        icon: <PlayCircleOutlined />,
+        label: translate('Activate'),
+        onClick: () => handleStatusChange(record.id, 'active'),
+      });
     }
     if (record.status === 'active') {
-      items.push({ key: 'pause', icon: <PauseCircleOutlined />, label: translate('Pause'), onClick: () => handleStatusChange(record.id, 'paused') });
+      items.push({
+        key: 'pause',
+        icon: <PauseCircleOutlined />,
+        label: translate('Pause'),
+        onClick: () => handleStatusChange(record.id, 'paused'),
+      });
     }
     if (record.status === 'active' || record.status === 'paused') {
-      items.push({ key: 'complete', icon: <CheckCircleOutlined />, label: translate('Mark as Completed'), onClick: () => handleStatusChange(record.id, 'completed') });
+      items.push({
+        key: 'complete',
+        icon: <CheckCircleOutlined />,
+        label: translate('Mark as Completed'),
+        onClick: () => handleStatusChange(record.id, 'completed'),
+      });
     }
     items.push({ type: 'divider' });
-    items.push({ key: 'delete', icon: <DeleteOutlined />, label: translate('Delete'), danger: true, onClick: () => confirmDelete(record.id) });
+    items.push({
+      key: 'delete',
+      icon: <DeleteOutlined />,
+      label: translate('Delete'),
+      danger: true,
+      onClick: () => confirmDelete(record.id),
+    });
     return items;
   };
 
@@ -398,7 +429,11 @@ const MarketingDataTableModule = () => {
       key: 'actions',
       width: 80,
       render: (_, record) => (
-        <Dropdown menu={{ items: getActionMenuItems(record) }} trigger={['click']} placement="bottomRight">
+        <Dropdown
+          menu={{ items: getActionMenuItems(record) }}
+          trigger={['click']}
+          placement="bottomRight"
+        >
           <Button type="text" icon={<EllipsisOutlined />} />
         </Dropdown>
       ),

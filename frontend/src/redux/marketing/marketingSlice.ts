@@ -1,16 +1,16 @@
 import apolloClient from '@/graphql/client';
 import {
-  GET_CAMPAIGNS,
-  GET_CAMPAIGN,
-  CREATE_CAMPAIGN,
-  UPDATE_CAMPAIGN,
-  DELETE_CAMPAIGN,
-  DUPLICATE_CAMPAIGN,
-  CAMPAIGN_ANALYTICS,
+    CAMPAIGN_ANALYTICS,
+    CREATE_CAMPAIGN,
+    DELETE_CAMPAIGN,
+    DUPLICATE_CAMPAIGN,
+    GET_CAMPAIGN,
+    GET_CAMPAIGNS,
+    UPDATE_CAMPAIGN,
 } from '@/graphql/operations/campaign';
 import {
-  GET_CUSTOMER_SEGMENTS,
-  CREATE_CUSTOMER_SEGMENT,
+    CREATE_CUSTOMER_SEGMENT,
+    GET_CUSTOMER_SEGMENTS,
 } from '@/graphql/operations/marketing';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 

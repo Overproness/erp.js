@@ -1,47 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Row, 
-  Col, 
-  Statistic, 
-  Typography, 
-  Space,
-  Button,
-  Progress,
-  Table,
-  Tag,
-  Avatar,
-  Divider
-} from 'antd';
+import dummyPosts from '@/data/dummyPostsData';
+import { usePlatformIntegration, useSocialMedia } from '@/hooks/useSocialMedia';
+import useLanguage from '@/locale/useLanguage';
 import {
+  BellOutlined,
+  CalendarOutlined,
+  FacebookOutlined,
+  HeartOutlined,
+  InstagramOutlined,
+  MessageOutlined,
   PlusOutlined,
   RiseOutlined,
-  HeartOutlined,
-  MessageOutlined,
-  ShareAltOutlined,
+  TwitterOutlined,
   UserOutlined,
-  CalendarOutlined,
-  BellOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  TwitterOutlined
 } from '@ant-design/icons';
-import { Line, Doughnut } from 'react-chartjs-2';
+import { Button, Card, Col, Progress, Row, Space, Statistic, Table, Typography } from 'antd';
 import {
-  Chart as ChartJS,
+  ArcElement,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
-  ArcElement,
 } from 'chart.js';
-import { useSocialMedia, usePlatformIntegration } from '@/hooks/useSocialMedia';
-import useLanguage from '@/locale/useLanguage';
+import { useState } from 'react';
+import { Doughnut, Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
-import dummyPosts from '@/data/dummyPostsData';
 
 ChartJS.register(
   CategoryScale,
@@ -61,67 +47,74 @@ const SocialMediaDashboard = () => {
   const navigate = useNavigate();
   const { analytics, loading } = useSocialMedia();
   // Update to show all platforms as connected
-  const { connectedPlatforms, getConnectedPlatforms = () => ['facebook', 'instagram', 'twitter'] } = usePlatformIntegration();
-  
+  const { connectedPlatforms, getConnectedPlatforms = () => ['facebook', 'instagram', 'twitter'] } =
+    usePlatformIntegration();
+
   // Calculate statistics from dummy data
   const calculateStatistics = () => {
     const totalPosts = dummyPosts.length; // Should be 156
-    
+
     // Count published posts
-    const publishedPosts = dummyPosts.filter(post => post.status === 'published');
-    
+    const publishedPosts = dummyPosts.filter((post) => post.status === 'published');
+
     // Calculate total engagement
-    const totalEngagement = publishedPosts.reduce((sum, post) => 
-      sum + (post.performance?.engagement || 0), 0);
-    
+    const totalEngagement = publishedPosts.reduce(
+      (sum, post) => sum + (post.performance?.engagement || 0),
+      0
+    );
+
     // Calculate total reach
-    const totalReach = publishedPosts.reduce((sum, post) => 
-      sum + (post.performance?.reach || 0), 0);
-    
+    const totalReach = publishedPosts.reduce(
+      (sum, post) => sum + (post.performance?.reach || 0),
+      0
+    );
+
     // Calculate impressions
-    const impressions = publishedPosts.reduce((sum, post) => 
-      sum + (post.performance?.impressions || 0), 0);
-    
+    const impressions = publishedPosts.reduce(
+      (sum, post) => sum + (post.performance?.impressions || 0),
+      0
+    );
+
     // Count posts by platform
     const platformCounts = {
       facebook: 0,
       instagram: 0,
-      twitter: 0
+      twitter: 0,
     };
-    
-    dummyPosts.forEach(post => {
-      post.platforms.forEach(platform => {
+
+    dummyPosts.forEach((post) => {
+      post.platforms.forEach((platform) => {
         if (platformCounts[platform] !== undefined) {
           platformCounts[platform]++;
         }
       });
     });
-    
+
     // Get recent posts
     const recentPosts = publishedPosts
       .sort((a, b) => new Date(b.scheduledAt) - new Date(a.scheduledAt))
       .slice(0, 3)
-      .map(post => ({
+      .map((post) => ({
         id: post._id,
         content: post.content,
         platform: post.platforms[0],
         engagement: post.performance.engagement,
         reach: post.performance.reach,
-        publishedAt: post.scheduledAt
+        publishedAt: post.scheduledAt,
       }));
-    
+
     // Get upcoming posts
     const upcomingPosts = dummyPosts
-      .filter(post => post.status === 'scheduled')
+      .filter((post) => post.status === 'scheduled')
       .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt))
       .slice(0, 5)
-      .map(post => ({
+      .map((post) => ({
         id: post._id,
         content: post.content,
         platforms: post.platforms,
-        scheduledFor: post.scheduledAt
+        scheduledFor: post.scheduledAt,
       }));
-    
+
     return {
       overview: {
         totalFollowers: 12500,
@@ -129,21 +122,21 @@ const SocialMediaDashboard = () => {
         totalEngagement: totalEngagement,
         engagementRate: ((totalEngagement / totalReach) * 100).toFixed(1),
         reach: totalReach,
-        impressions: impressions
+        impressions: impressions,
       },
       recentPosts,
       upcomingPosts,
       platformStats: {
         facebook: { followers: 5200, engagement: 6.8, posts: platformCounts.facebook },
         instagram: { followers: 4800, engagement: 9.2, posts: platformCounts.instagram },
-        twitter: { followers: 2500, engagement: 5.5, posts: platformCounts.twitter }
-      }
+        twitter: { followers: 2500, engagement: 5.5, posts: platformCounts.twitter },
+      },
     };
   };
-  
+
   // Sample data - now calculated from our dummy posts
   const [dashboardData] = useState(calculateStatistics());
-  
+
   const getPlatformIcon = (platform) => {
     const icons = {
       facebook: <FacebookOutlined style={{ color: '#1877f2' }} />,
@@ -182,11 +175,7 @@ const SocialMediaDashboard = () => {
       title: translate('Content'),
       dataIndex: 'content',
       key: 'content',
-      render: (text) => (
-        <div style={{ maxWidth: '250px' }}>
-          {text.substring(0, 60)}...
-        </div>
-      ),
+      render: (text) => <div style={{ maxWidth: '250px' }}>{text.substring(0, 60)}...</div>,
     },
     {
       title: translate('Platform'),
@@ -227,12 +216,14 @@ const SocialMediaDashboard = () => {
   return (
     <div>
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '24px' 
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '24px',
+        }}
+      >
         <div>
           <AntTitle level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
             {translate('Social Media Dashboard')}
@@ -241,16 +232,13 @@ const SocialMediaDashboard = () => {
             {translate('Monitor your social media performance across all platforms')}
           </Text>
         </div>
-        
+
         <Space>
-          <Button 
-            icon={<CalendarOutlined />}
-            onClick={() => navigate('/social-media/posts')}
-          >
+          <Button icon={<CalendarOutlined />} onClick={() => navigate('/social-media/posts')}>
             {translate('Schedule Post')}
           </Button>
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => navigate('/social-media/posts')}
           >
@@ -271,7 +259,7 @@ const SocialMediaDashboard = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={6}>
           <Card>
             <Statistic
@@ -282,7 +270,7 @@ const SocialMediaDashboard = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={6}>
           <Card>
             <Statistic
@@ -293,7 +281,7 @@ const SocialMediaDashboard = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={6}>
           <Card>
             <Statistic
@@ -330,7 +318,7 @@ const SocialMediaDashboard = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} lg={8}>
           <Card title={translate('Platform Distribution')}>
             <Doughnut
@@ -355,12 +343,14 @@ const SocialMediaDashboard = () => {
             <Space direction="vertical" style={{ width: '100%' }}>
               {Object.entries(dashboardData.platformStats).map(([platform, stats]) => (
                 <div key={platform}>
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    marginBottom: '8px'
-                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '8px',
+                    }}
+                  >
                     <Space>
                       {getPlatformIcon(platform)}
                       <Text strong>{platform.charAt(0).toUpperCase() + platform.slice(1)}</Text>
@@ -370,18 +360,23 @@ const SocialMediaDashboard = () => {
                   <Progress
                     percent={stats.engagement * 10}
                     strokeColor={
-                      platform === 'facebook' ? '#1877f2' : 
-                      platform === 'instagram' ? '#E4405F' : '#1DA1F2'
+                      platform === 'facebook'
+                        ? '#1877f2'
+                        : platform === 'instagram'
+                          ? '#E4405F'
+                          : '#1DA1F2'
                     }
                     showInfo={false}
                   />
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    fontSize: '12px', 
-                    color: '#6b7280',
-                    marginBottom: '16px'
-                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      fontSize: '12px',
+                      color: '#6b7280',
+                      marginBottom: '16px',
+                    }}
+                  >
                     <span>{stats.engagement}% engagement</span>
                     <span>{stats.posts} posts</span>
                   </div>
@@ -394,32 +389,28 @@ const SocialMediaDashboard = () => {
         <Col xs={24} md={8} lg={8}>
           <Card title={translate('Quick Actions')}>
             <Space direction="vertical" style={{ width: '100%' }}>
-              <Button 
-                block 
-                icon={<PlusOutlined />}
-                onClick={() => navigate('/social-media/posts')}
-              >
+              <Button block icon={<PlusOutlined />} onClick={() => navigate('/social-media/posts')}>
                 {translate('Create New Post')}
               </Button>
-              
-              <Button 
-                block 
+
+              <Button
+                block
                 icon={<CalendarOutlined />}
                 onClick={() => navigate('/social-media/posts')}
               >
                 {translate('Schedule Posts')}
               </Button>
-              
-              <Button 
-                block 
+
+              <Button
+                block
                 icon={<RiseOutlined />}
                 onClick={() => navigate('/social-media/analytics')}
               >
                 {translate('View Analytics')}
               </Button>
-              
-              <Button 
-                block 
+
+              <Button
+                block
                 icon={<BellOutlined />}
                 onClick={() => navigate('/social-media/mentions')}
               >
@@ -439,30 +430,33 @@ const SocialMediaDashboard = () => {
                 boxSizing: 'border-box',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '12px'
+                gap: '12px',
               }}
             >
-              {dashboardData.upcomingPosts.map(post => (
-                <div key={post.id} style={{
-                  padding: '12px',
-                  border: '1px solid #f0f0f0',
-                  borderRadius: '8px',
-                  background: '#fff'
-                }}>
+              {dashboardData.upcomingPosts.map((post) => (
+                <div
+                  key={post.id}
+                  style={{
+                    padding: '12px',
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '8px',
+                    background: '#fff',
+                  }}
+                >
                   <div style={{ marginBottom: '8px' }}>
                     <Text>{post.content.substring(0, 80)}...</Text>
                   </div>
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    fontSize: '12px'
-                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      fontSize: '12px',
+                    }}
+                  >
                     <Space>
-                      {post.platforms.map(platform => (
-                        <span key={platform}>
-                          {getPlatformIcon(platform)}
-                        </span>
+                      {post.platforms.map((platform) => (
+                        <span key={platform}>{getPlatformIcon(platform)}</span>
                       ))}
                     </Space>
                     <Text style={{ color: '#6b7280' }}>
@@ -471,13 +465,15 @@ const SocialMediaDashboard = () => {
                   </div>
                 </div>
               ))}
-              
+
               {dashboardData.upcomingPosts.length === 0 && (
-                <div style={{ 
-                  textAlign: 'center', 
-                  padding: '40px',
-                  color: '#6b7280'
-                }}>
+                <div
+                  style={{
+                    textAlign: 'center',
+                    padding: '40px',
+                    color: '#6b7280',
+                  }}
+                >
                   <Text>{translate('No upcoming posts scheduled')}</Text>
                 </div>
               )}
@@ -489,13 +485,10 @@ const SocialMediaDashboard = () => {
       {/* Recent Posts */}
       <Row gutter={[16, 16]} style={{ marginBottom: 0 }}>
         <Col xs={24} lg={24}>
-          <Card 
+          <Card
             title={translate('Recent Posts')}
             extra={
-              <Button 
-                type="link" 
-                onClick={() => navigate('/social-media/posts')}
-              >
+              <Button type="link" onClick={() => navigate('/social-media/posts')}>
                 {translate('View All')}
               </Button>
             }

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Button, Tag, Typography, Divider, Modal, Space } from 'antd';
+import useLanguage from '@/locale/useLanguage';
 import {
+  CheckCircleOutlined,
+  DeleteOutlined,
   FacebookOutlined,
   InstagramOutlined,
-  TwitterOutlined,
-  CheckCircleOutlined,
   PlusOutlined,
-  DeleteOutlined,
   ReloadOutlined,
+  TwitterOutlined,
 } from '@ant-design/icons';
-import useLanguage from '@/locale/useLanguage';
+import { Button, Card, Col, Modal, Row, Space, Tag, Typography } from 'antd';
+import { useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -55,7 +55,7 @@ export default function SocialMediaIntegrationSettings() {
   };
 
   const handleDisconnect = (platform) => {
-    setConnected(prev => ({ ...prev, [platform]: false }));
+    setConnected((prev) => ({ ...prev, [platform]: false }));
   };
 
   const handleTestConnection = (platform) => {
@@ -67,9 +67,12 @@ export default function SocialMediaIntegrationSettings() {
 
   return (
     <div>
-      <Card title={translate('Social Media Platform Integrations')} style={{ marginBottom: '24px' }}>
+      <Card
+        title={translate('Social Media Platform Integrations')}
+        style={{ marginBottom: '24px' }}
+      >
         <Row gutter={[16, 16]}>
-          {platforms.map(platform => (
+          {platforms.map((platform) => (
             <Col span={8} key={platform.key}>
               <Card
                 size="small"
@@ -83,21 +86,32 @@ export default function SocialMediaIntegrationSettings() {
                   boxSizing: 'border-box',
                   padding: '0',
                 }}
-                styles={{ body: { padding: '24px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' } }}
+                styles={{
+                  body: {
+                    padding: '24px',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  },
+                }}
               >
                 <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-                  <div style={{ fontSize: '40px', marginBottom: '12px' }}>
-                    {platform.icon}
-                  </div>
+                  <div style={{ fontSize: '40px', marginBottom: '12px' }}>{platform.icon}</div>
                   <Title level={5} style={{ margin: 0 }}>
                     {platform.name}
                   </Title>
-                  <Text style={{ fontSize: '13px', color: '#6b7280' }}>
-                    {platform.description}
-                  </Text>
+                  <Text style={{ fontSize: '13px', color: '#6b7280' }}>{platform.description}</Text>
                 </div>
 
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}
+                >
                   {connected[platform.key] ? (
                     <div>
                       <div style={{ textAlign: 'center', marginBottom: '12px' }}>
@@ -128,9 +142,7 @@ export default function SocialMediaIntegrationSettings() {
                   ) : (
                     <div>
                       <div style={{ textAlign: 'center', marginBottom: '12px' }}>
-                        <Tag color="default">
-                          {translate('Not Connected')}
-                        </Tag>
+                        <Tag color="default">{translate('Not Connected')}</Tag>
                       </div>
                       <Button
                         type="primary"
@@ -139,7 +151,7 @@ export default function SocialMediaIntegrationSettings() {
                         block
                         style={{
                           backgroundColor: platform.color,
-                          borderColor: platform.color
+                          borderColor: platform.color,
                         }}
                       >
                         {translate('Connect')}
@@ -154,7 +166,13 @@ export default function SocialMediaIntegrationSettings() {
       </Card>
 
       <Modal
-        title={translate('Connect') + ' ' + (selectedPlatform ? selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1) : '')}
+        title={
+          translate('Connect') +
+          ' ' +
+          (selectedPlatform
+            ? selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)
+            : '')
+        }
         open={connectModalVisible}
         onCancel={() => setConnectModalVisible(false)}
         footer={null}
@@ -162,7 +180,8 @@ export default function SocialMediaIntegrationSettings() {
       >
         <div style={{ textAlign: 'center', padding: '24px' }}>
           <Paragraph>
-            {translate('You will be redirected to authorize our application to access your')} {selectedPlatform} {translate('account')}
+            {translate('You will be redirected to authorize our application to access your')}{' '}
+            {selectedPlatform} {translate('account')}
           </Paragraph>
           <Button type="primary" onClick={() => setConnectModalVisible(false)}>
             {translate('Connect')}

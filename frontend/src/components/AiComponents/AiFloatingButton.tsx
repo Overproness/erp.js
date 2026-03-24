@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Button, Badge, Tooltip, Drawer } from 'antd';
-import { MessageOutlined, CloseOutlined, RobotOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectChatOpen } from '@/redux/ai/aiSelectors';
-import AiChatModule from '@/pages/AiAssistant/AiAssistantModule/AiChatModule';
 import useLanguage from '@/locale/useLanguage';
+import AiChatModule from '@/pages/AiAssistant/AiAssistantModule/AiChatModule';
+import { selectChatOpen } from '@/redux/ai/aiSelectors';
+import { CloseOutlined, MessageOutlined, RobotOutlined } from '@ant-design/icons';
+import { Badge, Button, Drawer, Tooltip } from 'antd';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-export default function AiFloatingButton({ 
+export default function AiFloatingButton({
   position = 'bottom-right',
   showBadge = false,
-  badgeCount = 0
+  badgeCount = 0,
 }) {
   const translate = useLanguage();
   const navigate = useNavigate();

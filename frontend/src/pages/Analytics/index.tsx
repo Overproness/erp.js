@@ -1,6 +1,6 @@
 import PageLoader from '@/components/PageLoader';
 import apolloClient from '@/graphql/client';
-import { GET_ANALYTICS_OVERVIEW, GENERATE_ANALYTICS_REPORT } from '@/graphql/operations/analytics';
+import { GENERATE_ANALYTICS_REPORT, GET_ANALYTICS_OVERVIEW } from '@/graphql/operations/analytics';
 import {
   BarChartOutlined,
   CheckCircleOutlined,
