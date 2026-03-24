@@ -1,16 +1,15 @@
-import { request } from '@/request';
-import * as types from './types';
 import apolloClient from '@/graphql/client';
 import {
-  GET_WORKFLOWS,
-  GET_WORKFLOW,
-  CREATE_WORKFLOW,
-  UPDATE_WORKFLOW,
-  DELETE_WORKFLOW,
-  TOGGLE_WORKFLOW_STATUS,
-  TEST_WORKFLOW_CONDITION,
-  SIMULATE_WORKFLOW,
+    CREATE_WORKFLOW,
+    DELETE_WORKFLOW,
+    GET_WORKFLOW,
+    GET_WORKFLOWS,
+    SIMULATE_WORKFLOW,
+    TEST_WORKFLOW_CONDITION,
+    TOGGLE_WORKFLOW_STATUS,
+    UPDATE_WORKFLOW,
 } from '@/graphql/operations/workflow';
+import * as types from './types';
 
 // List workflows
 export const listWorkflows =

@@ -1,43 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Card, 
-  Row, 
-  Col, 
-  Statistic, 
-  Select, 
-  DatePicker, 
-  Space,
-  Typography,
-  Progress,
-  Table,
-  Tag
-} from 'antd';
-import {
-  RiseOutlined,
-  UserOutlined,
-  HeartOutlined,
-  ShareAltOutlined,
-  MessageOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  TwitterOutlined
-} from '@ant-design/icons';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from 'chart.js';
 import { useAnalytics } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
-import dayjs from 'dayjs';
+import {
+  FacebookOutlined,
+  HeartOutlined,
+  InstagramOutlined,
+  RiseOutlined,
+  ShareAltOutlined,
+  TwitterOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import {
+  Card,
+  Col,
+  DatePicker,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Statistic,
+  Table,
+  Tag,
+  Typography,
+} from 'antd';
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import { useEffect, useRef, useState } from 'react';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -79,20 +77,20 @@ const Overview = () => {
     growth: {
       followers: 12.5,
       engagement: 8.3,
-      reach: 15.7
+      reach: 15.7,
     },
     platformStats: {
       facebook: { followers: 5200, engagement: 6.8, posts: 45 },
       instagram: { followers: 4800, engagement: 9.2, posts: 67 },
-      twitter: { followers: 2500, engagement: 5.5, posts: 44 }
-    }
+      twitter: { followers: 2500, engagement: 5.5, posts: 44 },
+    },
   });
 
   const getPlatformIcon = (platform) => {
     const icons = {
       facebook: <FacebookOutlined style={{ color: '#1877f2' }} />,
       instagram: <InstagramOutlined style={{ color: '#E4405F' }} />,
-      twitter: <TwitterOutlined style={{ color: '#1DA1F2' }} />
+      twitter: <TwitterOutlined style={{ color: '#1DA1F2' }} />,
     };
     return icons[platform];
   };
@@ -147,11 +145,7 @@ const Overview = () => {
       title: translate('Content'),
       dataIndex: 'content',
       key: 'content',
-      render: (text) => (
-        <div style={{ maxWidth: '200px' }}>
-          {text.substring(0, 80)}...
-        </div>
-      ),
+      render: (text) => <div style={{ maxWidth: '200px' }}>{text.substring(0, 80)}...</div>,
     },
     {
       title: translate('Platform'),
@@ -208,17 +202,13 @@ const Overview = () => {
         <Row justify="space-between" align="middle">
           <Col>
             <Space>
-              <Select
-                value={period}
-                onChange={setPeriod}
-                style={{ width: 120 }}
-              >
+              <Select value={period} onChange={setPeriod} style={{ width: 120 }}>
                 <Option value="7d">{translate('Last 7 days')}</Option>
                 <Option value="30d">{translate('Last 30 days')}</Option>
                 <Option value="90d">{translate('Last 3 months')}</Option>
                 <Option value="1y">{translate('Last year')}</Option>
               </Select>
-              
+
               <RangePicker
                 value={dateRange}
                 onChange={setDateRange}
@@ -246,7 +236,7 @@ const Overview = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -262,7 +252,7 @@ const Overview = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -278,7 +268,7 @@ const Overview = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -315,7 +305,7 @@ const Overview = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} lg={8}>
           <Card title={translate('Platform Distribution')}>
             <Doughnut
@@ -354,13 +344,19 @@ const Overview = () => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} lg={12}>
           <Card title={translate('Platform Performance')}>
             <Space direction="vertical" style={{ width: '100%' }}>
               {Object.entries(sampleData.platformStats).map(([platform, stats]) => (
                 <div key={platform} style={{ marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '8px',
+                    }}
+                  >
                     <Space>
                       {getPlatformIcon(platform)}
                       <Text strong>{platform.charAt(0).toUpperCase() + platform.slice(1)}</Text>
@@ -369,10 +365,23 @@ const Overview = () => {
                   </div>
                   <Progress
                     percent={stats.engagement * 10}
-                    strokeColor={platform === 'facebook' ? '#1877f2' : platform === 'instagram' ? '#E4405F' : '#1DA1F2'}
+                    strokeColor={
+                      platform === 'facebook'
+                        ? '#1877f2'
+                        : platform === 'instagram'
+                          ? '#E4405F'
+                          : '#1DA1F2'
+                    }
                     showInfo={false}
                   />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#6b7280' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      fontSize: '12px',
+                      color: '#6b7280',
+                    }}
+                  >
                     <span>{stats.engagement}% engagement</span>
                     <span>{stats.posts} posts</span>
                   </div>

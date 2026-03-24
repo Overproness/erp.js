@@ -1,21 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Card, Statistic, Tabs, Select, DatePicker, Space, Progress, Typography, Spin, List, Avatar } from 'antd';
-import { 
-  BarChartOutlined, 
-  MessageOutlined, 
-  DollarOutlined, 
-  ClockCircleOutlined,
-  RobotOutlined,
-  TrophyOutlined
-} from '@ant-design/icons';
-import { fetchAnalytics } from '@/redux/ai/aiThunks';
-import { selectAnalyticsData, selectAnalyticsLoading } from '@/redux/ai/aiSelectors';
-import UsageMetrics from './UsageMetrics';
-import PredictiveCharts from './PredictiveCharts';
-import InsightsPanel from './InsightsPanel';
 import useLanguage from '@/locale/useLanguage';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { selectAnalyticsData, selectAnalyticsLoading } from '@/redux/ai/aiSelectors';
+import { fetchAnalytics } from '@/redux/ai/aiThunks';
+import {
+  BarChartOutlined,
+  ClockCircleOutlined,
+  DollarOutlined,
+  MessageOutlined,
+  RobotOutlined,
+  TrophyOutlined,
+} from '@ant-design/icons';
+import {
+  Avatar,
+  Card,
+  Col,
+  DatePicker,
+  List,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Statistic,
+  Tabs,
+  Typography,
+} from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import InsightsPanel from './InsightsPanel';
+import PredictiveCharts from './PredictiveCharts';
+import UsageMetrics from './UsageMetrics';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -26,7 +48,7 @@ const AnalyticsDashboard = () => {
   const translate = useLanguage();
   const [timeframe, setTimeframe] = useState('30_days');
   const [selectedAssistant, setSelectedAssistant] = useState(null);
-  
+
   const analyticsData = useSelector(selectAnalyticsData);
   const loading = useSelector(selectAnalyticsLoading);
   const prevParamsRef = useRef('');
@@ -72,11 +94,7 @@ const AnalyticsDashboard = () => {
       {/* Controls */}
       <div style={{ marginBottom: '24px' }}>
         <Space>
-          <Select
-            value={timeframe}
-            onChange={setTimeframe}
-            style={{ width: 150 }}
-          >
+          <Select value={timeframe} onChange={setTimeframe} style={{ width: 150 }}>
             <Select.Option value="7_days">{translate('Last 7 days')}</Select.Option>
             <Select.Option value="30_days">{translate('Last 30 days')}</Select.Option>
             <Select.Option value="90_days">{translate('Last 90 days')}</Select.Option>
@@ -133,7 +151,14 @@ const AnalyticsDashboard = () => {
       </Row>
 
       {/* AI Usage Overview */}
-      <Card title={<><RobotOutlined /> {translate('AI Usage Overview')}</>} loading={loading}>
+      <Card
+        title={
+          <>
+            <RobotOutlined /> {translate('AI Usage Overview')}
+          </>
+        }
+        loading={loading}
+      >
         <Row gutter={[24, 24]}>
           {/* Conversations */}
           <Col xs={24} sm={12} lg={6}>
@@ -220,7 +245,13 @@ const AnalyticsDashboard = () => {
             <Card size="small" title={translate('Performance')}>
               <Progress
                 type="circle"
-                percent={summaryStats.avgResponseTime < 2000 ? 90 : summaryStats.avgResponseTime < 5000 ? 70 : 40}
+                percent={
+                  summaryStats.avgResponseTime < 2000
+                    ? 90
+                    : summaryStats.avgResponseTime < 5000
+                      ? 70
+                      : 40
+                }
                 format={(percent) => `${Math.round(percent)}%`}
                 strokeColor="#43e97b"
               />
@@ -280,17 +311,17 @@ const AnalyticsDashboard = () => {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                <Line 
-                  type="monotone" 
-                  dataKey="conversations" 
-                  stroke="#1890ff" 
+                <Line
+                  type="monotone"
+                  dataKey="conversations"
+                  stroke="#1890ff"
                   size={2}
                   name={translate('Conversations')}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="tokens" 
-                  stroke="#52c41a" 
+                <Line
+                  type="monotone"
+                  dataKey="tokens"
+                  stroke="#52c41a"
                   size={2}
                   name={translate('Tokens')}
                 />
@@ -308,13 +339,7 @@ const AnalyticsDashboard = () => {
                   <List.Item.Meta
                     avatar={<Avatar>{item.avatar}</Avatar>}
                     title={item.name}
-                    description={
-                      <Progress 
-                        percent={item.usage} 
-                        size="small" 
-                        showInfo={false}
-                      />
-                    }
+                    description={<Progress percent={item.usage} size="small" showInfo={false} />}
                   />
                   <div>{item.usage}%</div>
                 </List.Item>

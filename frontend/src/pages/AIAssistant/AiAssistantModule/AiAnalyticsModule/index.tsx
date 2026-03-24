@@ -1,16 +1,22 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Card, Statistic, Typography, Space, Button } from 'antd';
-import { ArrowLeftOutlined, RobotOutlined, MessageOutlined, DollarOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { ErpLayout } from '@/layout';
-import AnalyticsDashboard from './AnalyticsDashboard';
-import UsageMetrics from './UsageMetrics';
-import PredictiveCharts from './PredictiveCharts';
-import InsightsPanel from './InsightsPanel';
-import { fetchAnalytics } from '@/redux/ai/aiThunks';
-import { selectAnalyticsData, selectAnalyticsLoading } from '@/redux/ai/aiSelectors';
 import useLanguage from '@/locale/useLanguage';
+import { selectAnalyticsData, selectAnalyticsLoading } from '@/redux/ai/aiSelectors';
+import { fetchAnalytics } from '@/redux/ai/aiThunks';
+import {
+  ArrowLeftOutlined,
+  ClockCircleOutlined,
+  DollarOutlined,
+  MessageOutlined,
+  RobotOutlined,
+} from '@ant-design/icons';
+import { Button, Card, Col, Row, Space, Statistic, Typography } from 'antd';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import AnalyticsDashboard from './AnalyticsDashboard';
+import InsightsPanel from './InsightsPanel';
+import PredictiveCharts from './PredictiveCharts';
+import UsageMetrics from './UsageMetrics';
 
 const { Title } = Typography;
 
@@ -18,16 +24,16 @@ const AiAnalyticsModule = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const translate = useLanguage();
-  
+
   const analyticsData = useSelector(selectAnalyticsData);
   const loading = useSelector(selectAnalyticsLoading);
   const loadedRef = useRef(false);
 
-useEffect(() => {
-  if (loadedRef.current) return;
-  loadedRef.current = true;
-  dispatch(fetchAnalytics());
-}, [dispatch]);
+  useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
+    dispatch(fetchAnalytics());
+  }, [dispatch]);
 
   const mockStats = {
     totalConversations: 1247,
@@ -42,10 +48,7 @@ useEffect(() => {
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
           <Space>
-            <Button 
-              icon={<ArrowLeftOutlined />} 
-              onClick={() => navigate('/ai-assistant')}
-            >
+            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/ai-assistant')}>
               {translate('Back')}
             </Button>
             <Title level={2} style={{ margin: 0 }}>
@@ -107,17 +110,17 @@ useEffect(() => {
             <Card title={translate('Analytics Dashboard')} style={{ marginBottom: '16px' }}>
               <AnalyticsDashboard data={analyticsData} loading={loading} />
             </Card>
-            
+
             <Card title={translate('Predictive Analysis')}>
               <PredictiveCharts data={analyticsData} loading={loading} />
             </Card>
           </Col>
-          
+
           <Col xs={24} lg={8}>
             <Card title={translate('Usage Metrics')} style={{ marginBottom: '16px' }}>
               <UsageMetrics data={analyticsData} loading={loading} />
             </Card>
-            
+
             <Card title={translate('AI Insights')}>
               <InsightsPanel data={analyticsData} loading={loading} />
             </Card>

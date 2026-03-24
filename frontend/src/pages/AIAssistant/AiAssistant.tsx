@@ -1,23 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Typography, Row, Col, Statistic, Card, Button, Space } from 'antd';
+import useLanguage from '@/locale/useLanguage';
 import {
-  RobotOutlined,
-  MessageOutlined,
-  BarChartOutlined,
-  BulbOutlined,
-  SettingOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
-import { fetchAssistants } from '@/redux/ai/aiThunks';
-import {
+  selectAssistantsError,
   selectAssistantsList,
   selectAssistantsLoading,
-  selectAssistantsError,
 } from '@/redux/ai/aiSelectors';
+import { fetchAssistants } from '@/redux/ai/aiThunks';
+import { BarChartOutlined, MessageOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Row, Space, Statistic, Typography } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import AiAssistantDataTableModule from './AiAssistantModule/AiAssistantDataTableModule';
-import useLanguage from '@/locale/useLanguage';
 
 const { Title, Text } = Typography;
 
@@ -25,7 +18,7 @@ export default function AiAssistant() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const translate = useLanguage();
-  
+
   const assistants = useSelector(selectAssistantsList);
   const loading = useSelector(selectAssistantsLoading);
   const error = useSelector(selectAssistantsError);
@@ -46,7 +39,7 @@ export default function AiAssistant() {
 
   useEffect(() => {
     if (assistants.length > 0) {
-      const activeCount = assistants.filter(a => a.enabled && !a.removed).length;
+      const activeCount = assistants.filter((a) => a.enabled && !a.removed).length;
       setStats({
         totalAssistants: assistants.length,
         activeAssistants: activeCount,
@@ -60,7 +53,14 @@ export default function AiAssistant() {
     <div style={{ padding: '0' }}>
       {/* Header Section */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '24px',
+          }}
+        >
           <div>
             <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
               {translate('AI Assistants')}
@@ -149,7 +149,7 @@ export default function AiAssistant() {
 
       {/* Main Content */}
 
-        <AiAssistantDataTableModule />
+      <AiAssistantDataTableModule />
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import useLanguage from '@/locale/useLanguage';
 import apolloClient from '@/graphql/client';
-import { GET_URLS, DELETE_URL, URL_SUMMARY } from '@/graphql/operations/url';
+import { DELETE_URL, GET_URLS, URL_SUMMARY } from '@/graphql/operations/url';
+import useLanguage from '@/locale/useLanguage';
 import { LinkOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -53,7 +53,10 @@ export default function UrlDataTableModule({ config, extra }) {
       console.log('Deleting URL with ID:', id);
 
       // Use the correct format for the delete request
-      const { data: delData } = await apolloClient.mutate({ mutation: DELETE_URL, variables: { id } });
+      const { data: delData } = await apolloClient.mutate({
+        mutation: DELETE_URL,
+        variables: { id },
+      });
       const response = delData.urlDelete;
 
       if (response.success) {

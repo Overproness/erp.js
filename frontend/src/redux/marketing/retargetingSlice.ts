@@ -1,20 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apolloClient from '@/graphql/client';
 import {
-  GET_RETARGETING_CAMPAIGNS,
   CREATE_RETARGETING_CAMPAIGN,
-  UPDATE_RETARGETING_CAMPAIGN,
   DELETE_RETARGETING_CAMPAIGN,
+  GET_RETARGETING_CAMPAIGNS,
   LAUNCH_RETARGETING_CAMPAIGN,
   PAUSE_RETARGETING_CAMPAIGN,
   RETARGETING_ANALYTICS,
+  UPDATE_RETARGETING_CAMPAIGN,
 } from '@/graphql/operations/reputation';
-import {
-  getListQuery,
-  getCreateMutation,
-  getUpdateMutation,
-  getDeleteMutation,
-} from '@/graphql/operations/crudFactory';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 // Async thunks
 export const fetchRetargetingLists = createAsyncThunk(

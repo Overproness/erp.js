@@ -1,33 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Table, 
-  Tag, 
-  Space, 
-  Button, 
-  Card,
-  Input,
-  Select,
-  DatePicker,
-  Avatar,
-  Tooltip,
-  Progress,
-  Badge
-} from 'antd';
-import { 
-  SearchOutlined, 
-  EditOutlined, 
-  EyeOutlined, 
-  DeleteOutlined,
-  CalendarOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  TwitterOutlined,
-  FilterOutlined
-} from '@ant-design/icons';
+import dummyPosts from '@/data/dummyPostsData';
 import { usePostManagement } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  SearchOutlined,
+  TwitterOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  DatePicker,
+  Input,
+  Progress,
+  Select,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+} from 'antd';
 import dayjs from 'dayjs';
-import dummyPosts from '@/data/dummyPostsData';
+import { useEffect, useRef, useState } from 'react';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -35,13 +31,13 @@ const { Option } = Select;
 const PostList = ({ onEditPost, onPreviewPost }) => {
   const translate = useLanguage();
   const { posts, isLoading, refreshPosts, deletePost } = usePostManagement();
-  
+
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [platformFilter, setPlatformFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateRange, setDateRange] = useState(null);
-  
+
   const loadedRef = useRef(false);
   // Use dummy data or API data based on what's available
   useEffect(() => {
@@ -50,43 +46,43 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
     if (typeof refreshPosts === 'function') {
       refreshPosts();
     }
-    
+
     // Initialize with dummy data
     setFilteredPosts(dummyPosts);
   }, []);
-  
+
   // Apply filters when they change
   useEffect(() => {
     const postsToFilter = Array.isArray(posts) && posts.length > 0 ? posts : dummyPosts;
     let filtered = [...postsToFilter];
-    
+
     // Apply search
     if (searchText) {
-      filtered = filtered.filter(post => 
+      filtered = filtered.filter((post) =>
         post.content.toLowerCase().includes(searchText.toLowerCase())
       );
     }
-    
+
     // Apply platform filter
     if (platformFilter !== 'all') {
-      filtered = filtered.filter(post => 
-        post.platforms && post.platforms.includes(platformFilter)
+      filtered = filtered.filter(
+        (post) => post.platforms && post.platforms.includes(platformFilter)
       );
     }
-    
+
     // Apply status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(post => post.status === statusFilter);
+      filtered = filtered.filter((post) => post.status === statusFilter);
     }
-    
+
     // Apply date filter
     if (dateRange && dateRange.length === 2) {
-      filtered = filtered.filter(post => {
+      filtered = filtered.filter((post) => {
         const postDate = dayjs(post.scheduledAt);
         return postDate.isAfter(dateRange[0]) && postDate.isBefore(dateRange[1]);
       });
     }
-    
+
     setFilteredPosts(filtered);
   }, [posts, searchText, platformFilter, statusFilter, dateRange]);
 
@@ -133,7 +129,7 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
       key: 'platforms',
       render: (platforms) => (
         <Space>
-          {platforms.map(platform => (
+          {platforms.map((platform) => (
             <Tooltip title={platform} key={platform}>
               {getPlatformIcon(platform)}
             </Tooltip>
@@ -145,31 +141,27 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
       title: translate('Status'),
       dataIndex: 'status',
       key: 'status',
-      render: (status) => (
-        <Tag color={getStatusColor(status)}>
-          {translate(status)}
-        </Tag>
-      ),
+      render: (status) => <Tag color={getStatusColor(status)}>{translate(status)}</Tag>,
     },
     {
       title: translate('Scheduled Date'),
       dataIndex: 'scheduledAt',
       key: 'scheduledAt',
-      render: (date) => date ? dayjs(date).format('MMM D, YYYY h:mm A') : '-',
+      render: (date) => (date ? dayjs(date).format('MMM D, YYYY h:mm A') : '-'),
       sorter: (a, b) => dayjs(a.scheduledAt).unix() - dayjs(b.scheduledAt).unix(),
     },
     {
       title: translate('Performance'),
       key: 'performance',
-      render: (_, record) => (
+      render: (_, record) =>
         record.status === 'published' ? (
           <Space direction="vertical" size="small" style={{ width: '100%' }}>
             <Tooltip title={`${record.performance.engagement} engagements`}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span style={{ width: '80px', fontSize: '12px' }}>Engagement:</span>
-                <Progress 
-                  percent={Math.min(100, (record.performance.engagement / 2000) * 100)} 
-                  size="small" 
+                <Progress
+                  percent={Math.min(100, (record.performance.engagement / 2000) * 100)}
+                  size="small"
                   showInfo={false}
                   strokeColor="#1890ff"
                 />
@@ -178,9 +170,9 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
             <Tooltip title={`${record.performance.reach} reach`}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span style={{ width: '80px', fontSize: '12px' }}>Reach:</span>
-                <Progress 
-                  percent={Math.min(100, (record.performance.reach / 10000) * 100)} 
-                  size="small" 
+                <Progress
+                  percent={Math.min(100, (record.performance.reach / 10000) * 100)}
+                  size="small"
                   showInfo={false}
                   strokeColor="#52c41a"
                 />
@@ -189,8 +181,7 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
           </Space>
         ) : (
           <span>-</span>
-        )
-      ),
+        ),
     },
     {
       title: translate('Actions'),
@@ -229,7 +220,7 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
             placeholder={translate('Search posts')}
             prefix={<SearchOutlined />}
             value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
             style={{ width: 200 }}
             allowClear
           />
@@ -258,14 +249,14 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
             <Option value="failed">{translate('Failed')}</Option>
           </Select>
         </Space>
-        
-        <RangePicker 
+
+        <RangePicker
           value={dateRange}
           onChange={setDateRange}
           placeholder={[translate('Start Date'), translate('End Date')]}
         />
       </div>
-      
+
       <Table
         columns={columns}
         dataSource={filteredPosts}

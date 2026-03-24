@@ -368,7 +368,7 @@ export const selectBulkActionLoading = createSelector(
 
 // Export base selectors
 export {
-    selectAnalyticsState, selectLinksState, selectPlatformsState, selectReputationState,
-    selectReviewsState, selectTemplatesState, selectUiState
+  selectAnalyticsState, selectLinksState, selectPlatformsState, selectReputationState,
+  selectReviewsState, selectTemplatesState, selectUiState
 };
 

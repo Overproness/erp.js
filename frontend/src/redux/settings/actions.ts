@@ -1,6 +1,5 @@
 import apolloClient from '@/graphql/client';
-import { GET_ALL_SETTINGS } from '@/graphql/operations/settings';
-import { UPDATE_SETTING_BY_KEY, UPDATE_MANY_SETTINGS } from '@/graphql/operations/settings';
+import { GET_ALL_SETTINGS, UPDATE_MANY_SETTINGS, UPDATE_SETTING_BY_KEY } from '@/graphql/operations/settings';
 import { request } from '@/request';
 import * as actionTypes from './types';
 

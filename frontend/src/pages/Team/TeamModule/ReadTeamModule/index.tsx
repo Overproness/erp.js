@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { erp } from '@/redux/erp/actions';
 import { selectCurrentItem } from '@/redux/erp/selectors';
-import { ReadItem } from './components/ReadItem';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { TEAM_ENTITY } from '../TeamDataTableModule/config';
+import { ReadItem } from './components/ReadItem';
 
 const ReadTeamModule = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ReadTeamModule = () => {
 
   const { result: currentResult } = useSelector(selectCurrentItem);
   const loadedRef = useRef('');
-  
+
   useEffect(() => {
     if (id && loadedRef.current !== id) {
       loadedRef.current = id;

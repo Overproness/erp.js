@@ -1,49 +1,46 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { 
-  Card, 
-  Row, 
-  Col, 
-  Statistic, 
-  Progress, 
-  Typography, 
-  Space, 
-  Select, 
-  DatePicker, 
-  Table,
-  List,
-  Avatar,
-  Tag,
-  Alert,
-  Spin
-} from 'antd';
-import { 
-  BarChartOutlined, 
-  FileTextOutlined, 
-  DatabaseOutlined,
-  ClockCircleOutlined,
-  CheckCircleOutlined,
-  ExclamationCircleOutlined,
-  TrophyOutlined,
-  RiseOutlined
-} from '@ant-design/icons';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar
-} from 'recharts';
-import { fetchProcessingStats } from '@/redux/ai/aiThunks';
-import { selectProcessingStats, selectProcessingStatsLoading } from '@/redux/ai/aiSelectors';
 import useLanguage from '@/locale/useLanguage';
+import { selectProcessingStats, selectProcessingStatsLoading } from '@/redux/ai/aiSelectors';
+import { fetchProcessingStats } from '@/redux/ai/aiThunks';
+import {
+  BarChartOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  DatabaseOutlined,
+  ExclamationCircleOutlined,
+  FileTextOutlined,
+  RiseOutlined,
+  TrophyOutlined,
+} from '@ant-design/icons';
+import {
+  Alert,
+  Avatar,
+  Card,
+  Col,
+  DatePicker,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Statistic,
+  Table,
+  Tag,
+  Typography,
+} from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  CartesianGrid,
+  Cell,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -53,7 +50,7 @@ const ProcessingAnalytics = () => {
   const translate = useLanguage();
   const [timeframe, setTimeframe] = useState('30_days');
   const [selectedMetric, setSelectedMetric] = useState('documents');
-  
+
   const processingStats = useSelector(selectProcessingStats);
   const loading = useSelector(selectProcessingStatsLoading);
   const prevTimeframeRef = useRef('');
@@ -88,26 +85,26 @@ const ProcessingAnalytics = () => {
       { name: 'Others', value: 10, color: '#722ed1' },
     ],
     topWorkflows: [
-      { 
+      {
         name: 'Invoice Processing',
         executions: 234,
         successRate: 96.2,
         avgTime: 1.8,
-        trend: 'up'
+        trend: 'up',
       },
       {
         name: 'Receipt Analysis',
         executions: 156,
         successRate: 92.3,
         avgTime: 2.1,
-        trend: 'up'
+        trend: 'up',
       },
       {
         name: 'Contract Review',
         executions: 89,
         successRate: 94.4,
         avgTime: 3.2,
-        trend: 'stable'
+        trend: 'stable',
       },
     ],
     recentErrors: [
@@ -116,16 +113,16 @@ const ProcessingAnalytics = () => {
         type: 'OCR Failed',
         document: 'invoice_001.pdf',
         time: '2024-01-15 14:30',
-        reason: 'Poor image quality'
+        reason: 'Poor image quality',
       },
       {
         id: 2,
         type: 'Data Extraction',
         document: 'receipt_045.jpg',
         time: '2024-01-15 13:15',
-        reason: 'Template mismatch'
+        reason: 'Template mismatch',
       },
-    ]
+    ],
   };
 
   const currentStats = processingStats || mockStats;
@@ -152,9 +149,9 @@ const ProcessingAnalytics = () => {
       dataIndex: 'successRate',
       key: 'successRate',
       render: (rate) => (
-        <Progress 
-          percent={rate} 
-          size="small" 
+        <Progress
+          percent={rate}
+          size="small"
           status={rate > 95 ? 'success' : rate > 90 ? 'normal' : 'exception'}
         />
       ),
@@ -204,7 +201,9 @@ const ProcessingAnalytics = () => {
     <div>
       <Alert
         message={translate('Processing Analytics')}
-        description={translate('Monitor and analyze your data processing performance, success rates, and workflow efficiency.')}
+        description={translate(
+          'Monitor and analyze your data processing performance, success rates, and workflow efficiency.'
+        )}
         type="info"
         showIcon
         style={{ marginBottom: 24 }}
@@ -217,11 +216,7 @@ const ProcessingAnalytics = () => {
             <Text strong>{translate('Time Period')}:</Text>
           </Col>
           <Col>
-            <Select
-              value={timeframe}
-              onChange={setTimeframe}
-              style={{ width: 150 }}
-            >
+            <Select value={timeframe} onChange={setTimeframe} style={{ width: 150 }}>
               <Select.Option value="7_days">{translate('Last 7 days')}</Select.Option>
               <Select.Option value="30_days">{translate('Last 30 days')}</Select.Option>
               <Select.Option value="90_days">{translate('Last 90 days')}</Select.Option>
@@ -237,9 +232,7 @@ const ProcessingAnalytics = () => {
         <Card>
           <div style={{ textAlign: 'center', padding: '40px' }}>
             <Spin size="large" />
-            <div style={{ marginTop: 16 }}>
-              {translate('Loading analytics data...')}
-            </div>
+            <div style={{ marginTop: 16 }}>{translate('Loading analytics data...')}</div>
           </div>
         </Card>
       ) : (
@@ -294,31 +287,37 @@ const ProcessingAnalytics = () => {
           {/* Charts Section */}
           <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
             <Col span={16}>
-              <Card title={<><BarChartOutlined /> {translate('Daily Processing Volume')}</>}>
+              <Card
+                title={
+                  <>
+                    <BarChartOutlined /> {translate('Daily Processing Volume')}
+                  </>
+                }
+              >
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={currentStats.dailyProcessing}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis />
                     <Tooltip />
-                    <Line 
-                      type="monotone" 
-                      dataKey="documents" 
-                      stroke="#1890ff" 
+                    <Line
+                      type="monotone"
+                      dataKey="documents"
+                      stroke="#1890ff"
                       size={2}
                       name={translate('Total Documents')}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="success" 
-                      stroke="#52c41a" 
+                    <Line
+                      type="monotone"
+                      dataKey="success"
+                      stroke="#52c41a"
                       size={2}
                       name={translate('Successful')}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="failed" 
-                      stroke="#ff4d4f" 
+                    <Line
+                      type="monotone"
+                      dataKey="failed"
+                      stroke="#ff4d4f"
                       size={2}
                       name={translate('Failed')}
                     />
@@ -327,7 +326,13 @@ const ProcessingAnalytics = () => {
               </Card>
             </Col>
             <Col span={8}>
-              <Card title={<><DatabaseOutlined /> {translate('Document Types')}</>}>
+              <Card
+                title={
+                  <>
+                    <DatabaseOutlined /> {translate('Document Types')}
+                  </>
+                }
+              >
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
@@ -353,7 +358,13 @@ const ProcessingAnalytics = () => {
           {/* Workflow Performance */}
           <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
             <Col span={14}>
-              <Card title={<><RiseOutlined /> {translate('Top Performing Workflows')}</>}>
+              <Card
+                title={
+                  <>
+                    <RiseOutlined /> {translate('Top Performing Workflows')}
+                  </>
+                }
+              >
                 <Table
                   dataSource={currentStats.topWorkflows}
                   columns={columns}
@@ -363,7 +374,13 @@ const ProcessingAnalytics = () => {
               </Card>
             </Col>
             <Col span={10}>
-              <Card title={<><ExclamationCircleOutlined /> {translate('Recent Errors')}</>}>
+              <Card
+                title={
+                  <>
+                    <ExclamationCircleOutlined /> {translate('Recent Errors')}
+                  </>
+                }
+              >
                 <Table
                   dataSource={currentStats.recentErrors}
                   columns={errorColumns}
@@ -379,9 +396,9 @@ const ProcessingAnalytics = () => {
             <Row gutter={[16, 16]}>
               <Col span={8}>
                 <Card size="small" title={translate('OCR Accuracy')}>
-                  <Progress 
-                    type="circle" 
-                    percent={96.5} 
+                  <Progress
+                    type="circle"
+                    percent={96.5}
                     status="success"
                     format={(percent) => `${percent}%`}
                   />
@@ -392,9 +409,9 @@ const ProcessingAnalytics = () => {
               </Col>
               <Col span={8}>
                 <Card size="small" title={translate('Data Extraction')}>
-                  <Progress 
-                    type="circle" 
-                    percent={92.8} 
+                  <Progress
+                    type="circle"
+                    percent={92.8}
                     status="success"
                     format={(percent) => `${percent}%`}
                   />
@@ -405,9 +422,9 @@ const ProcessingAnalytics = () => {
               </Col>
               <Col span={8}>
                 <Card size="small" title={translate('Workflow Automation')}>
-                  <Progress 
-                    type="circle" 
-                    percent={88.2} 
+                  <Progress
+                    type="circle"
+                    percent={88.2}
                     status="normal"
                     format={(percent) => `${percent}%`}
                   />

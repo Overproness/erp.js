@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { Form, Switch, Select, InputNumber, Button, Divider, message } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserPreferences, updateUserPreferences } from '@/redux/ai/aiThunks';
-import { selectUserPreferences, selectSettingsLoading } from '@/redux/ai/aiSelectors';
 import useLanguage from '@/locale/useLanguage';
+import { selectSettingsLoading, selectUserPreferences } from '@/redux/ai/aiSelectors';
+import { fetchUserPreferences, updateUserPreferences } from '@/redux/ai/aiThunks';
+import { Button, Divider, Form, InputNumber, message, Select, Switch } from 'antd';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { Option } = Select;
 
@@ -11,7 +11,7 @@ const AiPreferences = () => {
   const dispatch = useDispatch();
   const translate = useLanguage();
   const [form] = Form.useForm();
-  
+
   const preferences = useSelector(selectUserPreferences);
   const isLoading = useSelector(selectSettingsLoading);
   const loadedRef = useRef(false);
@@ -59,11 +59,7 @@ const AiPreferences = () => {
         <Switch />
       </Form.Item>
 
-      <Form.Item
-        name="contextAware"
-        label={translate('Context Awareness')}
-        valuePropName="checked"
-      >
+      <Form.Item name="contextAware" label={translate('Context Awareness')} valuePropName="checked">
         <Switch />
       </Form.Item>
 
@@ -77,10 +73,7 @@ const AiPreferences = () => {
 
       <Divider />
 
-      <Form.Item
-        name="defaultModel"
-        label={translate('Default Model')}
-      >
+      <Form.Item name="defaultModel" label={translate('Default Model')}>
         <Select>
           <Option value="gpt-3.5-turbo">GPT-3.5 Turbo</Option>
           <Option value="gpt-4">GPT-4</Option>
@@ -88,17 +81,11 @@ const AiPreferences = () => {
         </Select>
       </Form.Item>
 
-      <Form.Item
-        name="maxTokens"
-        label={translate('Default Max Tokens')}
-      >
+      <Form.Item name="maxTokens" label={translate('Default Max Tokens')}>
         <InputNumber min={100} max={4000} style={{ width: '100%' }} />
       </Form.Item>
 
-      <Form.Item
-        name="temperature"
-        label={translate('Default Temperature')}
-      >
+      <Form.Item name="temperature" label={translate('Default Temperature')}>
         <InputNumber min={0} max={2} step={0.1} style={{ width: '100%' }} />
       </Form.Item>
 

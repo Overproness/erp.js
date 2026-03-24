@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Form, Button, message, Spin, Alert } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
-import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { ErpLayout } from '@/layout';
-import { fetchAssistant, updateAssistant } from '@/redux/ai/aiThunks';
-import { selectCurrentAssistant, selectAssistantsLoading } from '@/redux/ai/aiSelectors';
-import AiAssistantForm from '../Forms/AiAssistantForm';
 import useLanguage from '@/locale/useLanguage';
+import { selectAssistantsLoading, selectCurrentAssistant } from '@/redux/ai/aiSelectors';
+import { fetchAssistant, updateAssistant } from '@/redux/ai/aiThunks';
+import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Alert, Button, Form, message, Spin } from 'antd';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import AiAssistantForm from '../Forms/AiAssistantForm';
 
 const UpdateAiAssistantModule = () => {
   const { id } = useParams();
@@ -16,7 +16,7 @@ const UpdateAiAssistantModule = () => {
   const navigate = useNavigate();
   const translate = useLanguage();
   const [form] = Form.useForm();
-  
+
   const assistant = useSelector(selectCurrentAssistant);
   const loading = useSelector(selectAssistantsLoading);
   const loadedRef = useRef('');
@@ -56,12 +56,14 @@ const UpdateAiAssistantModule = () => {
   if (loading) {
     return (
       <ErpLayout>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '60vh' 
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '60vh',
+          }}
+        >
           <Spin size="large" />
         </div>
       </ErpLayout>
@@ -97,9 +99,9 @@ const UpdateAiAssistantModule = () => {
           <Button key="cancel" onClick={() => navigate('/ai-assistant')}>
             {translate('Cancel')}
           </Button>,
-          <Button 
-            key="save" 
-            type="primary" 
+          <Button
+            key="save"
+            type="primary"
             icon={<SaveOutlined />}
             onClick={() => form.submit()}
             loading={loading}
@@ -109,13 +111,11 @@ const UpdateAiAssistantModule = () => {
         ]}
       />
 
-      <div style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: 'calc(100vh - 112px)' }}>
+      <div
+        style={{ padding: '24px', backgroundColor: '#f5f5f5', minHeight: 'calc(100vh - 112px)' }}
+      >
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleSubmit}
-          >
+          <Form form={form} layout="vertical" onFinish={handleSubmit}>
             <AiAssistantForm initialValues={assistant} isUpdate={true} />
           </Form>
         </div>

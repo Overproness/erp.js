@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Card, Tabs, Button, Space, Typography, Row, Col, Statistic } from 'antd';
-import { 
-  ArrowLeftOutlined, 
-  ScanOutlined, 
-  FileTextOutlined, 
-  RobotOutlined,
-  DatabaseOutlined,
-  BarChartOutlined 
-} from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { ErpLayout } from '@/layout';
-import OCRProcessor from './OCRProcessor';
-import DataExtractor from './DataExtractor';
-import ProcessingWorkflows from './ProcessingWorkflows';
-import ProcessingAnalytics from './ProcessingAnalytics';
-import { fetchProcessingStats } from '@/redux/ai/aiThunks';
-import { selectAnalyticsData, selectAnalyticsLoading } from '@/redux/ai/aiSelectors';
 import useLanguage from '@/locale/useLanguage';
+import { selectAnalyticsData, selectAnalyticsLoading } from '@/redux/ai/aiSelectors';
+import { fetchProcessingStats } from '@/redux/ai/aiThunks';
+import {
+  ArrowLeftOutlined,
+  BarChartOutlined,
+  DatabaseOutlined,
+  FileTextOutlined,
+  RobotOutlined,
+  ScanOutlined,
+} from '@ant-design/icons';
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import DataExtractor from './DataExtractor';
+import OCRProcessor from './OCRProcessor';
+import ProcessingAnalytics from './ProcessingAnalytics';
+import ProcessingWorkflows from './ProcessingWorkflows';
 
 const { Title } = Typography;
 
@@ -26,7 +26,7 @@ const DataProcessorModule = () => {
   const dispatch = useDispatch();
   const translate = useLanguage();
   const [activeTab, setActiveTab] = useState('ocr');
-  
+
   const analyticsData = useSelector(selectAnalyticsData);
   const loading = useSelector(selectAnalyticsLoading);
   const loadedRef = useRef(false);
@@ -93,10 +93,7 @@ const DataProcessorModule = () => {
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
           <Space>
-            <Button 
-              icon={<ArrowLeftOutlined />} 
-              onClick={() => navigate('/ai-assistant')}
-            >
+            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/ai-assistant')}>
               {translate('Back')}
             </Button>
             <Title level={2} style={{ margin: 0 }}>
@@ -154,12 +151,7 @@ const DataProcessorModule = () => {
 
         {/* Main Content */}
         <Card>
-          <Tabs
-            activeKey={activeTab}
-            onChange={setActiveTab}
-            items={tabItems}
-            size="large"
-          />
+          <Tabs activeKey={activeTab} onChange={setActiveTab} items={tabItems} size="large" />
         </Card>
       </div>
     </ErpLayout>

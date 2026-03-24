@@ -1,5 +1,5 @@
 import apolloClient from '@/graphql/client';
-import { getListQuery, getReadQuery, getCreateMutation, getUpdateMutation, getDeleteMutation, getSearchQuery } from '@/graphql/operations/crudFactory';
+import { getCreateMutation, getDeleteMutation, getListQuery, getReadQuery, getSearchQuery, getUpdateMutation } from '@/graphql/operations/crudFactory';
 import { DOCUMENT_AUDIT_TRAIL } from '@/graphql/operations/document';
 import { request } from '@/request';
 import * as actionTypes from './types';

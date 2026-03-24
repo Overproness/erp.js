@@ -1,18 +1,18 @@
 import apolloClient from '@/graphql/client';
-import { gql } from '@apollo/client';
 import {
-  GET_REVIEWS,
-  DELETE_REVIEW,
-  GET_REVIEW_LINKS,
-  CREATE_REVIEW_LINK,
-  UPDATE_REVIEW_LINK,
-  DELETE_REVIEW_LINK,
-  GET_REVIEW_TEMPLATES,
-  CREATE_REVIEW_TEMPLATE,
-  UPDATE_REVIEW_TEMPLATE,
-  DELETE_REVIEW_TEMPLATE,
-  RESPOND_TO_REVIEW,
+    CREATE_REVIEW_LINK,
+    CREATE_REVIEW_TEMPLATE,
+    DELETE_REVIEW,
+    DELETE_REVIEW_LINK,
+    DELETE_REVIEW_TEMPLATE,
+    GET_REVIEW_LINKS,
+    GET_REVIEW_TEMPLATES,
+    GET_REVIEWS,
+    RESPOND_TO_REVIEW,
+    UPDATE_REVIEW_LINK,
+    UPDATE_REVIEW_TEMPLATE,
 } from '@/graphql/operations/reputation';
+import { gql } from '@apollo/client';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Review actions

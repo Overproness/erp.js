@@ -13,11 +13,11 @@ import { DownOutlined, HistoryOutlined, PlusOutlined, RobotOutlined } from '@ant
 import { Avatar, Button, Dropdown, Empty, Layout, Space, Typography } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ApiKeyWarning from './ApiKeyWarning';
 import InputArea from './InputArea';
 import MessageBubble from './MessageBubble';
 import SuggestionChips from './SuggestionChips';
 import TypingIndicator from './TypingIndicator';
-import ApiKeyWarning from './ApiKeyWarning';
 
 const { Content, Header } = Layout;
 const { Title, Text } = Typography;
@@ -417,7 +417,7 @@ const ChatInterface = ({ assistant }) => {
             onSendMessage={handleSendMessage}
             disabled={isLoading || !hasApiKey}
             placeholder={
-              hasApiKey 
+              hasApiKey
                 ? translate('Type your message...')
                 : translate('Configure your OpenAI API key to start chatting...')
             }

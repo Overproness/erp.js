@@ -1,58 +1,52 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import useLanguage from '@/locale/useLanguage';
 import {
-  Card,
-  Button,
-  Space,
-  Typography,
-  Tabs,
-  Table,
-  Tag,
-  Progress,
-  Statistic,
-  Row,
-  Col,
-  message,
-  Modal,
-  Tooltip,
-} from 'antd';
-import {
-  ExperimentOutlined,
-  PlusOutlined,
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  StopOutlined,
-  TrophyOutlined,
   BarChartOutlined,
   DeleteOutlined,
   EditOutlined,
+  ExperimentOutlined,
   EyeOutlined,
   LinkOutlined,
+  PauseCircleOutlined,
+  PlayCircleOutlined,
+  PlusOutlined,
+  StopOutlined,
+  TrophyOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import useLanguage from '@/locale/useLanguage';
-import CreateABTest from './CreateABTest';
-import ABTestResults from './ABTestResults';
-import ABTestDetails from './ABTestDetails.jsx';
+import {
+  Button,
+  Card,
+  Col,
+  message,
+  Modal,
+  Progress,
+  Row,
+  Space,
+  Statistic,
+  Table,
+  Tabs,
+  Tag,
+  Tooltip,
+  Typography,
+} from 'antd';
 import dayjs from 'dayjs';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ABTestDetails from './ABTestDetails.jsx';
+import ABTestResults from './ABTestResults';
+import CreateABTest from './CreateABTest';
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchABTests,
   createABTest,
+  fetchABTests,
+  pauseABTest,
+  selectABTestsLoading,
+  selectABTestsRecent,
+  selectABTestsSummary,
   startABTest,
   stopABTest,
-  pauseABTest,
-  // updateABTest, // If you have update thunk
-  // deleteABTest, // If you have delete thunk
-  // fetchABTestResults, // If you have results thunk
-  // fetchABTestDetails, // If you have details thunk
 } from '@/redux/url';
-import {
-  selectABTestsSummary,
-  selectABTestsRecent,
-  selectABTestsLoading,
-} from '@/redux/url';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -449,10 +443,7 @@ const ABTestModule = () => {
           </div>
           <Space>
             {/* New Button to go to URL Manager */}
-            <Button
-              icon={<LinkOutlined />}
-              onClick={() => navigate('/url')}
-            >
+            <Button icon={<LinkOutlined />} onClick={() => navigate('/url')}>
               {translate('Go to URL Manager')}
             </Button>
             <Button type="primary" icon={<PlusOutlined />} onClick={() => setShowCreateModal(true)}>

@@ -1,37 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Card, 
-  Table, 
-  Tag, 
-  Button, 
-  Space, 
-  Input, 
-  Select, 
-  DatePicker,
-  Avatar,
-  Tooltip,
-  Row,
-  Col,
-  Statistic,
-  Progress,
-  message
-} from 'antd';
-import {
-  MessageOutlined,
-  HeartOutlined,
-  SmileOutlined,
-  FrownOutlined,
-  MehOutlined,
-  RollbackOutlined,
-  PlusOutlined,
-  SearchOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  TwitterOutlined
-} from '@ant-design/icons';
 import { useMentions } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
+import {
+  FacebookOutlined,
+  FrownOutlined,
+  InstagramOutlined,
+  MehOutlined,
+  MessageOutlined,
+  RollbackOutlined,
+  SearchOutlined,
+  SmileOutlined,
+  TwitterOutlined,
+} from '@ant-design/icons';
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  DatePicker,
+  Input,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Statistic,
+  Table,
+  Tag,
+  Tooltip,
+  message,
+} from 'antd';
 import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -40,7 +38,7 @@ const { RangePicker } = DatePicker;
 const MentionList = ({ onViewMention }) => {
   const translate = useLanguage();
   const { mentions, isLoading, refreshMentions, trackKeywords, addNote } = useMentions();
-  
+
   const [filteredMentions, setFilteredMentions] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [sentimentFilter, setSentimentFilter] = useState('all');
@@ -52,55 +50,57 @@ const MentionList = ({ onViewMention }) => {
   const [dummyMentions] = useState([
     {
       _id: '1',
-      content: 'Your product is amazing! I\'ve been using it for a month and already seeing great results.',
+      content:
+        "Your product is amazing! I've been using it for a month and already seeing great results.",
       author: {
         name: 'Sarah Johnson',
         username: 'sarahjohnson',
-        avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
+        avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
       },
       platform: 'instagram',
       sentiment: 'positive',
       status: 'new',
-      createdAt: '2024-01-14T08:45:00Z'
+      createdAt: '2024-01-14T08:45:00Z',
     },
     {
       _id: '2',
-      content: 'Can someone help me with setting up this tool? The instructions aren\'t clear.',
+      content: "Can someone help me with setting up this tool? The instructions aren't clear.",
       author: {
         name: 'Mike Peters',
         username: 'mikepeters',
-        avatar: 'https://randomuser.me/api/portraits/men/22.jpg'
+        avatar: 'https://randomuser.me/api/portraits/men/22.jpg',
       },
       platform: 'twitter',
       sentiment: 'neutral',
       status: 'responded',
-      createdAt: '2024-01-13T16:30:00Z'
+      createdAt: '2024-01-13T16:30:00Z',
     },
     {
       _id: '3',
-      content: 'I\'ve been waiting for customer service to respond for 3 days now. Terrible support!',
+      content:
+        "I've been waiting for customer service to respond for 3 days now. Terrible support!",
       author: {
         name: 'Alex Rivera',
         username: 'alexrivera',
-        avatar: 'https://randomuser.me/api/portraits/men/67.jpg'
+        avatar: 'https://randomuser.me/api/portraits/men/67.jpg',
       },
       platform: 'facebook',
       sentiment: 'negative',
       status: 'new',
-      createdAt: '2024-01-12T11:20:00Z'
+      createdAt: '2024-01-12T11:20:00Z',
     },
     {
       _id: '4',
-      content: 'Just discovered this company and love what they\'re doing. Keep up the good work!',
+      content: "Just discovered this company and love what they're doing. Keep up the good work!",
       author: {
         name: 'Emma Wilson',
         username: 'emmawilson',
-        avatar: 'https://randomuser.me/api/portraits/women/63.jpg'
+        avatar: 'https://randomuser.me/api/portraits/women/63.jpg',
       },
       platform: 'instagram',
       sentiment: 'positive',
       status: 'new',
-      createdAt: '2024-01-11T14:15:00Z'
+      createdAt: '2024-01-11T14:15:00Z',
     },
     {
       _id: '5',
@@ -108,12 +108,12 @@ const MentionList = ({ onViewMention }) => {
       author: {
         name: 'David Chen',
         username: 'davidchen',
-        avatar: 'https://randomuser.me/api/portraits/men/91.jpg'
+        avatar: 'https://randomuser.me/api/portraits/men/91.jpg',
       },
       platform: 'twitter',
       sentiment: 'positive',
       status: 'responded',
-      createdAt: '2024-01-10T09:40:00Z'
+      createdAt: '2024-01-10T09:40:00Z',
     },
     {
       _id: '6',
@@ -121,12 +121,12 @@ const MentionList = ({ onViewMention }) => {
       author: {
         name: 'Jessica Miller',
         username: 'jessicamiller',
-        avatar: 'https://randomuser.me/api/portraits/women/32.jpg'
+        avatar: 'https://randomuser.me/api/portraits/women/32.jpg',
       },
       platform: 'facebook',
       sentiment: 'negative',
       status: 'pending',
-      createdAt: '2024-01-09T13:25:00Z'
+      createdAt: '2024-01-09T13:25:00Z',
     },
     {
       _id: '7',
@@ -134,12 +134,12 @@ const MentionList = ({ onViewMention }) => {
       author: {
         name: 'Ryan Taylor',
         username: 'ryantaylor',
-        avatar: 'https://randomuser.me/api/portraits/men/33.jpg'
+        avatar: 'https://randomuser.me/api/portraits/men/33.jpg',
       },
       platform: 'twitter',
       sentiment: 'neutral',
       status: 'new',
-      createdAt: '2024-01-08T16:55:00Z'
+      createdAt: '2024-01-08T16:55:00Z',
     },
     {
       _id: '8',
@@ -147,13 +147,13 @@ const MentionList = ({ onViewMention }) => {
       author: {
         name: 'Olivia Garcia',
         username: 'oliviagarcia',
-        avatar: 'https://randomuser.me/api/portraits/women/17.jpg'
+        avatar: 'https://randomuser.me/api/portraits/women/17.jpg',
       },
       platform: 'instagram',
       sentiment: 'positive',
       status: 'responded',
-      createdAt: '2024-01-07T10:35:00Z'
-    }
+      createdAt: '2024-01-07T10:35:00Z',
+    },
   ]);
 
   const loadedRef = useRef(false);
@@ -174,30 +174,31 @@ const MentionList = ({ onViewMention }) => {
 
     // Apply search filter
     if (searchText) {
-      filtered = filtered.filter(mention => 
-        mention.content?.toLowerCase().includes(searchText.toLowerCase()) ||
-        mention.author?.name?.toLowerCase().includes(searchText.toLowerCase())
+      filtered = filtered.filter(
+        (mention) =>
+          mention.content?.toLowerCase().includes(searchText.toLowerCase()) ||
+          mention.author?.name?.toLowerCase().includes(searchText.toLowerCase())
       );
     }
 
     // Apply sentiment filter
     if (sentimentFilter !== 'all') {
-      filtered = filtered.filter(mention => mention.sentiment === sentimentFilter);
+      filtered = filtered.filter((mention) => mention.sentiment === sentimentFilter);
     }
 
     // Apply platform filter
     if (platformFilter !== 'all') {
-      filtered = filtered.filter(mention => mention.platform === platformFilter);
+      filtered = filtered.filter((mention) => mention.platform === platformFilter);
     }
 
     // Apply status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(mention => mention.status === statusFilter);
+      filtered = filtered.filter((mention) => mention.status === statusFilter);
     }
 
     // Apply date filter
     if (dateRange && dateRange.length === 2) {
-      filtered = filtered.filter(mention => {
+      filtered = filtered.filter((mention) => {
         const mentionDate = dayjs(mention.createdAt);
         return mentionDate.isAfter(dateRange[0]) && mentionDate.isBefore(dateRange[1]);
       });
@@ -259,19 +260,12 @@ const MentionList = ({ onViewMention }) => {
       width: 150,
       render: (_, record) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Avatar
-            src={record.author.avatar}
-            style={{ backgroundColor: '#8b5cf6' }}
-          >
+          <Avatar src={record.author.avatar} style={{ backgroundColor: '#8b5cf6' }}>
             {record.author.name.charAt(0).toUpperCase()}
           </Avatar>
           <div>
-            <div style={{ fontWeight: 600, fontSize: '13px' }}>
-              {record.author.name}
-            </div>
-            <div style={{ fontSize: '11px', color: '#6b7280' }}>
-              @{record.author.username}
-            </div>
+            <div style={{ fontWeight: 600, fontSize: '13px' }}>{record.author.name}</div>
+            <div style={{ fontSize: '11px', color: '#6b7280' }}>@{record.author.username}</div>
           </div>
         </div>
       ),
@@ -294,11 +288,7 @@ const MentionList = ({ onViewMention }) => {
       dataIndex: 'platform',
       key: 'platform',
       width: 100,
-      render: (platform) => (
-        <Tooltip title={platform}>
-          {getPlatformIcon(platform)}
-        </Tooltip>
-      ),
+      render: (platform) => <Tooltip title={platform}>{getPlatformIcon(platform)}</Tooltip>,
     },
     {
       title: translate('Sentiment'),
@@ -306,10 +296,7 @@ const MentionList = ({ onViewMention }) => {
       key: 'sentiment',
       width: 120,
       render: (sentiment) => (
-        <Tag 
-          color={getSentimentColor(sentiment)} 
-          icon={getSentimentIcon(sentiment)}
-        >
+        <Tag color={getSentimentColor(sentiment)} icon={getSentimentIcon(sentiment)}>
           {translate(sentiment)}
         </Tag>
       ),
@@ -319,11 +306,7 @@ const MentionList = ({ onViewMention }) => {
       dataIndex: 'status',
       key: 'status',
       width: 100,
-      render: (status) => (
-        <Tag color={getStatusColor(status)}>
-          {translate(status)}
-        </Tag>
-      ),
+      render: (status) => <Tag color={getStatusColor(status)}>{translate(status)}</Tag>,
     },
     {
       title: translate('Date'),
@@ -352,7 +335,7 @@ const MentionList = ({ onViewMention }) => {
               onClick={() => onViewMention(record)}
             />
           </Tooltip>
-          
+
           <Tooltip title={translate('Respond')}>
             <Button
               type="text"
@@ -370,15 +353,22 @@ const MentionList = ({ onViewMention }) => {
   // Calculate stats - ensure filteredMentions is always an array
   const stats = {
     total: Array.isArray(filteredMentions) ? filteredMentions.length : 0,
-    positive: Array.isArray(filteredMentions) ? filteredMentions.filter(m => m.sentiment === 'positive').length : 0,
-    negative: Array.isArray(filteredMentions) ? filteredMentions.filter(m => m.sentiment === 'negative').length : 0,
-    neutral: Array.isArray(filteredMentions) ? filteredMentions.filter(m => m.sentiment === 'neutral').length : 0,
-    responded: Array.isArray(filteredMentions) ? filteredMentions.filter(m => m.status === 'responded').length : 0,
+    positive: Array.isArray(filteredMentions)
+      ? filteredMentions.filter((m) => m.sentiment === 'positive').length
+      : 0,
+    negative: Array.isArray(filteredMentions)
+      ? filteredMentions.filter((m) => m.sentiment === 'negative').length
+      : 0,
+    neutral: Array.isArray(filteredMentions)
+      ? filteredMentions.filter((m) => m.sentiment === 'neutral').length
+      : 0,
+    responded: Array.isArray(filteredMentions)
+      ? filteredMentions.filter((m) => m.status === 'responded').length
+      : 0,
   };
 
-  const sentimentScore = stats.total > 0 
-    ? ((stats.positive - stats.negative) / stats.total * 100).toFixed(1)
-    : 0;
+  const sentimentScore =
+    stats.total > 0 ? (((stats.positive - stats.negative) / stats.total) * 100).toFixed(1) : 0;
 
   return (
     <div>
@@ -394,33 +384,35 @@ const MentionList = ({ onViewMention }) => {
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={6}>
           <Card>
             <Statistic
               title={translate('Sentiment Score')}
               value={sentimentScore}
               suffix="%"
-              prefix={getSentimentIcon(sentimentScore > 0 ? 'positive' : sentimentScore < 0 ? 'negative' : 'neutral')}
-              valueStyle={{ 
-                color: sentimentScore > 0 ? '#52c41a' : sentimentScore < 0 ? '#ff4d4f' : '#faad14' 
+              prefix={getSentimentIcon(
+                sentimentScore > 0 ? 'positive' : sentimentScore < 0 ? 'negative' : 'neutral'
+              )}
+              valueStyle={{
+                color: sentimentScore > 0 ? '#52c41a' : sentimentScore < 0 ? '#ff4d4f' : '#faad14',
               }}
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={6}>
           <Card>
             <Statistic
               title={translate('Response Rate')}
-              value={stats.total > 0 ? (stats.responded / stats.total * 100).toFixed(1) : 0}
+              value={stats.total > 0 ? ((stats.responded / stats.total) * 100).toFixed(1) : 0}
               suffix="%"
               prefix={<RollbackOutlined />}
               valueStyle={{ color: '#1890ff' }}
             />
           </Card>
         </Col>
-        
+
         <Col xs={24} sm={6}>
           <Card>
             <Statistic
@@ -441,44 +433,38 @@ const MentionList = ({ onViewMention }) => {
             <div style={{ textAlign: 'center' }}>
               <Progress
                 type="circle"
-                percent={stats.total > 0 ? (stats.positive / stats.total * 100) : 0}
+                percent={stats.total > 0 ? (stats.positive / stats.total) * 100 : 0}
                 format={() => stats.positive}
                 strokeColor="#52c41a"
                 size={80}
               />
-              <div style={{ marginTop: '8px', fontSize: '12px' }}>
-                {translate('Positive')}
-              </div>
+              <div style={{ marginTop: '8px', fontSize: '12px' }}>{translate('Positive')}</div>
             </div>
           </Col>
-          
+
           <Col span={8}>
             <div style={{ textAlign: 'center' }}>
               <Progress
                 type="circle"
-                percent={stats.total > 0 ? (stats.neutral / stats.total * 100) : 0}
+                percent={stats.total > 0 ? (stats.neutral / stats.total) * 100 : 0}
                 format={() => stats.neutral}
                 strokeColor="#faad14"
                 size={80}
               />
-              <div style={{ marginTop: '8px', fontSize: '12px' }}>
-                {translate('Neutral')}
-              </div>
+              <div style={{ marginTop: '8px', fontSize: '12px' }}>{translate('Neutral')}</div>
             </div>
           </Col>
-          
+
           <Col span={8}>
             <div style={{ textAlign: 'center' }}>
               <Progress
                 type="circle"
-                percent={stats.total > 0 ? (stats.negative / stats.total * 100) : 0}
+                percent={stats.total > 0 ? (stats.negative / stats.total) * 100 : 0}
                 format={() => stats.negative}
                 strokeColor="#ff4d4f"
                 size={80}
               />
-              <div style={{ marginTop: '8px', fontSize: '12px' }}>
-                {translate('Negative')}
-              </div>
+              <div style={{ marginTop: '8px', fontSize: '12px' }}>{translate('Negative')}</div>
             </div>
           </Col>
         </Row>
@@ -496,7 +482,7 @@ const MentionList = ({ onViewMention }) => {
               allowClear
             />
           </Col>
-          
+
           <Col xs={24} sm={4}>
             <Select
               value={sentimentFilter}
@@ -510,7 +496,7 @@ const MentionList = ({ onViewMention }) => {
               <Option value="negative">{translate('Negative')}</Option>
             </Select>
           </Col>
-          
+
           <Col xs={24} sm={4}>
             <Select
               value={platformFilter}
@@ -539,7 +525,7 @@ const MentionList = ({ onViewMention }) => {
               </Option>
             </Select>
           </Col>
-          
+
           <Col xs={24} sm={4}>
             <Select
               value={statusFilter}
@@ -554,7 +540,7 @@ const MentionList = ({ onViewMention }) => {
               <Option value="pending">{translate('Pending')}</Option>
             </Select>
           </Col>
-          
+
           <Col xs={24} sm={6}>
             <RangePicker
               value={dateRange}
@@ -577,8 +563,7 @@ const MentionList = ({ onViewMention }) => {
             pageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} mentions`,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} mentions`,
           }}
           scroll={{ x: true }}
         />

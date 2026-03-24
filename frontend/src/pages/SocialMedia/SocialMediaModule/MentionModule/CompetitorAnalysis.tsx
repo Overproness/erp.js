@@ -1,43 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Card, 
-  Table, 
-  Select, 
-  Space, 
-  Input,
-  Button,
-  Tag,
-  Progress,
-  Row,
-  Col,
-  Statistic,
-  Typography
-} from 'antd';
-import {
-  SearchOutlined,
-  PlusOutlined,
-  DeleteOutlined,
-  BarChartOutlined,
-  RiseOutlined,
-  FallOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  TwitterOutlined
-} from '@ant-design/icons';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title as ChartTitle,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
 import { useCompetitorAnalysis } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
+import {
+  BarChartOutlined,
+  DeleteOutlined,
+  FacebookOutlined,
+  FallOutlined,
+  InstagramOutlined,
+  PlusOutlined,
+  RiseOutlined,
+  SearchOutlined,
+  TwitterOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Statistic,
+  Table,
+  Typography,
+} from 'antd';
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Title as ChartTitle,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+} from 'chart.js';
+import { useEffect, useRef, useState } from 'react';
+import { Bar, Line } from 'react-chartjs-2';
 
 // Register Chart.js components
 ChartJS.register(
@@ -57,8 +56,9 @@ const { Title, Text } = Typography;
 
 const CompetitorAnalysis = () => {
   const translate = useLanguage();
-  const { competitors, analytics, isLoading, addCompetitor, removeCompetitor, refreshAnalytics } = useCompetitorAnalysis();
-  
+  const { competitors, analytics, isLoading, addCompetitor, removeCompetitor, refreshAnalytics } =
+    useCompetitorAnalysis();
+
   const [selectedPeriod, setSelectedPeriod] = useState('7d');
   const [searchText, setSearchText] = useState('');
   const [newCompetitor, setNewCompetitor] = useState('');
@@ -104,9 +104,7 @@ const CompetitorAnalysis = () => {
           />
           <div>
             <div style={{ fontWeight: 600 }}>{text}</div>
-            <div style={{ fontSize: '12px', color: '#6b7280' }}>
-              @{record.username}
-            </div>
+            <div style={{ fontSize: '12px', color: '#6b7280' }}>@{record.username}</div>
           </div>
         </div>
       ),
@@ -117,10 +115,8 @@ const CompetitorAnalysis = () => {
       key: 'platforms',
       render: (platforms) => (
         <Space>
-          {platforms.map(platform => (
-            <span key={platform}>
-              {getPlatformIcon(platform)}
-            </span>
+          {platforms.map((platform) => (
+            <span key={platform}>{getPlatformIcon(platform)}</span>
           ))}
         </Space>
       ),
@@ -131,16 +127,16 @@ const CompetitorAnalysis = () => {
       key: 'followers',
       render: (followers) => (
         <div>
-          <div style={{ fontWeight: 600 }}>
-            {followers.total.toLocaleString()}
-          </div>
-          <div style={{ 
-            fontSize: '12px', 
-            color: followers.growth >= 0 ? '#52c41a' : '#ff4d4f',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px'
-          }}>
+          <div style={{ fontWeight: 600 }}>{followers.total.toLocaleString()}</div>
+          <div
+            style={{
+              fontSize: '12px',
+              color: followers.growth >= 0 ? '#52c41a' : '#ff4d4f',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}
+          >
             {followers.growth >= 0 ? <RiseOutlined /> : <FallOutlined />}
             {Math.abs(followers.growth)}%
           </div>
@@ -153,9 +149,9 @@ const CompetitorAnalysis = () => {
       key: 'engagementRate',
       render: (rate) => (
         <div>
-          <Progress 
-            percent={rate * 10} 
-            showInfo={false} 
+          <Progress
+            percent={rate * 10}
+            showInfo={false}
             strokeColor={rate > 5 ? '#52c41a' : rate > 3 ? '#faad14' : '#ff4d4f'}
           />
           <Text style={{ fontSize: '12px' }}>{rate.toFixed(1)}%</Text>
@@ -241,15 +237,11 @@ const CompetitorAnalysis = () => {
               {translate('Competitor Analysis')}
             </Title>
             <Text style={{ color: '#6b7280' }}>
-              {translate('Track and analyze your competitors\' social media performance')}
+              {translate("Track and analyze your competitors' social media performance")}
             </Text>
           </div>
-          
-          <Select
-            value={selectedPeriod}
-            onChange={setSelectedPeriod}
-            style={{ width: 120 }}
-          >
+
+          <Select value={selectedPeriod} onChange={setSelectedPeriod} style={{ width: 120 }}>
             <Option value="7d">{translate('Last 7 days')}</Option>
             <Option value="30d">{translate('Last 30 days')}</Option>
             <Option value="90d">{translate('Last 3 months')}</Option>
@@ -323,7 +315,7 @@ const CompetitorAnalysis = () => {
             </div>
           </Card>
         </Col>
-        
+
         <Col span={12}>
           <Card title={translate('Follower Comparison')}>
             <div style={{ height: '300px' }}>
@@ -359,11 +351,7 @@ const CompetitorAnalysis = () => {
             style={{ flex: 1 }}
             onPressEnter={handleAddCompetitor}
           />
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleAddCompetitor}
-          >
+          <Button type="primary" icon={<PlusOutlined />} onClick={handleAddCompetitor}>
             {translate('Add Competitor')}
           </Button>
         </div>
@@ -381,7 +369,7 @@ const CompetitorAnalysis = () => {
             allowClear
           />
         </div>
-        
+
         <Table
           columns={columns}
           dataSource={competitors || []}
@@ -391,8 +379,7 @@ const CompetitorAnalysis = () => {
             pageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} competitors`,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} competitors`,
           }}
         />
       </Card>

@@ -2,7 +2,7 @@ import { DataImportButton } from '@/components/DataEntry';
 import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';
 import { useDate } from '@/settings';
-import { Col, Row, Tag } from 'antd';
+import { Col, Row } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

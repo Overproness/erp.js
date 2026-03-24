@@ -1,21 +1,20 @@
-import { request } from '@/request';
-import downloadDocument from '@/request/downloadDocument';
-import * as actionTypes from './types';
-import { handleCustomRequest } from '@/request/customRequests';
 import apolloClient from '@/graphql/client';
 import {
-  getListQuery,
-  getReadQuery,
-  getCreateMutation,
-  getUpdateMutation,
-  getDeleteMutation,
-  getSearchQuery,
-  getFilterQuery,
-  getSummaryQuery,
-  getMailMutation,
-  getConvertMutation,
+    getConvertMutation,
+    getCreateMutation,
+    getDeleteMutation,
+    getFilterQuery,
+    getListQuery,
+    getMailMutation,
+    getReadQuery,
+    getSearchQuery,
+    getSummaryQuery,
+    getUpdateMutation,
 } from '@/graphql/operations/crudFactory';
-import { DOCUMENT_REVERT_TO_ORIGINAL, DOCUMENT_REVERT, DOCUMENT_ANALYZE, DOCUMENT_AUDIT_TRAIL } from '@/graphql/operations/document';
+import { DOCUMENT_ANALYZE, DOCUMENT_AUDIT_TRAIL, DOCUMENT_REVERT, DOCUMENT_REVERT_TO_ORIGINAL } from '@/graphql/operations/document';
+import { handleCustomRequest } from '@/request/customRequests';
+import downloadDocument from '@/request/downloadDocument';
+import * as actionTypes from './types';
 
 export const erp = {
   resetState: () => (dispatch) => {

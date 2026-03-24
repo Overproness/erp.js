@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Button, Card, Form, Spin, Tabs, App } from 'antd';
+import DocumentAnalyzer from '@/components/AiAssist/DocumentAnalyzer';
 import DocumentForm from '@/forms/DocumentForm';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
-import DocumentAnalyzer from '@/components/AiAssist/DocumentAnalyzer';
+import { App, Button, Card, Form, Spin, Tabs } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export default function DocumentUpdate() {
   const { id } = useParams();

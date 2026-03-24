@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Spin, Row, Col } from 'antd';
 import { ErpLayout } from '@/layout';
-import ChatInterface from './ChatInterface';
-import ConversationHistory from './ConversationHistory';
-import { fetchAssistants } from '@/redux/ai/aiThunks';
 import { selectAssistantsList, selectAssistantsLoading } from '@/redux/ai/aiSelectors';
 import { setCurrentAssistant } from '@/redux/ai/aiSlice';
+import { fetchAssistants } from '@/redux/ai/aiThunks';
+import { Col, Layout, Row, Spin } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import ChatInterface from './ChatInterface';
+import ConversationHistory from './ConversationHistory';
 
 const { Content } = Layout;
 
@@ -27,7 +27,7 @@ const AiChatModule = () => {
 
   useEffect(() => {
     if (assistantId && assistants.length > 0) {
-      const assistant = assistants.find(a => a._id === assistantId);
+      const assistant = assistants.find((a) => a._id === assistantId);
       if (assistant) {
         setSelectedAssistant(assistant);
         dispatch(setCurrentAssistant(assistant));
@@ -41,12 +41,14 @@ const AiChatModule = () => {
   if (isLoading) {
     return (
       <ErpLayout>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '70vh' 
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '70vh',
+          }}
+        >
           <Spin size="large" />
         </div>
       </ErpLayout>
@@ -55,24 +57,28 @@ const AiChatModule = () => {
 
   return (
     <ErpLayout>
-      <div style={{ 
-        height: 'calc(100vh - 140px)', 
-        backgroundColor: '#f0f2f5',
-        padding: '16px',
-        overflow: 'hidden'
-      }}>
+      <div
+        style={{
+          height: 'calc(100vh - 140px)',
+          backgroundColor: '#f0f2f5',
+          padding: '16px',
+          overflow: 'hidden',
+        }}
+      >
         <Row gutter={16} style={{ height: '100%' }}>
           <Col span={6} style={{ height: '100%' }}>
-            <div style={{
-              height: '100%',
-              backgroundColor: '#fff',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-              <ConversationHistory 
+            <div
+              style={{
+                height: '100%',
+                backgroundColor: '#fff',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <ConversationHistory
                 assistants={assistants}
                 selectedAssistant={selectedAssistant}
                 onSelectAssistant={setSelectedAssistant}
@@ -80,15 +86,17 @@ const AiChatModule = () => {
             </div>
           </Col>
           <Col span={18} style={{ height: '100%' }}>
-            <div style={{
-              height: '100%',
-              backgroundColor: '#fff',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
+            <div
+              style={{
+                height: '100%',
+                backgroundColor: '#fff',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
               <ChatInterface assistant={selectedAssistant} />
             </div>
           </Col>

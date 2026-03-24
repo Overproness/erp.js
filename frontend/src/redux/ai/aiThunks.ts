@@ -1,21 +1,19 @@
 import apolloClient from '@/graphql/client';
-import { gql } from '@apollo/client';
 import {
-  GET_AI_KNOWLEDGE_BASES,
-  CREATE_AI_KNOWLEDGE_BASE,
-  GET_AI_PREFERENCES,
-  UPDATE_AI_PREFERENCES,
-  AI_SUMMARIZE,
-  AI_ANALYZE_SENTIMENT,
-  AI_PREDICT,
+    AI_PREDICT,
+    CREATE_AI_KNOWLEDGE_BASE,
+    GET_AI_KNOWLEDGE_BASES,
+    GET_AI_PREFERENCES,
+    UPDATE_AI_PREFERENCES
 } from '@/graphql/operations/ai';
 import {
-  getListQuery,
-  getReadQuery,
-  getCreateMutation,
-  getUpdateMutation,
-  getDeleteMutation,
+    getCreateMutation,
+    getDeleteMutation,
+    getListQuery,
+    getReadQuery,
+    getUpdateMutation,
 } from '@/graphql/operations/crudFactory';
+import { gql } from '@apollo/client';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { addMessage, setTyping } from './aiSlice';
 

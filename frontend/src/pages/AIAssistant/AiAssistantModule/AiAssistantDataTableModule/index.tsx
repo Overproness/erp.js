@@ -1,37 +1,41 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Table, Button, Tag, Space, Dropdown, Avatar, Tooltip } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
-import { 
-  PlusOutlined, 
-  EyeOutlined, 
-  EditOutlined, 
-  DeleteOutlined,
-  MessageOutlined,
-  MoreOutlined,
-  UserOutlined,
-  DollarOutlined,
-  FileTextOutlined,
-  RobotOutlined,
-  SettingOutlined,
+import { ErpLayout } from '@/layout';
+import useLanguage from '@/locale/useLanguage';
+import {
+  selectAssistantsList,
+  selectAssistantsLoading,
+  selectAssistantsPagination,
+} from '@/redux/ai/aiSelectors';
+import { setCurrentAssistant } from '@/redux/ai/aiSlice';
+import { deleteAssistant, fetchAssistants } from '@/redux/ai/aiThunks';
+import { useDate } from '@/settings';
+import {
   BarChartOutlined,
   BulbOutlined,
-  ScanOutlined
+  DeleteOutlined,
+  DollarOutlined,
+  EditOutlined,
+  EyeOutlined,
+  FileTextOutlined,
+  MessageOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  RobotOutlined,
+  ScanOutlined,
+  SettingOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { ErpLayout } from '@/layout';
-import { fetchAssistants, deleteAssistant } from '@/redux/ai/aiThunks';
-import { selectAssistantsList, selectAssistantsLoading, selectAssistantsPagination } from '@/redux/ai/aiSelectors';
-import { setCurrentAssistant } from '@/redux/ai/aiSlice';
-import useLanguage from '@/locale/useLanguage';
-import { useDate } from '@/settings';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Avatar, Button, Dropdown, Space, Table, Tag, Tooltip } from 'antd';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const AiAssistantDataTableModule = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const translate = useLanguage();
   const { formatDate } = useDate();
-  
+
   const assistants = useSelector(selectAssistantsList);
   const isLoading = useSelector(selectAssistantsLoading);
   const rawPagination = useSelector(selectAssistantsPagination);
@@ -96,9 +100,11 @@ const AiAssistantDataTableModule = () => {
       key: 'name',
       render: (text, record) => (
         <Space>
-          <Avatar 
-            icon={getTypeIcon(record.type)} 
-            style={{ backgroundColor: getTypeColor(record.type) === 'blue' ? '#1890ff' : undefined }}
+          <Avatar
+            icon={getTypeIcon(record.type)}
+            style={{
+              backgroundColor: getTypeColor(record.type) === 'blue' ? '#1890ff' : undefined,
+            }}
           />
           <div>
             <div style={{ fontWeight: 'bold' }}>{text}</div>
@@ -121,9 +127,7 @@ const AiAssistantDataTableModule = () => {
       title: translate('Model'),
       dataIndex: ['model', 'modelName'],
       key: 'model',
-      render: (modelName) => (
-        <Tag color="blue">{modelName || 'gpt-3.5-turbo'}</Tag>
-      ),
+      render: (modelName) => <Tag color="blue">{modelName || 'gpt-3.5-turbo'}</Tag>,
     },
     {
       title: translate('Capabilities'),
@@ -131,12 +135,21 @@ const AiAssistantDataTableModule = () => {
       key: 'capabilities',
       render: (capabilities) => (
         <Space wrap>
-          {capabilities?.slice(0, 2).map(cap => (
-            <Tag key={cap} size="small">{translate(cap)}</Tag>
+          {capabilities?.slice(0, 2).map((cap) => (
+            <Tag key={cap} size="small">
+              {translate(cap)}
+            </Tag>
           ))}
           {capabilities?.length > 2 && (
-            <Tooltip title={capabilities.slice(2).map(cap => translate(cap)).join(', ')}>
-              <Tag size="small" key="more-capabilities">+{capabilities.length - 2}</Tag>
+            <Tooltip
+              title={capabilities
+                .slice(2)
+                .map((cap) => translate(cap))
+                .join(', ')}
+            >
+              <Tag size="small" key="more-capabilities">
+                +{capabilities.length - 2}
+              </Tag>
             </Tooltip>
           )}
         </Space>
@@ -196,16 +209,8 @@ const AiAssistantDataTableModule = () => {
         ];
 
         return (
-          <Dropdown
-            menu={{ items }}
-            trigger={['click']}
-            placement="bottomRight"
-          >
-            <Button 
-              type="text" 
-              icon={<MoreOutlined />}
-              onClick={(e) => e.stopPropagation()}
-            />
+          <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight">
+            <Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
           </Dropdown>
         );
       },
@@ -213,10 +218,12 @@ const AiAssistantDataTableModule = () => {
   ];
 
   const handleTableChange = (paginationInfo) => {
-    dispatch(fetchAssistants({
-      page: paginationInfo.current,
-      limit: paginationInfo.pageSize,
-    }));
+    dispatch(
+      fetchAssistants({
+        page: paginationInfo.current,
+        limit: paginationInfo.pageSize,
+      })
+    );
   };
 
   return (
@@ -263,7 +270,7 @@ const AiAssistantDataTableModule = () => {
           </Button>,
         ]}
       />
-      
+
       <Table
         columns={columns}
         dataSource={safeAssistants}
@@ -275,8 +282,7 @@ const AiAssistantDataTableModule = () => {
           total: pagination.total,
           showSizeChanger: true,
           showQuickJumper: true,
-          showTotal: (total, range) =>
-            `${range[0]}-${range[1]} of ${total} assistants`,
+          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} assistants`,
         }}
         onChange={handleTableChange}
         scroll={{ x: 'max-content' }}

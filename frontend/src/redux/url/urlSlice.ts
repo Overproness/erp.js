@@ -1,22 +1,22 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { gql } from '@apollo/client';
 import apolloClient from '@/graphql/client';
 import {
-  getListQuery,
-  getReadQuery,
-  getCreateMutation,
-  getUpdateMutation,
-  getDeleteMutation,
+    getCreateMutation,
+    getDeleteMutation,
+    getListQuery,
+    getReadQuery,
+    getUpdateMutation,
 } from '@/graphql/operations/crudFactory';
 import {
-  URL_ANALYTICS,
-  URL_GENERATE_QR,
-  CREATE_AB_TEST,
-  GET_AB_TESTS,
-  START_AB_TEST,
-  STOP_AB_TEST,
-  UPDATE_AB_TEST,
+    CREATE_AB_TEST,
+    GET_AB_TESTS,
+    START_AB_TEST,
+    STOP_AB_TEST,
+    UPDATE_AB_TEST,
+    URL_ANALYTICS,
+    URL_GENERATE_QR,
 } from '@/graphql/operations/url';
+import { gql } from '@apollo/client';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 // Async thunks for URL operations
 export const fetchUrls = createAsyncThunk(
