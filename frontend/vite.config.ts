@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig, loadEnv, type ConfigEnv, type UserConfig } from 'vite';
+import { loadEnv, type ConfigEnv, type UserConfig } from 'vite';
 
 // Pre-rendering: only active during production builds.
 // vite-plugin-prerender bundles PuppeteerRenderer — no separate install needed.
