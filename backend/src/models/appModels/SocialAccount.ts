@@ -152,4 +152,5 @@ socialAccountSchema.statics.findByOwnerAndPlatform = function(ownerId: string, p
 
 const exportedModel = mongoose.model('SocialAccount', socialAccountSchema);
 module.exports = exportedModel;
-export {};
+export { };
+

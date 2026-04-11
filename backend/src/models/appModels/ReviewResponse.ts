@@ -183,4 +183,5 @@ reviewResponseSchema.statics.getResponseRate = async function(businessId) {
 
 const ReviewResponse = mongoose.model('ReviewResponse', reviewResponseSchema);
 module.exports = ReviewResponse;
-export {};
+export { };
+

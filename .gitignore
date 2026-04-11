@@ -21,3 +21,4 @@ tmp/
 
 design_ignore/
 node_modules/
+backend/uploads/

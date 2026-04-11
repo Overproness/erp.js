@@ -301,4 +301,5 @@ surveySchema.methods.calculateCSAT = async function () {
 
 const exportedModel = mongoose.model('Survey', surveySchema);
 module.exports = exportedModel;
-export {};
+export { };
+
