@@ -117,7 +117,7 @@ workflowSchema.index({ tags: 1 });
 workflowSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Virtual for parsed definition
-workflowSchema.virtual('parsedDefinition').get(function () {
+workflowSchema.virtual('parsedDefinition').get(function (this: any) {
   try {
     return JSON.parse(this.definition);
   } catch (e) {
@@ -126,7 +126,7 @@ workflowSchema.virtual('parsedDefinition').get(function () {
 });
 
 // Pre-save hook to extract trigger info from definition
-workflowSchema.pre('save', function (next) {
+workflowSchema.pre('save', function (this: any, next: (err?: Error) => void) {
   try {
     if (this.definition) {
       const def = JSON.parse(this.definition);
@@ -173,3 +173,4 @@ workflowSchema.pre('save', function (next) {
 
 const exportedModel = mongoose.model('Workflow', workflowSchema);
 module.exports = exportedModel;
+export {};

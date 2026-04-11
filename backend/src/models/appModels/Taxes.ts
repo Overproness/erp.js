@@ -54,3 +54,4 @@ taxesSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Taxes', taxesSchema);
 module.exports = exportedModel;
+export {};

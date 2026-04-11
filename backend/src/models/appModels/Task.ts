@@ -311,7 +311,7 @@ const taskSchema = new mongoose.Schema(
 taskSchema.plugin(require('mongoose-autopopulate'));
 
 // Pre-save hook to automatically set status to 'assigned' when assignedTo is set
-taskSchema.pre('save', function (next) {
+taskSchema.pre('save', function (this: any, next: (err?: Error) => void) {
   if (this.assignedTo && this.status === 'pending') {
     // Don't automatically assign if requires approval
     if (!this.requiresApproval) {
@@ -325,3 +325,4 @@ taskSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = (mongoose.models['Task'] as any) || mongoose.model('Task', taskSchema);
 module.exports = exportedModel;
+export {};
