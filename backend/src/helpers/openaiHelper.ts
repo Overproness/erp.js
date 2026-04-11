@@ -225,11 +225,6 @@ class OpenAIHelper {
     return this.chatCompletion({ messages });
   }
 
-  // Method to check if API key is configured
-  hasApiKey() {
-    return !!this.apiKey;
-  }
-
   // Method to validate API key by making a test call
   async validateApiKey() {
     if (!this.apiKey) {
