@@ -211,7 +211,7 @@ surveySchema.index({ createdAt: -1 });
 surveySchema.index({ 'distribution.startDate': 1, 'distribution.endDate': 1 });
 
 // Virtual for active status
-surveySchema.virtual('isActive').get(function () {
+surveySchema.virtual('isActive').get(function (this: any) {
   if (this.status !== 'active') return false;
 
   const now = new Date();
@@ -225,7 +225,7 @@ surveySchema.virtual('isActive').get(function () {
 });
 
 // Pre-save middleware to generate short code
-surveySchema.pre('save', async function (next) {
+surveySchema.pre('save', async function (this: any, next: (err?: Error) => void) {
   if (!this.customUrl?.shortCode && this.isNew) {
     const { nanoid } = await import('nanoid');
     this.customUrl!.shortCode = nanoid(10);
@@ -301,3 +301,4 @@ surveySchema.methods.calculateCSAT = async function () {
 
 const exportedModel = mongoose.model('Survey', surveySchema);
 module.exports = exportedModel;
+export {};

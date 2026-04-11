@@ -112,7 +112,7 @@ socialAccountSchema.index({ owner: 1, platform: 1 });
 socialAccountSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Middleware
-socialAccountSchema.pre('save', function(next) {
+socialAccountSchema.pre('save', function(this: any, next: (err?: Error) => void) {
   this.updated = new Date();
   next();
 });
@@ -152,3 +152,4 @@ socialAccountSchema.statics.findByOwnerAndPlatform = function(ownerId: string, p
 
 const exportedModel = mongoose.model('SocialAccount', socialAccountSchema);
 module.exports = exportedModel;
+export {};

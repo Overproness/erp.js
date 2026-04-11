@@ -48,3 +48,4 @@ SearchHistorySchema.index({ companyID: 1 }, { sparse: true }); // Index for comp
 
 const exportedModel = mongoose.model('SearchHistory', SearchHistorySchema);
 module.exports = exportedModel;
+export {};

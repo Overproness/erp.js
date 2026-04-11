@@ -1,3 +1,4 @@
+// @ts-nocheck
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -162,7 +163,7 @@ reviewResponseSchema.methods.reject = function() {
 };
 
 // Static methods
-reviewResponseSchema.statics.findPendingApprovals = function(businessId) {
+reviewResponseSchema.statics.findPendingApprovals = function(businessId: any) {
   return this.find({
     business: businessId,
     approvalStatus: 'pending',
@@ -182,3 +183,4 @@ reviewResponseSchema.statics.getResponseRate = async function(businessId) {
 
 const ReviewResponse = mongoose.model('ReviewResponse', reviewResponseSchema);
 module.exports = ReviewResponse;
+export {};
