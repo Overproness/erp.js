@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 /**
  * Customer Journey Model
@@ -362,5 +362,4 @@ customerJourneySchema.methods.calculateMetricsAsync = async function () {
 
 customerJourneySchema.plugin(require('mongoose-autopopulate'));
 const exportedModel = mongoose.model('CustomerJourney', customerJourneySchema);
-export default exportedModel;
 module.exports = exportedModel;

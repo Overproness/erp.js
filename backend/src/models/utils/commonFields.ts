@@ -1,5 +1,5 @@
 // backend/src/models/utils/commonFields.js
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const commonFields = {
   owner: {
@@ -38,5 +38,4 @@ const commonFields = {
   },
 };
 
-export default commonFields;
 module.exports = commonFields;

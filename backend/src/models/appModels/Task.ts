@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
   content: {
@@ -324,5 +324,4 @@ taskSchema.pre('save', function (next) {
 taskSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = (mongoose.models['Task'] as any) || mongoose.model('Task', taskSchema);
-export default exportedModel;
 module.exports = exportedModel;

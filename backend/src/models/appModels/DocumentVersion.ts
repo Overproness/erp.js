@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const DocumentVersionSchema = new Schema(
@@ -169,5 +169,4 @@ DocumentVersionSchema.methods.resolveConflicts = function (resolvedBy: string) {
 };
 
 const exportedModel = mongoose.model('DocumentVersion', DocumentVersionSchema);
-export default exportedModel;
 module.exports = exportedModel;

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const sharedResourceSchema = new mongoose.Schema({
   removed: {
@@ -192,5 +192,4 @@ sharedResourceSchema.pre('save', function (next) {
 sharedResourceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('SharedResource', sharedResourceSchema);
-export default exportedModel;
 module.exports = exportedModel;

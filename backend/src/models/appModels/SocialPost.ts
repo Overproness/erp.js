@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const socialPostSchema = new mongoose.Schema({
   content: {
@@ -236,5 +236,4 @@ socialPostSchema.statics.getPostsByDateRange = function(ownerId, startDate, endD
 };
 
 const exportedModel = mongoose.model('SocialPost', socialPostSchema);
-export default exportedModel;
 module.exports = exportedModel;

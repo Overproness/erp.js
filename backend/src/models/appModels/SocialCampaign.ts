@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const socialCampaignSchema = new mongoose.Schema({
   name: {
@@ -338,5 +338,4 @@ socialCampaignSchema.statics.getCampaignsByDateRange = function(ownerId, startDa
 };
 
 const exportedModel = mongoose.model('SocialCampaign', socialCampaignSchema);
-export default exportedModel;
 module.exports = exportedModel;

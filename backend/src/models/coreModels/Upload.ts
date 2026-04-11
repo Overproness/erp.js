@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const uploadSchema = new mongoose.Schema({
   removed: {
@@ -76,5 +76,4 @@ const uploadSchema = new mongoose.Schema({
 uploadSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Upload = mongoose.model('Upload ', uploadSchema);
-export default Upload;
 module.exports = Upload;

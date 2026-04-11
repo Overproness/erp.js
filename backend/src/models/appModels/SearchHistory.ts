@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const SearchHistorySchema = new Schema(
@@ -47,5 +47,4 @@ SearchHistorySchema.index({ companyOwner: 1, timestamp: -1 });
 SearchHistorySchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('SearchHistory', SearchHistorySchema);
-export default exportedModel;
 module.exports = exportedModel;

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const stepSchema = new mongoose.Schema({
   name: {
@@ -195,5 +195,4 @@ aiProcessingWorkflowSchema.statics.findScheduled = function() {
 };
 
 const exportedModel = mongoose.model('AiProcessingWorkflow', aiProcessingWorkflowSchema);
-export default exportedModel;
 module.exports = exportedModel;

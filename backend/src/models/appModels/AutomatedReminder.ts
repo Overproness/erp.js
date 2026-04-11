@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const automatedReminderSchema = new mongoose.Schema(
   {
@@ -470,5 +470,4 @@ automatedReminderSchema.statics.createForAppointment = async function (
 };
 
 const exportedModel = mongoose.model('AutomatedReminder', automatedReminderSchema);
-export default exportedModel;
 module.exports = exportedModel;

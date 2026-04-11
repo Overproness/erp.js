@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema({
   removed: {
@@ -178,5 +178,4 @@ projectSchema.pre('save', function (next) {
 projectSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Project', projectSchema);
-export default exportedModel;
 module.exports = exportedModel;

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const notificationSchema = new mongoose.Schema(
   {
@@ -282,5 +282,4 @@ notificationSchema.set('toJSON', { virtuals: true });
 notificationSchema.set('toObject', { virtuals: true });
 
 const exportedModel = mongoose.model('Notification', notificationSchema);
-export default exportedModel;
 module.exports = exportedModel;

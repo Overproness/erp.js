@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
   role: {
@@ -92,5 +92,4 @@ aiConversationSchema.index({ 'context.module': 1, 'context.entityId': 1 });
 aiConversationSchema.index({ companyID: 1 }, { sparse: true });
 
 const exportedModel = mongoose.model('AiConversation', aiConversationSchema);
-export default exportedModel;
 module.exports = exportedModel;

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const paymentModeSchema = new Schema({
@@ -45,5 +45,4 @@ const paymentModeSchema = new Schema({
 paymentModeSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('PaymentMode', paymentModeSchema);
-export default exportedModel;
 module.exports = exportedModel;

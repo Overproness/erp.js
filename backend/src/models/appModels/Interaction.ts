@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 /**
  * Interaction Model
@@ -282,5 +282,4 @@ interactionSchema.statics.getClientSummary = async function (clientId) {
 
 interactionSchema.plugin(require('mongoose-autopopulate'));
 const exportedModel = mongoose.model('Interaction', interactionSchema);
-export default exportedModel;
 module.exports = exportedModel;

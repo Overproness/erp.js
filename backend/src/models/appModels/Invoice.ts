@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const commonFields = require('../utils/commonFields');
 
 const invoiceSchema = new mongoose.Schema({
@@ -221,5 +221,4 @@ invoiceSchema.pre('save', async function (next) {
 invoiceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Invoice', invoiceSchema);
-export default exportedModel;
 module.exports = exportedModel;

@@ -1,10 +1,9 @@
-import type { Request, Response } from 'express';
 const chatUrlService = require('@/services/chatUrlService');
 
 /**
  * Generate a new chat room URL for customer communication
  */
-const generateChatUrl = async (req: Request, res: Response) => {
+const generateChatUrl = async (req: any, res: any) => {
   try {
     const { id: customerId } = req.params;
     const employeeId = (req as any).companyOwner?._id || req.user?._id;
@@ -48,7 +47,7 @@ const generateChatUrl = async (req: Request, res: Response) => {
 /**
  * Get chat room by token (for customer access)
  */
-const getChatRoomByToken = async (req: Request, res: Response) => {
+const getChatRoomByToken = async (req: any, res: any) => {
   try {
     const { accessToken } = req.query;
 
@@ -80,7 +79,7 @@ const getChatRoomByToken = async (req: Request, res: Response) => {
 /**
  * Get chat room by room ID
  */
-const getChatRoomById = async (req: Request, res: Response) => {
+const getChatRoomById = async (req: any, res: any) => {
   try {
     const { roomId } = req.params;
 
@@ -104,7 +103,7 @@ const getChatRoomById = async (req: Request, res: Response) => {
 /**
  * Get all chat rooms for the authenticated employee
  */
-const getEmployeeChatRooms = async (req: Request, res: Response) => {
+const getEmployeeChatRooms = async (req: any, res: any) => {
   try {
     const employeeId = req.admin?._id || req.user?._id;
 
@@ -142,7 +141,7 @@ const getEmployeeChatRooms = async (req: Request, res: Response) => {
 /**
  * Get all chat rooms for a specific customer
  */
-const getCustomerChatRooms = async (req: Request, res: Response) => {
+const getCustomerChatRooms = async (req: any, res: any) => {
   try {
     const { id: customerId } = req.params;
 
@@ -171,7 +170,7 @@ const getCustomerChatRooms = async (req: Request, res: Response) => {
 /**
  * Close a chat room
  */
-const closeChatRoom = async (req: Request, res: Response) => {
+const closeChatRoom = async (req: any, res: any) => {
   try {
     const { roomId } = req.params;
     const employeeId = req.admin?._id || req.user?._id;
@@ -205,7 +204,7 @@ const closeChatRoom = async (req: Request, res: Response) => {
 /**
  * Archive a chat room
  */
-const archiveChatRoom = async (req: Request, res: Response) => {
+const archiveChatRoom = async (req: any, res: any) => {
   try {
     const { roomId } = req.params;
 
@@ -229,7 +228,7 @@ const archiveChatRoom = async (req: Request, res: Response) => {
 /**
  * Delete a chat room
  */
-const deleteChatRoom = async (req: Request, res: Response) => {
+const deleteChatRoom = async (req: any, res: any) => {
   try {
     const { roomId } = req.params;
 
@@ -253,7 +252,7 @@ const deleteChatRoom = async (req: Request, res: Response) => {
 /**
  * Get chat statistics for the authenticated employee
  */
-const getEmployeeStats = async (req: Request, res: Response) => {
+const getEmployeeStats = async (req: any, res: any) => {
   try {
     const employeeId = req.admin?._id || req.user?._id;
 

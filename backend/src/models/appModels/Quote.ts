@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const commonFields = require('../utils/commonFields');
 
 const quoteSchema = new mongoose.Schema({
@@ -181,5 +181,4 @@ quoteSchema.pre('save', async function (next) {
 quoteSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Quote', quoteSchema);
-export default exportedModel;
 module.exports = exportedModel;

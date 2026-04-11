@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const commonFields = require('../utils/commonFields');
 
 const schema = new mongoose.Schema(
@@ -199,5 +199,4 @@ schema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 schema.plugin(require('mongoose-autopopulate'));
 const exportedModel = mongoose.model('Client', schema);
-export default exportedModel;
 module.exports = exportedModel;

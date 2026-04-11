@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-import bcrypt from 'bcryptjs';
+const bcrypt = require('bcryptjs');
 
 const CompanyOwnerPasswordSchema = new Schema({
   removed: {
@@ -56,5 +56,4 @@ CompanyOwnerPasswordSchema.methods.authenticate = function (password: string) {
 };
 
 const CompanyOwnerPassword = mongoose.model('CompanyOwnerPassword', CompanyOwnerPasswordSchema);
-export default CompanyOwnerPassword;
 module.exports = CompanyOwnerPassword;

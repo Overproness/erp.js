@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const DataRetentionPolicySchema = new mongoose.Schema(
   {
@@ -56,5 +56,4 @@ DataRetentionPolicySchema.index({ dataType: 1, status: 1 });
 DataRetentionPolicySchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('DataRetentionPolicy', DataRetentionPolicySchema);
-export default exportedModel;
 module.exports = exportedModel;

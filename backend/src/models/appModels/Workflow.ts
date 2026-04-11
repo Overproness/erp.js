@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const workflowSchema = new mongoose.Schema(
   {
@@ -172,5 +172,4 @@ workflowSchema.pre('save', function (next) {
 });
 
 const exportedModel = mongoose.model('Workflow', workflowSchema);
-export default exportedModel;
 module.exports = exportedModel;

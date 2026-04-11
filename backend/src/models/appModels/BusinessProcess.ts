@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const processStepSchema = new mongoose.Schema({
   id: {
@@ -540,5 +540,4 @@ businessProcessSchema.statics.findScheduled = function () {
 };
 
 const exportedModel = mongoose.model('BusinessProcess', businessProcessSchema);
-export default exportedModel;
 module.exports = exportedModel;

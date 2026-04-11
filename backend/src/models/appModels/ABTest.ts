@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const abTestSchema = new mongoose.Schema({
   // Basic Information
@@ -478,5 +478,4 @@ abTestSchema.statics.findActiveTestsForUrl = function(urlId) {
 };
 
 const exportedModel = mongoose.model('ABTest', abTestSchema);
-export default exportedModel;
 module.exports = exportedModel;

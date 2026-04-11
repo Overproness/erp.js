@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const ConsentRecordSchema = new mongoose.Schema(
   {
@@ -59,5 +59,4 @@ ConsentRecordSchema.index({ expiration: 1 }, { sparse: true }); // For finding e
 ConsentRecordSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('ConsentRecord', ConsentRecordSchema);
-export default exportedModel;
 module.exports = exportedModel;

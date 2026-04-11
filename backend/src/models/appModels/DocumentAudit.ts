@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const DocumentAuditSchema = new Schema(
@@ -55,5 +55,4 @@ const DocumentAuditSchema = new Schema(
 DocumentAuditSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('DocumentAudit', DocumentAuditSchema);
-export default exportedModel;
 module.exports = exportedModel;

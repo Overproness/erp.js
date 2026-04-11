@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const AuditTrailSchema = new mongoose.Schema(
   {

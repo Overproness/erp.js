@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const DocumentSchema = new Schema(
@@ -206,7 +206,6 @@ DocumentSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Export model with a different name to avoid conflict
 const exportedModel = mongoose.model('AppDocument', DocumentSchema);
-export default exportedModel;
 module.exports = exportedModel;
 
 // Also register with the standard name for CRUD controller compatibility

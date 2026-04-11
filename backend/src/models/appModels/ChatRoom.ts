@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
   sender: {
@@ -268,5 +268,4 @@ chatRoomSchema.methods.closeRoom = async function (closedBy: string, reason: str
 };
 
 const exportedModel = mongoose.model('ChatRoom', chatRoomSchema);
-export default exportedModel;
 module.exports = exportedModel;

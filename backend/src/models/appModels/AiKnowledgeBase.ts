@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const knowledgeEntrySchema = new mongoose.Schema({
   title: {
@@ -127,5 +127,4 @@ aiKnowledgeBaseSchema.index({ domain: 1, owner: 1 });
 aiKnowledgeBaseSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('AiKnowledgeBase', aiKnowledgeBaseSchema);
-export default exportedModel;
 module.exports = exportedModel;

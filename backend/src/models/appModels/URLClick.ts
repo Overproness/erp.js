@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const urlClickSchema = new mongoose.Schema({
   // URL Reference
@@ -407,5 +407,4 @@ urlClickSchema.pre('save', function(next) {
 });
 
 const exportedModel = mongoose.model('URLClick', urlClickSchema);
-export default exportedModel;
 module.exports = exportedModel;

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // Node Definition Schema for workflow nodes
 const nodeSchema = new mongoose.Schema({
@@ -340,5 +340,4 @@ enhancedWorkflowSchema.statics.getWorkflowStats = function (ownerId) {
 };
 
 const exportedModel = mongoose.model('EnhancedWorkflow', enhancedWorkflowSchema);
-export default exportedModel;
 module.exports = exportedModel;

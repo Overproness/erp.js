@@ -1,10 +1,9 @@
-import type { Request, Response } from 'express';
 const crmUrlService = require('@/services/crmUrlService');
 
 /**
  * Generate customer portal URL
  */
-const generatePortalUrl = async (req: Request, res: Response) => {
+const generatePortalUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const options = {
@@ -32,7 +31,7 @@ const generatePortalUrl = async (req: Request, res: Response) => {
 /**
  * Generate payment request URL
  */
-const generatePaymentUrl = async (req: Request, res: Response) => {
+const generatePaymentUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { paymentData, ...options } = req.body;
@@ -66,7 +65,7 @@ const generatePaymentUrl = async (req: Request, res: Response) => {
 /**
  * Generate document share URL
  */
-const generateDocumentUrl = async (req: Request, res: Response) => {
+const generateDocumentUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { documentId, ...options } = req.body;
@@ -100,7 +99,7 @@ const generateDocumentUrl = async (req: Request, res: Response) => {
 /**
  * Generate appointment scheduling URL
  */
-const generateAppointmentUrl = async (req: Request, res: Response) => {
+const generateAppointmentUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const options = {
@@ -128,7 +127,7 @@ const generateAppointmentUrl = async (req: Request, res: Response) => {
 /**
  * Generate survey URL
  */
-const generateSurveyUrl = async (req: Request, res: Response) => {
+const generateSurveyUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { surveyId, ...options } = req.body;
@@ -162,7 +161,7 @@ const generateSurveyUrl = async (req: Request, res: Response) => {
 /**
  * Generate review request URL
  */
-const generateReviewUrl = async (req: Request, res: Response) => {
+const generateReviewUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const options = {
@@ -190,7 +189,7 @@ const generateReviewUrl = async (req: Request, res: Response) => {
 /**
  * Generate quote acceptance URL
  */
-const generateQuoteUrl = async (req: Request, res: Response) => {
+const generateQuoteUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { quoteId, ...options } = req.body;
@@ -224,7 +223,7 @@ const generateQuoteUrl = async (req: Request, res: Response) => {
 /**
  * Generate invoice payment URL
  */
-const generateInvoiceUrl = async (req: Request, res: Response) => {
+const generateInvoiceUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { invoiceId, ...options } = req.body;
@@ -258,7 +257,7 @@ const generateInvoiceUrl = async (req: Request, res: Response) => {
 /**
  * Generate event registration URL
  */
-const generateEventUrl = async (req: Request, res: Response) => {
+const generateEventUrl = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { eventId, ...options } = req.body;
@@ -292,7 +291,7 @@ const generateEventUrl = async (req: Request, res: Response) => {
 /**
  * Get all URLs for a customer
  */
-const getCustomerUrls = async (req: Request, res: Response) => {
+const getCustomerUrls = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const filters = {
@@ -321,7 +320,7 @@ const getCustomerUrls = async (req: Request, res: Response) => {
 /**
  * Generate bulk URLs for multiple customers
  */
-const generateBulkUrls = async (req: Request, res: Response) => {
+const generateBulkUrls = async (req: any, res: any) => {
   try {
     const { customerIds, urlType, options } = req.body;
 

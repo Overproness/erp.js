@@ -1,5 +1,5 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const urlSchema = new mongoose.Schema(
   {
@@ -458,5 +458,4 @@ urlSchema.methods.isAccessible = function (user, ip, country) {
 };
 
 const exportedModel = mongoose.model('URL', urlSchema);
-export default exportedModel;
 module.exports = exportedModel;
