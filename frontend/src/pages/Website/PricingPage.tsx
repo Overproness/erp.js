@@ -25,7 +25,11 @@ export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <WebsiteLayout title="Pricing">
+    <WebsiteLayout
+      title="Pricing"
+      description="ERP.js pricing plans for every scale. From startup to enterprise — transparent pricing that grows with your business."
+      canonicalPath="/pricing"
+    >
       <div className="pt-20 pb-24 px-6 max-w-7xl mx-auto font-inter">
         {/* Hero Header */}
         <header className="text-center mb-20">

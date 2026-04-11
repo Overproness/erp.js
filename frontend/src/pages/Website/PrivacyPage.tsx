@@ -34,7 +34,11 @@ export default function PrivacyPage() {
   }, []);
 
   return (
-    <WebsiteLayout title="Privacy Policy">
+    <WebsiteLayout
+      title="Privacy Policy"
+      description="ERP.js Privacy Policy — how we collect, use, and protect your personal data."
+      canonicalPath="/privacy"
+    >
       <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-inter">
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Sidebar Navigation */}

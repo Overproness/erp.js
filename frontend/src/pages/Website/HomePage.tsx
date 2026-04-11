@@ -6,7 +6,10 @@ const HeroScene = lazy(() => import('@/components/HeroScene'));
 
 export default function HomePage() {
   return (
-    <WebsiteLayout>
+    <WebsiteLayout
+      description="ERP.js unifies your CRM, workflows, and analytics into a single high-performance canvas. Built for developers, scaled for enterprise."
+      canonicalPath="/"
+    >
       {/* Hero Section */}
       <section
         className="relative min-h-[90vh] flex items-center overflow-hidden"

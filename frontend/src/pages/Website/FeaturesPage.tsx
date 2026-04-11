@@ -2,7 +2,11 @@ import WebsiteLayout from './components/WebsiteLayout';
 
 export default function FeaturesPage() {
   return (
-    <WebsiteLayout title="Features">
+    <WebsiteLayout
+      title="Features"
+      description="Explore ERP.js platform capabilities: Sales CRM, workflow automation, analytics, and more. Engineered for precision and enterprise scale."
+      canonicalPath="/features"
+    >
       <div className="pt-10 pb-20 overflow-hidden font-inter">
         {/* Hero Header */}
         <section className="max-w-7xl mx-auto px-6 mb-24 text-center">

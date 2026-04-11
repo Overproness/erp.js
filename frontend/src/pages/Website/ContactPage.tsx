@@ -21,7 +21,11 @@ export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <WebsiteLayout title="Contact Us">
+    <WebsiteLayout
+      title="Contact Us"
+      description="Connect with the ERP.js engineering team. Whether you're scaling a startup or re-architecting an enterprise, we're ready to help you integrate."
+      canonicalPath="/contact"
+    >
       <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-inter">
         {/* Hero Header */}
         <header className="mb-16 text-center md:text-left">

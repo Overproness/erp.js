@@ -36,7 +36,11 @@ export default function TermsPage() {
   }, []);
 
   return (
-    <WebsiteLayout title="Terms of Service">
+    <WebsiteLayout
+      title="Terms of Service"
+      description="ERP.js Terms of Service — the agreement governing your use of our platform and services."
+      canonicalPath="/terms"
+    >
       <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 font-inter">
         {/* Sticky Sidebar */}
         <aside className="hidden md:block md:col-span-3">

@@ -30,7 +30,11 @@ const teamMembers = [
 
 export default function AboutPage() {
   return (
-    <WebsiteLayout title="About">
+    <WebsiteLayout
+      title="About"
+      description="Meet the team building the automation engine for modern enterprises. Our mission is to make complex enterprise systems accessible and powerful."
+      canonicalPath="/about"
+    >
       {/* Hero Section */}
       <section
         className="relative py-24 px-6"

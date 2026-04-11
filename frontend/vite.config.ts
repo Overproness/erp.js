@@ -2,6 +2,18 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig, loadEnv, type ConfigEnv, type UserConfig } from 'vite';
 
+// Pre-rendering: only active during production builds.
+// vite-plugin-prerender bundles PuppeteerRenderer — no separate install needed.
+let vitePrerender: any = null;
+try {
+  const mod = await import('vite-plugin-prerender');
+  vitePrerender = mod.default ?? mod;
+} catch {
+  // package not yet installed — pre-rendering will be skipped
+}
+
+const PUBLIC_ROUTES = ['/', '/about', '/features', '/pricing', '/contact', '/privacy', '/terms'];
+
 export default ({ mode }: ConfigEnv): UserConfig => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
@@ -12,7 +24,26 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
   const config = {
     base: '/',
-    plugins: [react()],
+    plugins: [
+      react(),
+      // Pre-render public marketing routes at build time so crawlers and
+      // social-media scrapers see real HTML instead of an empty <div id="root">.
+      // Only active in production builds and only when package is installed.
+      ...(mode === 'production' && vitePrerender
+        ? [
+            vitePrerender({
+              staticDir: path.join(__dirname, 'dist'),
+              routes: PUBLIC_ROUTES,
+              renderer: new vitePrerender.PuppeteerRenderer({
+                maxConcurrentRoutes: 4,
+                // Give React enough time to fully render each public page.
+                renderAfterTime: 5000,
+                headless: true,
+              }),
+            }),
+          ]
+        : []),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
