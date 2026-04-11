@@ -55,4 +55,5 @@ companyOwnerSchema.pre('save', function (this: any, next: (err?: Error) => void)
 
 const CompanyOwner = mongoose.model('CompanyOwner', companyOwnerSchema);
 module.exports = CompanyOwner;
-export {};
+export { };
+

@@ -57,4 +57,5 @@ DataRetentionPolicySchema.index({ companyID: 1 }, { sparse: true }); // Index fo
 
 const exportedModel = mongoose.model('DataRetentionPolicy', DataRetentionPolicySchema);
 module.exports = exportedModel;
-export {};
+export { };
+
