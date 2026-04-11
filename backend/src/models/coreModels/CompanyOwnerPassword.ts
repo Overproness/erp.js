@@ -57,3 +57,4 @@ CompanyOwnerPasswordSchema.methods.authenticate = function (password: string) {
 
 const CompanyOwnerPassword = mongoose.model('CompanyOwnerPassword', CompanyOwnerPasswordSchema);
 module.exports = CompanyOwnerPassword;
+export {};

@@ -51,3 +51,4 @@ settingSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Setting = mongoose.model('Setting', settingSchema);
 module.exports = Setting;
+export {};

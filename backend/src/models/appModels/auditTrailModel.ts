@@ -58,3 +58,4 @@ AuditTrailSchema.index({ companyID: 1 }, { sparse: true }); // Index for company
 
 // Export the model - ensure it's only registered once
 module.exports = mongoose.models.AuditTrail || mongoose.model('AuditTrail', AuditTrailSchema);
+export {};

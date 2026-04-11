@@ -77,3 +77,4 @@ uploadSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Upload = mongoose.model('Upload ', uploadSchema);
 module.exports = Upload;
+export {};

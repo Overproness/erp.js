@@ -60,3 +60,4 @@ ConsentRecordSchema.index({ companyID: 1 }, { sparse: true }); // Index for comp
 
 const exportedModel = mongoose.model('ConsentRecord', ConsentRecordSchema);
 module.exports = exportedModel;
+export {};

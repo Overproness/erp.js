@@ -46,7 +46,7 @@ const companyOwnerSchema = new Schema({
 });
 
 // Auto-generate companyID if not present when creating a new CompanyOwner
-companyOwnerSchema.pre('save', function (next) {
+companyOwnerSchema.pre('save', function (this: any, next: (err?: Error) => void) {
   if (!this.companyID) {
     this.companyID = new mongoose.Types.ObjectId().toString();
   }
@@ -55,3 +55,4 @@ companyOwnerSchema.pre('save', function (next) {
 
 const CompanyOwner = mongoose.model('CompanyOwner', companyOwnerSchema);
 module.exports = CompanyOwner;
+export {};
