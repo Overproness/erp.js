@@ -1,0 +1,2881 @@
+{
+    "info": {
+        "name": "ERPjs API Collection",
+        "description": "Complete API collection for ERPjs — REST endpoints and GraphQL operations.\n\nBase URL: {{baseUrl}} (default: http://localhost:8888)\n\n**Authentication:** Most protected routes require a Bearer token. Login first, then set the `authToken` collection variable.\n\n**GraphQL:** All CRUD and business logic is handled via POST /graphql. REST routes handle auth, file uploads, webhooks, and binary downloads.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8888",
+            "type": "string"
+        },
+        {
+            "key": "authToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "shortCode",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "documentId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "roomId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "clientId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "userId",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{authToken}}",
+                "type": "string"
+            }
+        ]
+    },
+    "item": [
+        {
+            "name": "Health",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/health",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Auth",
+            "description": "Authentication endpoints — login, register, password recovery, token verification.",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.result && res.result.token) {",
+                                    "  pm.collectionVariables.set('authToken', res.result.token);",
+                                    "  console.log('Token saved to authToken variable');",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/login",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@demo.com\",\n  \"password\": \"admin123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/register",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"securePassword123\",\n  \"name\": \"New User\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Forget Password",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/forgetpassword",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"user@example.com\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Reset Password",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/resetpassword",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"resetToken\": \"TOKEN_HERE\",\n  \"password\": \"newPassword123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Verify Token",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/verify-token"
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/logout"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Documents (REST)",
+            "description": "Document management — file uploads, downloads, versioning, AI tagging, compliance, sharing.",
+            "item": [
+                {
+                    "name": "List Documents",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/list"
+                    }
+                },
+                {
+                    "name": "Create Document (Upload)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/create",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                },
+                                {
+                                    "key": "name",
+                                    "value": "Test Document",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Uploaded via Postman",
+                                    "type": "text"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Search Documents",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/search?q=test"
+                    }
+                },
+                {
+                    "name": "Advanced Search",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/advanced-search",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"invoice\",\n  \"tags\": [],\n  \"dateRange\": {}\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Filter Documents",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/filter?type=pdf"
+                    }
+                },
+                {
+                    "name": "Read Document",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/read/{{documentId}}"
+                    }
+                },
+                {
+                    "name": "Update Document",
+                    "request": {
+                        "method": "PATCH",
+                        "url": "{{baseUrl}}/api/document/update/{{documentId}}",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Document Name\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Document",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{baseUrl}}/api/document/delete/{{documentId}}"
+                    }
+                },
+                {
+                    "name": "Download Document",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/download/{{documentId}}"
+                    }
+                },
+                {
+                    "name": "Analyze Document",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/analyze/{{documentId}}"
+                    }
+                },
+                {
+                    "name": "AI — Suggest Tags",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/ai/suggest-tags",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentId\": \"{{documentId}}\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "AI — Apply Tags",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/ai/apply-tags",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"tags\": [\"finance\", \"Q4\"]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "AI — Summarize Document",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/ai/summarize"
+                    }
+                },
+                {
+                    "name": "AI — Batch Summarize",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/ai/summarize-batch",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentIds\": []\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Bulk Import from URLs",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/bulk-import-urls",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"urls\": []\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Share URL",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/share-url",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"expiresIn\": \"7d\",\n  \"password\": \"\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "List Share URLs",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/share-urls"
+                    }
+                },
+                {
+                    "name": "List Versions",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/versions"
+                    }
+                },
+                {
+                    "name": "Get Specific Version",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/version/1"
+                    }
+                },
+                {
+                    "name": "Create Version",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/version",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Revert Document",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/revert"
+                    }
+                },
+                {
+                    "name": "Revert to Original",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/revert/original"
+                    }
+                },
+                {
+                    "name": "Revert to Version",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/revert/1"
+                    }
+                },
+                {
+                    "name": "Download Version",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/version/1/download"
+                    }
+                },
+                {
+                    "name": "Get Content",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/content"
+                    }
+                },
+                {
+                    "name": "Edit Document",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/edit",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"content\": \"Updated content\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "E-Sign Document",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/esign",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"signature\": \"base64_data\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Annotate Document",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/annotate",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"annotations\": []\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Compliance",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/compliance"
+                    }
+                },
+                {
+                    "name": "Create Compliance Record",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/compliance",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"type\": \"GDPR\",\n  \"notes\": \"\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Audit Trail",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/audit-trail"
+                    }
+                },
+                {
+                    "name": "Share Document",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/share",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"users\": [],\n  \"permission\": \"view\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Share Link",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/{{documentId}}/link"
+                    }
+                },
+                {
+                    "name": "Reprocess Documents Text",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/document/reprocess-text"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Documents (Public)",
+            "description": "Public document sharing endpoints — no auth required.",
+            "item": [
+                {
+                    "name": "Access Shared Document (GET)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/document/shared/{{shortCode}}",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Access Shared Document (POST — password protected)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/document/shared/{{shortCode}}",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"password\": \"sharePassword\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Download Shared Document",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/document/shared/{{shortCode}}/download",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Data Entry & OCR",
+            "description": "Data import via OCR, spreadsheets, URLs — with AI auto-complete.",
+            "item": [
+                {
+                    "name": "List Available Modules",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/data-entry/modules"
+                    }
+                },
+                {
+                    "name": "Get Module Schema",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/data-entry/modules/client/schema"
+                    }
+                },
+                {
+                    "name": "OCR Extract (Single File)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/ocr/client",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "OCR Extract (Batch)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/ocr/client/batch",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "files",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Spreadsheet Import",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/spreadsheet/client",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Spreadsheet Preview",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/spreadsheet/client/preview",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Import from URL",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/url/client",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"url\": \"https://example.com/data.csv\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Batch Import from URLs",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/url/client/batch",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"urls\": []\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Validate Bulk Data",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/validate/client",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"data\": []\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "AI Auto-Complete Fields",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/complete-fields/client",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"data\": {}\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Save Validated Data",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/data-entry/save/client",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"data\": {}\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Customer Chat",
+            "description": "Live customer chat — room management, stats, archiving.",
+            "item": [
+                {
+                    "name": "Get Chat Room by Token (Public)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/customer-chat/room?token=CHAT_TOKEN",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Chat URL",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/customer-chat/{{clientId}}/generate"
+                    }
+                },
+                {
+                    "name": "Get Chat Room by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/customer-chat/room/{{roomId}}"
+                    }
+                },
+                {
+                    "name": "Get My Chat Rooms",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/customer-chat/my-rooms"
+                    }
+                },
+                {
+                    "name": "Get Customer Chat Rooms",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/customer-chat/{{clientId}}/rooms"
+                    }
+                },
+                {
+                    "name": "Close Chat Room",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/customer-chat/room/{{roomId}}/close"
+                    }
+                },
+                {
+                    "name": "Archive Chat Room",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/customer-chat/room/{{roomId}}/archive"
+                    }
+                },
+                {
+                    "name": "Delete Chat Room",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{baseUrl}}/api/customer-chat/room/{{roomId}}"
+                    }
+                },
+                {
+                    "name": "Get Employee Chat Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/customer-chat/stats"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Statistics",
+            "description": "Dashboard and module-level statistics.",
+            "item": [
+                {
+                    "name": "Dashboard Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/dashboard"
+                    }
+                },
+                {
+                    "name": "Client Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/clients"
+                    }
+                },
+                {
+                    "name": "Invoice Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/invoices"
+                    }
+                },
+                {
+                    "name": "Quote Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/quotes"
+                    }
+                },
+                {
+                    "name": "Payment Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/payments"
+                    }
+                },
+                {
+                    "name": "Team Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/teams"
+                    }
+                },
+                {
+                    "name": "Task Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/tasks"
+                    }
+                },
+                {
+                    "name": "Document Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/documents"
+                    }
+                },
+                {
+                    "name": "Payment Mode Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/paymentmodes"
+                    }
+                },
+                {
+                    "name": "Tax Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/taxes"
+                    }
+                },
+                {
+                    "name": "Workflow Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/stats/workflows"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "URL Shortener (Public)",
+            "description": "Short URL redirects, previews, QR codes.",
+            "item": [
+                {
+                    "name": "Redirect Short URL",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/s/{{shortCode}}",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Preview Short URL",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/s/{{shortCode}}/preview",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Generate QR Code",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/s/{{shortCode}}/qr",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Check Password-Protected URL",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/s/{{shortCode}}/password",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"password\": \"urlPassword\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Public Survey",
+            "description": "Public survey access and submission.",
+            "item": [
+                {
+                    "name": "Get Public Survey",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/survey/{{shortCode}}",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Submit Survey Response",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/survey/{{shortCode}}/submit",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"answers\": {}\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Save Partial Response",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/survey/{{shortCode}}/save",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"answers\": {},\n  \"currentStep\": 1\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Social Media Webhooks (Public)",
+            "description": "OAuth callbacks and webhook endpoints for social platforms.",
+            "item": [
+                {
+                    "name": "Facebook Webhook Verify",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/webhooks/facebook",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Facebook Webhook Event",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/social-media/webhooks/facebook",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        }
+                    }
+                },
+                {
+                    "name": "Instagram Webhook Verify",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/webhooks/instagram",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Instagram Webhook Event",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/social-media/webhooks/instagram",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        }
+                    }
+                },
+                {
+                    "name": "Twitter Webhook CRC",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/webhooks/twitter",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Twitter Webhook Event",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/social-media/webhooks/twitter",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        }
+                    }
+                },
+                {
+                    "name": "Facebook OAuth Callback",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/oauth/facebook/callback",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Instagram OAuth Callback",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/oauth/instagram/callback",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Twitter OAuth Callback",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/oauth/twitter/callback",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Social Media Status",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/status",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Social Media Health",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/social-media/health",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Team Invitations (Public)",
+            "description": "Public team invitation acceptance.",
+            "item": [
+                {
+                    "name": "Get Invitation Details",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/public/team/INVITE_TOKEN",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                },
+                {
+                    "name": "Accept Invitation",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/public/team/INVITE_TOKEN/accept",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Team Member\",\n  \"password\": \"securePassword123\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "File Downloads (Public)",
+            "item": [
+                {
+                    "name": "Download PDF",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/download/invoices/FILE_ID",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Tracking",
+            "item": [
+                {
+                    "name": "Track Custom Event",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/api/track/event",
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"event\": \"button_click\",\n  \"properties\": {}\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Auth",
+            "description": "Authentication operations via GraphQL.",
+            "item": [
+                {
+                    "name": "GQL: Login",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation Login($email: String!, $password: String!) { login(email: $email, password: $password) { success result { token admin { _id email name } } message } }\",\n  \"variables\": { \"email\": \"admin@demo.com\", \"password\": \"admin123\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Verify Token",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query { verifyToken { success result { token admin { _id email name } } message } }\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — CRM & Clients",
+            "description": "Client management, lead scoring, bulk operations.",
+            "item": [
+                {
+                    "name": "GQL: List Clients",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ClientList($page: Int, $items: Int) { clientList(page: $page, items: $items) { success result { _id name email phone company type } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Read Client",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ClientRead($id: ID!) { clientRead(id: $id) { success result { _id name email phone company type notes } message } }\",\n  \"variables\": { \"id\": \"CLIENT_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Client",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ClientCreate($input: ClientInput!) { clientCreate(input: $input) { success result { _id name email } message } }\",\n  \"variables\": { \"input\": { \"name\": \"Acme Corp\", \"email\": \"contact@acme.com\", \"phone\": \"+1234567890\", \"company\": \"Acme Corporation\", \"type\": \"company\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Update Client",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ClientUpdate($id: ID!, $input: ClientInput!) { clientUpdate(id: $id, input: $input) { success result { _id name email } message } }\",\n  \"variables\": { \"id\": \"CLIENT_ID\", \"input\": { \"name\": \"Updated Name\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Delete Client",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ClientDelete($id: ID!) { clientDelete(id: $id) { success message } }\",\n  \"variables\": { \"id\": \"CLIENT_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Search Clients",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ClientSearch($q: String!) { clientSearch(q: $q) { success result { _id name email company } message } }\",\n  \"variables\": { \"q\": \"acme\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Calculate Lead Score",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ClientCalculateLeadScore($id: ID!) { clientCalculateLeadScore(id: $id) { success result { _id name leadScore } message } }\",\n  \"variables\": { \"id\": \"CLIENT_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Invoices",
+            "item": [
+                {
+                    "name": "GQL: List Invoices",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query InvoiceList($page: Int, $items: Int) { invoiceList(page: $page, items: $items) { success result { _id number year date expiredDate total status client { name } } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Invoice",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation InvoiceCreate($input: InvoiceInput!) { invoiceCreate(input: $input) { success result { _id number total } message } }\",\n  \"variables\": { \"input\": { \"client\": \"CLIENT_ID\", \"items\": [{ \"itemName\": \"Service\", \"quantity\": 1, \"price\": 1000 }], \"taxRate\": 0, \"date\": \"2026-04-18\", \"expiredDate\": \"2026-05-18\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Read Invoice",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query InvoiceRead($id: ID!) { invoiceRead(id: $id) { success result { _id number year date expiredDate total status items { itemName quantity price total } client { _id name email } } message } }\",\n  \"variables\": { \"id\": \"INVOICE_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Quotes",
+            "item": [
+                {
+                    "name": "GQL: List Quotes",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query QuoteList($page: Int, $items: Int) { quoteList(page: $page, items: $items) { success result { _id number year date expiredDate total status client { name } } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Quote",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation QuoteCreate($input: QuoteInput!) { quoteCreate(input: $input) { success result { _id number total } message } }\",\n  \"variables\": { \"input\": { \"client\": \"CLIENT_ID\", \"items\": [{ \"itemName\": \"Consulting\", \"quantity\": 10, \"price\": 150 }], \"taxRate\": 0, \"date\": \"2026-04-18\", \"expiredDate\": \"2026-05-18\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Send Quote via Email",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation QuoteSend($id: ID!) { quoteSend(id: $id) { success message } }\",\n  \"variables\": { \"id\": \"QUOTE_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Convert Quote to Invoice",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation QuoteConvert($id: ID!) { quoteConvert(id: $id) { success result { _id number } message } }\",\n  \"variables\": { \"id\": \"QUOTE_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Payments",
+            "item": [
+                {
+                    "name": "GQL: List Payments",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query PaymentList($page: Int, $items: Int) { paymentList(page: $page, items: $items) { success result { _id number amount date paymentMode { name } invoice { number } client { name } } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Payment",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation PaymentCreate($input: PaymentInput!) { paymentCreate(input: $input) { success result { _id number amount } message } }\",\n  \"variables\": { \"input\": { \"invoice\": \"INVOICE_ID\", \"amount\": 500, \"date\": \"2026-04-18\", \"paymentMode\": \"PAYMENT_MODE_ID\" } }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Tasks & Projects",
+            "item": [
+                {
+                    "name": "GQL: List Tasks",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query TaskList($page: Int, $items: Int) { taskList(page: $page, items: $items) { success result { _id title status priority dueDate assignedTo { name } } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Task",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation TaskCreate($input: TaskInput!) { taskCreate(input: $input) { success result { _id title status } message } }\",\n  \"variables\": { \"input\": { \"title\": \"Review Q4 Report\", \"priority\": \"high\", \"dueDate\": \"2026-04-25\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI Prioritize Task",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation TaskAiPrioritize($id: ID!) { taskAiPrioritize(id: $id) { success result { _id title priority } message } }\",\n  \"variables\": { \"id\": \"TASK_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: List Projects",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ProjectList($page: Int, $items: Int) { projectList(page: $page, items: $items) { success result { _id name status } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Team",
+            "item": [
+                {
+                    "name": "GQL: List Team Members",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query TeamList($page: Int, $items: Int) { teamList(page: $page, items: $items) { success result { _id name email role status } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Invite Team Member",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation TeamInviteMember($input: TeamInviteInput!) { teamInviteMember(input: $input) { success message } }\",\n  \"variables\": { \"input\": { \"email\": \"newmember@company.com\", \"role\": \"member\" } }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Campaigns & Marketing",
+            "item": [
+                {
+                    "name": "GQL: List Campaigns",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query CampaignList($page: Int, $items: Int) { campaignList(page: $page, items: $items) { success result { _id name type status } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Launch Campaign",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation CampaignLaunch($id: ID!) { campaignLaunch(id: $id) { success message } }\",\n  \"variables\": { \"id\": \"CAMPAIGN_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Campaign Analytics",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query CampaignAnalytics($id: ID!) { campaignAnalytics(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"CAMPAIGN_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Customer Segments",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query CustomerSegmentList { customerSegmentList { success result { _id name description memberCount } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Customer Journey",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query CustomerJourney($clientId: ID!) { customerJourney(clientId: $clientId) { success result message } }\",\n  \"variables\": { \"clientId\": \"CLIENT_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Retargeting List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query RetargetingList { retargetingList { success result { _id name status } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: A/B Test Results",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AbTestResults($id: ID!) { abTestResults(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"ABTEST_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Workflows & Automation",
+            "item": [
+                {
+                    "name": "GQL: List Workflows",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query WorkflowList($page: Int, $items: Int) { workflowList(page: $page, items: $items) { success result { _id name status } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Workflow",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation WorkflowCreate($input: WorkflowInput!) { workflowCreate(input: $input) { success result { _id name } message } }\",\n  \"variables\": { \"input\": { \"name\": \"Invoice Follow-up\", \"steps\": [] } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Trigger Rule List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query TriggerRuleList { triggerRuleList { success result { _id name event action isActive } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Business Process List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query BusinessProcessList { businessProcessList { success result { _id name status currentStep } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Workflow Execution History",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query WorkflowExecutionList($page: Int, $items: Int) { workflowExecutionList(page: $page, items: $items) { success result { _id status startedAt completedAt } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — AI Suite",
+            "description": "AI Assistant, Copilot, Knowledge Base, Enhanced AI, Data Processor.",
+            "item": [
+                {
+                    "name": "GQL: AI — Create Conversation",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiConversationCreate($input: AiConversationInput!) { aiConversationCreate(input: $input) { success result { _id title } message } }\",\n  \"variables\": { \"input\": { \"title\": \"Help with Q4 analysis\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI — Send Message",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiConversationSendMessage($conversationId: ID!, $message: String!) { aiConversationSendMessage(conversationId: $conversationId, message: $message) { success result message } }\",\n  \"variables\": { \"conversationId\": \"CONVERSATION_ID\", \"message\": \"Summarize the revenue trends for Q4\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI — Generate Content",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiGenerateContent($input: AiContentInput!) { aiGenerateContent(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"type\": \"email\", \"context\": \"Follow up on invoice #1234\", \"tone\": \"professional\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI — Analyze Text",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiAnalyzeText($text: String!) { aiAnalyzeText(text: $text) { success result message } }\",\n  \"variables\": { \"text\": \"The quarterly results exceeded expectations with a 23% growth in recurring revenue.\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI — Summarize",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiSummarize($text: String!) { aiSummarize(text: $text) { success result message } }\",\n  \"variables\": { \"text\": \"Long text to summarize...\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI — Translate",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiTranslate($text: String!, $targetLanguage: String!) { aiTranslate(text: $text, targetLanguage: $targetLanguage) { success result message } }\",\n  \"variables\": { \"text\": \"Hello, how can I help you?\", \"targetLanguage\": \"es\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Copilot — Send Prompt",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation CopilotSendPrompt($sessionId: ID!, $prompt: String!) { copilotSendPrompt(sessionId: $sessionId, prompt: $prompt) { success result message } }\",\n  \"variables\": { \"sessionId\": \"SESSION_ID\", \"prompt\": \"Show me overdue invoices\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Copilot — Get Suggestions",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query CopilotSuggestions($context: String!) { copilotSuggestions(context: $context) { success result message } }\",\n  \"variables\": { \"context\": \"invoice management\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Knowledge Base — Search",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AiKnowledgeBaseSearch($query: String!) { aiKnowledgeBaseSearch(query: $query) { success result { _id title content category } message } }\",\n  \"variables\": { \"query\": \"payment processing\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI Enhanced — Sentiment Analysis",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiEnhancedSentimentAnalysis($text: String!) { aiEnhancedSentimentAnalysis(text: $text) { success result message } }\",\n  \"variables\": { \"text\": \"This product is amazing and exceeded all my expectations!\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI Enhanced — Lead Scoring",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiEnhancedLeadScoring($clientId: ID!) { aiEnhancedLeadScoring(clientId: $clientId) { success result message } }\",\n  \"variables\": { \"clientId\": \"CLIENT_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI Data Processor — Classify Document",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiClassifyDocument($documentId: ID!) { aiClassifyDocument(documentId: $documentId) { success result message } }\",\n  \"variables\": { \"documentId\": \"DOC_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI Data Processor — Detect Anomalies",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AiDetectAnomalies($input: AnomalyInput!) { aiDetectAnomalies(input: $input) { success result message } }\",\n  \"variables\": { \"input\": { \"entityType\": \"invoice\", \"timeRange\": \"30d\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: AI Preferences — Read",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AiPreferencesRead { aiPreferencesRead { success result message } }\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Analytics & Reports",
+            "item": [
+                {
+                    "name": "GQL: Analytics Overview",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AnalyticsOverview { analyticsOverview { success result message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Analytics Dashboard",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AnalyticsDashboard { analyticsDashboard { success result message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Revenue Analytics",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AnalyticsRevenue($period: String) { analyticsRevenue(period: $period) { success result message } }\",\n  \"variables\": { \"period\": \"monthly\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Global Analytics KPI",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query GlobalAnalyticsKPI { globalAnalyticsKPI { success result message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Global Analytics Realtime",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query GlobalAnalyticsRealtime { globalAnalyticsRealtime { success result message } }\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Social Media",
+            "item": [
+                {
+                    "name": "GQL: Social Accounts",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query SocialAccountList { socialAccountList { success result { _id platform username status } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Social Post",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation SocialPostCreate($input: SocialPostInput!) { socialPostCreate(input: $input) { success result { _id content platform } message } }\",\n  \"variables\": { \"input\": { \"content\": \"Check out our latest update!\", \"platforms\": [\"facebook\", \"twitter\"] } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Schedule Social Post",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation SocialPostSchedule($id: ID!, $scheduledAt: String!) { socialPostSchedule(id: $id, scheduledAt: $scheduledAt) { success message } }\",\n  \"variables\": { \"id\": \"POST_ID\", \"scheduledAt\": \"2026-04-25T10:00:00Z\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Social Analytics Overview",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query SocialAnalyticsOverview { socialAnalyticsOverview { success result message } }\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Reviews & Reputation",
+            "item": [
+                {
+                    "name": "GQL: Review List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ReviewList { reviewList { success result { _id rating content platform author status } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Review Analytics Summary",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ReviewAnalyticsSummary { reviewAnalyticsSummary { success result message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Review Respond",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ReviewRespond($id: ID!, $response: String!) { reviewRespond(id: $id, response: $response) { success message } }\",\n  \"variables\": { \"id\": \"REVIEW_ID\", \"response\": \"Thank you for your feedback!\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Send Review Request",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ReviewRequestSend($input: ReviewRequestInput!) { reviewRequestSend(input: $input) { success message } }\",\n  \"variables\": { \"input\": { \"clientId\": \"CLIENT_ID\", \"platform\": \"google\", \"templateId\": \"TEMPLATE_ID\" } }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Surveys",
+            "item": [
+                {
+                    "name": "GQL: List Surveys",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query SurveyList($page: Int, $items: Int) { surveyList(page: $page, items: $items) { success result { _id title status responseCount } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Survey Analytics",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query SurveyAnalytics($id: ID!) { surveyAnalytics(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"SURVEY_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Notifications & Chat",
+            "item": [
+                {
+                    "name": "GQL: List Notifications",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query NotificationList($page: Int, $items: Int) { notificationList(page: $page, items: $items) { success result { _id title message read type createdAt } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Unread Count",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query NotificationUnreadCount { notificationUnreadCount { success result message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Mark All Read",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation NotificationMarkAllRead { notificationMarkAllRead { success message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Chat Room List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ChatRoomList { chatRoomList { success result { _id name participants lastMessage } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Send Chat Message",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ChatMessageSend($roomId: ID!, $content: String!) { chatMessageSend(roomId: $roomId, content: $content) { success result { _id content sender createdAt } message } }\",\n  \"variables\": { \"roomId\": \"ROOM_ID\", \"content\": \"Hello team!\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Compliance & Audit",
+            "item": [
+                {
+                    "name": "GQL: Audit Trail List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AuditTrailList($page: Int, $items: Int) { auditTrailList(page: $page, items: $items) { success result { _id action entity entityId user timestamp } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Compliance Report",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ComplianceReport { complianceReport { success result message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Consent Records",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ConsentRecordList { consentRecordList { success result { _id clientId type status grantedAt } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Data Retention Policies",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query DataRetentionPolicyList { dataRetentionPolicyList { success result { _id name retentionPeriod entityType status } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Export User Data (GDPR)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation ComplianceExportUserData($userId: ID!) { complianceExportUserData(userId: $userId) { success result message } }\",\n  \"variables\": { \"userId\": \"USER_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Settings & Admin",
+            "item": [
+                {
+                    "name": "GQL: List Settings",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query SettingList { settingList { success result { _id settingKey settingValue } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Update Setting",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation SettingUpdateByKey($settingKey: String!, $settingValue: String!) { settingUpdateByKey(settingKey: $settingKey, settingValue: $settingValue) { success message } }\",\n  \"variables\": { \"settingKey\": \"company_name\", \"settingValue\": \"My Company\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Test OpenAI Key",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation SettingTestOpenAIKey { settingTestOpenAIKey { success message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Admin Profile",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query UserProfile { userProfile { success result { _id name email role } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Tax List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query TaxesList { taxesList { success result { _id name value isDefault } message } }\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Payment Mode List",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query PaymentModeList { paymentModeList { success result { _id name isDefault } message } }\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — URLs & Short Links",
+            "item": [
+                {
+                    "name": "GQL: List URLs",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query UrlList($page: Int, $items: Int) { urlList(page: $page, items: $items) { success result { _id originalUrl shortCode clicks isActive } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create URL",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation UrlCreate($input: UrlInput!) { urlCreate(input: $input) { success result { _id originalUrl shortCode } message } }\",\n  \"variables\": { \"input\": { \"originalUrl\": \"https://example.com/long-page-url\", \"customCode\": \"\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: URL Analytics",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query UrlAnalytics($id: ID!) { urlAnalytics(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"URL_ID\" }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Generate QR Code",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation UrlGenerateQR($id: ID!) { urlGenerateQR(id: $id) { success result message } }\",\n  \"variables\": { \"id\": \"URL_ID\" }\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GraphQL — Appointments & Reminders",
+            "item": [
+                {
+                    "name": "GQL: List Appointments",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query AppointmentList($page: Int, $items: Int) { appointmentList(page: $page, items: $items) { success result { _id title date time client { name } status } pagination { page pages count } message } }\",\n  \"variables\": { \"page\": 1, \"items\": 10 }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: Create Appointment",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"mutation AppointmentCreate($input: AppointmentInput!) { appointmentCreate(input: $input) { success result { _id title date } message } }\",\n  \"variables\": { \"input\": { \"title\": \"Client Meeting\", \"date\": \"2026-04-25\", \"time\": \"10:00\", \"client\": \"CLIENT_ID\" } }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "GQL: List Reminders",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/graphql",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"query ReminderList { reminderList { success result { _id title dueDate status } message } }\"\n}"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
