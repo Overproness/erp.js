@@ -22,3 +22,6 @@ tmp/
 design_ignore/
 node_modules/
 backend/uploads/
+
+ignore_this_folder/
+.github/
