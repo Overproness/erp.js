@@ -19,4 +19,6 @@ export interface GraphQLContext {
   req: Request;
   res: Response;
   admin: AdminUser | null;
+  plan: string;
+  subscription: any;
 }

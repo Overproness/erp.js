@@ -149,6 +149,9 @@ const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
 // Analytics & Reporting
 const AnalyticsReporting = lazy(() => import('@/pages/Analytics/index'));
 
+// Subscription / Billing
+const SubscriptionPage = lazy(() => import('@/pages/Subscription/index'));
+
 let routes = {
   expense: [],
   default: [
@@ -800,6 +803,16 @@ let routes = {
         </Suspense>
       ),
       permissions: ['analytics:read'],
+    },
+    // Subscription / Billing
+    {
+      path: '/subscription',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <SubscriptionPage />
+        </Suspense>
+      ),
+      permissions: [],
     },
   ],
 };

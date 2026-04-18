@@ -4,6 +4,7 @@ const router = express.Router();
 const customerChatController = require('@/controllers/appControllers/customerChatController');
 const { catchErrors } = require('@/handlers/errorHandlers');
 const adminAuth = require('@/controllers/coreControllers/adminAuth');
+const { requireFeature } = require('@/middlewares/planMiddleware');
 
 /**
  * Public routes (no authentication required)
@@ -17,7 +18,7 @@ const adminAuth = require('@/controllers/coreControllers/adminAuth');
 router.get('/room', catchErrors(customerChatController.getChatRoomByToken));
 
 /**
- * Protected routes (authentication required)
+ * Protected routes (authentication required + CUSTOMER_LIVE_CHAT plan feature)
  */
 
 /**
@@ -28,6 +29,7 @@ router.get('/room', catchErrors(customerChatController.getChatRoomByToken));
 router.post(
   '/:id/generate',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.generateChatUrl)
 );
 
@@ -39,6 +41,7 @@ router.post(
 router.get(
   '/room/:roomId',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.getChatRoomById)
 );
 
@@ -50,6 +53,7 @@ router.get(
 router.get(
   '/my-rooms',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.getEmployeeChatRooms)
 );
 
@@ -61,6 +65,7 @@ router.get(
 router.get(
   '/:id/rooms',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.getCustomerChatRooms)
 );
 
@@ -72,6 +77,7 @@ router.get(
 router.post(
   '/room/:roomId/close',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.closeChatRoom)
 );
 
@@ -83,6 +89,7 @@ router.post(
 router.post(
   '/room/:roomId/archive',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.archiveChatRoom)
 );
 
@@ -94,6 +101,7 @@ router.post(
 router.delete(
   '/room/:roomId',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.deleteChatRoom)
 );
 
@@ -105,6 +113,7 @@ router.delete(
 router.get(
   '/stats',
   adminAuth.isValidAuthToken,
+  requireFeature('CUSTOMER_LIVE_CHAT'),
   catchErrors(customerChatController.getEmployeeStats)
 );
 

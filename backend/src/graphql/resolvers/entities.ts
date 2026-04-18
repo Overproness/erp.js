@@ -1,6 +1,7 @@
 // @ts-nocheck
 const { wrapController, createReqRes } = require('./crud');
 const mongoose = require('mongoose');
+const { requirePlanFeature, requirePlanLimit } = require('../utils/requirePlanFeature');
 
 function createEntitySpecificResolvers(controllers) {
   const {
@@ -129,15 +130,22 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // AI Enhanced — extended queries
+      // AI Enhanced — extended queries (requires AI_SUITE plan)
       ...(aiEnhancedController?.getLearningStats && {
-        aiEnhancedLearningStats: wrapController(aiEnhancedController.getLearningStats),
+        aiEnhancedLearningStats: (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SELF_LEARNING');
+          return wrapController(aiEnhancedController.getLearningStats)(parent, args, context);
+        },
       }),
       ...(aiEnhancedController?.getSuggestionAnalytics && {
-        aiEnhancedQueueStatistics: wrapController(aiEnhancedController.getSuggestionAnalytics),
+        aiEnhancedQueueStatistics: (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
+          return wrapController(aiEnhancedController.getSuggestionAnalytics)(parent, args, context);
+        },
       }),
       // AI Enhanced — queue status (no dedicated controller method, returns general status)
-      aiEnhancedQueueStatus: async () => {
+      aiEnhancedQueueStatus: async (parent, args, context) => {
+        requirePlanFeature(context, 'AI_SUITE');
         try {
           return {
             success: true,
@@ -149,9 +157,10 @@ function createEntitySpecificResolvers(controllers) {
         }
       },
 
-      // Campaign A/B Test results
+      // Campaign A/B Test results (requires AB_TESTING plan)
       ...(campaignController?.getABTestResults && {
         campaignAbTestResults: async (parent, args, context) => {
+          requirePlanFeature(context, 'AB_TESTING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -229,8 +238,9 @@ function createEntitySpecificResolvers(controllers) {
         }
       },
 
-      // Global Analytics — Realtime
-      globalAnalyticsRealtime: async () => {
+      // Global Analytics — Realtime (requires REALTIME_ANALYTICS plan)
+      globalAnalyticsRealtime: async (parent, args, context) => {
+        requirePlanFeature(context, 'REALTIME_ANALYTICS');
         try {
           const Client = mongoose.model('Client');
           const Invoice = mongoose.model('Invoice');
@@ -255,8 +265,9 @@ function createEntitySpecificResolvers(controllers) {
         }
       },
 
-      // Global Analytics — Module
-      globalAnalyticsModule: async (parent, args) => {
+      // Global Analytics — Module (requires GLOBAL_KPI_DASHBOARD plan)
+      globalAnalyticsModule: async (parent, args, context) => {
+        requirePlanFeature(context, 'GLOBAL_KPI_DASHBOARD');
         try {
           const { module: moduleName } = args;
           const modelMap = {
@@ -323,8 +334,10 @@ function createEntitySpecificResolvers(controllers) {
       }),
 
       // Document
+      // Document audit trail (requires DOCUMENT_COMPLIANCE_AUDIT for compliance audit)
       ...(documentAuditController?.getAuditTrail && {
         documentAuditTrail: async (parent, args, context) => {
+          requirePlanFeature(context, 'DOCUMENT_COMPLIANCE_AUDIT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -348,9 +361,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Customer Journey
+      // Customer Journey (requires CUSTOMER_JOURNEY_TRACKING plan)
       ...(customerJourneyController?.getJourney && {
         customerJourney: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_JOURNEY_TRACKING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.clientId = args.clientId;
           try {
@@ -362,7 +376,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
       ...(customerJourneyController?.getAnalytics && {
-        customerJourneyAnalytics: wrapController(customerJourneyController.getAnalytics),
+        customerJourneyAnalytics: (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_JOURNEY_TRACKING');
+          return wrapController(customerJourneyController.getAnalytics)(parent, args, context);
+        },
       }),
 
       // Settings
@@ -462,9 +479,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Customer Chat queries
+      // Customer Chat queries (requires CUSTOMER_LIVE_CHAT plan)
       ...(customerChatController?.getCustomerChatRooms && {
         customerChatRoomsByCustomer: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_LIVE_CHAT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           req.query.page = args.page;
@@ -479,6 +497,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(customerChatController?.getEmployeeStats && {
         customerChatStats: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_LIVE_CHAT');
           const { req, res, getResponse } = createReqRes(args, context);
           try {
             await customerChatController.getEmployeeStats(req, res);
@@ -489,16 +508,20 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Copilot - Available Models
+      // Copilot - Available Models (requires AI_SUITE plan)
       ...(copilotController?.models && {
-        aiAvailableModels: wrapController(copilotController.models),
+        aiAvailableModels: (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
+          return wrapController(copilotController.models)(parent, args, context);
+        },
       }),
     },
 
     Mutation: {
-      // Client-specific
+      // Client-specific (lead scoring requires LEAD_SCORING plan)
       ...(clientController?.calculateLeadScore && {
         clientCalculateLeadScore: async (parent, args, context) => {
+          requirePlanFeature(context, 'LEAD_SCORING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -510,7 +533,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
       ...(clientController?.recalculateAllLeadScores && {
-        clientRecalculateAllLeadScores: wrapController(clientController.recalculateAllLeadScores),
+        clientRecalculateAllLeadScores: (parent, args, context) => {
+          requirePlanFeature(context, 'LEAD_SCORING');
+          return wrapController(clientController.recalculateAllLeadScores)(parent, args, context);
+        },
       }),
 
       // Invoice-specific
@@ -527,8 +553,10 @@ function createEntitySpecificResolvers(controllers) {
           }
         },
       }),
+      // Invoice recurring (requires RECURRING_BILLING plan)
       ...(invoiceController?.generateRecurring && {
         invoiceGenerateRecurring: async (parent, args, context) => {
+          requirePlanFeature(context, 'RECURRING_BILLING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -637,9 +665,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Customer Journey
+      // Customer Journey mutations (requires CUSTOMER_JOURNEY_TRACKING plan)
       ...(customerJourneyController?.initialize && {
         customerJourneyInitialize: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_JOURNEY_TRACKING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.clientId = args.clientId;
           try {
@@ -652,6 +681,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(customerJourneyController?.transition && {
         customerJourneyTransition: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_JOURNEY_TRACKING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.clientId = args.clientId;
           req.body = args.input;
@@ -664,7 +694,7 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Admin password update (admin resets another user's password)
+      // Admin password update
       ...(adminController?.updatePassword && {
         adminPasswordUpdate: async (parent, args, context) => {
           const { req, res, getResponse } = createReqRes(args, context);
@@ -707,9 +737,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Customer Chat
+      // Customer Chat mutations (requires CUSTOMER_LIVE_CHAT plan)
       ...(customerChatController?.generateChatUrl && {
         customerChatGenerateUrl: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_LIVE_CHAT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -722,6 +753,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(customerChatController?.closeChatRoom && {
         customerChatRoomClose: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_LIVE_CHAT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.roomId = args.roomId;
           try {
@@ -734,6 +766,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(customerChatController?.archiveChatRoom && {
         customerChatRoomArchive: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_LIVE_CHAT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.roomId = args.roomId;
           try {
@@ -746,6 +779,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(customerChatController?.deleteChatRoom && {
         customerChatRoomDelete: async (parent, args, context) => {
+          requirePlanFeature(context, 'CUSTOMER_LIVE_CHAT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.roomId = args.roomId;
           try {
@@ -798,6 +832,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(documentController?.analyze && {
         documentAnalyze: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -809,9 +844,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Campaign — advanced mutations
+      // Campaign — advanced mutations (requires CAMPAIGN_MANAGEMENT plan)
       ...(campaignController?.schedule && {
         campaignSchedule: async (parent, args, context) => {
+          requirePlanFeature(context, 'CAMPAIGN_MANAGEMENT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           req.body = args.input;
@@ -825,6 +861,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(campaignController?.optimize && {
         campaignOptimize: async (parent, args, context) => {
+          requirePlanFeature(context, 'CAMPAIGN_MANAGEMENT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -837,6 +874,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(campaignController?.bulkUpdate && {
         campaignBulkUpdate: async (parent, args, context) => {
+          requirePlanFeature(context, 'CAMPAIGN_MANAGEMENT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.body = { ids: args.ids, update: args.input };
           try {
@@ -849,6 +887,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(campaignController?.generateReport && {
         campaignGenerateReport: async (parent, args, context) => {
+          requirePlanFeature(context, 'CAMPAIGN_MANAGEMENT');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -861,6 +900,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(campaignController?.updateABTestMetrics && {
         campaignUpdateAbTestMetrics: async (parent, args, context) => {
+          requirePlanFeature(context, 'AB_TESTING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           req.body = args.input;
@@ -889,6 +929,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(taskController?.aiPrioritize && {
         taskAiPrioritize: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_TASK_PRIORITIZATION');
           const { req, res, getResponse } = createReqRes(args, context);
           req.params.id = args.id;
           try {
@@ -900,9 +941,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // AI Enhanced — queue & feedback mutations
+      // AI Enhanced — queue & feedback mutations (requires AI_SUITE plan)
       ...(aiEnhancedController?.queueMessage && {
         aiEnhancedQueueMessage: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
           const { req, res, getResponse } = createReqRes(args, context);
           req.body = args.input;
           try {
@@ -915,6 +957,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(aiEnhancedController?.recordFeedback && {
         aiEnhancedRecordFeedback: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SELF_LEARNING');
           const { req, res, getResponse } = createReqRes(args, context);
           req.body = args.input;
           try {
@@ -926,9 +969,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // AI Workflow — process data
+      // AI Workflow — process data (requires AI_SUITE plan)
       ...(aiWorkflowController?.processWorkflow && {
         aiProcessData: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
           const { req, res, getResponse } = createReqRes(args, context);
           req.body = typeof args.input === 'string' ? JSON.parse(args.input) : args.input;
           try {
@@ -940,9 +984,10 @@ function createEntitySpecificResolvers(controllers) {
         },
       }),
 
-      // Data Entry — import/save mutations
+      // Data Entry — import/save mutations (requires AI_SUITE plan)
       ...(dataEntryController?.importFromUrl && {
         dataEntryImportFromUrl: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
           const { req, res, getResponse } = createReqRes(args, context);
           req.body = { url: args.url, options: args.options };
           try {
@@ -955,6 +1000,7 @@ function createEntitySpecificResolvers(controllers) {
       }),
       ...(dataEntryController?.save && {
         dataEntrySave: async (parent, args, context) => {
+          requirePlanFeature(context, 'AI_SUITE');
           const { req, res, getResponse } = createReqRes(args, context);
           req.body = args.input;
           try {

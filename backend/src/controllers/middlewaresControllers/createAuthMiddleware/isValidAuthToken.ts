@@ -53,6 +53,24 @@ const isValidAuthToken = async (req, res, next) => {
         req.user = user;
         req.isUser = true;
         req.userPermissions = user.permissions;
+
+        // Load subscription for user's company owner
+        try {
+          const CompanyOwner = mongoose.model('CompanyOwner');
+          const Subscription = mongoose.model('Subscription');
+          const owner = await CompanyOwner.findOne({ companyID: user.companyID, removed: false }).lean();
+          if (owner) {
+            const subscription = await Subscription.findOne({ companyOwner: owner._id }).lean();
+            req.subscription = subscription ?? null;
+            req.plan = (subscription && subscription.status !== 'canceled') ? subscription.plan : 'starter';
+          } else {
+            req.plan = 'starter';
+            req.subscription = null;
+          }
+        } catch (subErr) {
+          req.plan = 'starter';
+          req.subscription = null;
+        }
         
         console.log('AUTH SUCCESS: User authenticated');
         return next();
@@ -76,6 +94,18 @@ const isValidAuthToken = async (req, res, next) => {
       console.log('AUTH SUCCESS: CompanyOwner authenticated:', companyOwner.email);
       // ONLY set req.companyOwner for CompanyOwner tokens - do NOT set req.user
       req.companyOwner = companyOwner;
+
+      // Load subscription for CompanyOwner
+      try {
+        const Subscription = mongoose.model('Subscription');
+        const subscription = await Subscription.findOne({ companyOwner: companyOwner._id }).lean();
+        req.subscription = subscription ?? null;
+        req.plan = (subscription && subscription.status !== 'canceled') ? subscription.plan : 'starter';
+      } catch (subErr) {
+        req.plan = 'starter';
+        req.subscription = null;
+      }
+
       return next();
     } catch (error) {
       console.log('AUTH ERROR: Exception occurred:', error.message);

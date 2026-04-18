@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { N8N_URL } from '@/config/serverApiConfig';
 import { usePermissions } from '@/hooks/usePermissions';
+import { usePlan } from '@/hooks/usePlan';
 import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import { useEffect, useState } from 'react';
@@ -12,6 +13,7 @@ export default function IconSidebar() {
   const navigate = useNavigate();
   const translate = useLanguage();
   const currentAdmin = useSelector(selectCurrentAdmin);
+  const { canAccess } = usePlan();
 
   const {
     hasPermission,
@@ -33,12 +35,17 @@ export default function IconSidebar() {
     return hasPermission(requiredPermissions);
   };
 
-  // Filter menu items based on permissions
+  // Filter menu items based on permissions and plan
   const filterItemsByPermissions = (items) => {
     if (permissionsLoading) return [];
 
     return items.filter((item) => {
       if (!checkPermission(item.permissions)) {
+        return false;
+      }
+
+      // Plan-based feature gating
+      if (item.requiredFeature && !canAccess(item.requiredFeature)) {
         return false;
       }
 
@@ -111,6 +118,7 @@ export default function IconSidebar() {
       label: 'Marketing',
       path: '/marketing',
       permissions: ['marketing:read'],
+      requiredFeature: 'MARKETING_MODULE',
       children: [
         {
           key: 'marketing-campaigns',
@@ -163,6 +171,7 @@ export default function IconSidebar() {
       label: 'AI Assistant',
       path: '/ai-assistant',
       permissions: ['ai:read'],
+      requiredFeature: 'AI_SUITE',
       children: [
         {
           key: 'ai-chat',
@@ -180,7 +189,7 @@ export default function IconSidebar() {
         },
       ],
     },
-    { key: 'url', icon: 'link', label: 'URLs', path: '/url', permissions: ['url:read'] },
+    { key: 'url', icon: 'link', label: 'URLs', path: '/url', permissions: ['url:read'], requiredFeature: 'URL_MANAGEMENT' },
     {
       key: 'document',
       icon: 'description',
@@ -201,6 +210,7 @@ export default function IconSidebar() {
       label: 'Workflows',
       path: '/workflow',
       permissions: ['workflow:read'],
+      requiredFeature: 'WORKFLOW_MANAGEMENT',
       children: [
         {
           key: 'workflow',
@@ -232,6 +242,7 @@ export default function IconSidebar() {
       label: 'Analytics',
       path: '/analytics',
       permissions: ['analytics:read'],
+      requiredFeature: 'ADVANCED_ANALYTICS',
     },
     {
       key: 'team-settings',
@@ -249,6 +260,12 @@ export default function IconSidebar() {
           permissions: ['settings:read'],
         },
       ],
+    },
+    {
+      key: 'subscription',
+      icon: 'credit_card',
+      label: 'Subscription',
+      path: '/subscription',
     },
   ];
 

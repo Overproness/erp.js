@@ -785,6 +785,16 @@ function Sidebar({ collapsible, isMobile = false }) {
         },
       ],
     },
+    {
+      key: 'subscription',
+      icon: <BankOutlined />,
+      label: (
+        <Link to={'/subscription'} className={getMenuItemClass(currentPath === 'subscription')}>
+          {translate('Subscription')}
+        </Link>
+      ),
+      linkpath: '/subscription',
+    },
   ];
 
   // Filter items based on permissions

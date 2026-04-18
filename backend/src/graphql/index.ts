@@ -82,7 +82,7 @@ async function createApolloServer(): Promise<ApolloServer> {
 }
 
 async function buildContext({ req, res }: { req: any; res: any }): Promise<GraphQLContext> {
-  const context: GraphQLContext = { req, res, admin: null };
+  const context: GraphQLContext = { req, res, admin: null, plan: 'starter', subscription: null };
 
   const token =
     req.cookies?.token ||
@@ -103,6 +103,18 @@ async function buildContext({ req, res }: { req: any; res: any }): Promise<Graph
           _id: (admin as any)._id.toString(),
           companyID: (admin as any).companyID || (admin as any)._id.toString(),
         } as unknown as AdminUser;
+
+        // Load subscription for plan-based access control
+        try {
+          const Subscription = mongoose.model('Subscription');
+          const sub = await Subscription.findOne({ companyOwner: (admin as any)._id }).lean();
+          context.subscription = sub ?? null;
+          context.plan = (sub && (sub as any).status !== 'canceled') ? (sub as any).plan : 'starter';
+        } catch (subErr) {
+          // Subscription model may not be loaded yet during startup
+          context.plan = 'starter';
+          context.subscription = null;
+        }
       }
     } catch (error) {
       // Token invalid or expired - continue without auth

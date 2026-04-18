@@ -4,6 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs').promises;
+const { requireFeature } = require('../middlewares/planMiddleware');
 
 // Import data entry services
 const enhancedOCRService = require('../services/dataEntry/enhancedOCRService');
@@ -61,6 +62,9 @@ const upload = multer({
  * @desc    Get all available modules with their schemas
  * @access  Private
  */
+// Apply AI_SUITE plan guard to all OCR/data-entry routes
+router.use(requireFeature('AI_SUITE'));
+
 router.get('/modules', async (req, res) => {
   try {
     const modules = getAllSchemas();

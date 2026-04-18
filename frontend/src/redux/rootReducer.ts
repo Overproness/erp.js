@@ -18,6 +18,7 @@ import settingsUiReducer from './settings/settingsUiSlice';
 import socialMediaUiReducer from './socialMedia/socialMediaUiSlice';
 import urlUiReducer from './url/urlUiSlice';
 import workflowUiReducer from './workflow/workflowUiSlice';
+import subscriptionReducer from './subscription/subscriptionSlice';
 
 // Combine all reducers
 const rootReducer = combineReducers({
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   erp: erpReducer,
   permissions: permissionsReducer,
   settings: settingsReducer,
+  subscription: subscriptionReducer,
 
   // UI slices (Apollo Client integration)
   crudUi: crudUiReducer,

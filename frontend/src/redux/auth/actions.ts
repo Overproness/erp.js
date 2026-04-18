@@ -4,6 +4,7 @@ import { request } from '@/request';
 import storePersist from '@/redux/storePersist';
 import apolloClient from '@/graphql/client';
 import { UPDATE_ADMIN, UPDATE_PROFILE } from '@/graphql/operations/auth';
+import { subscriptionActions } from '@/redux/subscription/subscriptionSlice';
 
 export const login =
   ({ loginData }) =>
@@ -194,6 +195,7 @@ export const logout = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOGOUT_SUCCESS,
     });
+    dispatch(subscriptionActions.resetSubscription());
   } catch (error) {
     console.error('Error during logout:', error);
     
@@ -208,6 +210,7 @@ export const logout = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOGOUT_SUCCESS,
     });
+    dispatch(subscriptionActions.resetSubscription());
   }
 };
 

@@ -2,6 +2,48 @@
 const createAuthResolvers = require('./auth');
 const { generateCRUDResolvers, wrapController, createReqRes } = require('./crud');
 const createEntitySpecificResolvers = require('./entities');
+const { requirePlanFeature } = require('../utils/requirePlanFeature');
+
+// Map CRUD entity names to their required plan feature keys.
+// Entities not listed here are available on all plans (starter+).
+const ENTITY_FEATURE_MAP = {
+  // CRM extras
+  customerSegment: 'CUSTOMER_SEGMENTATION',
+  customerFollowUp: 'FOLLOW_UP_AUTOMATION',
+  // Campaigns & Marketing
+  campaign: 'CAMPAIGN_MANAGEMENT',
+  abTest: 'AB_TESTING',
+  // Social Media
+  socialAccount: 'SOCIAL_MANAGEMENT',
+  socialPost: 'SOCIAL_MANAGEMENT',
+  socialCampaign: 'SOCIAL_MANAGEMENT',
+  socialMention: 'SOCIAL_MENTION_MONITORING',
+  // Reputation
+  review: 'REVIEW_AGGREGATION',
+  reviewLink: 'REVIEW_AGGREGATION',
+  reviewTemplate: 'REVIEW_AGGREGATION',
+  // AI
+  aiAssistant: 'AI_SUITE',
+  aiKnowledgeBase: 'AI_KNOWLEDGE_BASE',
+  // Workflow & Automation
+  triggerRule: 'TRIGGER_RULES',
+  businessProcess: 'BUSINESS_PROCESS_ENGINE',
+  // Compliance
+  consentRecord: 'GDPR_CONSENT',
+  dataRetentionPolicy: 'DATA_RETENTION',
+};
+
+/** Wraps a resolver map (Query/Mutation) with a plan feature check */
+function guardResolvers(resolverMap, featureKey) {
+  const guarded = {};
+  for (const [name, fn] of Object.entries(resolverMap)) {
+    guarded[name] = (parent, args, context, info) => {
+      requirePlanFeature(context, featureKey);
+      return fn(parent, args, context, info);
+    };
+  }
+  return guarded;
+}
 
 // Controllers will be passed in when the app initializes
 let resolversInstance = null;
@@ -82,8 +124,15 @@ function initializeResolvers(controllers) {
   crudEntities.forEach(({ name, controller }) => {
     if (controller) {
       const crud = generateCRUDResolvers(name, controller);
-      Object.assign(mergedQueries, crud.Query);
-      Object.assign(mergedMutations, crud.Mutation);
+      const featureKey = ENTITY_FEATURE_MAP[name];
+      if (featureKey) {
+        // Apply plan feature guard to all resolvers for this entity
+        Object.assign(mergedQueries, guardResolvers(crud.Query, featureKey));
+        Object.assign(mergedMutations, guardResolvers(crud.Mutation, featureKey));
+      } else {
+        Object.assign(mergedQueries, crud.Query);
+        Object.assign(mergedMutations, crud.Mutation);
+      }
     }
   });
 

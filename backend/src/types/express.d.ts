@@ -7,6 +7,11 @@ declare global {
       user?: AdminUser;
       authType?: string;
       adminId?: string;
+      plan?: string;
+      subscription?: any;
+      isUser?: boolean;
+      companyOwner?: any;
+      userPermissions?: any;
     }
   }
 }

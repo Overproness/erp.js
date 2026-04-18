@@ -19,6 +19,7 @@ import useLanguage from '@/locale/useLanguage';
 
 import { MarketingProvider } from '@/context/MarketingContext';
 import TeamPanelProvider from '@/pages/Team/TeamModule/TeamPanelProvider';
+import { TrialBanner } from '@/components/PlanGating';
 
 export default function ErpCrmApp() {
   const { Content } = Layout;
@@ -57,6 +58,7 @@ export default function ErpCrmApp() {
       <TeamPanelProvider>
         <MarketingProvider>
           <div style={{ position: 'relative' }}>
+            <TrialBanner />
             <Navigation />
 
             {isMobile ? (

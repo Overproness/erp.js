@@ -53,6 +53,8 @@ const dataEntryRoutes = require('./routes/dataEntryRoutes');
 const documentRouter = require('./routes/appRoutes/documentRoutes');
 // Statistics routes
 const statisticsRoutes = require('./routes/appRoutes/statisticsRoutes');
+// Subscription routes
+const subscriptionRoutes = require('./routes/appRoutes/subscriptionRoutes');
 
 // ─────────────────────────────────────────────────────────────
 // Create Express App
@@ -200,6 +202,7 @@ app.post('/api/track/event', behaviorTracking.trackCustomEvent);
 // ─────────────────────────────────────────────────────────────
 // PROTECTED REST Routes (file uploads, binary operations)
 // ─────────────────────────────────────────────────────────────
+app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/document', adminAuth.isValidAuthToken, fileUploadMiddleware, validateFileUpload, documentRouter);
 app.use('/api/data-entry', adminAuth.isValidAuthToken, dataEntryRoutes);
 app.use('/api/stats', adminAuth.isValidAuthToken, statisticsRoutes);

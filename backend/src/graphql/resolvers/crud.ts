@@ -30,6 +30,8 @@ function createReqRes(args: any, context: GraphQLContext): ReqResResult {
     headers: context.req?.headers || {},
     ...context,
     admin: context.admin,
+    plan: (context as any).plan ?? 'starter',
+    subscription: (context as any).subscription ?? null,
     companyOwner: context.admin ? {
       _id: context.admin._id,
       companyID: context.admin.companyID,

@@ -160,6 +160,25 @@ const register = async (req, res) => {
       responseData.onboardingComplete = savedUser.onboardingComplete;
       responseData.needsOnboarding = !savedUser.onboardingComplete;
 
+      // Auto-create trial subscription for new CompanyOwner
+      try {
+        const validPlans = ['starter', 'professional', 'enterprise'];
+        const selectedPlan = validPlans.includes(req.body.plan) ? req.body.plan : 'professional';
+        const Subscription = mongoose.model('Subscription');
+        await Subscription.create({
+          companyOwner: savedUser._id,
+          plan: selectedPlan,
+          status: 'trialing',
+          billingCycle: 'monthly',
+          trialStart: new Date(),
+          trialEnd: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+        });
+        console.log('Trial subscription created for CompanyOwner:', savedUser._id, 'plan:', selectedPlan);
+      } catch (subError) {
+        console.error('Failed to create trial subscription:', subError.message);
+        // Don't fail registration if subscription creation fails
+      }
+
       // Send webhook to n8n instance for company signup
       try {
         console.log('Sending webhook to n8n for company signup:', savedUser._id);
