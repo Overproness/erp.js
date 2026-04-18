@@ -1,12 +1,11 @@
 // @ts-nocheck
 import { ApolloServer } from '@apollo/server';
-import { expressMiddleware } from '@apollo/server/express4';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
-const { makeExecutableSchema } = require('@graphql-tools/schema');
-import typeDefs from './typeDefs';
+import { AdminUser, GraphQLContext } from '../types/context';
 import { initializeResolvers } from './resolvers';
-import { GraphQLContext, AdminUser } from '../types/context';
+import typeDefs from './typeDefs';
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 
 /** Remove resolver entries that have no matching field in the schema */
 function filterResolversToSchema(resolvers: any, schema: any) {
@@ -124,4 +123,5 @@ async function buildContext({ req, res }: { req: any; res: any }): Promise<Graph
   return context;
 }
 
-export { createApolloServer, buildContext };
+export { buildContext, createApolloServer };
+

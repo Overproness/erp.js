@@ -1,9 +1,28 @@
-import { Card, Col, Row, Button, Tag, Typography, Divider, Spin, Space, Badge, List, Modal, message } from 'antd';
-import { CheckCircleOutlined, CrownOutlined, ThunderboltOutlined, RocketOutlined } from '@ant-design/icons';
-import { useEffect, useState, useCallback } from 'react';
-import { usePlan } from '@/hooks/usePlan';
 import { PLAN_METADATA, type PlanTier } from '@/config/featureMap';
-import { API_BASE_URL, ACCESS_TOKEN_NAME } from '@/config/serverApiConfig';
+import { ACCESS_TOKEN_NAME, API_BASE_URL } from '@/config/serverApiConfig';
+import { usePlan } from '@/hooks/usePlan';
+import {
+  CheckCircleOutlined,
+  CrownOutlined,
+  RocketOutlined,
+  ThunderboltOutlined,
+} from '@ant-design/icons';
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Divider,
+  List,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Tag,
+  Typography,
+  message,
+} from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -55,45 +74,57 @@ const PLAN_ICONS: Record<PlanTier, React.ReactNode> = {
 };
 
 export default function SubscriptionPage() {
-  const { plan, planName, status, isTrialing, daysLeftInTrial, cancelAtPeriodEnd, fetchSubscription, isLoading } = usePlan();
+  const {
+    plan,
+    planName,
+    status,
+    isTrialing,
+    daysLeftInTrial,
+    cancelAtPeriodEnd,
+    fetchSubscription,
+    isLoading,
+  } = usePlan();
   const [changingPlan, setChangingPlan] = useState<PlanTier | null>(null);
 
   useEffect(() => {
     fetchSubscription();
   }, []);
 
-  const handleChangePlan = useCallback(async (targetPlan: PlanTier) => {
-    Modal.confirm({
-      title: `Switch to ${PLAN_METADATA[targetPlan].name}?`,
-      content: `Your plan will be changed to ${PLAN_METADATA[targetPlan].name} ($${PLAN_METADATA[targetPlan].price}/mo).`,
-      okText: 'Confirm',
-      onOk: async () => {
-        setChangingPlan(targetPlan);
-        try {
-          const token = localStorage.getItem(ACCESS_TOKEN_NAME);
-          const res = await fetch(`${API_BASE_URL}subscription/plan`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              ...(token ? { [ACCESS_TOKEN_NAME]: token } : {}),
-            },
-            body: JSON.stringify({ plan: targetPlan }),
-          });
-          const data = await res.json();
-          if (data.success) {
-            message.success(data.message);
-            fetchSubscription();
-          } else {
-            message.error(data.message || 'Failed to change plan');
+  const handleChangePlan = useCallback(
+    async (targetPlan: PlanTier) => {
+      Modal.confirm({
+        title: `Switch to ${PLAN_METADATA[targetPlan].name}?`,
+        content: `Your plan will be changed to ${PLAN_METADATA[targetPlan].name} ($${PLAN_METADATA[targetPlan].price}/mo).`,
+        okText: 'Confirm',
+        onOk: async () => {
+          setChangingPlan(targetPlan);
+          try {
+            const token = localStorage.getItem(ACCESS_TOKEN_NAME);
+            const res = await fetch(`${API_BASE_URL}subscription/plan`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { [ACCESS_TOKEN_NAME]: token } : {}),
+              },
+              body: JSON.stringify({ plan: targetPlan }),
+            });
+            const data = await res.json();
+            if (data.success) {
+              message.success(data.message);
+              fetchSubscription();
+            } else {
+              message.error(data.message || 'Failed to change plan');
+            }
+          } catch {
+            message.error('Network error');
+          } finally {
+            setChangingPlan(null);
           }
-        } catch {
-          message.error('Network error');
-        } finally {
-          setChangingPlan(null);
-        }
-      },
-    });
-  }, [fetchSubscription]);
+        },
+      });
+    },
+    [fetchSubscription]
+  );
 
   const handleCancel = useCallback(async () => {
     Modal.confirm({
@@ -162,7 +193,9 @@ export default function SubscriptionPage() {
         <Row align="middle" justify="space-between">
           <Col>
             <Space direction="vertical" size={4}>
-              <Title level={4} style={{ margin: 0 }}>Current Plan</Title>
+              <Title level={4} style={{ margin: 0 }}>
+                Current Plan
+              </Title>
               <Space>
                 <Tag color={PLAN_METADATA[plan]?.color}>{planName}</Tag>
                 {status && <Tag>{status}</Tag>}
@@ -174,9 +207,15 @@ export default function SubscriptionPage() {
           <Col>
             <Space>
               {cancelAtPeriodEnd ? (
-                <Button type="primary" onClick={handleReactivate}>Reactivate</Button>
+                <Button type="primary" onClick={handleReactivate}>
+                  Reactivate
+                </Button>
               ) : (
-                status !== 'canceled' && <Button danger onClick={handleCancel}>Cancel Plan</Button>
+                status !== 'canceled' && (
+                  <Button danger onClick={handleCancel}>
+                    Cancel Plan
+                  </Button>
+                )
               )}
             </Space>
           </Col>
@@ -191,7 +230,10 @@ export default function SubscriptionPage() {
 
           return (
             <Col xs={24} md={8} key={tier}>
-              <Badge.Ribbon text={tier === 'professional' ? 'Most Popular' : ''} color={tier === 'professional' ? 'blue' : 'transparent'}>
+              <Badge.Ribbon
+                text={tier === 'professional' ? 'Most Popular' : ''}
+                color={tier === 'professional' ? 'blue' : 'transparent'}
+              >
                 <Card
                   hoverable={!isCurrent}
                   style={{
@@ -202,7 +244,9 @@ export default function SubscriptionPage() {
                 >
                   <Space align="center" style={{ marginBottom: 8 }}>
                     {PLAN_ICONS[tier]}
-                    <Title level={4} style={{ margin: 0 }}>{meta.name}</Title>
+                    <Title level={4} style={{ margin: 0 }}>
+                      {meta.name}
+                    </Title>
                   </Space>
 
                   <div style={{ marginBottom: 16 }}>
@@ -229,7 +273,9 @@ export default function SubscriptionPage() {
 
                   <div style={{ marginTop: 16, textAlign: 'center' }}>
                     {isCurrent ? (
-                      <Button disabled block>Current Plan</Button>
+                      <Button disabled block>
+                        Current Plan
+                      </Button>
                     ) : (
                       <Button
                         type="primary"

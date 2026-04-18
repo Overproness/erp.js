@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Request, Response, NextFunction } from 'express';
-import { hasFeatureAccess, getPlanLimit, getMinimumPlan } from '../config/featureMap';
+import { NextFunction, Response } from 'express';
+import { getMinimumPlan, getPlanLimit, hasFeatureAccess } from '../config/featureMap';
 
 /**
  * requireFeature('FEATURE_KEY')

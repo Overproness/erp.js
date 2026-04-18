@@ -17,9 +17,9 @@ import AppRouter from '@/router/AppRouter';
 import useResponsive from '@/hooks/useResponsive';
 import useLanguage from '@/locale/useLanguage';
 
+import { TrialBanner } from '@/components/PlanGating';
 import { MarketingProvider } from '@/context/MarketingContext';
 import TeamPanelProvider from '@/pages/Team/TeamModule/TeamPanelProvider';
-import { TrialBanner } from '@/components/PlanGating';
 
 export default function ErpCrmApp() {
   const { Content } = Layout;

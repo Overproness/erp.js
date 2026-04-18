@@ -189,7 +189,14 @@ export default function IconSidebar() {
         },
       ],
     },
-    { key: 'url', icon: 'link', label: 'URLs', path: '/url', permissions: ['url:read'], requiredFeature: 'URL_MANAGEMENT' },
+    {
+      key: 'url',
+      icon: 'link',
+      label: 'URLs',
+      path: '/url',
+      permissions: ['url:read'],
+      requiredFeature: 'URL_MANAGEMENT',
+    },
     {
       key: 'document',
       icon: 'description',

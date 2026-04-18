@@ -1,10 +1,10 @@
-import * as actionTypes from './types';
 import * as authService from '@/auth';
-import { request } from '@/request';
-import storePersist from '@/redux/storePersist';
 import apolloClient from '@/graphql/client';
 import { UPDATE_ADMIN, UPDATE_PROFILE } from '@/graphql/operations/auth';
+import storePersist from '@/redux/storePersist';
 import { subscriptionActions } from '@/redux/subscription/subscriptionSlice';
+import { request } from '@/request';
+import * as actionTypes from './types';
 
 export const login =
   ({ loginData }) =>

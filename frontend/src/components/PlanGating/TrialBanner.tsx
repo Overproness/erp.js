@@ -1,4 +1,4 @@
-import { Alert, Space, Button } from 'antd';
+import { Alert, Button, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { usePlan } from '../../hooks/usePlan';
 
@@ -19,7 +19,10 @@ export default function TrialBanner() {
         <Space>
           <span>
             Your <strong>{planName}</strong> trial ends in{' '}
-            <strong>{daysLeftInTrial} day{daysLeftInTrial !== 1 ? 's' : ''}</strong>.
+            <strong>
+              {daysLeftInTrial} day{daysLeftInTrial !== 1 ? 's' : ''}
+            </strong>
+            .
           </span>
           <Button size="small" type="primary" onClick={() => navigate('/subscription')}>
             Subscribe Now

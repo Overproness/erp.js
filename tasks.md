@@ -9,6 +9,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 1 — Data Foundation
 
 ### P1-01 · Create Subscription Mongoose model
+
 - **File:** `backend/src/models/appModels/Subscription.ts`
 - Define schema: `companyOwner` (ObjectId, ref CompanyOwner, unique), `plan` (enum: starter/professional/enterprise), `status` (enum: trialing/active/past_due/canceled/paused), `billingCycle` (monthly/annual), `trialStart`, `trialEnd`, `currentPeriodStart`, `currentPeriodEnd`, `cancelAtPeriodEnd`, `stripeCustomerId`, `stripeSubscriptionId`, `stripePriceId`, `canceledAt`, `created`, `updated`.
 - Add indexes: `{ companyOwner: 1 }`, `{ stripeCustomerId: 1 }`, `{ stripeSubscriptionId: 1 }`.
@@ -26,6 +27,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P1-02 · Register Subscription model in model loader
+
 - **File:** Wherever app models are loaded/imported (check `backend/src/models/` index or `app.ts` auto-loader).
 - Ensure `Subscription` is loaded before any route/middleware runs.
 
@@ -37,6 +39,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P1-03 · Extend TypeScript Request type with plan fields
+
 - **File:** `backend/src/types/` — find the Express Request extension or create one.
 - Add `plan: string`, `subscription: any | null` to the augmented `Request` interface.
 - This eliminates TypeScript errors in subsequent phases.
@@ -49,6 +52,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P1-04 · Extend GraphQLContext type with plan fields
+
 - **File:** `backend/src/types/context.ts`
 - Add `plan: string`, `subscription: any | null` to `GraphQLContext`.
 
@@ -61,6 +65,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P1-05 · Auto-create trial Subscription on owner registration
+
 - **File:** `backend/src/controllers/coreControllers/adminAuth.ts` — register handler.
 - After `CompanyOwner.save()` succeeds, read `plan` from `req.body.plan`. Validate against `['starter','professional','enterprise']`; default to `'professional'` if missing.
 - Create Subscription: `{ companyOwner: newOwner._id, plan, status: 'trialing', billingCycle: 'monthly', trialStart: now, trialEnd: now + 14 days }`.
@@ -78,6 +83,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 2 — Backend Feature Map
 
 ### P2-01 · Create backend featureMap.ts constants
+
 - **File:** `backend/src/config/featureMap.ts`
 - Define and export: `TIER_ORDER`, `FEATURE_REQUIREMENTS` (all 50+ feature keys mapped to minimum plan), `PLAN_LIMITS` (users, workflowRules, activeSurveys, socialAccounts, monthlyUrlCreates).
 - Define and export: `hasFeatureAccess(plan, featureKey): boolean`, `getPlanLimit(plan, limitKey): number`, `getMinimumPlan(featureKey): string`.
@@ -98,6 +104,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 3 — Backend Enforcement
 
 ### P3-01 · Extend checkAuth middleware to load subscription
+
 - **File:** `backend/src/middlewares/auth.ts`
 - After successfully finding a `CompanyOwner`, query `Subscription.findOne({ companyOwner: companyOwner._id }).lean()` and attach to `req.subscription` and `req.plan`.
 - If no subscription, set `req.plan = 'starter'` (backward-compat default).
@@ -117,6 +124,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-02 · Extend isValidAuthToken middleware to load subscription
+
 - **File:** `backend/src/controllers/middlewaresControllers/createAuthMiddleware/isValidAuthToken.ts`
 - Same changes as P3-01 (this is the parallel REST auth middleware).
 
@@ -129,6 +137,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-03 · Create planMiddleware.ts (requireFeature, requireLimit)
+
 - **File:** `backend/src/middlewares/planMiddleware.ts`
 - Implement `requireFeature(featureKey: string)` — returns a middleware that returns 403 with `{ upgradeRequired: true, requiredPlan, currentPlan }` if access is denied.
 - Implement `requireLimit(limitKey: string, getCountFn)` — async middleware factory, returns 403 with limit info if cap exceeded.
@@ -144,6 +153,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-04 · Add requireFeature guard to dataEntryRoutes.ts (OCR)
+
 - **File:** `backend/src/routes/appRoutes/dataEntryRoutes.ts` (or `backend/src/routes/dataEntryRoutes.ts`)
 - Add `requireFeature('AI_SUITE')` after the auth middleware on all OCR/data-entry upload endpoints.
 
@@ -156,6 +166,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-05 · Add requireFeature guard to customerChatRoutes.ts
+
 - **File:** `backend/src/routes/appRoutes/customerChatRoutes.ts`
 - Add `requireFeature('CUSTOMER_LIVE_CHAT')` to all authenticated customer chat endpoints (not public-facing customer endpoints).
 
@@ -168,6 +179,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-06 · Extend GraphQL buildContext to load subscription
+
 - **File:** `backend/src/graphql/index.ts`
 - Inside `buildContext`, after the CompanyOwner is found, query subscription and attach to `context.plan` and `context.subscription`.
 
@@ -182,6 +194,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-07 · Create GraphQL plan guard utility
+
 - **File:** `backend/src/graphql/utils/requirePlanFeature.ts`
 - Implement `requirePlanFeature(context, featureKey)` — throws `GraphQLError` with code `PLAN_UPGRADE_REQUIRED` if access is denied.
 - Implement `requirePlanLimit(context, limitKey, currentCount)` — throws `GraphQLError` with code `PLAN_LIMIT_REACHED` if at cap.
@@ -197,6 +210,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-08 · Add plan guards to AI resolvers
+
 - **Files:** All resolver files in `backend/src/graphql/resolvers/` that handle AI operations (any file with `ai`, `copilot`, `assistant`, `ocr` in the name).
 - Add `requirePlanFeature(context, 'AI_SUITE')` as first line in every Query and Mutation.
 - For knowledge base ops: use `'AI_KNOWLEDGE_BASE'`.
@@ -215,6 +229,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-09 · Add plan guards to Campaign / Marketing resolvers
+
 - **Files:** Resolver files for campaigns, A/B testing, retargeting, email campaigns, behavior tracking.
 - Guards: `CAMPAIGN_MANAGEMENT`, `AB_TESTING`, `RETARGETING_ENGINE`, `EMAIL_CAMPAIGNS`, `ADVANCED_BEHAVIOR_TRACKING`, `CUSTOMER_BEHAVIOR_ANALYTICS`.
 
@@ -231,6 +246,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-10 · Add plan guards to Social Media resolvers
+
 - **Files:** Resolver files for social accounts, social posts, social campaigns, social analytics.
 - Guards: `SOCIAL_MANAGEMENT` (base), `SOCIAL_MENTION_MONITORING` (enterprise).
 
@@ -243,6 +259,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-11 · Add plan guards to Reputation / Reviews resolvers
+
 - **Files:** Resolver files for reviews, reputation portal, review responses, review analytics.
 - Guards: `REVIEW_AGGREGATION`, `REVIEW_RESPONSE_AUTOMATION`, `REVIEW_ANALYTICS_SENTIMENT`, `REVIEW_REQUEST_AUTOMATION`, `REPUTATION_PORTAL`.
 
@@ -254,6 +271,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-12 · Add plan guards to Workflow resolvers
+
 - **Files:** Resolver files for workflows, trigger rules, business processes, n8n, automation suggestions.
 - Guards: `TRIGGER_RULES`, `BUSINESS_PROCESS_ENGINE`, `N8N_WORKFLOWS`, `AUTOMATION_SUGGESTIONS`.
 
@@ -268,6 +286,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-13 · Add plan guards to CRM extras resolvers
+
 - **Files:** Resolvers for lead scoring, customer segmentation, customer journey, follow-ups.
 - Guards: `LEAD_SCORING`, `CUSTOMER_SEGMENTATION`, `CUSTOMER_JOURNEY_TRACKING`, `FOLLOW_UP_AUTOMATION`.
 
@@ -282,6 +301,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-14 · Add plan guards to Finance extras resolvers
+
 - **Files:** Resolvers for recurring billing, bulk email quotes.
 - Guards: `RECURRING_BILLING`, `BULK_EMAIL_QUOTES`.
 
@@ -294,6 +314,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-15 · Add plan guards to Operations extras resolvers
+
 - **Files:** Resolvers for e-signatures, document compliance, AI task prioritization.
 - Guards: `E_SIGNATURES`, `DOCUMENT_COMPLIANCE_AUDIT`, `AI_TASK_PRIORITIZATION`.
 
@@ -307,6 +328,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-16 · Add plan guards to Analytics extras resolvers
+
 - **Files:** Resolvers for global KPI, real-time analytics, data export, cross-module comparison.
 - Guards: `GLOBAL_KPI_DASHBOARD`, `REALTIME_ANALYTICS`, `ANALYTICS_DATA_EXPORT`, `CROSS_MODULE_COMPARISON`.
 
@@ -321,6 +343,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-17 · Add plan guards to Communication extras resolvers
+
 - **Files:** Resolvers for SMS, push notifications.
 - Guards: `SMS_NOTIFICATIONS`, `PUSH_NOTIFICATIONS`.
 - Note: `CUSTOMER_LIVE_CHAT` is already handled in P3-05 via REST; confirm if chat resolvers exist in GraphQL too.
@@ -335,6 +358,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-18 · Add plan guards to Compliance resolvers
+
 - **Files:** Resolvers for audit (advanced), consent management, data retention, GDPR export/deletion, compliance reporting.
 - Guards: `ADVANCED_AUDIT`, `GDPR_CONSENT`, `DATA_RETENTION`, `GDPR_EXPORT_DELETION`, `COMPLIANCE_REPORTING`.
 
@@ -350,6 +374,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-19 · Add plan guards to URL extras resolvers
+
 - **Files:** Resolvers for password-protected URLs, CRM-linked URLs, unlimited URL creation.
 - Guards: `PASSWORD_PROTECTED_URLS`, `CRM_LINKED_URLS`, `UNLIMITED_URL_SHORTENING`.
 
@@ -363,6 +388,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-20 · Add plan guards to Survey extras resolvers
+
 - **Files:** Resolvers for survey creation, survey analytics.
 - Guards: `UNLIMITED_SURVEYS` (or use requireLimit for starter cap), `ADVANCED_SURVEY_ANALYTICS`.
 
@@ -375,6 +401,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-21 · Implement usage limit enforcement — workflow rules
+
 - **Resolver:** `createWorkflow` (or equivalent).
 - Before creating: count `Workflow.countDocuments({ companyID, removed: false })`.
 - Call `requirePlanLimit(context, 'workflowRules', count)`.
@@ -388,6 +415,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-22 · Implement usage limit enforcement — active surveys
+
 - **Resolver:** `createSurvey` (or equivalent).
 - Before creating: count published/active surveys.
 - Call `requirePlanLimit(context, 'activeSurveys', count)`.
@@ -401,6 +429,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-23 · Implement usage limit enforcement — social accounts
+
 - **Resolver:** `createSocialAccount` (or equivalent).
 - Count existing social accounts for companyID.
 - Call `requirePlanLimit(context, 'socialAccounts', count)`.
@@ -414,6 +443,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-24 · Implement usage limit enforcement — URL creation (monthly cap)
+
 - **Resolver:** `createShortUrl` (or equivalent).
 - Count URLs created this calendar month.
 - Call `requirePlanLimit(context, 'monthlyUrlCreates', count)`.
@@ -427,6 +457,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P3-25 · Implement usage limit enforcement — team member invites
+
 - **Handler/Resolver:** Team invite endpoint (REST or GraphQL).
 - Count active users for companyID.
 - Compare to `PLAN_LIMITS.users[plan]`, block if at cap.
@@ -442,6 +473,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 4 — Subscription Lifecycle API
 
 ### P4-01 · Create Stripe service wrapper
+
 - **File:** `backend/src/services/stripeService.ts`
 - Install Stripe SDK: `npm install stripe` in backend.
 - Implement: `createCustomer`, `createCheckoutSession`, `createPortalSession`, `constructWebhookEvent`, `retrieveSubscription`, `cancelSubscriptionAtPeriodEnd`, `reactivateSubscription`, `updateSubscriptionPrice`.
@@ -459,6 +491,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P4-02 · Create subscription controller
+
 - **File:** `backend/src/controllers/appControllers/subscriptionController/index.ts`
 - Implement: `getSubscription`, `createCheckoutSession`, `createPortalSession`, `cancelSubscription`, `reactivateSubscription`, `changePlan`.
 - `getSubscription`: return sanitized subscription data (no Stripe secrets).
@@ -479,6 +512,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P4-03 · Create subscription routes
+
 - **File:** `backend/src/routes/appRoutes/subscriptionRoutes.ts`
 - Mount `isValidAuthToken` + `isCompanyOwner` on all routes.
 - Wire up all 6 controller handlers.
@@ -493,6 +527,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P4-04 · Create Stripe webhook handler
+
 - **File:** `backend/src/handlers/stripeWebhook.ts`
 - Handle events: `checkout.session.completed`, `invoice.payment_succeeded`, `invoice.payment_failed`, `customer.subscription.updated`, `customer.subscription.deleted`, `customer.subscription.trial_will_end`.
 - For each event: update the `Subscription` record in the database accordingly.
@@ -513,6 +548,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P4-05 · Mount subscription routes and webhook in app.ts
+
 - **File:** `backend/src/app.ts`
 - Add `express.raw({ type: 'application/json' })` for `/api/webhook/stripe` **before** `express.json()` global middleware.
 - Mount subscription routes at `/api/subscription`.
@@ -526,6 +562,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P4-06 · Add Stripe and subscription env vars to .env
+
 - Add all 10 new environment variables (see Section 13 of implementation_plan.md) to `backend/.env` (development keys).
 - Document in `backend/Readme.md` or similar.
 
@@ -542,6 +579,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 5 — Frontend Foundation
 
 ### P5-01 · Create frontend featureMap.ts constants
+
 - **File:** `frontend/src/config/featureMap.ts`
 - Exact mirror of the backend featureMap constants and helpers.
 - No runtime imports from backend — this is a duplicate-by-design for client-side UX gating.
@@ -556,6 +594,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P5-02 · Create subscription Redux slice
+
 - **File:** `frontend/src/redux/subscription/subscriptionSlice.ts`
 - Define `SubscriptionState` interface.
 - Define initial state.
@@ -576,6 +615,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P5-03 · Create subscription selectors
+
 - **File:** `frontend/src/redux/subscription/subscriptionSelectors.ts`
 - Export: `selectSubscription`, `selectPlan`, `selectSubscriptionStatus`, `selectTrialEnd`, `selectIsTrialing`, `selectIsActive`.
 
@@ -588,6 +628,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P5-04 · Register subscription reducer in rootReducer
+
 - **File:** `frontend/src/redux/rootReducer.ts`
 - Import `subscriptionReducer` from the new slice.
 - Add `subscription: subscriptionReducer` to `combineReducers`.
@@ -602,6 +643,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P5-05 · Create usePlan hook
+
 - **File:** `frontend/src/hooks/usePlan.ts`
 - Full implementation per implementation_plan.md Section 7.4.
 - Returns: `plan`, `status`, `isTrialing`, `isActive`, `isPastDue`, `isCanceled`, `trialDaysLeft`, `canAccess(featureKey)`, `isAtLimit(limitKey, count)`, `getRequiredPlan(featureKey)`, `isStarter`, `isProfessional`, `isEnterprise`.
@@ -616,6 +658,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P5-06 · Dispatch fetchSubscription on login
+
 - **File:** `frontend/src/redux/auth/actions.ts`
 - After `REQUEST_SUCCESS` dispatch in the login action, dispatch `fetchSubscription()`.
 - On logout, dispatch `clearSubscription()`.
@@ -630,6 +673,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P5-07 · Fetch subscription on app boot (hard refresh)
+
 - **File:** `frontend/src/RootApp.tsx` (or top-level component wrapping the router).
 - In a `useEffect`, if `isLoggedIn && !subscription.data && !subscription.isLoading`, dispatch `fetchSubscription()`.
 
@@ -644,6 +688,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 6 — Frontend UI Enforcement
 
 ### P6-01 · Create FeatureGate component
+
 - **File:** `frontend/src/components/FeatureGate/index.tsx`
 - Props: `feature: string`, `fallback?: ReactNode`, `silent?: boolean`, `children: ReactNode`.
 - Logic: if `canAccess(feature)` → render children; if `silent` → render null; else → render fallback or `<DefaultUpgradePrompt>`.
@@ -657,6 +702,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-02 · Create UpgradePrompt component
+
 - **File:** `frontend/src/components/UpgradePrompt/index.tsx`
 - Variants: `inline` (card, default) and `modal`.
 - Content: lock icon, feature name, required plan badge, "Upgrade Now" CTA → `/settings/billing`, "See all plans" → `/pricing`.
@@ -673,6 +719,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-03 · Create TrialBanner component
+
 - **File:** `frontend/src/components/TrialBanner/index.tsx`
 - Only renders when `isTrialing === true`.
 - Shows days remaining, changes style when ≤3 days (amber), 0 days (red).
@@ -691,6 +738,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-04 · Add TrialBanner to app shell layout
+
 - **File:** The main dashboard layout component in `frontend/src/layout/`.
 - Import and render `<TrialBanner />` at the top of the authenticated layout, before the main content area.
 
@@ -703,6 +751,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-05 · Add lock badges to sidebar navigation
+
 - **Files:** Sidebar nav component(s) in `frontend/src/layout/`.
 - For each gated nav item (AI, Campaigns, Social, Reputation, Compliance, n8n), add lock icon when `!canAccess(featureKey)`.
 - On click of locked item: prevent navigation, show `<UpgradePrompt>` modal instead.
@@ -718,6 +767,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-06 · Wrap AI feature sections with FeatureGate
+
 - **Files:** All pages/components in `frontend/src/` that render AI Assistant, AI Copilot, OCR/data-entry, AI analytics panels.
 - Wrap entire section/tab/panel with `<FeatureGate feature="AI_SUITE">`.
 - For enterprise-only AI features (knowledge base, anomaly detection, multi-provider), use their specific feature keys.
@@ -731,6 +781,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-07 · Wrap Campaign / Marketing sections with FeatureGate
+
 - **Files:** Campaign list, campaign detail, A/B test, retargeting, behavior tracking pages.
 
 ```
@@ -742,6 +793,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-08 · Wrap Social Media sections with FeatureGate
+
 - **Files:** Social account management, post scheduling, social analytics pages.
 
 ```
@@ -753,6 +805,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-09 · Wrap Reputation / Reviews sections with FeatureGate
+
 - **Files:** Review aggregation, reputation portal, review response pages.
 
 ```
@@ -764,6 +817,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-10 · Wrap Compliance sections with FeatureGate
+
 - **Files:** GDPR consent, data retention, compliance reporting pages.
 
 ```
@@ -776,6 +830,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P6-11 · Show usage limit UI feedback
+
 - **Files:** Team invite UI, workflow creation form, survey creation form, social account add form, URL creation form.
 - When at or near plan limit, show a limit indicator (e.g., "8/10 team members — upgrade for more").
 - Disable create action when limit is reached and show inline upgrade prompt.
@@ -795,6 +850,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 7 — Subscription Management UI
 
 ### P7-01 · Create BillingPage component
+
 - **File:** `frontend/src/pages/Dashboard/SubscriptionPage.tsx`
 - Route: `/settings/billing`
 - Sections: Current Plan Card (plan, status, trial/billing date), Plan Cards (compact upgrade/downgrade), Billing Cycle Toggle, Manage Billing button, Cancel option.
@@ -813,6 +869,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P7-02 · Wire Stripe Checkout to upgrade buttons
+
 - **File:** `frontend/src/pages/Dashboard/SubscriptionPage.tsx` (and any other "Upgrade" CTA).
 - On "Upgrade Now" / "Start Plan" click: call `POST /api/subscription/checkout` with `{ plan, billingCycle }`, then `window.location.href = data.url` (Stripe hosted checkout).
 - Handle `?upgraded=true` and `?canceled=true` query params on return to show success/cancel toast.
@@ -827,6 +884,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P7-03 · Add Billing item to Settings navigation
+
 - **File:** Settings sidebar or nav component in `frontend/src/layout/` or `frontend/src/pages/`.
 - Add "Billing & Subscription" item linking to `/settings/billing`.
 - Only show for `isOwner` users (not team members).
@@ -840,6 +898,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P7-04 · Register /settings/billing route in router
+
 - **File:** `frontend/src/router/AuthRouter.tsx` or the relevant router file.
 - Add lazy import and route for `SubscriptionPage`.
 
@@ -855,6 +914,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 8 — Auth Flow Updates
 
 ### P8-01 · Add subscription expiry gate to AuthRouter
+
 - **File:** `frontend/src/router/AuthRouter.tsx`
 - After the existing `isLoggedIn` check, add checks for `canceled` status and trial hard-expiry (3-day grace period).
 - Redirect to `/settings/billing` for expired users on any non-public, non-billing route.
@@ -872,6 +932,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 9 — Stripe Products Setup
 
 ### P9-01 · Create Stripe products and prices
+
 - Action taken in the Stripe Dashboard (or Stripe CLI, not in code).
 - Create 3 products: Starter, Professional, Enterprise.
 - Create 2 prices per product: monthly and annual.
@@ -894,6 +955,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P9-02 · Configure Stripe webhook endpoint
+
 - Action taken in the Stripe Dashboard.
 - Register `https://your-domain.com/api/webhook/stripe` as a webhook endpoint.
 - Select events: `checkout.session.completed`, `invoice.payment_succeeded`, `invoice.payment_failed`, `customer.subscription.updated`, `customer.subscription.deleted`, `customer.subscription.trial_will_end`.
@@ -911,6 +973,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ## Phase 10 — Migration & Testing
 
 ### P10-01 · Write migration script for existing owners
+
 - **File:** `backend/src/database/migrations/addSubscriptions.ts`
 - Iterate all `CompanyOwner` documents without a linked `Subscription` and create one with `plan: 'starter', status: 'active'`.
 
@@ -925,6 +988,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P10-02 · Create dev seed for multi-tier testing
+
 - **File:** Add to existing seed script or create `backend/src/setup/seedSubscriptions.ts`
 - Create 4 test CompanyOwners:
   - `tester-starter@erpjs.dev` → starter/active
@@ -941,6 +1005,7 @@ Derived from `implementation_plan.md`. Tasks are grouped by phase and ordered by
 ---
 
 ### P10-03 · End-to-end verification checklist
+
 Run through each item manually (or automate) before shipping:
 
 ```
@@ -966,17 +1031,17 @@ Run through each item manually (or automate) before shipping:
 
 ## Summary
 
-| Phase | Tasks | Description |
-|---|---|---|
-| 1 — Data Foundation | P1-01 to P1-05 | Subscription model, TS types, registration trial init |
-| 2 — Backend Feature Map | P2-01 | featureMap constants, helpers |
-| 3 — Backend Enforcement | P3-01 to P3-25 | Auth middleware extension, planMiddleware, all resolver guards, usage limits |
-| 4 — Subscription API | P4-01 to P4-06 | Stripe service, subscription controller, routes, webhook, app.ts, env vars |
-| 5 — Frontend Foundation | P5-01 to P5-07 | featureMap mirror, subscription slice, usePlan hook, login dispatch |
-| 6 — Frontend Enforcement | P6-01 to P6-11 | FeatureGate, UpgradePrompt, TrialBanner, nav gating, inline wrappers, limits UI |
-| 7 — Subscription UI | P7-01 to P7-04 | BillingPage, Stripe checkout wiring, settings nav, route registration |
-| 8 — Auth Flow | P8-01 | AuthRouter expiry gates |
-| 9 — Stripe Setup | P9-01 to P9-02 | Products, prices, webhook endpoint (Stripe Dashboard ops) |
-| 10 — Migration & QA | P10-01 to P10-03 | Legacy migration, dev seed, end-to-end checklist |
+| Phase                    | Tasks            | Description                                                                     |
+| ------------------------ | ---------------- | ------------------------------------------------------------------------------- |
+| 1 — Data Foundation      | P1-01 to P1-05   | Subscription model, TS types, registration trial init                           |
+| 2 — Backend Feature Map  | P2-01            | featureMap constants, helpers                                                   |
+| 3 — Backend Enforcement  | P3-01 to P3-25   | Auth middleware extension, planMiddleware, all resolver guards, usage limits    |
+| 4 — Subscription API     | P4-01 to P4-06   | Stripe service, subscription controller, routes, webhook, app.ts, env vars      |
+| 5 — Frontend Foundation  | P5-01 to P5-07   | featureMap mirror, subscription slice, usePlan hook, login dispatch             |
+| 6 — Frontend Enforcement | P6-01 to P6-11   | FeatureGate, UpgradePrompt, TrialBanner, nav gating, inline wrappers, limits UI |
+| 7 — Subscription UI      | P7-01 to P7-04   | BillingPage, Stripe checkout wiring, settings nav, route registration           |
+| 8 — Auth Flow            | P8-01            | AuthRouter expiry gates                                                         |
+| 9 — Stripe Setup         | P9-01 to P9-02   | Products, prices, webhook endpoint (Stripe Dashboard ops)                       |
+| 10 — Migration & QA      | P10-01 to P10-03 | Legacy migration, dev seed, end-to-end checklist                                |
 
 **Total checklist items: ~150 discrete actions across 10 phases.**

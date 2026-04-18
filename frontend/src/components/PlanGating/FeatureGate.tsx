@@ -11,7 +11,12 @@ interface FeatureGateProps {
   fallback?: ReactNode;
 }
 
-export default function FeatureGate({ featureKey, children, silent = false, fallback }: FeatureGateProps) {
+export default function FeatureGate({
+  featureKey,
+  children,
+  silent = false,
+  fallback,
+}: FeatureGateProps) {
   const { canAccess } = usePlan();
 
   if (canAccess(featureKey)) {

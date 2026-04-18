@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
 import type { PlanTier, SubscriptionStatus } from '../../config/featureMap';
+import type { RootState } from '../store';
 
 interface SubscriptionState {
   plan: PlanTier;

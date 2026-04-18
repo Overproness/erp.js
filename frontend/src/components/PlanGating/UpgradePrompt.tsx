@@ -1,5 +1,5 @@
-import { Result, Button } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { getMinimumPlan, PLAN_METADATA, type PlanTier } from '../../config/featureMap';
 
@@ -20,7 +20,9 @@ export default function UpgradePrompt({ featureKey, title, description }: Upgrad
       title={title ?? 'Upgrade Required'}
       subTitle={
         description ??
-        `This feature requires the ${planMeta?.name ?? 'a higher'} plan ($${planMeta?.price ?? ''}/mo). Upgrade to unlock it.`
+        `This feature requires the ${planMeta?.name ?? 'a higher'} plan ($${
+          planMeta?.price ?? ''
+        }/mo). Upgrade to unlock it.`
       }
       extra={
         <Button type="primary" onClick={() => navigate('/subscription')}>

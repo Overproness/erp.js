@@ -16,9 +16,9 @@ import permissionsUiReducer from './permissions/permissionsUiSlice';
 import reputationUiReducer from './reputation/reputationUiSlice';
 import settingsUiReducer from './settings/settingsUiSlice';
 import socialMediaUiReducer from './socialMedia/socialMediaUiSlice';
+import subscriptionReducer from './subscription/subscriptionSlice';
 import urlUiReducer from './url/urlUiSlice';
 import workflowUiReducer from './workflow/workflowUiSlice';
-import subscriptionReducer from './subscription/subscriptionSlice';
 
 // Combine all reducers
 const rootReducer = combineReducers({

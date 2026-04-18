@@ -1,22 +1,21 @@
+import axios from 'axios';
 import { useCallback, useEffect } from 'react';
+import {
+    getMinimumPlan,
+    getPlanLimit,
+    hasFeatureAccess,
+    PLAN_METADATA
+} from '../config/featureMap';
+import { selectAuth } from '../redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
-  subscriptionActions,
-  selectCurrentPlan,
-  selectSubscription,
-  selectSubscriptionHasFetched,
-  selectIsTrialing,
-  selectTrialEnd,
+    selectCurrentPlan,
+    selectIsTrialing,
+    selectSubscription,
+    selectSubscriptionHasFetched,
+    selectTrialEnd,
+    subscriptionActions,
 } from '../redux/subscription/subscriptionSlice';
-import { selectAuth } from '../redux/auth/selectors';
-import {
-  hasFeatureAccess,
-  getPlanLimit,
-  getMinimumPlan,
-  PLAN_METADATA,
-  type PlanTier,
-} from '../config/featureMap';
-import axios from 'axios';
 
 export function usePlan() {
   const dispatch = useAppDispatch();
