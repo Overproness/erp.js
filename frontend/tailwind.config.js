@@ -1,117 +1,148 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
+  darkMode: ['class', 'class'],
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   corePlugins: {
     preflight: false,
   },
   important: true,
   theme: {
-    extend: {
-      colors: {
-        // ── shadcn / tweakcn design tokens ────────────────────────────────
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        card: {
-          DEFAULT: 'var(--card)',
-          foreground: 'var(--card-foreground)',
-        },
-        popover: {
-          DEFAULT: 'var(--popover)',
-          foreground: 'var(--popover-foreground)',
-        },
-        primary: {
-          DEFAULT: 'var(--primary)',
-          foreground: 'var(--primary-foreground)',
-        },
-        secondary: {
-          DEFAULT: 'var(--secondary)',
-          foreground: 'var(--secondary-foreground)',
-        },
-        muted: {
-          DEFAULT: 'var(--muted)',
-          foreground: 'var(--muted-foreground)',
-        },
-        accent: {
-          DEFAULT: 'var(--accent)',
-          foreground: 'var(--accent-foreground)',
-        },
-        destructive: {
-          DEFAULT: 'var(--destructive)',
-          foreground: 'var(--destructive-foreground)',
-        },
-        border: 'var(--border)',
-        input: 'var(--input)',
-        ring: 'var(--ring)',
-        chart: {
-          1: 'var(--chart-1)',
-          2: 'var(--chart-2)',
-          3: 'var(--chart-3)',
-          4: 'var(--chart-4)',
-          5: 'var(--chart-5)',
-        },
-        sidebar: {
-          DEFAULT: 'var(--sidebar)',
-          foreground: 'var(--sidebar-foreground)',
-          primary: 'var(--sidebar-primary)',
-          'primary-foreground': 'var(--sidebar-primary-foreground)',
-          accent: 'var(--sidebar-accent)',
-          'accent-foreground': 'var(--sidebar-accent-foreground)',
-          border: 'var(--sidebar-border)',
-          ring: 'var(--sidebar-ring)',
-        },
-        // ── Legacy app colors (kept for existing Ant Design components) ───
-        success: '#52c41a',
-        warning: '#faad14',
-        error: '#ff4d4f',
-        // ── Public website design system colors ───────────────────────────
-        'ws-primary': '#0058c3',
-        'ws-primary-container': '#0070f3',
-        'ws-on-primary': '#ffffff',
-        'ws-on-surface': '#191c1d',
-        'ws-on-surface-variant': '#414754',
-        'ws-surface': '#f8f9fa',
-        'ws-surface-container': '#edeeef',
-        'ws-surface-container-low': '#f3f4f5',
-        'ws-surface-container-high': '#e7e8e9',
-        'ws-surface-container-highest': '#e1e3e4',
-        'ws-surface-container-lowest': '#ffffff',
-        'ws-outline': '#727786',
-        'ws-outline-variant': '#c1c6d7',
-        'ws-secondary': '#435d94',
-        'ws-secondary-container': '#a6c1fe',
-        'ws-primary-fixed': '#d8e2ff',
-        'ws-inverse-surface': '#2e3132',
-        'ws-inverse-on-surface': '#f0f1f2',
-        'ws-tertiary': '#a23d00',
-        'ws-tertiary-container': '#ca4e00',
-        'ws-tertiary-fixed': '#ffdbcd',
-        'ws-error': '#ba1a1a',
-        'ws-error-container': '#ffdad6',
-      },
-      borderRadius: {
-        sm: 'calc(var(--radius) - 4px)',
-        md: 'calc(var(--radius) - 2px)',
-        lg: 'var(--radius)',
-        xl: 'calc(var(--radius) + 4px)',
-      },
-      fontFamily: {
-        sans: ['var(--font-sans)', 'sans-serif'],
-        serif: ['var(--font-serif)', 'serif'],
-        mono: ['var(--font-mono)', 'monospace'],
-        inter: ['Inter', 'sans-serif'],
-      },
-      boxShadow: {
-        '2xs': 'var(--shadow-2xs)',
-        xs: 'var(--shadow-xs)',
-        sm: 'var(--shadow-sm)',
-        DEFAULT: 'var(--shadow)',
-        md: 'var(--shadow-md)',
-        lg: 'var(--shadow-lg)',
-        xl: 'var(--shadow-xl)',
-        '2xl': 'var(--shadow-2xl)',
-      },
-    },
+  	extend: {
+  		colors: {
+  			background: 'var(--background)',
+  			foreground: 'var(--foreground)',
+  			card: {
+  				DEFAULT: 'var(--card)',
+  				foreground: 'var(--card-foreground)'
+  			},
+  			popover: {
+  				DEFAULT: 'var(--popover)',
+  				foreground: 'var(--popover-foreground)'
+  			},
+  			primary: {
+  				DEFAULT: 'var(--primary)',
+  				foreground: 'var(--primary-foreground)'
+  			},
+  			secondary: {
+  				DEFAULT: 'var(--secondary)',
+  				foreground: 'var(--secondary-foreground)'
+  			},
+  			muted: {
+  				DEFAULT: 'var(--muted)',
+  				foreground: 'var(--muted-foreground)'
+  			},
+  			accent: {
+  				DEFAULT: 'var(--accent)',
+  				foreground: 'var(--accent-foreground)'
+  			},
+  			destructive: {
+  				DEFAULT: 'var(--destructive)',
+  				foreground: 'var(--destructive-foreground)'
+  			},
+  			border: 'var(--border)',
+  			input: 'var(--input)',
+  			ring: 'var(--ring)',
+  			chart: {
+  				'1': 'var(--chart-1)',
+  				'2': 'var(--chart-2)',
+  				'3': 'var(--chart-3)',
+  				'4': 'var(--chart-4)',
+  				'5': 'var(--chart-5)'
+  			},
+  			sidebar: {
+  				DEFAULT: 'var(--sidebar)',
+  				foreground: 'var(--sidebar-foreground)',
+  				primary: 'var(--sidebar-primary)',
+  				'primary-foreground': 'var(--sidebar-primary-foreground)',
+  				accent: 'var(--sidebar-accent)',
+  				'accent-foreground': 'var(--sidebar-accent-foreground)',
+  				border: 'var(--sidebar-border)',
+  				ring: 'var(--sidebar-ring)'
+  			},
+  			success: '#52c41a',
+  			warning: '#faad14',
+  			error: '#ff4d4f',
+  			'ws-primary': '#0058c3',
+  			'ws-primary-container': '#0070f3',
+  			'ws-on-primary': '#ffffff',
+  			'ws-on-surface': '#191c1d',
+  			'ws-on-surface-variant': '#414754',
+  			'ws-surface': '#f8f9fa',
+  			'ws-surface-container': '#edeeef',
+  			'ws-surface-container-low': '#f3f4f5',
+  			'ws-surface-container-high': '#e7e8e9',
+  			'ws-surface-container-highest': '#e1e3e4',
+  			'ws-surface-container-lowest': '#ffffff',
+  			'ws-outline': '#727786',
+  			'ws-outline-variant': '#c1c6d7',
+  			'ws-secondary': '#435d94',
+  			'ws-secondary-container': '#a6c1fe',
+  			'ws-primary-fixed': '#d8e2ff',
+  			'ws-inverse-surface': '#2e3132',
+  			'ws-inverse-on-surface': '#f0f1f2',
+  			'ws-tertiary': '#a23d00',
+  			'ws-tertiary-container': '#ca4e00',
+  			'ws-tertiary-fixed': '#ffdbcd',
+  			'ws-error': '#ba1a1a',
+  			'ws-error-container': '#ffdad6'
+  		},
+  		borderRadius: {
+  			sm: 'calc(var(--radius) - 4px)',
+  			md: 'calc(var(--radius) - 2px)',
+  			lg: 'var(--radius)',
+  			xl: 'calc(var(--radius) + 4px)'
+  		},
+  		fontFamily: {
+  			sans: [
+  				'var(--font-sans)',
+  				'sans-serif'
+  			],
+  			serif: [
+  				'var(--font-serif)',
+  				'serif'
+  			],
+  			mono: [
+  				'var(--font-mono)',
+  				'monospace'
+  			],
+  			inter: [
+  				'Inter',
+  				'sans-serif'
+  			]
+  		},
+  		boxShadow: {
+  			'2xs': 'var(--shadow-2xs)',
+  			xs: 'var(--shadow-xs)',
+  			sm: 'var(--shadow-sm)',
+  			DEFAULT: 'var(--shadow)',
+  			md: 'var(--shadow-md)',
+  			lg: 'var(--shadow-lg)',
+  			xl: 'var(--shadow-xl)',
+  			'2xl': 'var(--shadow-2xl)'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
+  		}
+  	}
   },
   plugins: [],
 };
