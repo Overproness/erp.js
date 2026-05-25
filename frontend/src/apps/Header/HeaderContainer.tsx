@@ -170,9 +170,9 @@ export default function HeaderContent() {
           maxWidth: '40%',
           overflow: 'hidden',
           border: searchFocused ? '1.5px solid #0058c3' : '1.5px solid transparent',
-          boxShadow: searchFocused
-            ? 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'
-            : 'inset 0 2px 4px rgba(0,0,0,0.06)',
+          // boxShadow: searchFocused
+          // ? 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)'
+          // : 'inset 0 2px 4px rgba(0,0,0,0.06)',
           transition: 'all 0.2s ease',
         }}
       >
@@ -198,7 +198,7 @@ export default function HeaderContent() {
           style={{
             fontSize: '10px',
             color: '#71767f',
-            background: '#e1e3e4',
+            // background: '#e1e3e4',
             padding: '2px 6px',
             borderRadius: '4px',
             fontFamily: "'Inter', -apple-system, sans-serif",

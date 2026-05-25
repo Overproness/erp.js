@@ -3,10 +3,10 @@ import { Form, Input } from 'antd';
 import useLanguage from '@/locale/useLanguage';
 
 const inputStyle = {
-  background: '#e1e3e4',
+  // background: '#e1e3e4',
   border: '1.5px solid transparent',
   borderRadius: '0.5rem',
-  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+  // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
 };
 
 const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -16,7 +16,7 @@ const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 
 const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
   e.target.style.border = '1.5px solid transparent';
-  e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+  // e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
 };
 
 const handlePasswordFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
   const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
   if (el) {
     el.style.border = '1.5px solid transparent';
-    el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+    // el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
   }
 };
 
@@ -81,7 +81,7 @@ export default function RegisterForm() {
       </Form.Item>
 
       <div className="py-2">
-        <div className="h-px" style={{ background: '#e1e3e4' }}></div>
+        <div className="h-px" style={{}}></div>
         <p
           className="text-xs font-medium uppercase tracking-wider mt-3 mb-1"
           style={{ color: '#414754' }}

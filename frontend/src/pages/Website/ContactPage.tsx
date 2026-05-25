@@ -64,10 +64,10 @@ export default function ContactPage() {
                     <input
                       className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
                       style={{
-                        background: '#e1e3e4',
+                        // background: '#e1e3e4',
                         color: '#191c1d',
                         border: '1.5px solid transparent',
-                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+                        // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
                       }}
                       onFocus={(e) => {
                         e.target.style.border = '1.5px solid #0058c3';
@@ -76,7 +76,7 @@ export default function ContactPage() {
                       }}
                       onBlur={(e) => {
                         e.target.style.border = '1.5px solid transparent';
-                        e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+                        // e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
                       }}
                       id="name"
                       name="name"
@@ -95,10 +95,10 @@ export default function ContactPage() {
                     <input
                       className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
                       style={{
-                        background: '#e1e3e4',
+                        // background: '#e1e3e4',
                         color: '#191c1d',
                         border: '1.5px solid transparent',
-                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+                        // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
                       }}
                       onFocus={(e) => {
                         e.target.style.border = '1.5px solid #0058c3';
@@ -107,7 +107,7 @@ export default function ContactPage() {
                       }}
                       onBlur={(e) => {
                         e.target.style.border = '1.5px solid transparent';
-                        e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+                        // e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
                       }}
                       id="email"
                       name="email"
@@ -127,10 +127,10 @@ export default function ContactPage() {
                   <input
                     className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
                     style={{
-                      background: '#e1e3e4',
+                      // background: '#e1e3e4',
                       color: '#191c1d',
                       border: '1.5px solid transparent',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+                      // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
                     }}
                     onFocus={(e) => {
                       e.target.style.border = '1.5px solid #0058c3';
@@ -139,7 +139,7 @@ export default function ContactPage() {
                     }}
                     onBlur={(e) => {
                       e.target.style.border = '1.5px solid transparent';
-                      e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+                      // e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
                     }}
                     id="company"
                     name="company"
@@ -158,10 +158,10 @@ export default function ContactPage() {
                   <textarea
                     className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent resize-none text-sm outline-none transition-all"
                     style={{
-                      background: '#e1e3e4',
+                      // background: '#e1e3e4',
                       color: '#191c1d',
                       border: '1.5px solid transparent',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+                      // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
                     }}
                     onFocus={(e) => {
                       e.target.style.border = '1.5px solid #0058c3';
@@ -170,7 +170,7 @@ export default function ContactPage() {
                     }}
                     onBlur={(e) => {
                       e.target.style.border = '1.5px solid transparent';
-                      e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+                      // e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
                     }}
                     id="message"
                     name="message"

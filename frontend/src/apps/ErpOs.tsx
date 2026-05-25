@@ -90,24 +90,26 @@ export default function ErpOs() {
   // --- END: PUBLIC REDIRECT ROUTE HANDLING ---
 
   return (
-    <AntdApp>
-      {!isLoggedIn ? (
-        <Localization>
-          <AuthRouter />
-        </Localization>
-      ) : (
-        <Localization>
-          <AppContextProvider>
-            <ErpContextProvider>
-              <Suspense fallback={<PageLoader />}>
-                <ProtectedRoutes />
-              </Suspense>
-              {/* AI Copilot - Available on all pages */}
-              <ChatBubble position="bottom-right" />
-            </ErpContextProvider>
-          </AppContextProvider>
-        </Localization>
-      )}
-    </AntdApp>
+    <div className="erp-app min-h-screen">
+      <AntdApp>
+        {!isLoggedIn ? (
+          <Localization>
+            <AuthRouter />
+          </Localization>
+        ) : (
+          <Localization>
+            <AppContextProvider>
+              <ErpContextProvider>
+                <Suspense fallback={<PageLoader />}>
+                  <ProtectedRoutes />
+                </Suspense>
+                {/* AI Copilot - Available on all pages */}
+                <ChatBubble position="bottom-right" />
+              </ErpContextProvider>
+            </AppContextProvider>
+          </Localization>
+        )}
+      </AntdApp>
+    </div>
   );
 }

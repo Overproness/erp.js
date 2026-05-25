@@ -176,7 +176,7 @@ export default function AboutPage() {
               >
                 <div
                   className="aspect-square w-full rounded-lg mb-6 overflow-hidden relative"
-                  style={{ background: '#e1e3e4' }}
+                  // style={{ background: '#e1e3e4' }}
                 >
                   <img
                     alt={member.name}

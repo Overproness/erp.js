@@ -56,7 +56,7 @@ export default function HomePage() {
               <Link
                 to="/contact"
                 className="px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#e7e8e9] transition-all active:scale-95 no-underline"
-                style={{ background: '#e1e3e4', color: '#191c1d' }}
+                style={{ color: '#191c1d' }}
               >
                 Book Demo
               </Link>

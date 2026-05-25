@@ -352,7 +352,7 @@ export default function PricingPage() {
             <Link
               to="/signup?plan=starter"
               className="w-full text-center py-3 rounded-md font-semibold transition-colors no-underline block"
-              style={{ background: '#e1e3e4', color: '#191c1d' }}
+              style={{  color: '#191c1d' }}
             >
               Start Free Trial
             </Link>
@@ -486,7 +486,7 @@ export default function PricingPage() {
             <Link
               to="/signup?plan=enterprise"
               className="w-full text-center py-3 rounded-md font-semibold transition-colors no-underline block"
-              style={{ background: '#e1e3e4', color: '#191c1d' }}
+              style={{  color: '#191c1d' }}
             >
               Start Free Trial
             </Link>

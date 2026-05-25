@@ -165,7 +165,7 @@ export default function FeaturesPage() {
                 isometric workspace where logic flows like light through a prism.
               </p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg" style={{ background: '#e1e3e4' }}>
+                <div className="p-4 rounded-lg" style={{}}>
                   <div className="text-xl font-bold text-[#0058c3] mb-1">98%</div>
                   <div
                     className="text-[0.6875rem] font-bold uppercase tracking-wider"
@@ -174,7 +174,7 @@ export default function FeaturesPage() {
                     Deliverability
                   </div>
                 </div>
-                <div className="p-4 rounded-lg" style={{ background: '#e1e3e4' }}>
+                <div className="p-4 rounded-lg" style={{}}>
                   <div className="text-xl font-bold text-[#0058c3] mb-1">12x</div>
                   <div
                     className="text-[0.6875rem] font-bold uppercase tracking-wider"

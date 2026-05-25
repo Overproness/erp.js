@@ -17,19 +17,19 @@ export default function LoginForm() {
           type="email"
           size="large"
           style={{
-            background: '#e1e3e4',
+            // background: '#e1e3e4',
             border: '1.5px solid transparent',
             borderRadius: '0.5rem',
-            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+            // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
           }}
           onFocus={(e) => {
             e.target.style.border = '1.5px solid #0058c3';
-            e.target.style.boxShadow =
-              'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
+            // e.target.style.boxShadow =
+            //   'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
           }}
           onBlur={(e) => {
             e.target.style.border = '1.5px solid transparent';
-            e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+            // e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
           }}
         />
       </Form.Item>
@@ -41,24 +41,24 @@ export default function LoginForm() {
           placeholder="Password"
           size="large"
           style={{
-            background: '#e1e3e4',
+            // background: '#e1e3e4',
             border: '1.5px solid transparent',
             borderRadius: '0.5rem',
-            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+            // boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
           }}
           onFocus={(e) => {
             const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
             if (el) {
               el.style.border = '1.5px solid #0058c3';
-              el.style.boxShadow =
-                'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
+              // el.style.boxShadow =
+              //   'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
             }
           }}
           onBlur={(e) => {
             const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
             if (el) {
               el.style.border = '1.5px solid transparent';
-              el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
+              // el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
             }
           }}
         />
