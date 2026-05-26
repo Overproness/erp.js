@@ -233,13 +233,13 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'radix-vendor';
             }
 
-            // Ant Design — split icon sprite separately
-            if (id.includes('/@ant-design/icons')) {
-              return 'antd-icons';
-            }
-            if (id.includes('/antd/') || id.includes('/@ant-design/')) {
-              return 'antd-vendor';
-            }
+            // NOTE: antd / @ant-design/* intentionally fall through to the
+            // 'vendor' chunk below.  Isolating them in a separate chunk causes
+            // Rollup to load antd-vendor before react-vendor, so React is
+            // undefined when antd calls React.createContext at module init,
+            // producing "Cannot read properties of undefined (reading 'createContext')".
+            // Keeping them in the shared vendor chunk gives Rollup the full
+            // module-graph context it needs to order them correctly.
 
             // Core React stack + router + Redux
             if (
