@@ -103,6 +103,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         '@emotion/sheet',
         '@emotion/weak-memoize',
         '@emotion/is-prop-valid',
+        // Pre-bundle chart libs so esbuild flattens their circular deps (dev mode)
+        'recharts',
+        'chart.js',
+        'react-chartjs-2',
       ],
       esbuildOptions: {
         define: {
@@ -182,11 +186,17 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'editor-vendor';
             }
 
-            // Charting libraries
+            // Charting libraries — include all D3 transitive deps to avoid
+            // Rollup TDZ ordering errors ("Cannot access 'X' before initialization").
+            // internmap, robust-predicates, and delaunator are D3 sub-deps that
+            // don't match the 'd3-' prefix but must live in the same chunk.
             if (
               id.includes('/recharts') ||
               id.includes('/d3-') ||
               id.includes('/d3/') ||
+              id.includes('/internmap/') ||
+              id.includes('/robust-predicates/') ||
+              id.includes('/delaunator/') ||
               id.includes('/@nivo/') ||
               id.includes('/chart.js/') ||
               id.includes('/react-chartjs-2') ||
