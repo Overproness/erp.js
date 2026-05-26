@@ -1,5 +1,24 @@
+import {
+  Button,
+  Card,
+  Divider,
+  Input,
+  message,
+  Modal,
+  Space,
+  Spin,
+  Tabs,
+  Typography,
+} from '@/components/ui';
 import apolloClient from '@/graphql/client';
-import { GET_DOCUMENT, DOCUMENT_VERSIONS, DOCUMENT_ESIGN, DOCUMENT_REVERT, DOCUMENT_GET_CONTENT, DOCUMENT_EDIT_CONTENT } from '@/graphql/operations/document';
+import {
+  DOCUMENT_EDIT_CONTENT,
+  DOCUMENT_ESIGN,
+  DOCUMENT_GET_CONTENT,
+  DOCUMENT_REVERT,
+  DOCUMENT_VERSIONS,
+  GET_DOCUMENT,
+} from '@/graphql/operations/document';
 import {
   FileTextOutlined,
   HistoryOutlined,
@@ -7,7 +26,6 @@ import {
   SaveOutlined,
   SignatureOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Divider, Input, message, Modal, Space, Spin, Tabs, Typography } from '@/components/ui';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PDFViewer from './PDFViewer';
@@ -39,7 +57,10 @@ const DocumentEditor = () => {
       try {
         setLoading(true);
         // Fetch document metadata
-        const { data: docData } = await apolloClient.query({ query: GET_DOCUMENT, variables: { id } });
+        const { data: docData } = await apolloClient.query({
+          query: GET_DOCUMENT,
+          variables: { id },
+        });
         if (docData.documentRead.success) {
           setDocument(docData.documentRead.result);
 
@@ -64,7 +85,10 @@ const DocumentEditor = () => {
 
         // Fetch versions
         try {
-          const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id } });
+          const { data: verData } = await apolloClient.query({
+            query: DOCUMENT_VERSIONS,
+            variables: { id },
+          });
           if (verData.documentListVersions.success) {
             setVersions(verData.documentListVersions.result.items);
           }
@@ -94,7 +118,11 @@ const DocumentEditor = () => {
       if (editData.documentEdit.success) {
         message.success('Document saved successfully');
         // Refresh versions
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
+        const { data: verData } = await apolloClient.query({
+          query: DOCUMENT_VERSIONS,
+          variables: { id },
+          fetchPolicy: 'cache-first',
+        });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
@@ -115,7 +143,10 @@ const DocumentEditor = () => {
       setLoading(true);
       const { data: signData } = await apolloClient.mutate({
         mutation: DOCUMENT_ESIGN,
-        variables: { id, input: { signature, position: signPosition, page: signPage, reason: signReason } },
+        variables: {
+          id,
+          input: { signature, position: signPosition, page: signPage, reason: signReason },
+        },
       });
 
       if (signData.documentESign.success) {
@@ -137,7 +168,11 @@ const DocumentEditor = () => {
           console.error('Error refreshing content:', contentError);
         }
 
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
+        const { data: verData } = await apolloClient.query({
+          query: DOCUMENT_VERSIONS,
+          variables: { id },
+          fetchPolicy: 'cache-first',
+        });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
@@ -204,7 +239,11 @@ const DocumentEditor = () => {
           console.error('Error refreshing content after revert:', contentError);
         }
 
-        const { data: verData } = await apolloClient.query({ query: DOCUMENT_VERSIONS, variables: { id }, fetchPolicy: 'cache-first' });
+        const { data: verData } = await apolloClient.query({
+          query: DOCUMENT_VERSIONS,
+          variables: { id },
+          fetchPolicy: 'cache-first',
+        });
         if (verData.documentListVersions.success) {
           setVersions(verData.documentListVersions.result.items);
         }
