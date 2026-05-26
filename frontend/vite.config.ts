@@ -201,14 +201,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'reactflow-vendor';
             }
 
-            // GraphQL / Apollo
-            if (
-              id.includes('/@apollo/') ||
-              id.includes('/graphql/')
-            ) {
-              return 'graphql-vendor';
-            }
-
             // Socket.IO
             if (id.includes('/socket.io-client/') || id.includes('/engine.io-client/')) {
               return 'socket-vendor';
