@@ -197,25 +197,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'tanstack-vendor';
             }
 
-            // Emotion (MUI's CSS-in-JS runtime) — split into three ordered chunks
-            // so Rollup respects the dependency hierarchy and avoids TDZ errors
-            // ("Cannot access 'X' before initialization") caused by circular refs
-            // when all @emotion/* packages are collapsed into a single chunk.
-            //
-            // Load order: emotion-core → emotion-serialize → emotion-vendor
-            if (
-              id.includes('/@emotion/cache/') ||
-              id.includes('/@emotion/utils/') ||
-              id.includes('/@emotion/hash/') ||
-              id.includes('/@emotion/sheet/') ||
-              id.includes('/@emotion/weak-memoize/') ||
-              id.includes('/@emotion/is-prop-valid/')
-            ) {
-              return 'emotion-core';
-            }
-            if (id.includes('/@emotion/serialize/')) {
-              return 'emotion-serialize';
-            }
+            // All @emotion/* packages in one chunk so esbuild can resolve the
+            // internal circular references without TDZ errors.
             if (id.includes('/@emotion/')) {
               return 'emotion-vendor';
             }
