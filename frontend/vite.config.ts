@@ -50,6 +50,19 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         react: path.resolve(__dirname, 'node_modules/react'),
         'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
       },
+      // Ensure a single copy of every emotion package so Rollup resolves
+      // circular internal references without TDZ errors.
+      dedupe: [
+        '@emotion/react',
+        '@emotion/styled',
+        '@emotion/cache',
+        '@emotion/serialize',
+        '@emotion/utils',
+        '@emotion/hash',
+        '@emotion/sheet',
+        '@emotion/weak-memoize',
+        '@emotion/is-prop-valid',
+      ],
     },
     server: {
       port: 3000,
@@ -197,11 +210,12 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'tanstack-vendor';
             }
 
-            // All @emotion/* packages in one chunk so esbuild can resolve the
-            // internal circular references without TDZ errors.
-            if (id.includes('/@emotion/')) {
-              return 'emotion-vendor';
-            }
+            // NOTE: @emotion/* packages intentionally fall through to the
+            // 'vendor' chunk below.  Isolating them in a separate chunk causes
+            // Rollup to emit a circular-dependency ordering that triggers a TDZ
+            // ReferenceError ("Cannot access 'X' before initialization") at
+            // runtime.  Keeping them in the shared vendor chunk gives Rollup
+            // enough module-graph context to order the modules correctly.
 
             // MUI — very large
             if (id.includes('/@mui/')) {
