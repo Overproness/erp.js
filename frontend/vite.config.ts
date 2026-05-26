@@ -59,6 +59,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         'react/jsx-dev-runtime',
         '@react-three/fiber',
         '@react-three/drei',
+        '@react-three/postprocessing',
         '@emotion/react',
         '@emotion/styled',
         '@emotion/cache',
@@ -135,7 +136,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             if (
               (id.includes('/three/') && !id.includes('/@react-three/')) ||
               id.includes('/three-stdlib/') ||
-              id.includes('/postprocessing/') ||
+              // pure postprocessing only — @react-three/postprocessing is React-aware
+              (id.includes('/postprocessing/') && !id.includes('/@react-three/')) ||
               id.includes('/stats-gl/') ||
               id.includes('/troika-') ||
               id.includes('/meshline/')
