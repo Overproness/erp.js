@@ -28,12 +28,12 @@ import {
   SaveOutlined,
   SignatureOutlined,
 } from '@ant-design/icons';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import document components
 import PDFViewer from '@/components/DocumentEditor/PDFViewer';
-const TextEditor = lazy(() => import('@/components/DocumentEditor/TextEditor'));
+import SafeTextEditor from '@/components/DocumentEditor/SafeTextEditor';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -387,9 +387,7 @@ const DocumentEditor = () => {
       );
     } else if (['txt', 'csv', 'json', 'md', 'html', 'css', 'js', 'xml'].includes(fileType)) {
       return (
-        <Suspense fallback={<Spin />}>
-          <TextEditor content={content} setContent={setContent} fileType={fileType} />
-        </Suspense>
+        <SafeTextEditor content={content} setContent={setContent} fileType={fileType} />
       );
     } else {
       return (

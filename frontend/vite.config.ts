@@ -77,6 +77,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         '@ant-design/charts',
         'react/jsx-runtime',
         'react/jsx-dev-runtime',
+        'react-ace',
+        'ace-builds',
       ],
       esbuildOptions: {
         define: {

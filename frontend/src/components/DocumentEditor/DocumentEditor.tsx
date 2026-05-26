@@ -26,11 +26,11 @@ import {
   SaveOutlined,
   SignatureOutlined,
 } from '@ant-design/icons';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PDFViewer from './PDFViewer';
+import SafeTextEditor from './SafeTextEditor';
 import SignaturePad from './SignaturePad';
-const TextEditor = lazy(() => import('./TextEditor'));
 
 const { Text } = Typography;
 const { TextArea } = Input;
@@ -281,13 +281,11 @@ const DocumentEditor = () => {
     // Text-based content
     if (['txt', 'csv', 'json', 'md', 'html'].includes(document.fileType.toLowerCase())) {
       return (
-        <Suspense fallback={<Spin />}>
-          <TextEditor
-            content={content}
-            setContent={setContent}
-            fileType={document.fileType.toLowerCase()}
-          />
-        </Suspense>
+        <SafeTextEditor
+          content={content}
+          setContent={setContent}
+          fileType={document.fileType.toLowerCase()}
+        />
       );
     }
 
