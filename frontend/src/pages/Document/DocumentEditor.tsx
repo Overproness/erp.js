@@ -386,9 +386,7 @@ const DocumentEditor = () => {
         />
       );
     } else if (['txt', 'csv', 'json', 'md', 'html', 'css', 'js', 'xml'].includes(fileType)) {
-      return (
-        <SafeTextEditor content={content} setContent={setContent} fileType={fileType} />
-      );
+      return <SafeTextEditor content={content} setContent={setContent} fileType={fileType} />;
     } else {
       return (
         <div style={{ textAlign: 'center', padding: 20 }}>

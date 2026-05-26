@@ -115,10 +115,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'monaco-vendor';
             }
 
-            // Ace editor — very large
-            if (id.includes('/ace-builds/') || id.includes('/react-ace/')) {
-              return 'ace-vendor';
-            }
 
             // Moment.js — large due to locale data
             if (id.includes('/moment/')) {
