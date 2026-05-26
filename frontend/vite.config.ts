@@ -79,6 +79,17 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         'react/jsx-dev-runtime',
         'react-ace',
         'ace-builds',
+        // Pre-bundle all emotion packages with esbuild to flatten circular
+        // dependencies and avoid TDZ errors ("Cannot access 'X' before initialization").
+        '@emotion/react',
+        '@emotion/styled',
+        '@emotion/cache',
+        '@emotion/serialize',
+        '@emotion/utils',
+        '@emotion/hash',
+        '@emotion/sheet',
+        '@emotion/weak-memoize',
+        '@emotion/is-prop-valid',
       ],
       esbuildOptions: {
         define: {
@@ -258,6 +269,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             // Everything else in node_modules
             return 'vendor';
           },
+          // Prevent Rollup from hoisting transitive imports across chunk
+          // boundaries, which can cause TDZ errors in circular-dep packages
+          // like @emotion/* when they are all merged into a single chunk.
+          hoistTransitiveImports: false,
         },
       },
       commonjsOptions: {
