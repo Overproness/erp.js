@@ -243,25 +243,14 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'radix-vendor';
             }
 
-            // NOTE: antd / @ant-design/* intentionally fall through to the
-            // 'vendor' chunk below.  Isolating them in a separate chunk causes
-            // Rollup to load antd-vendor before react-vendor, so React is
-            // undefined when antd calls React.createContext at module init,
-            // producing "Cannot read properties of undefined (reading 'createContext')".
-            // Keeping them in the shared vendor chunk gives Rollup the full
+            // NOTE: antd / @ant-design/*, react, react-dom, react-router, redux,
+            // @reduxjs/*, and react-redux intentionally fall through to the
+            // 'vendor' chunk below.  Isolating any of them in a separate chunk
+            // causes Rollup to initialise that chunk before react is ready,
+            // so calls like React.createContext / React.useState / React.useLayoutEffect
+            // receive undefined, crashing at module init.
+            // Keeping them all in the shared vendor chunk gives Rollup the full
             // module-graph context it needs to order them correctly.
-
-            // Core React stack + router + Redux
-            if (
-              id.includes('/react/') ||
-              id.includes('/react-dom/') ||
-              id.includes('/react-router') ||
-              id.includes('/redux/') ||
-              id.includes('/@reduxjs/') ||
-              id.includes('/react-redux/')
-            ) {
-              return 'react-vendor';
-            }
 
             // Markdown rendering
             if (
