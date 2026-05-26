@@ -403,7 +403,6 @@ function MenuItemComponent({
   return (
     <button
       type="button"
-      style={{ paddingLeft: level * inlineIndent + 12 }}
       className={cn(
         'w-full flex items-center gap-2 px-3 py-2 text-sm rounded-sm transition-colors text-left',
         'hover:bg-accent hover:text-accent-foreground',

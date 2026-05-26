@@ -166,15 +166,15 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             }
 
             // Rich-text / document editors
+            // NOTE: draft-js, react-draft-wysiwyg, html-to-draftjs, draftjs-to-html,
+            // draftjs-to-markdown and their transitive dep `immutable` intentionally
+            // fall through to the shared vendor chunk below.  Isolating them here
+            // causes Rollup to linearize immutable's circular ESM references
+            // incorrectly, so `immutable` is undefined when draft-js accesses
+            // `Immutable.OrderedMap` at init — same root cause as the recharts TDZ.
             if (
               id.includes('/quill') ||
               id.includes('/react-quill') ||
-              id.includes('/draft-js') ||
-              id.includes('/draftjs') ||
-              id.includes('/react-draft-wysiwyg') ||
-              id.includes('/html-to-draftjs') ||
-              id.includes('/draftjs-to-html') ||
-              id.includes('/draftjs-to-markdown') ||
               id.includes('/@editorjs') ||
               id.includes('/prosemirror') ||
               id.includes('/tiptap') ||
