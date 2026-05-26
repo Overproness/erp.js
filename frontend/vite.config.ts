@@ -186,20 +186,15 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'editor-vendor';
             }
 
-            // NOTE: recharts, D3 (d3-*), chart.js, and their transitive deps
-            // (internmap, robust-predicates, delaunator, react-smooth, etc.)
-            // intentionally fall through to the 'vendor' chunk below.
-            // Isolating them in a 'charts-vendor' chunk causes Rollup to
-            // linearize their circular ESM references incorrectly, producing a
-            // TDZ ReferenceError ("Cannot access 'X' before initialization") at
-            // runtime. Keeping them in the shared vendor chunk gives Rollup
-            // the full module-graph context it needs to order them correctly
+            // NOTE: recharts, D3 (d3-*), chart.js, @antv/*, @ant-design/charts,
+            // and their transitive deps intentionally fall through to the
+            // 'vendor' chunk below.  Isolating them in a separate chunk causes
+            // Rollup to linearize their circular ESM references incorrectly,
+            // producing a TDZ ReferenceError ("Cannot access 'X' before
+            // initialization") / "Bo is not a constructor" at runtime.
+            // Keeping them in the shared vendor chunk gives Rollup the full
+            // module-graph context it needs to order them correctly
             // (same reason @emotion/* lives here too).
-
-            // AntV (used by @ant-design/charts) — very large, separate chunk
-            if (id.includes('/@antv/') || id.includes('/@ant-design/charts')) {
-              return 'antv-vendor';
-            }
 
             // xlsx — only needed for data export
             if (id.includes('/xlsx/') || id.includes('/sheetjs/')) {
