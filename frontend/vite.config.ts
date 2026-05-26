@@ -50,9 +50,15 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         react: path.resolve(__dirname, 'node_modules/react'),
         'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
       },
-      // Ensure a single copy of every emotion package so Rollup resolves
-      // circular internal references without TDZ errors.
+      // Ensure a single copy of React and emotion so Rollup does not create
+      // multiple instances (which breaks hook calls like useLayoutEffect).
       dedupe: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        '@react-three/fiber',
+        '@react-three/drei',
         '@emotion/react',
         '@emotion/styled',
         '@emotion/cache',
@@ -122,10 +128,12 @@ export default ({ mode }: ConfigEnv): UserConfig => {
           manualChunks: (id) => {
             if (!id.includes('node_modules')) return undefined;
 
-            // Three.js / 3-D — kept separate so it stays lazy with HeroScene
+            // Three.js / 3-D — kept separate so it stays lazy with HeroScene.
+            // @react-three/fiber and @react-three/drei are intentionally excluded:
+            // they use React hooks and must share React's singleton instance.
+            // Isolating them here causes "Cannot read useLayoutEffect" errors.
             if (
-              id.includes('/three/') ||
-              id.includes('/@react-three/') ||
+              (id.includes('/three/') && !id.includes('/@react-three/')) ||
               id.includes('/three-stdlib/') ||
               id.includes('/postprocessing/') ||
               id.includes('/stats-gl/') ||
