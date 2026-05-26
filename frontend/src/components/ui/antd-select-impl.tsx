@@ -236,7 +236,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
             aria-expanded={open}
             className={cn(
               'flex w-full items-center justify-between rounded-[var(--radius)] border border-input',
-              'bg-background px-3 py-1.5 ring-offset-background',
+              'bg-background px-3 py-1.5 ring-offset-background cursor-pointer',
               'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
               'disabled:cursor-not-allowed disabled:opacity-50',
               'hover:border-ring/50 transition-colors',

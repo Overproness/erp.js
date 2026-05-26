@@ -76,7 +76,7 @@ function toTanstackColumns<T>(cols: AntdColumnType<T>[]): ColumnDef<T>[] {
         const sorted = column.getIsSorted();
         return (
           <button
-            className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 hover:text-foreground transition-colors appearance-none bg-transparent border-0 p-0 m-0 cursor-pointer font-[inherit] text-[inherit]"
             onClick={() => column.toggleSorting(sorted === 'asc')}
           >
             {col.title}
@@ -431,7 +431,7 @@ export function Table<T extends object = any>({
                     (rowSelection ? 1 : 0) +
                     (expandable?.expandedRowRender ? 1 : 0)
                   }
-                  className="text-center py-16 text-muted-foreground"
+                  className="text-center py-8 text-muted-foreground"
                 >
                   {locale?.emptyText ?? 'No data'}
                 </TableCell>
@@ -476,7 +476,7 @@ export function Table<T extends object = any>({
                         <TableCell className={cn(cellPad, 'w-8')}>
                           {canExpand && (
                             <button
-                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              className="text-muted-foreground hover:text-foreground transition-colors appearance-none bg-transparent border-0 p-0 m-0 cursor-pointer"
                               onClick={() => {
                                 const next = new Set(expandedRows);
                                 if (isExpanded) {

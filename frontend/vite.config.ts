@@ -89,23 +89,182 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          // manualChunks: (id) => {
-          //   if (id.includes('node_modules')) {
-          //     if (id.includes('react') || id.includes('redux') || id.includes('@reduxjs')) {
-          //       return 'react-vendor';
-          //     }
-          //     if (id.includes('antd') || id.includes('@ant-design')) {
-          //       return 'antd';
-          //     }
-          //     if (id.includes('@mui')) {
-          //       return 'mui';
-          //     }
-          //     if (id.includes('chart') || id.includes('@nivo') || id.includes('recharts')) {
-          //       return 'charts';
-          //     }
-          //     return 'vendor';
-          //   }
-          // },
+          manualChunks: (id) => {
+            if (!id.includes('node_modules')) return undefined;
+
+            // Three.js / 3-D — kept separate so it stays lazy with HeroScene
+            if (
+              id.includes('/three/') ||
+              id.includes('/@react-three/') ||
+              id.includes('/three-stdlib/') ||
+              id.includes('/postprocessing/') ||
+              id.includes('/stats-gl/') ||
+              id.includes('/troika-') ||
+              id.includes('/meshline/')
+            ) {
+              return 'three-vendor';
+            }
+
+            // Monaco editor — very large, only used in code editors
+            if (
+              id.includes('/monaco-editor/') ||
+              id.includes('/react-monaco-editor/')
+            ) {
+              return 'monaco-vendor';
+            }
+
+            // Ace editor — very large
+            if (id.includes('/ace-builds/') || id.includes('/react-ace/')) {
+              return 'ace-vendor';
+            }
+
+            // Moment.js — large due to locale data
+            if (id.includes('/moment/')) {
+              return 'moment-vendor';
+            }
+
+            // Lucide icons
+            if (id.includes('/lucide-react/')) {
+              return 'lucide-vendor';
+            }
+
+            // PDF / canvas — large, rarely needed on load
+            if (
+              id.includes('/jspdf') ||
+              id.includes('/html2canvas') ||
+              id.includes('/pdfmake') ||
+              id.includes('/react-pdf/') ||
+              id.includes('/pdfjs-dist/')
+            ) {
+              return 'pdf-vendor';
+            }
+
+            // Rich-text / document editors
+            if (
+              id.includes('/quill') ||
+              id.includes('/react-quill') ||
+              id.includes('/draft-js') ||
+              id.includes('/draftjs') ||
+              id.includes('/react-draft-wysiwyg') ||
+              id.includes('/html-to-draftjs') ||
+              id.includes('/draftjs-to-html') ||
+              id.includes('/draftjs-to-markdown') ||
+              id.includes('/@editorjs') ||
+              id.includes('/prosemirror') ||
+              id.includes('/tiptap') ||
+              id.includes('/codemirror') ||
+              id.includes('/@codemirror') ||
+              id.includes('/froala') ||
+              id.includes('/turndown')
+            ) {
+              return 'editor-vendor';
+            }
+
+            // Charting libraries
+            if (
+              id.includes('/recharts') ||
+              id.includes('/d3-') ||
+              id.includes('/d3/') ||
+              id.includes('/@nivo/') ||
+              id.includes('/chart.js/') ||
+              id.includes('/react-chartjs-2') ||
+              id.includes('/victory')
+            ) {
+              return 'charts-vendor';
+            }
+
+            // AntV (used by @ant-design/charts) — very large, separate chunk
+            if (id.includes('/@antv/') || id.includes('/@ant-design/charts')) {
+              return 'antv-vendor';
+            }
+
+            // xlsx — only needed for data export
+            if (id.includes('/xlsx/') || id.includes('/sheetjs/')) {
+              return 'xlsx-vendor';
+            }
+
+            // Tanstack table
+            if (id.includes('/@tanstack/')) {
+              return 'tanstack-vendor';
+            }
+
+            // MUI — very large
+            if (
+              id.includes('/@mui/') ||
+              id.includes('/@emotion/')
+            ) {
+              return 'mui-vendor';
+            }
+
+            // ReactFlow / workflow canvas
+            if (id.includes('/reactflow/') || id.includes('/@reactflow/')) {
+              return 'reactflow-vendor';
+            }
+
+            // GraphQL / Apollo
+            if (
+              id.includes('/@apollo/') ||
+              id.includes('/graphql/')
+            ) {
+              return 'graphql-vendor';
+            }
+
+            // Socket.IO
+            if (id.includes('/socket.io-client/') || id.includes('/engine.io-client/')) {
+              return 'socket-vendor';
+            }
+
+            // Radix UI primitives
+            if (id.includes('/@radix-ui/')) {
+              return 'radix-vendor';
+            }
+
+            // Ant Design — split icon sprite separately
+            if (id.includes('/@ant-design/icons')) {
+              return 'antd-icons';
+            }
+            if (id.includes('/antd/') || id.includes('/@ant-design/')) {
+              return 'antd-vendor';
+            }
+
+            // Core React stack + router + Redux
+            if (
+              id.includes('/react/') ||
+              id.includes('/react-dom/') ||
+              id.includes('/react-router') ||
+              id.includes('/redux/') ||
+              id.includes('/@reduxjs/') ||
+              id.includes('/react-redux/')
+            ) {
+              return 'react-vendor';
+            }
+
+            // Markdown rendering
+            if (
+              id.includes('/react-markdown/') ||
+              id.includes('/remark-') ||
+              id.includes('/rehype-') ||
+              id.includes('/micromark') ||
+              id.includes('/mdast-') ||
+              id.includes('/hast-') ||
+              id.includes('/unified/')
+            ) {
+              return 'markdown-vendor';
+            }
+
+            // Media / video
+            if (id.includes('/hls.js/') || id.includes('/@mediapipe/')) {
+              return 'media-vendor';
+            }
+
+            // Lucide icons (tree-shaken but still sizeable)
+            if (id.includes('/lucide-react/')) {
+              return 'lucide-vendor';
+            }
+
+            // Everything else in node_modules
+            return 'vendor';
+          },
         },
       },
       commonjsOptions: {

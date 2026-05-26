@@ -347,15 +347,17 @@ export default function AnalyticsReporting() {
         style={{
           marginBottom: '24px',
           display: 'flex',
+          flexWrap: 'wrap',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-start',
+          gap: '12px',
         }}
       >
-        <h1 style={{ margin: 0, fontSize: '28px', fontWeight: 'bold' }}>
+        <h1 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: 'bold', flexShrink: 0 }}>
           <BarChartOutlined style={{ marginRight: '12px' }} />
           Analytics & Reporting
         </h1>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
           <RangePicker value={dateRange} onChange={handleDateRangeChange} format="YYYY-MM-DD" />
           <Select value={selectedModule} onChange={setSelectedModule} style={{ width: 150 }}>
             <Option value="all">All Modules</Option>

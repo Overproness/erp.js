@@ -99,7 +99,7 @@ export default function Taxes() {
           checked={isDefault}
           checkedChildren={<CheckOutlined />}
           unCheckedChildren={<CloseOutlined />}
-          disabled
+          className="pointer-events-none"
         />
       ),
     },
@@ -111,7 +111,7 @@ export default function Taxes() {
           checked={enabled}
           checkedChildren={<CheckOutlined />}
           unCheckedChildren={<CloseOutlined />}
-          disabled
+          className="pointer-events-none"
         />
       ),
     },
