@@ -3,10 +3,10 @@
  * Select & AutoComplete built with @radix-ui/react-popover + custom searchable list.
  * Supports: options prop, Select.Option children, showSearch, mode="multiple", allowClear, loading.
  */
-import * as React from 'react';
+import { cn } from '@/lib/utils';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { Check, ChevronDown, Loader2, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 // ── Option type ───────────────────────────────────────────────────────────────
 export interface SelectOptionType {

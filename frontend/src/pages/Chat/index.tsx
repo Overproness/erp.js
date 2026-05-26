@@ -1,6 +1,7 @@
+import { Avatar, Button, Input, message, Popover, Spin, Typography } from '@/components/ui';
 import apolloClient from '@/graphql/client';
-import { GET_CHAT_MESSAGES, GET_CHAT_ROOMS, SEND_CHAT_MESSAGE } from '@/graphql/operations/chat';
 import { GET_ADMIN_LIST } from '@/graphql/operations/auth';
+import { GET_CHAT_MESSAGES, GET_CHAT_ROOMS, SEND_CHAT_MESSAGE } from '@/graphql/operations/chat';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import {
   MessageOutlined,
@@ -10,7 +11,6 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Input, message, Popover, Spin, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';

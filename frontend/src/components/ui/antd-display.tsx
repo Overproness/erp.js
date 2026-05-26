@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from '@/components/ui/avatar';
 import { Badge as ShadcnBadge } from '@/components/ui/badge';
-import { Avatar as ShadcnAvatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+import { Star } from 'lucide-react';
+import * as React from 'react';
 
 // ── Typography ───────────────────────────────────────────────────────────────
 const TITLE_SIZES: Record<number, string> = {

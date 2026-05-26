@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
+import * as React from 'react';
 
 type AntdButtonType = 'default' | 'primary' | 'dashed' | 'link' | 'text' | 'ghost';
 type AntdButtonSize = 'large' | 'middle' | 'small';
