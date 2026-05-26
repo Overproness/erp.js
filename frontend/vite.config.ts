@@ -186,24 +186,15 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'editor-vendor';
             }
 
-            // Charting libraries — include all D3 transitive deps to avoid
-            // Rollup TDZ ordering errors ("Cannot access 'X' before initialization").
-            // internmap, robust-predicates, and delaunator are D3 sub-deps that
-            // don't match the 'd3-' prefix but must live in the same chunk.
-            if (
-              id.includes('/recharts') ||
-              id.includes('/d3-') ||
-              id.includes('/d3/') ||
-              id.includes('/internmap/') ||
-              id.includes('/robust-predicates/') ||
-              id.includes('/delaunator/') ||
-              id.includes('/@nivo/') ||
-              id.includes('/chart.js/') ||
-              id.includes('/react-chartjs-2') ||
-              id.includes('/victory')
-            ) {
-              return 'charts-vendor';
-            }
+            // NOTE: recharts, D3 (d3-*), chart.js, and their transitive deps
+            // (internmap, robust-predicates, delaunator, react-smooth, etc.)
+            // intentionally fall through to the 'vendor' chunk below.
+            // Isolating them in a 'charts-vendor' chunk causes Rollup to
+            // linearize their circular ESM references incorrectly, producing a
+            // TDZ ReferenceError ("Cannot access 'X' before initialization") at
+            // runtime. Keeping them in the shared vendor chunk gives Rollup
+            // the full module-graph context it needs to order them correctly
+            // (same reason @emotion/* lives here too).
 
             // AntV (used by @ant-design/charts) — very large, separate chunk
             if (id.includes('/@antv/') || id.includes('/@ant-design/charts')) {
