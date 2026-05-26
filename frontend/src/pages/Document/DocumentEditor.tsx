@@ -23,12 +23,12 @@ import {
   Typography,
   message,
 } from '@/components/ui';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import document components
 import PDFViewer from '@/components/DocumentEditor/PDFViewer';
-import TextEditor from '@/components/DocumentEditor/TextEditor';
+const TextEditor = lazy(() => import('@/components/DocumentEditor/TextEditor'));
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -343,7 +343,11 @@ const DocumentEditor = () => {
         />
       );
     } else if (['txt', 'csv', 'json', 'md', 'html', 'css', 'js', 'xml'].includes(fileType)) {
-      return <TextEditor content={content} setContent={setContent} fileType={fileType} />;
+      return (
+        <Suspense fallback={<Spin />}>
+          <TextEditor content={content} setContent={setContent} fileType={fileType} />
+        </Suspense>
+      );
     } else {
       return (
         <div style={{ textAlign: 'center', padding: 20 }}>
