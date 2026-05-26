@@ -1,6 +1,6 @@
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
 import * as React from 'react';
+import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 // ── Space ─────────────────────────────────────────────────────────────────────
 const SPACE_GAP: Record<string, number> = { small: 8, middle: 16, large: 24 };

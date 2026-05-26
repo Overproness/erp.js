@@ -1,5 +1,5 @@
-import { Col, Row } from '@/components/ui';
 import { useState } from 'react';
+import { Row, Col } from '@/components/ui';
 
 export default function TabsContent({ content, defaultActiveKey, pageTitle }) {
   const firstKey = content[0]?.key ?? '0_' + content[0]?.label?.replace(/ /g, '_');

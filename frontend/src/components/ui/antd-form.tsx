@@ -1,36 +1,37 @@
+import * as React from 'react';
+import { Check, ChevronDown, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Checkbox as ShadcnCheckbox } from '@/components/ui/checkbox';
+import { Switch as ShadcnSwitch } from '@/components/ui/switch';
+import { RadioGroup as ShadcnRadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Progress as ShadcnProgress } from '@/components/ui/progress';
 import {
+  Accordion as ShadcnAccordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Accordion as ShadcnAccordion,
 } from '@/components/ui/accordion';
-import {
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Card as ShadcnCard,
-} from '@/components/ui/card';
-import { Checkbox as ShadcnCheckbox } from '@/components/ui/checkbox';
+import { Tabs as ShadcnTabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu';
+import {
+  Card as ShadcnCard,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { RadioGroupItem, RadioGroup as ShadcnRadioGroup } from '@/components/ui/radio-group';
-import { Switch as ShadcnSwitch } from '@/components/ui/switch';
-import { Tabs as ShadcnTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
-import { ChevronDown } from 'lucide-react';
-import * as React from 'react';
 
 // ── Checkbox ──────────────────────────────────────────────────────────────────
 export interface CheckboxProps {

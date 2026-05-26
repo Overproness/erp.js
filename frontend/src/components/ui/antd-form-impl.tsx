@@ -3,12 +3,12 @@
  * Form built on rc-field-form (the exact library antd uses internally).
  * API is 100% compatible with antd Form — no existing form files need changes.
  */
-import RcForm, { Field, FieldContext, List, useForm, useWatch } from 'rc-field-form';
-import type { FieldData, FormInstance, NamePath, Rule, Store } from 'rc-field-form/lib/interface';
 import * as React from 'react';
+import RcForm, { Field, FieldContext, List, useForm, useWatch } from 'rc-field-form';
+import type { FormInstance, NamePath, Rule, FieldData, Store } from 'rc-field-form/lib/interface';
 
-import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
 
 /** useFormInstance – returns the nearest parent Form's instance (rc-field-form v2 compat) */
 function useFormInstance<Values = unknown>(): FormInstance<Values> {
@@ -272,5 +272,5 @@ export const Form = Object.assign(FormComponent, {
   Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 });
 
-export { useForm, useFormInstance, useWatch };
-export type { FieldData, FormInstance, NamePath, Rule, Store };
+export type { FormInstance, NamePath, Rule, FieldData, Store };
+export { useForm, useWatch, useFormInstance };

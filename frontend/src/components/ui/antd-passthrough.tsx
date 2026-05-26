@@ -4,21 +4,21 @@
  * Re-exports all complex components from their proper shadcn-based
  * implementations. No direct antd dependency here.
  */
-export { Calendar, DatePicker, TimePicker } from '@/components/ui/antd-datepicker-impl';
 export { Form } from '@/components/ui/antd-form-impl';
+export { Table } from '@/components/ui/antd-table-impl';
+export { Select, AutoComplete } from '@/components/ui/antd-select-impl';
+export { DatePicker, TimePicker, Calendar } from '@/components/ui/antd-datepicker-impl';
+export { Upload } from '@/components/ui/antd-upload-impl';
 export {
-  App,
-  ConfigProvider,
   InputNumber,
   Menu,
-  Pagination,
-  Slider,
   Steps,
+  Slider,
   Timeline,
+  Pagination,
+  App,
+  ConfigProvider,
 } from '@/components/ui/antd-misc-impl';
-export { AutoComplete, Select } from '@/components/ui/antd-select-impl';
-export { Table } from '@/components/ui/antd-table-impl';
-export { Upload } from '@/components/ui/antd-upload-impl';
 
 // Grid — already in antd-layout, re-export here for backwards compat
 export { Grid } from '@/components/ui/antd-layout';

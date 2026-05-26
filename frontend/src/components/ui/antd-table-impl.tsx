@@ -3,8 +3,20 @@
  * Table built on @tanstack/react-table v8 + shadcn Table primitives.
  * Accepts antd Table's column/dataSource/pagination API.
  */
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import * as React from 'react';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+  type PaginationState,
+  type RowSelectionState,
+} from '@tanstack/react-table';
+import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import {
   Table as ShadTable,
   TableBody,
@@ -13,20 +25,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
-import {
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
-  type PaginationState,
-  type RowSelectionState,
-  type SortingState,
-} from '@tanstack/react-table';
-import { ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react';
-import * as React from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 // ── antd column type ──────────────────────────────────────────────────────────
 export interface AntdColumnType<T = any> {
