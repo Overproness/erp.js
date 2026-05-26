@@ -58,7 +58,9 @@ const SafeTextEditor = ({
   setContent: (v: string) => void;
   fileType: string;
 }) => {
-  const fallback = <TextEditorFallback content={content} setContent={setContent} fileType={fileType} />;
+  const fallback = (
+    <TextEditorFallback content={content} setContent={setContent} fileType={fileType} />
+  );
 
   return (
     <AceEditorBoundary fallback={fallback}>

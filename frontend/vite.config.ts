@@ -186,11 +186,14 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'tanstack-vendor';
             }
 
+            // Emotion (MUI's CSS-in-JS runtime) — must be in its own chunk so it
+            // initialises before @mui/* modules reference it, avoiding TDZ errors.
+            if (id.includes('/@emotion/')) {
+              return 'emotion-vendor';
+            }
+
             // MUI — very large
-            if (
-              id.includes('/@mui/') ||
-              id.includes('/@emotion/')
-            ) {
+            if (id.includes('/@mui/')) {
               return 'mui-vendor';
             }
 
