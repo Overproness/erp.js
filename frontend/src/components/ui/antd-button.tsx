@@ -1,14 +1,13 @@
-import * as React from 'react';
-import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
+import * as React from 'react';
 
 type AntdButtonType = 'default' | 'primary' | 'dashed' | 'link' | 'text' | 'ghost';
 type AntdButtonSize = 'large' | 'middle' | 'small';
 type AntdButtonShape = 'default' | 'circle' | 'round';
 
-export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   type?: AntdButtonType;
   htmlType?: 'button' | 'submit' | 'reset';
   size?: AntdButtonSize;

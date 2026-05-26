@@ -3,13 +3,12 @@
  * InputNumber, Menu, Steps, Pagination, Slider, Timeline, App, ConfigProvider
  * All built with shadcn/tweakcn primitives — no antd dependency.
  */
-import * as React from 'react';
-import * as SliderPrimitive from '@radix-ui/react-slider';
-import { ChevronDown, ChevronRight, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { message, notification } from '@/components/ui/antd-overlay';
 import { Separator } from '@/components/ui/separator';
-import { message } from '@/components/ui/antd-overlay';
-import { notification } from '@/components/ui/antd-overlay';
+import { cn } from '@/lib/utils';
+import * as SliderPrimitive from '@radix-ui/react-slider';
+import { Check, ChevronDown } from 'lucide-react';
+import * as React from 'react';
 
 // ── InputNumber ───────────────────────────────────────────────────────────────
 export interface InputNumberProps {
@@ -23,7 +22,10 @@ export interface InputNumberProps {
   disabled?: boolean;
   readOnly?: boolean;
   placeholder?: string;
-  formatter?: (value: number | string | undefined, info: { userTyping: boolean; input: string }) => string;
+  formatter?: (
+    value: number | string | undefined,
+    info: { userTyping: boolean; input: string }
+  ) => string;
   parser?: (displayValue: string | undefined) => number | string;
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
@@ -71,12 +73,12 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
       id,
       name,
     },
-    ref,
+    ref
   ) => {
     const isControlled = value !== undefined;
     const [internal, setInternal] = React.useState<number | null>(defaultValue ?? null);
     const [inputStr, setInputStr] = React.useState(
-      String((isControlled ? value : defaultValue) ?? ''),
+      String((isControlled ? value : defaultValue) ?? '')
     );
     const current = isControlled ? value : internal;
 
@@ -139,7 +141,9 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
     const input = (
       <div className={cn('relative flex items-center', h)}>
         {prefix && (
-          <span className="absolute left-3 text-muted-foreground pointer-events-none">{prefix}</span>
+          <span className="absolute left-3 text-muted-foreground pointer-events-none">
+            {prefix}
+          </span>
         )}
         <input
           ref={ref}
@@ -163,30 +167,54 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             prefix && 'pl-8',
             (suffix || controls) && 'pr-16',
             status === 'error' && 'border-destructive',
-            status === 'warning' && 'border-yellow-400',
+            status === 'warning' && 'border-yellow-400'
           )}
         />
         <div className="absolute right-0 flex items-center h-full">
           {suffix && (
-            <span className="px-2 text-muted-foreground text-sm border-l border-input">{suffix}</span>
+            <span className="px-2 text-muted-foreground text-sm border-l border-input">
+              {suffix}
+            </span>
           )}
           {controls && !disabled && !readOnly && (
             <div className="flex flex-col h-full border-l border-input">
               <button
                 type="button"
                 tabIndex={-1}
-                onMouseDown={(e) => { e.preventDefault(); increment(); }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  increment();
+                }}
                 className="flex-1 flex items-center justify-center px-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
               >
-                <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 10 6"><path d="M1 5L5 1L9 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 10 6">
+                  <path
+                    d="M1 5L5 1L9 5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </button>
               <button
                 type="button"
                 tabIndex={-1}
-                onMouseDown={(e) => { e.preventDefault(); decrement(); }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  decrement();
+                }}
                 className="flex-1 flex items-center justify-center px-1.5 border-t border-input text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
               >
-                <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 10 6"><path d="M9 1L5 5L1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 10 6">
+                  <path
+                    d="M9 1L5 5L1 1"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </button>
             </div>
           )}
@@ -205,27 +233,33 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
     return (
       <div className={cn('flex w-full', className)} style={style}>
         {addonBefore && (
-          <span className={cn(
-            'flex items-center px-3 border border-r-0 border-input rounded-l-[var(--radius)] bg-muted text-sm text-muted-foreground shrink-0',
-            h,
-          )}>
+          <span
+            className={cn(
+              'flex items-center px-3 border border-r-0 border-input rounded-l-[var(--radius)] bg-muted text-sm text-muted-foreground shrink-0',
+              h
+            )}
+          >
             {addonBefore}
           </span>
         )}
-        <div className={cn('flex-1', addonBefore && 'rounded-l-none', addonAfter && 'rounded-r-none')}>
+        <div
+          className={cn('flex-1', addonBefore && 'rounded-l-none', addonAfter && 'rounded-r-none')}
+        >
           {input}
         </div>
         {addonAfter && (
-          <span className={cn(
-            'flex items-center px-3 border border-l-0 border-input rounded-r-[var(--radius)] bg-muted text-sm text-muted-foreground shrink-0',
-            h,
-          )}>
+          <span
+            className={cn(
+              'flex items-center px-3 border border-l-0 border-input rounded-r-[var(--radius)] bg-muted text-sm text-muted-foreground shrink-0',
+              h
+            )}
+          >
             {addonAfter}
           </span>
         )}
       </div>
     );
-  },
+  }
 );
 InputNumber.displayName = 'InputNumber';
 
@@ -330,12 +364,10 @@ function MenuItemComponent({
           className={cn(
             'w-full flex items-center gap-2 px-3 py-2 text-sm rounded-sm transition-colors text-left',
             'hover:bg-accent hover:text-accent-foreground',
-            item.disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+            item.disabled && 'opacity-50 cursor-not-allowed pointer-events-none'
           )}
           onClick={(e) => {
-            setOpenKeys((prev) =>
-              isOpen ? prev.filter((k) => k !== key) : [...prev, key],
-            );
+            setOpenKeys((prev) => (isOpen ? prev.filter((k) => k !== key) : [...prev, key]));
             item.onTitleClick?.({ key, domEvent: e });
           }}
         >
@@ -344,7 +376,7 @@ function MenuItemComponent({
           <ChevronDown
             className={cn(
               'h-4 w-4 text-muted-foreground transition-transform shrink-0',
-              isOpen && 'rotate-180',
+              isOpen && 'rotate-180'
             )}
           />
         </button>
@@ -377,7 +409,7 @@ function MenuItemComponent({
         'hover:bg-accent hover:text-accent-foreground',
         selected && 'bg-accent text-accent-foreground font-medium',
         item.danger && 'text-destructive hover:bg-destructive/10',
-        item.disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+        item.disabled && 'opacity-50 cursor-not-allowed pointer-events-none'
       )}
       onClick={(e) => {
         if (!item.disabled) {
@@ -421,11 +453,7 @@ export const Menu: React.FC<MenuProps> = ({
 
   return (
     <nav
-      className={cn(
-        'flex flex-col gap-0.5',
-        mode === 'horizontal' && 'flex-row',
-        className,
-      )}
+      className={cn('flex flex-col gap-0.5', mode === 'horizontal' && 'flex-row', className)}
       style={style}
     >
       {items.map((item) => (
@@ -472,7 +500,12 @@ export interface StepsProps {
   children?: React.ReactNode;
 }
 
-function getStepStatus(item: StepItem, index: number, current: number, globalStatus: string): 'wait' | 'process' | 'finish' | 'error' {
+function getStepStatus(
+  item: StepItem,
+  index: number,
+  current: number,
+  globalStatus: string
+): 'wait' | 'process' | 'finish' | 'error' {
   if (item.status) return item.status;
   if (index < current) return 'finish';
   if (index === current) return (globalStatus as any) || 'process';
@@ -492,16 +525,14 @@ export const Steps: React.FC<StepsProps> = ({
   children,
 }) => {
   const resolvedItems: StepItem[] =
-    items ??
-    React.Children.map(children, (child: any) => child?.props as StepItem) ??
-    [];
+    items ?? React.Children.map(children, (child: any) => child?.props as StepItem) ?? [];
 
   return (
     <div
       className={cn(
         'flex',
         direction === 'vertical' ? 'flex-col' : 'flex-row items-start',
-        className,
+        className
       )}
       style={style}
     >
@@ -517,7 +548,7 @@ export const Steps: React.FC<StepsProps> = ({
                 'flex',
                 direction === 'vertical' ? 'flex-row gap-3' : 'flex-col items-center',
                 clickable && 'cursor-pointer group',
-                item.disabled && 'opacity-50 cursor-not-allowed',
+                item.disabled && 'opacity-50 cursor-not-allowed'
               )}
               onClick={() => clickable && !item.disabled && onChange!(index)}
             >
@@ -526,14 +557,11 @@ export const Steps: React.FC<StepsProps> = ({
                 className={cn(
                   'flex items-center justify-center rounded-full shrink-0 border-2 transition-colors font-medium',
                   size === 'small' ? 'h-6 w-6 text-xs' : 'h-8 w-8 text-sm',
-                  stepStatus === 'finish' &&
-                    'border-primary bg-primary text-primary-foreground',
-                  stepStatus === 'process' &&
-                    'border-primary bg-primary text-primary-foreground',
-                  stepStatus === 'wait' &&
-                    'border-border bg-background text-muted-foreground',
+                  stepStatus === 'finish' && 'border-primary bg-primary text-primary-foreground',
+                  stepStatus === 'process' && 'border-primary bg-primary text-primary-foreground',
+                  stepStatus === 'wait' && 'border-border bg-background text-muted-foreground',
                   stepStatus === 'error' &&
-                    'border-destructive bg-destructive text-destructive-foreground',
+                    'border-destructive bg-destructive text-destructive-foreground'
                 )}
               >
                 {item.icon ? (
@@ -556,7 +584,7 @@ export const Steps: React.FC<StepsProps> = ({
                       stepStatus === 'process' && 'text-foreground',
                       stepStatus === 'finish' && 'text-foreground',
                       stepStatus === 'wait' && 'text-muted-foreground',
-                      stepStatus === 'error' && 'text-destructive',
+                      stepStatus === 'error' && 'text-destructive'
                     )}
                   >
                     {item.title}
@@ -575,9 +603,7 @@ export const Steps: React.FC<StepsProps> = ({
                   direction === 'horizontal'
                     ? 'flex-1 h-0.5 mx-2 mt-4 self-start'
                     : 'w-0.5 self-stretch ml-4 my-1',
-                  index < current
-                    ? 'bg-primary'
-                    : 'bg-border',
+                  index < current ? 'bg-primary' : 'bg-border'
                 )}
               />
             )}
@@ -651,7 +677,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       active
         ? 'bg-primary text-primary-foreground border-primary'
         : 'bg-background hover:bg-accent hover:text-accent-foreground',
-      disabled && 'opacity-50 pointer-events-none',
+      disabled && 'opacity-50 pointer-events-none'
     );
 
   const pages: (number | '...')[] = [];
@@ -675,17 +701,36 @@ export const Pagination: React.FC<PaginationProps> = ({
         </span>
       )}
       <div className="flex items-center gap-1">
-        <button className={btnClass()} onClick={() => go(current - 1)} disabled={disabled || current <= 1}>‹</button>
+        <button
+          className={btnClass()}
+          onClick={() => go(current - 1)}
+          disabled={disabled || current <= 1}
+        >
+          ‹
+        </button>
         {pages.map((p, i) =>
           p === '...' ? (
-            <span key={`ellipsis-${i}`} className="text-sm text-muted-foreground px-1">…</span>
+            <span key={`ellipsis-${i}`} className="text-sm text-muted-foreground px-1">
+              …
+            </span>
           ) : (
-            <button key={p} className={btnClass(p === current)} onClick={() => go(p as number)} disabled={disabled}>
+            <button
+              key={p}
+              className={btnClass(p === current)}
+              onClick={() => go(p as number)}
+              disabled={disabled}
+            >
               {p}
             </button>
-          ),
+          )
         )}
-        <button className={btnClass()} onClick={() => go(current + 1)} disabled={disabled || current >= totalPages}>›</button>
+        <button
+          className={btnClass()}
+          onClick={() => go(current + 1)}
+          disabled={disabled || current >= totalPages}
+        >
+          ›
+        </button>
       </div>
     </div>
   );
@@ -706,7 +751,14 @@ export interface SliderProps {
   reverse?: boolean;
   vertical?: boolean;
   included?: boolean;
-  tooltip?: { open?: boolean; placement?: string; formatter?: (value?: number) => React.ReactNode; getPopupContainer?: any } | false;
+  tooltip?:
+    | {
+        open?: boolean;
+        placement?: string;
+        formatter?: (value?: number) => React.ReactNode;
+        getPopupContainer?: any;
+      }
+    | false;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -728,7 +780,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       className,
       style,
     },
-    ref,
+    ref
   ) => {
     const isRange = range || Array.isArray(defaultValue) || Array.isArray(value);
     const isControlled = value !== undefined;
@@ -736,8 +788,8 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       Array.isArray(defaultValue)
         ? defaultValue
         : defaultValue !== undefined
-        ? [defaultValue]
-        : [min],
+          ? [defaultValue]
+          : [min]
     );
 
     const currentArr: number[] = isControlled
@@ -771,13 +823,13 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           orientation={vertical ? 'vertical' : 'horizontal'}
           className={cn(
             'relative flex touch-none select-none items-center',
-            vertical ? 'flex-col w-4 h-full' : 'flex-row w-full h-4',
+            vertical ? 'flex-col w-4 h-full' : 'flex-row w-full h-4'
           )}
         >
           <SliderPrimitive.Track
             className={cn(
               'relative grow overflow-hidden rounded-full bg-muted',
-              vertical ? 'w-1.5 h-full' : 'h-1.5 w-full',
+              vertical ? 'w-1.5 h-full' : 'h-1.5 w-full'
             )}
           >
             <SliderPrimitive.Range className="absolute bg-primary rounded-full h-full w-full" />
@@ -790,7 +842,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
                 'ring-offset-background transition-colors',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 'disabled:pointer-events-none disabled:opacity-50',
-                'hover:border-primary/80',
+                'hover:border-primary/80'
               )}
             />
           ))}
@@ -816,7 +868,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
         )}
       </div>
     );
-  },
+  }
 );
 Slider.displayName = 'Slider';
 
@@ -845,13 +897,20 @@ export interface TimelineProps {
 
 function getDotColor(color?: string) {
   switch (color) {
-    case 'green': return 'bg-green-500 border-green-500';
-    case 'red': return 'bg-red-500 border-red-500';
-    case 'blue': return 'bg-blue-500 border-blue-500';
-    case 'gray': return 'bg-gray-400 border-gray-400';
-    case 'purple': return 'bg-purple-500 border-purple-500';
-    case 'orange': return 'bg-orange-500 border-orange-500';
-    case 'cyan': return 'bg-cyan-500 border-cyan-500';
+    case 'green':
+      return 'bg-green-500 border-green-500';
+    case 'red':
+      return 'bg-red-500 border-red-500';
+    case 'blue':
+      return 'bg-blue-500 border-blue-500';
+    case 'gray':
+      return 'bg-gray-400 border-gray-400';
+    case 'purple':
+      return 'bg-purple-500 border-purple-500';
+    case 'orange':
+      return 'bg-orange-500 border-orange-500';
+    case 'cyan':
+      return 'bg-cyan-500 border-cyan-500';
     default:
       return color ? '' : 'bg-primary border-primary';
   }
@@ -868,9 +927,7 @@ export const Timeline: React.FC<TimelineProps> = ({
   children,
 }) => {
   let resolvedItems: TimelineItem[] =
-    items ??
-    React.Children.map(children, (child: any) => child?.props as TimelineItem) ??
-    [];
+    items ?? React.Children.map(children, (child: any) => child?.props as TimelineItem) ?? [];
 
   if (reverse) resolvedItems = [...resolvedItems].reverse();
 
@@ -896,11 +953,7 @@ export const Timeline: React.FC<TimelineProps> = ({
         return (
           <div
             key={item.key ?? index}
-            className={cn(
-              'flex gap-4',
-              mode === 'right' && 'flex-row-reverse',
-              item.className,
-            )}
+            className={cn('flex gap-4', mode === 'right' && 'flex-row-reverse', item.className)}
             style={item.style}
           >
             {/* Dot column */}
@@ -913,28 +966,24 @@ export const Timeline: React.FC<TimelineProps> = ({
                     : cn(
                         'w-3 h-3 rounded-full border-2 mt-1',
                         dotColor,
-                        item.color && !dotColor.includes('bg-') &&
-                          `bg-current border-current`,
-                      ),
+                        item.color && !dotColor.includes('bg-') && `bg-current border-current`
+                      )
                 )}
                 style={
-                  item.color && !['green','red','blue','gray','purple','orange','cyan'].includes(item.color)
+                  item.color &&
+                  !['green', 'red', 'blue', 'gray', 'purple', 'orange', 'cyan'].includes(item.color)
                     ? { color: item.color }
                     : undefined
                 }
               >
                 {item.dot}
               </div>
-              {!isLast && (
-                <div className="flex-1 w-px bg-border mt-1 min-h-4" />
-              )}
+              {!isLast && <div className="flex-1 w-px bg-border mt-1 min-h-4" />}
             </div>
 
             {/* Content */}
             <div className={cn('flex-1 pb-5 min-w-0', isLast && 'pb-0')}>
-              {item.label && (
-                <div className="text-xs text-muted-foreground mb-1">{item.label}</div>
-              )}
+              {item.label && <div className="text-xs text-muted-foreground mb-1">{item.label}</div>}
               <div className="text-sm">{item.children}</div>
             </div>
           </div>
@@ -972,7 +1021,19 @@ const AppContext = React.createContext<AppContextValue>({
 });
 
 const AppRoot: React.FC<{ children?: React.ReactNode; [key: string]: any }> = ({ children }) => (
-  <AppContext.Provider value={{ message, notification, modal: { confirm: () => {}, info: () => {}, success: () => {}, warning: () => {}, error: () => {} } }}>
+  <AppContext.Provider
+    value={{
+      message,
+      notification,
+      modal: {
+        confirm: () => {},
+        info: () => {},
+        success: () => {},
+        warning: () => {},
+        error: () => {},
+      },
+    }}
+  >
     {children}
   </AppContext.Provider>
 );

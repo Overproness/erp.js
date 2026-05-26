@@ -1,37 +1,36 @@
-import * as React from 'react';
-import { Check, ChevronDown, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Checkbox as ShadcnCheckbox } from '@/components/ui/checkbox';
-import { Switch as ShadcnSwitch } from '@/components/ui/switch';
-import { RadioGroup as ShadcnRadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Progress as ShadcnProgress } from '@/components/ui/progress';
 import {
-  Accordion as ShadcnAccordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  Accordion as ShadcnAccordion,
 } from '@/components/ui/accordion';
-import { Tabs as ShadcnTabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import {
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Card as ShadcnCard,
+} from '@/components/ui/card';
+import { Checkbox as ShadcnCheckbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
   DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Card as ShadcnCard,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { RadioGroupItem, RadioGroup as ShadcnRadioGroup } from '@/components/ui/radio-group';
+import { Switch as ShadcnSwitch } from '@/components/ui/switch';
+import { Tabs as ShadcnTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
+import * as React from 'react';
 
 // ── Checkbox ──────────────────────────────────────────────────────────────────
 export interface CheckboxProps {
@@ -49,7 +48,10 @@ export interface CheckboxProps {
 }
 
 const CheckboxBase = React.forwardRef<HTMLButtonElement, CheckboxProps>(
-  ({ checked, defaultChecked, disabled, onChange, value, children, className, style, id, name }, ref) => {
+  (
+    { checked, defaultChecked, disabled, onChange, value, children, className, style, id, name },
+    ref
+  ) => {
     const [internal, setInternal] = React.useState(defaultChecked ?? false);
     const controlled = checked !== undefined;
     const isChecked = controlled ? checked! : internal;
@@ -73,7 +75,10 @@ const CheckboxBase = React.forwardRef<HTMLButtonElement, CheckboxProps>(
           name={name}
         />
         {children && (
-          <Label htmlFor={checkId} className={cn('cursor-pointer font-normal', disabled && 'opacity-50')}>
+          <Label
+            htmlFor={checkId}
+            className={cn('cursor-pointer font-normal', disabled && 'opacity-50')}
+          >
             {children}
           </Label>
         )}
@@ -85,7 +90,9 @@ CheckboxBase.displayName = 'Checkbox';
 
 // Checkbox.Group
 interface CheckboxGroupProps {
-  options?: Array<string | number | { label: React.ReactNode; value: string | number; disabled?: boolean }>;
+  options?: Array<
+    string | number | { label: React.ReactNode; value: string | number; disabled?: boolean }
+  >;
   value?: Array<string | number>;
   defaultValue?: Array<string | number>;
   onChange?: (checkedValues: Array<string | number>) => void;
@@ -162,20 +169,7 @@ export interface SwitchProps {
 }
 
 export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
-  (
-    {
-      checked,
-      defaultChecked,
-      onChange,
-      disabled,
-      loading,
-      size,
-      className,
-      style,
-      id,
-    },
-    ref
-  ) => {
+  ({ checked, defaultChecked, onChange, disabled, loading, size, className, style, id }, ref) => {
     const [internal, setInternal] = React.useState(defaultChecked ?? false);
     const controlled = checked !== undefined;
     const isChecked = controlled ? checked! : internal;
@@ -226,7 +220,10 @@ const RadioBase = React.forwardRef<HTMLButtonElement, RadioProps>(
           onClick={() => onChange?.({ target: { checked: true, value } })}
         />
         {children && (
-          <Label htmlFor={radioId} className={cn('cursor-pointer font-normal', disabled && 'opacity-50')}>
+          <Label
+            htmlFor={radioId}
+            className={cn('cursor-pointer font-normal', disabled && 'opacity-50')}
+          >
             {children}
           </Label>
         )}
@@ -293,7 +290,9 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
                   value={String(item.value)}
                   disabled={disabled || item.disabled}
                 />
-                <Label htmlFor={itemId} className="cursor-pointer font-normal">{item.label}</Label>
+                <Label htmlFor={itemId} className="cursor-pointer font-normal">
+                  {item.label}
+                </Label>
               </span>
             );
           })
@@ -308,7 +307,13 @@ const RadioButton = React.forwardRef<HTMLButtonElement, RadioProps>(
     const btnId = React.useId();
     return (
       <span className="inline-flex">
-        <RadioGroupItem ref={ref} id={btnId} value={String(value ?? '')} disabled={disabled} className="sr-only" />
+        <RadioGroupItem
+          ref={ref}
+          id={btnId}
+          value={String(value ?? '')}
+          disabled={disabled}
+          className="sr-only"
+        />
         <Label
           htmlFor={btnId}
           className={cn(
@@ -363,18 +368,18 @@ export const Progress: React.FC<ProgressProps> = ({
     status === 'exception'
       ? 'hsl(var(--destructive))'
       : status === 'success'
-      ? '#52c41a'
-      : typeof strokeColor === 'string'
-      ? strokeColor
-      : undefined;
+        ? '#52c41a'
+        : typeof strokeColor === 'string'
+          ? strokeColor
+          : undefined;
 
   const label = format
     ? format(percent)
     : status === 'exception'
-    ? '✕'
-    : status === 'success'
-    ? '✓'
-    : `${percent}%`;
+      ? '✕'
+      : status === 'success'
+        ? '✓'
+        : `${percent}%`;
 
   if (type === 'circle' || type === 'dashboard') {
     const r = 44;
@@ -403,14 +408,13 @@ export const Progress: React.FC<ProgressProps> = ({
             style={{ transition: 'stroke-dashoffset 0.3s ease' }}
           />
         </svg>
-        {showInfo && (
-          <span className="absolute text-sm font-medium">{label}</span>
-        )}
+        {showInfo && <span className="absolute text-sm font-medium">{label}</span>}
       </div>
     );
   }
 
-  const h = typeof size === 'number' ? size : Array.isArray(size) ? size[1] : size === 'small' ? 6 : 8;
+  const h =
+    typeof size === 'number' ? size : Array.isArray(size) ? size[1] : size === 'small' ? 6 : 8;
 
   return (
     <div className={cn('flex items-center gap-2', className)} style={style}>
@@ -456,7 +460,9 @@ export interface CollapseProps {
   children?: React.ReactNode;
 }
 
-export const Collapse: React.FC<CollapseProps> & { Panel: React.FC<CollapseItem & { children?: React.ReactNode }> } = ({
+export const Collapse: React.FC<CollapseProps> & {
+  Panel: React.FC<CollapseItem & { children?: React.ReactNode }>;
+} = ({
   items,
   activeKey,
   defaultActiveKey,
@@ -470,11 +476,15 @@ export const Collapse: React.FC<CollapseProps> & { Panel: React.FC<CollapseItem 
 }) => {
   const controlled = activeKey !== undefined;
   const defaultVal = defaultActiveKey
-    ? Array.isArray(defaultActiveKey) ? defaultActiveKey : [defaultActiveKey]
+    ? Array.isArray(defaultActiveKey)
+      ? defaultActiveKey
+      : [defaultActiveKey]
     : [];
   const [internal, setInternal] = React.useState<string[]>(defaultVal);
   const current = controlled
-    ? Array.isArray(activeKey) ? (activeKey as string[]) : [activeKey as string]
+    ? Array.isArray(activeKey)
+      ? (activeKey as string[])
+      : [activeKey as string]
     : internal;
 
   const handleChange = (v: string | string[]) => {
@@ -483,16 +493,14 @@ export const Collapse: React.FC<CollapseProps> & { Panel: React.FC<CollapseItem 
     onChange?.(accordion ? next[0] ?? '' : next);
   };
 
-  const resolvedItems = items ?? (
-    React.Children.map(children, (child: any) => child?.props) ?? []
-  );
+  const resolvedItems = items ?? React.Children.map(children, (child: any) => child?.props) ?? [];
 
   if (!resolvedItems?.length) return null;
 
   return (
     <ShadcnAccordion
       type={accordion ? 'single' : 'multiple'}
-      value={accordion ? (current[0] ?? '') : (current as any)}
+      value={accordion ? current[0] ?? '' : (current as any)}
       onValueChange={handleChange as any}
       className={cn(
         bordered && !ghost && 'border border-border rounded-md overflow-hidden',
@@ -560,7 +568,9 @@ export interface TabsProps {
   children?: React.ReactNode;
 }
 
-export const Tabs: React.FC<TabsProps> & { TabPane: React.FC<TabItem & { children?: React.ReactNode; tab?: React.ReactNode }> } = ({
+export const Tabs: React.FC<TabsProps> & {
+  TabPane: React.FC<TabItem & { children?: React.ReactNode; tab?: React.ReactNode }>;
+} = ({
   items,
   activeKey,
   defaultActiveKey,
@@ -574,34 +584,49 @@ export const Tabs: React.FC<TabsProps> & { TabPane: React.FC<TabItem & { childre
   style,
   children,
 }) => {
-  const resolvedItems: TabItem[] = items ?? (
+  const resolvedItems: TabItem[] =
+    items ??
     React.Children.map(children, (child: any) => ({
       key: child?.props?.tab ?? child?.props?.key ?? child?.key,
       label: child?.props?.tab ?? child?.props?.label,
       children: child?.props?.children,
       disabled: child?.props?.disabled,
-    })) ?? []
-  );
+    })) ??
+    [];
 
-  const extraRight = tabBarExtraContent && typeof tabBarExtraContent === 'object' && !React.isValidElement(tabBarExtraContent)
-    ? (tabBarExtraContent as any).right
-    : tabBarExtraContent;
-  const extraLeft = tabBarExtraContent && typeof tabBarExtraContent === 'object' && !React.isValidElement(tabBarExtraContent)
-    ? (tabBarExtraContent as any).left
-    : null;
+  const extraRight =
+    tabBarExtraContent &&
+    typeof tabBarExtraContent === 'object' &&
+    !React.isValidElement(tabBarExtraContent)
+      ? (tabBarExtraContent as any).right
+      : tabBarExtraContent;
+  const extraLeft =
+    tabBarExtraContent &&
+    typeof tabBarExtraContent === 'object' &&
+    !React.isValidElement(tabBarExtraContent)
+      ? (tabBarExtraContent as any).left
+      : null;
 
   return (
     <ShadcnTabs
       defaultValue={defaultActiveKey ?? resolvedItems[0]?.key}
       value={activeKey}
-      onValueChange={(v) => { onChange?.(v); }}
+      onValueChange={(v) => {
+        onChange?.(v);
+      }}
       className={cn(
         tabPosition === 'left' || tabPosition === 'right' ? 'flex' : 'flex flex-col',
         className
       )}
       style={style}
     >
-      <div className={cn('flex items-center', tabPosition === 'left' && 'flex-col mr-4', tabPosition === 'right' && 'flex-col ml-4 order-last')}>
+      <div
+        className={cn(
+          'flex items-center',
+          tabPosition === 'left' && 'flex-col mr-4',
+          tabPosition === 'right' && 'flex-col ml-4 order-last'
+        )}
+      >
         {extraLeft && <div className="mr-2">{extraLeft}</div>}
         <TabsList className={cn(centered && 'mx-auto', type === 'card' && 'rounded-b-none')}>
           {resolvedItems.map((item) => (
@@ -644,7 +669,12 @@ interface MenuItemDef {
 }
 
 export interface DropdownProps {
-  menu?: { items?: MenuItemDef[]; onClick?: (info: { key: string }) => void; selectable?: boolean; selectedKeys?: string[] };
+  menu?: {
+    items?: MenuItemDef[];
+    onClick?: (info: { key: string }) => void;
+    selectable?: boolean;
+    selectedKeys?: string[];
+  };
   trigger?: Array<'click' | 'hover' | 'contextMenu'>;
   placement?: string;
   children?: React.ReactNode;
@@ -709,7 +739,9 @@ function renderMenuItems(
   });
 }
 
-export const Dropdown: React.FC<DropdownProps> & { Button: React.FC<DropdownProps & { size?: string; type?: string }> } = ({
+export const Dropdown: React.FC<DropdownProps> & {
+  Button: React.FC<DropdownProps & { size?: string; type?: string }>;
+} = ({
   menu,
   children,
   open,
@@ -730,24 +762,34 @@ export const Dropdown: React.FC<DropdownProps> & { Button: React.FC<DropdownProp
   );
 
   return (
-    <DropdownMenu
-      open={isControlled ? isOpen : undefined}
-      onOpenChange={onOpenChange}
-    >
+    <DropdownMenu open={isControlled ? isOpen : undefined} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild disabled={disabled}>
         {children}
       </DropdownMenuTrigger>
-      {dropdownRender ? dropdownRender(menuContent) as any : menuContent}
+      {dropdownRender ? (dropdownRender(menuContent) as any) : menuContent}
     </DropdownMenu>
   );
 };
 
-Dropdown.Button = ({ children, menu, disabled, overlayClassName, overlayStyle, dropdownRender, type, size, ...rest }: any) => (
+Dropdown.Button = ({
+  children,
+  menu,
+  disabled,
+  overlayClassName,
+  overlayStyle,
+  dropdownRender,
+  type,
+  size,
+  ...rest
+}: any) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild disabled={disabled}>
       <span className="inline-flex">
         {children}
-        <button className="border-l border-input px-1.5 inline-flex items-center" disabled={disabled}>
+        <button
+          className="border-l border-input px-1.5 inline-flex items-center"
+          disabled={disabled}
+        >
           <ChevronDown className="h-3.5 w-3.5" />
         </button>
       </span>
@@ -821,17 +863,18 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         style={style}
         {...rest}
       >
-        {cover && <div className="overflow-hidden rounded-t-[calc(var(--radius)+1px)]">{cover}</div>}
+        {cover && (
+          <div className="overflow-hidden rounded-t-[calc(var(--radius)+1px)]">{cover}</div>
+        )}
         {(title || extra || tabList) && (
           <CardHeader
-            className={cn('flex-row items-center justify-between pb-0', size === 'small' ? 'px-3 pt-3' : 'px-5 pt-5')}
+            className={cn(
+              'flex-row items-center justify-between pb-0',
+              size === 'small' ? 'px-3 pt-3' : 'px-5 pt-5'
+            )}
             style={headStyle}
           >
-            {title ? (
-              <CardTitle className="text-base font-semibold">{title}</CardTitle>
-            ) : (
-              <div />
-            )}
+            {title ? <CardTitle className="text-base font-semibold">{title}</CardTitle> : <div />}
             <div className="flex items-center gap-2">
               {tabList && (
                 <div className="flex gap-1">
@@ -866,7 +909,11 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           {loading ? (
             <div className="space-y-2">
               {[1, 2, 3].map((n) => (
-                <div key={n} className="h-4 bg-muted rounded animate-pulse" style={{ width: `${80 - n * 10}%` }} />
+                <div
+                  key={n}
+                  className="h-4 bg-muted rounded animate-pulse"
+                  style={{ width: `${80 - n * 10}%` }}
+                />
               ))}
             </div>
           ) : (
@@ -876,7 +923,10 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         {actions && actions.length > 0 && (
           <CardFooter className="border-t border-border divide-x divide-border p-0">
             {actions.map((action, i) => (
-              <div key={i} className="flex-1 flex items-center justify-center py-3 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+              <div
+                key={i}
+                className="flex-1 flex items-center justify-center py-3 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
                 {action}
               </div>
             ))}
@@ -888,7 +938,14 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 (Card as any).Grid = ({ children, className, hoverable, style }: any) => (
-  <div className={cn('border-r border-b border-border p-4', hoverable && 'hover:shadow-sm cursor-pointer', className)} style={style}>
+  <div
+    className={cn(
+      'border-r border-b border-border p-4',
+      hoverable && 'hover:shadow-sm cursor-pointer',
+      className
+    )}
+    style={style}
+  >
     {children}
   </div>
 );

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 // ── Space ─────────────────────────────────────────────────────────────────────
 const SPACE_GAP: Record<string, number> = { small: 8, middle: 16, large: 24 };
@@ -14,13 +14,22 @@ export interface SpaceProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Space = React.forwardRef<HTMLDivElement, SpaceProps>(
-  ({ direction = 'horizontal', size = 'small', wrap, align, split, className, style, children, ...rest }, ref) => {
+  (
+    {
+      direction = 'horizontal',
+      size = 'small',
+      wrap,
+      align,
+      split,
+      className,
+      style,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
     const gap =
-      typeof size === 'number'
-        ? size
-        : Array.isArray(size)
-        ? size[0]
-        : SPACE_GAP[size] ?? 8;
+      typeof size === 'number' ? size : Array.isArray(size) ? size[0] : SPACE_GAP[size] ?? 8;
 
     const items = React.Children.toArray(children).filter(Boolean);
 
@@ -55,7 +64,9 @@ export const Space = React.forwardRef<HTMLDivElement, SpaceProps>(
 );
 Space.displayName = 'Space';
 (Space as any).Compact = ({ children, className, ...props }: any) => (
-  <div className={cn('inline-flex [&>*:not(:first-child)]:-ml-px', className)} {...props}>{children}</div>
+  <div className={cn('inline-flex [&>*:not(:first-child)]:-ml-px', className)} {...props}>
+    {children}
+  </div>
 );
 
 // ── Row ───────────────────────────────────────────────────────────────────────
@@ -237,8 +248,16 @@ const LayoutSider = React.forwardRef<HTMLElement, SiderProps>(
               onCollapse?.(next, 'clickTrigger');
             }}
           >
-            {trigger !== undefined ? trigger : (
-              <svg className="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {trigger !== undefined ? (
+              trigger
+            ) : (
+              <svg
+                className="h-4 w-4 text-muted-foreground"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <polyline points={isCollapsed ? '9 18 15 12 9 6' : '15 18 9 12 15 6'} />
               </svg>
             )}
@@ -259,7 +278,11 @@ LayoutContent.displayName = 'Layout.Content';
 
 const LayoutFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   ({ className, ...rest }, ref) => (
-    <footer ref={ref} className={cn('flex-shrink-0 bg-background border-t border-border', className)} {...rest} />
+    <footer
+      ref={ref}
+      className={cn('flex-shrink-0 bg-background border-t border-border', className)}
+      {...rest}
+    />
   )
 );
 LayoutFooter.displayName = 'Layout.Footer';
@@ -281,12 +304,28 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
-  ({ type = 'horizontal', orientation = 'center', plain, dashed, className, style, children, ...rest }, ref) => {
+  (
+    {
+      type = 'horizontal',
+      orientation = 'center',
+      plain,
+      dashed,
+      className,
+      style,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
     if (type === 'vertical') {
       return (
         <span
           ref={ref}
-          className={cn('inline-block mx-2 h-4 w-px bg-border align-middle', dashed && 'border-dashed', className)}
+          className={cn(
+            'inline-block mx-2 h-4 w-px bg-border align-middle',
+            dashed && 'border-dashed',
+            className
+          )}
           style={style}
           {...rest}
         />
@@ -301,9 +340,20 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
           style={style}
           {...rest}
         >
-          {orientation !== 'left' && <Separator className={cn('flex-1', dashed && 'border-dashed')} />}
-          <span className={cn('text-sm whitespace-nowrap', plain ? 'text-muted-foreground' : 'font-medium')}>{children}</span>
-          {orientation !== 'right' && <Separator className={cn('flex-1', dashed && 'border-dashed')} />}
+          {orientation !== 'left' && (
+            <Separator className={cn('flex-1', dashed && 'border-dashed')} />
+          )}
+          <span
+            className={cn(
+              'text-sm whitespace-nowrap',
+              plain ? 'text-muted-foreground' : 'font-medium'
+            )}
+          >
+            {children}
+          </span>
+          {orientation !== 'right' && (
+            <Separator className={cn('flex-1', dashed && 'border-dashed')} />
+          )}
         </div>
       );
     }

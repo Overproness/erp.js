@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from '@/components/ui/avatar';
 import { Badge as ShadcnBadge } from '@/components/ui/badge';
-import { Avatar as ShadcnAvatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+import { Star } from 'lucide-react';
+import * as React from 'react';
 
 // ── Typography ───────────────────────────────────────────────────────────────
 const TITLE_SIZES: Record<number, string> = {
@@ -25,7 +25,10 @@ interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
-  ({ level = 1, type, disabled, delete: del, underline, italic, className, children, ...rest }, ref) => {
+  (
+    { level = 1, type, disabled, delete: del, underline, italic, className, children, ...rest },
+    ref
+  ) => {
     const Tag = `h${level}` as keyof JSX.IntrinsicElements;
     return (
       <Tag
@@ -124,7 +127,21 @@ interface ParagraphProps extends React.HTMLAttributes<HTMLParagraphElement> {
 }
 
 const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
-  ({ type, strong, disabled, delete: del, underline, italic, ellipsis, className, children, ...rest }, ref) => (
+  (
+    {
+      type,
+      strong,
+      disabled,
+      delete: del,
+      underline,
+      italic,
+      ellipsis,
+      className,
+      children,
+      ...rest
+    },
+    ref
+  ) => (
     <p
       ref={ref}
       className={cn(
@@ -184,13 +201,16 @@ export const Typography = Object.assign(TypographyRoot, { Title, Text, Paragraph
 // ── Tag ───────────────────────────────────────────────────────────────────────
 const TAG_PRESET: Record<string, string> = {
   red: 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400',
-  orange: 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400',
-  yellow: 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400',
+  orange:
+    'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400',
+  yellow:
+    'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400',
   gold: 'bg-yellow-100 text-yellow-700 border-yellow-200',
   green: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400',
   cyan: 'bg-cyan-100 text-cyan-700 border-cyan-200 dark:bg-cyan-900/30 dark:text-cyan-400',
   blue: 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-  purple: 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400',
+  purple:
+    'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400',
   magenta: 'bg-pink-100 text-pink-700 border-pink-200',
   volcano: 'bg-red-100 text-red-700 border-red-200',
   geekblue: 'bg-indigo-100 text-indigo-700 border-indigo-200',
@@ -214,9 +234,15 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ color, closable, onClose, icon, bordered = true, className, children, style, ...rest }, ref) => {
+  (
+    { color, closable, onClose, icon, bordered = true, className, children, style, ...rest },
+    ref
+  ) => {
     const presetClass = color && TAG_PRESET[color];
-    const inlineStyle = color && !TAG_PRESET[color] ? { backgroundColor: `${color}20`, color, borderColor: `${color}40`, ...style } : style;
+    const inlineStyle =
+      color && !TAG_PRESET[color]
+        ? { backgroundColor: `${color}20`, color, borderColor: `${color}40`, ...style }
+        : style;
 
     return (
       <span
@@ -233,11 +259,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
         {icon && <span className="inline-flex">{icon}</span>}
         {children}
         {closable && (
-          <button
-            type="button"
-            className="ml-0.5 inline-flex hover:opacity-70"
-            onClick={onClose}
-          >
+          <button type="button" className="ml-0.5 inline-flex hover:opacity-70" onClick={onClose}>
             <svg className="h-3 w-3" viewBox="0 0 12 12" fill="currentColor">
               <path d="M8.5 3.5L6 6l-2.5-2.5-.7.7L5.3 6 2.8 8.5l.7.7L6 6.7l2.5 2.5.7-.7L6.7 6l2.5-2.5z" />
             </svg>
@@ -330,9 +352,10 @@ const BadgeRibbon: React.FC<BadgeRibbonProps> = ({
             [placement === 'end' ? 'right' : 'left']: 0,
             borderStyle: 'solid',
             borderWidth: placement === 'end' ? '3px 0 3px 3px' : '3px 3px 3px 0',
-            borderColor: placement === 'end'
-              ? `transparent transparent transparent ${color}`
-              : `transparent ${color} transparent transparent`,
+            borderColor:
+              placement === 'end'
+                ? `transparent transparent transparent ${color}`
+                : `transparent ${color} transparent transparent`,
             filter: 'brightness(0.7)',
           }}
         />
@@ -395,16 +418,23 @@ const BadgeBase: React.FC<BadgeProps> = ({
         <span
           className={cn(
             'absolute flex items-center justify-center rounded-full text-white text-xs font-medium',
-            dot ? 'h-2 w-2 min-w-0 p-0' : size === 'small' ? 'h-4 min-w-4 px-1 text-[10px]' : 'h-5 min-w-5 px-1',
+            dot
+              ? 'h-2 w-2 min-w-0 p-0'
+              : size === 'small'
+                ? 'h-4 min-w-4 px-1 text-[10px]'
+                : 'h-5 min-w-5 px-1',
             'bg-destructive -top-1 -right-1',
             color && 'bg-[var(--badge-color)]'
           )}
           style={
             color
-              ? { '--badge-color': color, ...(offset ? { transform: `translate(${offset[0]}px, ${-offset[1]}px)` } : {}) } as any
+              ? ({
+                  '--badge-color': color,
+                  ...(offset ? { transform: `translate(${offset[0]}px, ${-offset[1]}px)` } : {}),
+                } as any)
               : offset
-              ? { transform: `translate(${offset[0]}px, ${-offset[1]}px)` }
-              : undefined
+                ? { transform: `translate(${offset[0]}px, ${-offset[1]}px)` }
+                : undefined
           }
         >
           {dot ? null : displayCount}
@@ -436,15 +466,10 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
     const px = typeof size === 'number' ? size : sizeMap[size];
     return (
       <ShadcnAvatar
-        className={cn(
-          shape === 'square' && 'rounded-md',
-          className
-        )}
+        className={cn(shape === 'square' && 'rounded-md', className)}
         style={{ width: px, height: px, ...style }}
       >
-        {typeof src === 'string' ? (
-          <AvatarImage src={src} alt={alt} />
-        ) : null}
+        {typeof src === 'string' ? <AvatarImage src={src} alt={alt} /> : null}
         <AvatarFallback
           className={cn(shape === 'square' && 'rounded-md')}
           style={{ width: px, height: px }}
@@ -543,7 +568,11 @@ const DefaultEmptyIcon = () => (
       <ellipse cx="32" cy="33" rx="32" ry="7" fill="currentColor" opacity=".05" />
       <g fillRule="nonzero" stroke="currentColor">
         <path d="M55 12.76L44.854 1.258C44.367.474 43.656 0 42.907 0H21.093c-.749 0-1.46.474-1.947 1.257L9 12.761V22h46v-9.24z" />
-        <path d="M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z" fill="currentColor" opacity=".8" />
+        <path
+          d="M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z"
+          fill="currentColor"
+          opacity=".8"
+        />
       </g>
     </g>
   </svg>
@@ -554,13 +583,14 @@ export const Empty: React.FC<EmptyProps> & {
   PRESENTED_IMAGE_SIMPLE: string;
 } = ({ image, imageStyle, description = 'No Data', className, style, children }) => (
   <div
-    className={cn('flex flex-col items-center justify-center py-10 text-muted-foreground', className)}
+    className={cn(
+      'flex flex-col items-center justify-center py-10 text-muted-foreground',
+      className
+    )}
     style={style}
   >
     <div style={imageStyle}>{image !== null && (image ?? <DefaultEmptyIcon />)}</div>
-    {description !== false && (
-      <p className="mt-3 text-sm">{description}</p>
-    )}
+    {description !== false && <p className="mt-3 text-sm">{description}</p>}
     {children && <div className="mt-3">{children}</div>}
   </div>
 );
@@ -617,7 +647,9 @@ export const Statistic: React.FC<StatisticProps> = ({
         <div className="text-2xl font-semibold text-foreground" style={valueStyle}>
           {prefix && <span className="mr-1">{prefix}</span>}
           {displayValue}
-          {suffix && <span className="ml-1 text-base font-normal text-muted-foreground">{suffix}</span>}
+          {suffix && (
+            <span className="ml-1 text-base font-normal text-muted-foreground">{suffix}</span>
+          )}
         </div>
       )}
     </div>
@@ -674,19 +706,31 @@ export const Descriptions: React.FC<DescriptionsProps> & { Item: typeof Descript
   style,
   children,
 }) => {
-  const paddingClass = size === 'small' ? 'py-1 px-2' : size === 'middle' ? 'py-2 px-3' : 'py-3 px-4';
+  const paddingClass =
+    size === 'small' ? 'py-1 px-2' : size === 'middle' ? 'py-2 px-3' : 'py-3 px-4';
 
   const renderItems = () => {
     if (items) {
       return items.map((item, i) => (
-        <div key={item.key ?? i} className={cn('flex', bordered && 'border-b border-border last:border-b-0')}>
+        <div
+          key={item.key ?? i}
+          className={cn('flex', bordered && 'border-b border-border last:border-b-0')}
+        >
           <dt
-            className={cn(paddingClass, 'font-medium text-muted-foreground text-sm w-2/5 shrink-0', bordered && 'bg-muted/50 border-r border-border')}
+            className={cn(
+              paddingClass,
+              'font-medium text-muted-foreground text-sm w-2/5 shrink-0',
+              bordered && 'bg-muted/50 border-r border-border'
+            )}
             style={{ ...labelStyle, ...item.labelStyle }}
           >
-            {item.label}{colon && item.label ? ':' : ''}
+            {item.label}
+            {colon && item.label ? ':' : ''}
           </dt>
-          <dd className={cn(paddingClass, 'text-sm flex-1')} style={{ ...contentStyle, ...item.contentStyle }}>
+          <dd
+            className={cn(paddingClass, 'text-sm flex-1')}
+            style={{ ...contentStyle, ...item.contentStyle }}
+          >
             {item.children}
           </dd>
         </div>
@@ -699,10 +743,15 @@ export const Descriptions: React.FC<DescriptionsProps> & { Item: typeof Descript
       return (
         <div className={cn('flex', bordered && 'border-b border-border last:border-b-0')}>
           <dt
-            className={cn(paddingClass, 'font-medium text-muted-foreground text-sm w-2/5 shrink-0', bordered && 'bg-muted/50 border-r border-border')}
+            className={cn(
+              paddingClass,
+              'font-medium text-muted-foreground text-sm w-2/5 shrink-0',
+              bordered && 'bg-muted/50 border-r border-border'
+            )}
             style={{ ...labelStyle, ...lStyle }}
           >
-            {label}{colon && label ? ':' : ''}
+            {label}
+            {colon && label ? ':' : ''}
           </dt>
           <dd className={cn(paddingClass, 'text-sm flex-1')} style={{ ...contentStyle, ...cStyle }}>
             {content}
@@ -722,7 +771,13 @@ export const Descriptions: React.FC<DescriptionsProps> & { Item: typeof Descript
       style={style}
     >
       {(title || extra) && (
-        <div className={cn('flex items-center justify-between', paddingClass, bordered && 'border-b border-border')}>
+        <div
+          className={cn(
+            'flex items-center justify-between',
+            paddingClass,
+            bordered && 'border-b border-border'
+          )}
+        >
           {title && <span className="font-semibold text-base">{title}</span>}
           {extra && <span>{extra}</span>}
         </div>
@@ -746,7 +801,9 @@ const ListItemMeta: React.FC<ListItemMetaProps> = ({ avatar, title, description,
     {avatar && <div className="shrink-0">{avatar}</div>}
     <div className="min-w-0 flex-1">
       {title && <div className="font-medium text-sm leading-none mb-0.5">{title}</div>}
-      {description && <div className="text-xs text-muted-foreground leading-snug">{description}</div>}
+      {description && (
+        <div className="text-xs text-muted-foreground leading-snug">{description}</div>
+      )}
     </div>
   </div>
 );
@@ -761,7 +818,10 @@ const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
   ({ actions, extra, children, className, ...rest }, ref) => (
     <li
       ref={ref}
-      className={cn('flex items-start justify-between py-3 border-b border-border last:border-b-0', className)}
+      className={cn(
+        'flex items-start justify-between py-3 border-b border-border last:border-b-0',
+        className
+      )}
       {...rest}
     >
       <div className="flex-1 min-w-0">{children}</div>
@@ -815,7 +875,11 @@ export const List = Object.assign(
 
     return (
       <div
-        className={cn('text-foreground', bordered && 'border border-border rounded-md overflow-hidden', className)}
+        className={cn(
+          'text-foreground',
+          bordered && 'border border-border rounded-md overflow-hidden',
+          className
+        )}
         style={style}
       >
         {header && (
@@ -824,8 +888,10 @@ export const List = Object.assign(
           </div>
         )}
         {loading ? (
-          <div className="flex justify-center py-8"><SpinnerSVG /></div>
-        ) : (dataSource?.length === 0 || (children === undefined && !dataSource?.length)) ? (
+          <div className="flex justify-center py-8">
+            <SpinnerSVG />
+          </div>
+        ) : dataSource?.length === 0 || (children === undefined && !dataSource?.length) ? (
           <Empty description={locale?.emptyText ?? 'No Data'} />
         ) : (
           <ul className={cn('divide-y-0', !split && 'space-y-0', bordered && 'px-4')}>
@@ -833,25 +899,93 @@ export const List = Object.assign(
           </ul>
         )}
         {footer && (
-          <div className={cn('px-4 py-3', bordered && 'border-t border-border')}>
-            {footer}
-          </div>
+          <div className={cn('px-4 py-3', bordered && 'border-t border-border')}>{footer}</div>
         )}
       </div>
     );
   },
   { Item: ListItem }
-) as unknown as (<T>(props: ListProps<T>) => JSX.Element) & { Item: typeof ListItem & { Meta: typeof ListItemMeta } };
+) as unknown as (<T>(props: ListProps<T>) => JSX.Element) & {
+  Item: typeof ListItem & { Meta: typeof ListItemMeta };
+};
 
 // ── Result ────────────────────────────────────────────────────────────────────
 const RESULT_ICON: Record<string, { icon: React.ReactNode; color: string }> = {
-  success: { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#f6ffed"/><path d="M22 36l10 10 18-20" stroke="#52c41a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-green-600' },
-  error: { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#fff2f0"/><path d="M24 24l24 24M48 24L24 48" stroke="#ff4d4f" strokeWidth="4" strokeLinecap="round"/></svg>, color: 'text-destructive' },
-  warning: { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#fffbe6"/><path d="M36 22v18M36 48v2" stroke="#faad14" strokeWidth="4" strokeLinecap="round"/></svg>, color: 'text-yellow-600' },
-  info: { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#e6f4ff"/><path d="M36 32v16M36 24v2" stroke="#1677ff" strokeWidth="4" strokeLinecap="round"/></svg>, color: 'text-blue-600' },
-  '404': { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#f0f2f5"/><text x="36" y="42" textAnchor="middle" fill="#8c8c8c" fontSize="18" fontWeight="bold">404</text></svg>, color: 'text-muted-foreground' },
-  '403': { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#f0f2f5"/><text x="36" y="42" textAnchor="middle" fill="#8c8c8c" fontSize="18" fontWeight="bold">403</text></svg>, color: 'text-muted-foreground' },
-  '500': { icon: <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16"><circle cx="36" cy="36" r="36" fill="#f0f2f5"/><text x="36" y="42" textAnchor="middle" fill="#8c8c8c" fontSize="18" fontWeight="bold">500</text></svg>, color: 'text-muted-foreground' },
+  success: {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#f6ffed" />
+        <path
+          d="M22 36l10 10 18-20"
+          stroke="#52c41a"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    color: 'text-green-600',
+  },
+  error: {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#fff2f0" />
+        <path d="M24 24l24 24M48 24L24 48" stroke="#ff4d4f" strokeWidth="4" strokeLinecap="round" />
+      </svg>
+    ),
+    color: 'text-destructive',
+  },
+  warning: {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#fffbe6" />
+        <path d="M36 22v18M36 48v2" stroke="#faad14" strokeWidth="4" strokeLinecap="round" />
+      </svg>
+    ),
+    color: 'text-yellow-600',
+  },
+  info: {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#e6f4ff" />
+        <path d="M36 32v16M36 24v2" stroke="#1677ff" strokeWidth="4" strokeLinecap="round" />
+      </svg>
+    ),
+    color: 'text-blue-600',
+  },
+  '404': {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#f0f2f5" />
+        <text x="36" y="42" textAnchor="middle" fill="#8c8c8c" fontSize="18" fontWeight="bold">
+          404
+        </text>
+      </svg>
+    ),
+    color: 'text-muted-foreground',
+  },
+  '403': {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#f0f2f5" />
+        <text x="36" y="42" textAnchor="middle" fill="#8c8c8c" fontSize="18" fontWeight="bold">
+          403
+        </text>
+      </svg>
+    ),
+    color: 'text-muted-foreground',
+  },
+  '500': {
+    icon: (
+      <svg viewBox="0 0 72 72" fill="none" className="w-16 h-16">
+        <circle cx="36" cy="36" r="36" fill="#f0f2f5" />
+        <text x="36" y="42" textAnchor="middle" fill="#8c8c8c" fontSize="18" fontWeight="bold">
+          500
+        </text>
+      </svg>
+    ),
+    color: 'text-muted-foreground',
+  },
 };
 
 export interface ResultProps {
@@ -942,7 +1076,10 @@ export const Rate: React.FC<RateProps> = ({
           >
             {character ?? (
               <Star
-                className={cn('h-4 w-4', filled ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground')}
+                className={cn(
+                  'h-4 w-4',
+                  filled ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'
+                )}
               />
             )}
           </span>

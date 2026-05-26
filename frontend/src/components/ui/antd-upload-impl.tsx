@@ -3,10 +3,10 @@
  * Upload & Upload.Dragger built with react-dropzone.
  * Mimics antd Upload's fileList / onChange / beforeUpload / action API.
  */
+import { cn } from '@/lib/utils';
+import { AlertCircle, CheckCircle, Loader2, Upload as UploadIcon, X } from 'lucide-react';
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload as UploadIcon, X, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 // ── File type ─────────────────────────────────────────────────────────────────
 export interface UploadFile {
@@ -53,7 +53,7 @@ async function doUpload(
   headers: Record<string, string>,
   name: string,
   data: Record<string, any> | ((file: UploadFile) => Record<string, any>),
-  onProgress: (percent: number) => void,
+  onProgress: (percent: number) => void
 ): Promise<any> {
   const formData = new FormData();
   const extraData = typeof data === 'function' ? data(uf) : data;
@@ -69,8 +69,11 @@ async function doUpload(
     };
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        try { resolve(JSON.parse(xhr.responseText)); }
-        catch { resolve(xhr.responseText); }
+        try {
+          resolve(JSON.parse(xhr.responseText));
+        } catch {
+          resolve(xhr.responseText);
+        }
       } else {
         reject(new Error(xhr.statusText));
       }
@@ -95,7 +98,10 @@ export interface UploadProps {
   maxCount?: number;
   listType?: 'text' | 'picture' | 'picture-card' | 'picture-circle';
   showUploadList?: boolean | { showPreviewIcon?: boolean; showRemoveIcon?: boolean };
-  beforeUpload?: (file: File, fileList: File[]) => boolean | Promise<boolean | File | Blob> | 'LIST_IGNORE';
+  beforeUpload?: (
+    file: File,
+    fileList: File[]
+  ) => boolean | Promise<boolean | File | Blob> | 'LIST_IGNORE';
   onChange?: (info: UploadChangeInfo) => void;
   onRemove?: (file: UploadFile) => boolean | void | Promise<boolean | void>;
   onPreview?: (file: UploadFile) => void;
@@ -156,8 +162,7 @@ const UploadBase: React.FC<UploadProps> = ({
 
     if (!action) return;
 
-    const resolvedAction =
-      typeof action === 'function' ? await action(uf) : action;
+    const resolvedAction = typeof action === 'function' ? await action(uf) : action;
 
     if (customRequest) {
       customRequest({
@@ -166,14 +171,12 @@ const UploadBase: React.FC<UploadProps> = ({
         headers,
         data,
         onProgress: ({ percent }: { percent: number }) => {
-          const updated = files.map((f) =>
-            f.uid === uf.uid ? { ...f, percent } : f,
-          );
+          const updated = files.map((f) => (f.uid === uf.uid ? { ...f, percent } : f));
           updateFiles(updated);
         },
         onSuccess: (response: any) => {
           const updated = files.map((f) =>
-            f.uid === uf.uid ? { ...f, status: 'done' as const, response, percent: 100 } : f,
+            f.uid === uf.uid ? { ...f, status: 'done' as const, response, percent: 100 } : f
           );
           const done = { ...uf, status: 'done' as const, response, percent: 100 };
           updateFiles(updated);
@@ -181,7 +184,7 @@ const UploadBase: React.FC<UploadProps> = ({
         },
         onError: (err: Error) => {
           const updated = files.map((f) =>
-            f.uid === uf.uid ? { ...f, status: 'error' as const, error: err } : f,
+            f.uid === uf.uid ? { ...f, status: 'error' as const, error: err } : f
           );
           const errFile = { ...uf, status: 'error' as const, error: err };
           updateFiles(updated);
@@ -192,19 +195,10 @@ const UploadBase: React.FC<UploadProps> = ({
     }
 
     try {
-      const response = await doUpload(
-        uf,
-        resolvedAction,
-        headers,
-        fieldName,
-        data,
-        (percent) => {
-          const updated = files.map((f) =>
-            f.uid === uf.uid ? { ...f, percent } : f,
-          );
-          updateFiles(updated);
-        },
-      );
+      const response = await doUpload(uf, resolvedAction, headers, fieldName, data, (percent) => {
+        const updated = files.map((f) => (f.uid === uf.uid ? { ...f, percent } : f));
+        updateFiles(updated);
+      });
       const done = { ...uf, status: 'done' as const, response, percent: 100 };
       const updated = files.map((f) => (f.uid === uf.uid ? done : f));
       updateFiles(updated);
@@ -260,9 +254,7 @@ const UploadBase: React.FC<UploadProps> = ({
                 {f.status === 'uploading' && (
                   <Loader2 className="h-4 w-4 animate-spin text-primary shrink-0" />
                 )}
-                {f.status === 'done' && (
-                  <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-                )}
+                {f.status === 'done' && <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />}
                 {f.status === 'error' && (
                   <AlertCircle className="h-4 w-4 text-destructive shrink-0" />
                 )}
@@ -270,7 +262,7 @@ const UploadBase: React.FC<UploadProps> = ({
                   className={cn(
                     'flex-1 truncate',
                     f.status === 'error' && 'text-destructive',
-                    f.url && 'text-primary cursor-pointer hover:underline',
+                    f.url && 'text-primary cursor-pointer hover:underline'
                   )}
                   onClick={() => f.url && onPreview?.(f)}
                 >
@@ -279,7 +271,8 @@ const UploadBase: React.FC<UploadProps> = ({
                 {f.status === 'uploading' && f.percent !== undefined && (
                   <span className="text-xs text-muted-foreground shrink-0">{f.percent}%</span>
                 )}
-                {(typeof showUploadList !== 'object' || showUploadList.showRemoveIcon !== false) && (
+                {(typeof showUploadList !== 'object' ||
+                  showUploadList.showRemoveIcon !== false) && (
                   <button
                     type="button"
                     className="text-muted-foreground hover:text-destructive transition-colors shrink-0"
@@ -345,16 +338,20 @@ const Dragger: React.FC<UploadProps & { height?: number }> = ({
     const resolvedAction = typeof action === 'function' ? await action(uf) : action;
 
     if (customRequest) {
-      customRequest({ action: resolvedAction, file, headers, data,
+      customRequest({
+        action: resolvedAction,
+        file,
+        headers,
+        data,
         onSuccess: (response: any) => {
           const done = { ...uf, status: 'done' as const, response, percent: 100 };
-          const updated = files.map((f) => f.uid === uf.uid ? done : f);
+          const updated = files.map((f) => (f.uid === uf.uid ? done : f));
           updateFiles(updated);
           onChange?.({ file: done, fileList: updated });
         },
         onError: (err: Error) => {
           const errFile = { ...uf, status: 'error' as const, error: err };
-          const updated = files.map((f) => f.uid === uf.uid ? errFile : f);
+          const updated = files.map((f) => (f.uid === uf.uid ? errFile : f));
           updateFiles(updated);
           onChange?.({ file: errFile, fileList: updated });
         },
@@ -394,7 +391,7 @@ const Dragger: React.FC<UploadProps & { height?: number }> = ({
           'border-border bg-muted/20 cursor-pointer transition-colors',
           'hover:border-primary hover:bg-primary/5',
           isDragActive && 'border-primary bg-primary/10',
-          disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+          disabled && 'opacity-50 cursor-not-allowed pointer-events-none'
         )}
         style={{ height }}
       >
@@ -413,18 +410,31 @@ const Dragger: React.FC<UploadProps & { height?: number }> = ({
           {files
             .filter((f) => f.status !== 'removed')
             .map((f) => (
-              <li key={f.uid} className="flex items-center gap-2 text-sm px-2 py-1 rounded border border-border bg-muted/30">
-                {f.status === 'uploading' && <Loader2 className="h-4 w-4 animate-spin text-primary shrink-0" />}
+              <li
+                key={f.uid}
+                className="flex items-center gap-2 text-sm px-2 py-1 rounded border border-border bg-muted/30"
+              >
+                {f.status === 'uploading' && (
+                  <Loader2 className="h-4 w-4 animate-spin text-primary shrink-0" />
+                )}
                 {f.status === 'done' && <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />}
-                {f.status === 'error' && <AlertCircle className="h-4 w-4 text-destructive shrink-0" />}
+                {f.status === 'error' && (
+                  <AlertCircle className="h-4 w-4 text-destructive shrink-0" />
+                )}
                 <span className="flex-1 truncate">{f.name}</span>
-                <button type="button" className="text-muted-foreground hover:text-destructive shrink-0"
-                  onClick={(e) => { e.stopPropagation();
-                    if (onRemove) { void onRemove(f); }
+                <button
+                  type="button"
+                  className="text-muted-foreground hover:text-destructive shrink-0"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onRemove) {
+                      void onRemove(f);
+                    }
                     const next = files.filter((x) => x.uid !== f.uid);
                     updateFiles(next);
                     onChange?.({ file: { ...f, status: 'removed' }, fileList: next });
-                  }}>
+                  }}
+                >
                   <X className="h-3.5 w-3.5" />
                 </button>
               </li>

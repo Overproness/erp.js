@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { Eye, EyeOff, Search, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Input as ShadcnInput } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { Eye, EyeOff, Search, X } from 'lucide-react';
+import * as React from 'react';
 
 // ── shared size mapping ──────────────────────────────────────────────────────
 function inputSizeClass(size?: 'large' | 'middle' | 'small') {
@@ -89,10 +89,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
     if (!hasWrapper) return inputEl;
 
     return (
-      <span
-        className={cn('inline-flex w-full items-stretch', className)}
-        style={style}
-      >
+      <span className={cn('inline-flex w-full items-stretch', className)} style={style}>
         {addonBefore && (
           <span className="inline-flex items-center rounded-l-md border border-r-0 border-input bg-muted px-3 text-sm text-muted-foreground">
             {addonBefore}
@@ -157,14 +154,30 @@ interface PasswordProps extends Omit<InputProps, 'suffix' | 'type'> {
 }
 
 const Password = React.forwardRef<HTMLInputElement, PasswordProps>(
-  ({ visibilityToggle = true, iconRender, className, size, status, bordered = true, prefix, addonBefore, addonAfter, ...rest }, ref) => {
+  (
+    {
+      visibilityToggle = true,
+      iconRender,
+      className,
+      size,
+      status,
+      bordered = true,
+      prefix,
+      addonBefore,
+      addonAfter,
+      ...rest
+    },
+    ref
+  ) => {
     const [visible, setVisible] = React.useState(false);
 
-    const toggle = iconRender
-      ? iconRender(visible)
-      : visible
-      ? <EyeOff className="h-4 w-4 cursor-pointer" onClick={() => setVisible(false)} />
-      : <Eye className="h-4 w-4 cursor-pointer" onClick={() => setVisible(true)} />;
+    const toggle = iconRender ? (
+      iconRender(visible)
+    ) : visible ? (
+      <EyeOff className="h-4 w-4 cursor-pointer" onClick={() => setVisible(false)} />
+    ) : (
+      <Eye className="h-4 w-4 cursor-pointer" onClick={() => setVisible(true)} />
+    );
 
     return (
       <InputBase
@@ -187,7 +200,10 @@ Password.displayName = 'Input.Password';
 
 // ── Input.Search ─────────────────────────────────────────────────────────────
 interface SearchProps extends Omit<InputProps, 'suffix'> {
-  onSearch?: (value: string, e?: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => void;
+  onSearch?: (
+    value: string,
+    e?: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>
+  ) => void;
   enterButton?: boolean | React.ReactNode;
   loading?: boolean;
 }
@@ -234,7 +250,20 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
 
 const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ size, allowClear, showCount, status, bordered = true, autoSize, className, rows = 4, ...rest }, ref) => {
+  (
+    {
+      size,
+      allowClear,
+      showCount,
+      status,
+      bordered = true,
+      autoSize,
+      className,
+      rows = 4,
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <Textarea
         ref={ref}

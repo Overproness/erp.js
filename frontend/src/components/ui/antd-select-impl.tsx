@@ -3,10 +3,10 @@
  * Select & AutoComplete built with @radix-ui/react-popover + custom searchable list.
  * Supports: options prop, Select.Option children, showSearch, mode="multiple", allowClear, loading.
  */
-import * as React from 'react';
+import { cn } from '@/lib/utils';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { Check, ChevronDown, Loader2, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 // ── Option type ───────────────────────────────────────────────────────────────
 export interface SelectOptionType {
@@ -123,13 +123,13 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
       dropdownStyle,
       id,
     },
-    ref,
+    ref
   ) => {
     const isMultiple = mode === 'multiple' || mode === 'tags';
     const isControlled = value !== undefined;
 
     const [internalValue, setInternalValue] = React.useState<any>(
-      defaultValue ?? (isMultiple ? [] : undefined),
+      defaultValue ?? (isMultiple ? [] : undefined)
     );
     const [open, setOpen] = React.useState(defaultOpen ?? false);
     const [search, setSearch] = React.useState('');
@@ -139,7 +139,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
 
     // Collect options
     const resolvedOptions: SelectOptionType[] = React.useMemo(() => {
-      if (optionsProp) return optionsProp.flatMap((o) => o.options ? o.options : [o]);
+      if (optionsProp) return optionsProp.flatMap((o) => (o.options ? o.options : [o]));
       if (children) return collectOptions(children);
       return [];
     }, [optionsProp, children]);
@@ -153,7 +153,9 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
       }
       const q = search.toLowerCase();
       return resolvedOptions.filter((o) =>
-        String(o.label ?? o.value ?? '').toLowerCase().includes(q),
+        String(o.label ?? o.value ?? '')
+          .toLowerCase()
+          .includes(q)
       );
     }, [resolvedOptions, search, filterOption]);
 
@@ -208,9 +210,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
         ? Array.isArray(currentValue) && currentValue.includes(optValue)
         : currentValue === optValue;
 
-    const selectedOpt = !isMultiple
-      ? resolvedOptions.find((o) => o.value === currentValue)
-      : null;
+    const selectedOpt = !isMultiple ? resolvedOptions.find((o) => o.value === currentValue) : null;
 
     const hasValue = isMultiple
       ? Array.isArray(currentValue) && currentValue.length > 0
@@ -243,7 +243,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
               heightClass,
               status === 'error' && 'border-destructive focus:ring-destructive',
               status === 'warning' && 'border-yellow-400',
-              className,
+              className
             )}
             style={style}
           >
@@ -304,7 +304,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
               'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-              dropdownClassName,
+              dropdownClassName
             )}
             style={dropdownStyle}
             align="start"
@@ -346,7 +346,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
                         'flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer select-none',
                         'hover:bg-accent hover:text-accent-foreground transition-colors',
                         selected && 'bg-accent/50 font-medium',
-                        opt.disabled && 'opacity-50 pointer-events-none',
+                        opt.disabled && 'opacity-50 pointer-events-none'
                       )}
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => !opt.disabled && handleSelect(opt.value)}
@@ -355,7 +355,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
                         <span
                           className={cn(
                             'flex h-4 w-4 shrink-0 items-center justify-center rounded border border-primary',
-                            selected ? 'bg-primary' : 'bg-background',
+                            selected ? 'bg-primary' : 'bg-background'
                           )}
                         >
                           {selected && <Check className="h-3 w-3 text-primary-foreground" />}
@@ -363,10 +363,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
                       )}
                       {!isMultiple && (
                         <Check
-                          className={cn(
-                            'h-4 w-4 shrink-0',
-                            selected ? 'opacity-100' : 'opacity-0',
-                          )}
+                          className={cn('h-4 w-4 shrink-0', selected ? 'opacity-100' : 'opacity-0')}
                         />
                       )}
                       <span className="flex-1 truncate">{opt.label ?? opt.value}</span>
@@ -379,7 +376,7 @@ const SelectComponent = React.forwardRef<HTMLButtonElement, SelectProps>(
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
     );
-  },
+  }
 );
 SelectComponent.displayName = 'Select';
 
@@ -448,7 +445,7 @@ export const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps
       status,
       id,
     },
-    ref,
+    ref
   ) => {
     const isControlled = value !== undefined;
     const [internal, setInternal] = React.useState(defaultValue ?? '');
@@ -464,7 +461,9 @@ export const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps
         return options.filter((o) => filterOption(current, o));
       }
       return options.filter((o) =>
-        String(o.value ?? '').toLowerCase().includes(current.toLowerCase()),
+        String(o.value ?? '')
+          .toLowerCase()
+          .includes(current.toLowerCase())
       );
     }, [options, current, filterOption]);
 
@@ -478,7 +477,10 @@ export const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps
     const handleSelect = (v: string) => {
       if (!isControlled) setInternal(v);
       onChange?.(v);
-      onSelect?.(v, options.find((o) => o.value === v));
+      onSelect?.(
+        v,
+        options.find((o) => o.value === v)
+      );
       setOpen(false);
     };
 
@@ -503,7 +505,7 @@ export const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps
             'ring-offset-background placeholder:text-muted-foreground',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
             'disabled:cursor-not-allowed disabled:opacity-50',
-            status === 'error' && 'border-destructive',
+            status === 'error' && 'border-destructive'
           )}
         />
         {allowClear && current && !disabled && (
@@ -521,7 +523,7 @@ export const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps
             className={cn(
               'absolute z-50 mt-1 w-full rounded-[var(--radius)] border border-border bg-popover shadow-md',
               'max-h-56 overflow-y-auto p-1',
-              dropdownClassName,
+              dropdownClassName
             )}
           >
             {filteredOpts.map((opt) => (
@@ -543,6 +545,6 @@ export const AutoComplete = React.forwardRef<HTMLInputElement, AutoCompleteProps
         )}
       </div>
     );
-  },
+  }
 );
 AutoComplete.displayName = 'AutoComplete';

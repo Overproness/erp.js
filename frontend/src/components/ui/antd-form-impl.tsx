@@ -3,24 +3,12 @@
  * Form built on rc-field-form (the exact library antd uses internally).
  * API is 100% compatible with antd Form — no existing form files need changes.
  */
+import RcForm, { Field, FieldContext, List, useForm, useWatch } from 'rc-field-form';
+import type { FieldData, FormInstance, NamePath, Rule, Store } from 'rc-field-form/lib/interface';
 import * as React from 'react';
-import RcForm, {
-  Field,
-  FieldContext,
-  List,
-  useForm,
-  useWatch,
-} from 'rc-field-form';
-import type {
-  FormInstance,
-  NamePath,
-  Rule,
-  FieldData,
-  Store,
-} from 'rc-field-form/lib/interface';
 
-import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 /** useFormInstance – returns the nearest parent Form's instance (rc-field-form v2 compat) */
 function useFormInstance<Values = unknown>(): FormInstance<Values> {
@@ -126,10 +114,7 @@ const FormItem: React.FC<FormItemProps> = ({
   if (messageVariables) fieldProps.messageVariables = messageVariables;
   if (normalize) fieldProps.normalize = normalize;
 
-  const renderWrapper = (
-    childNode: React.ReactNode,
-    errors: string[],
-  ) => {
+  const renderWrapper = (childNode: React.ReactNode, errors: string[]) => {
     const hasError = errors.length > 0 || validateStatusProp === 'error';
     if (noStyle) return childNode;
 
@@ -138,7 +123,7 @@ const FormItem: React.FC<FormItemProps> = ({
         className={cn(
           layout === 'inline' ? 'inline-flex flex-col mr-4 mb-2' : 'mb-4',
           hidden && 'hidden',
-          className,
+          className
         )}
         style={style}
       >
@@ -147,19 +132,19 @@ const FormItem: React.FC<FormItemProps> = ({
             className={cn(
               'block mb-1.5 text-sm font-medium leading-none',
               layout === 'horizontal' && 'inline-block pt-2',
-              hasError && 'text-destructive',
+              hasError && 'text-destructive'
             )}
           >
-            {isRequired && (
-              <span className="text-destructive mr-1">*</span>
-            )}
+            {isRequired && <span className="text-destructive mr-1">*</span>}
             {label}
             {showColon && label && ':'}
             {tooltip && (
               <span
                 className="ml-1 inline-flex h-4 w-4 items-center justify-center rounded-full border border-border text-xs cursor-help text-muted-foreground"
                 title={typeof tooltip === 'string' ? tooltip : undefined}
-              >?</span>
+              >
+                ?
+              </span>
             )}
           </Label>
         )}
@@ -169,7 +154,7 @@ const FormItem: React.FC<FormItemProps> = ({
             <p
               className={cn(
                 'text-xs mt-1',
-                hasError ? 'text-destructive' : 'text-muted-foreground',
+                hasError ? 'text-destructive' : 'text-muted-foreground'
               )}
             >
               {hasError ? errors[0] : help}
@@ -210,7 +195,9 @@ const FormItem: React.FC<FormItemProps> = ({
 const FormErrorList: React.FC<{ errors: string[] }> = ({ errors }) => (
   <ul className="list-none p-0 m-0">
     {errors.map((e, i) => (
-      <li key={i} className="text-destructive text-xs">{e}</li>
+      <li key={i} className="text-destructive text-xs">
+        {e}
+      </li>
     ))}
   </ul>
 );
@@ -257,23 +244,20 @@ const FormComponent = React.forwardRef<FormInstance, FormProps>(
       component,
       ...rcProps
     },
-    ref,
+    ref
   ) => (
     <FormCtx.Provider value={{ layout, labelCol, wrapperCol, colon, disabled }}>
       <RcForm
         ref={ref}
         component={component}
-        className={cn(
-          layout === 'inline' && 'flex flex-wrap items-end gap-x-2',
-          className,
-        )}
+        className={cn(layout === 'inline' && 'flex flex-wrap items-end gap-x-2', className)}
         style={style}
         {...rcProps}
       >
         {children}
       </RcForm>
     </FormCtx.Provider>
-  ),
+  )
 );
 FormComponent.displayName = 'Form';
 
@@ -288,5 +272,5 @@ export const Form = Object.assign(FormComponent, {
   Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 });
 
-export type { FormInstance, NamePath, Rule, FieldData, Store };
-export { useForm, useWatch, useFormInstance };
+export { useForm, useFormInstance, useWatch };
+export type { FieldData, FormInstance, NamePath, Rule, Store };

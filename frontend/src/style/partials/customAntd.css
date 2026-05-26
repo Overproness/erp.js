@@ -307,8 +307,8 @@ body {
 
 .erp-app {
   /* antd global token bridge */
-  --ant-color-primary: oklch(0.6231 0.1880 259.8145);
-  --ant-color-primary-hover: oklch(0.6800 0.1600 259.8145);
+  --ant-color-primary: oklch(0.6231 0.188 259.8145);
+  --ant-color-primary-hover: oklch(0.68 0.16 259.8145);
   --ant-color-border: hsl(var(--border));
   --ant-border-radius: var(--radius);
   --ant-border-radius-lg: calc(var(--radius) * 1.5);
@@ -366,7 +366,7 @@ body {
   background-color: hsl(var(--popover));
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
-  box-shadow: var(--shadow-md, 0 4px 16px rgba(0,0,0,.08));
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.08));
 }
 
 .erp-app .ant-select-item {
@@ -442,7 +442,9 @@ body {
   background: hsl(var(--muted) / 0.4) !important;
   border: 2px dashed hsl(var(--border)) !important;
   border-radius: var(--radius) !important;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .erp-app .ant-upload-drag:hover {
@@ -540,4 +542,3 @@ body {
   background-color: hsl(var(--popover));
   border-color: hsl(var(--border));
 }
-

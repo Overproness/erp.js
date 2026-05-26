@@ -1,26 +1,29 @@
-import * as React from 'react';
-import { createRoot } from 'react-dom/client';
-import { AlertCircle, CheckCircle, Info, X, XCircle, AlertTriangle } from 'lucide-react';
-import { toast } from 'react-toastify';
-import { cn } from '@/lib/utils';
+import {
+  AlertDescription,
+  Alert as ShadcnAlert,
+  AlertTitle as ShadcnAlertTitle,
+} from '@/components/ui/alert';
+import { Button } from '@/components/ui/antd-button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription } from '@/components/ui/sheet';
+import { PopoverContent, PopoverTrigger, Popover as ShadcnPopover } from '@/components/ui/popover';
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import {
   Tooltip as ShadcnTooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Popover as ShadcnPopover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Alert as ShadcnAlert, AlertDescription, AlertTitle as ShadcnAlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/antd-button';
+import { cn } from '@/lib/utils';
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X, XCircle } from 'lucide-react';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import { toast } from 'react-toastify';
 
 // ── Alert ─────────────────────────────────────────────────────────────────────
 const ALERT_ICONS: Record<string, React.ReactNode> = {
@@ -88,7 +91,10 @@ export const Alert: React.FC<AlertProps> = ({
       {closable && (
         <button
           className="absolute right-2 top-2 rounded-sm opacity-70 hover:opacity-100 transition-opacity"
-          onClick={() => { setClosed(true); onClose?.(); }}
+          onClick={() => {
+            setClosed(true);
+            onClose?.();
+          }}
           type="button"
         >
           <X className="h-4 w-4" />
@@ -180,7 +186,9 @@ export const Modal: React.FC<ModalProps> & {
         className={cn(className)}
         style={{ maxWidth: width ?? 520, ...(centered ? {} : {}), ...style }}
         onPointerDownOutside={maskClosable ? undefined : (e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => { if (!closable) e.preventDefault(); }}
+        onEscapeKeyDown={(e) => {
+          if (!closable) e.preventDefault();
+        }}
       >
         {title !== undefined && (
           <DialogHeader>
@@ -192,11 +200,7 @@ export const Modal: React.FC<ModalProps> & {
           <DialogFooter className="flex-row justify-end gap-2">
             {footer ?? (
               <>
-                <Button
-                  type="default"
-                  onClick={(e) => onCancel?.(e as any)}
-                  {...cancelButtonProps}
-                >
+                <Button type="default" onClick={(e) => onCancel?.(e as any)} {...cancelButtonProps}>
                   {cancelText}
                 </Button>
                 <Button
@@ -259,7 +263,12 @@ function openConfirmModal(props: ConfirmProps & { type?: string }) {
         const result = p.onOk();
         if (result instanceof Promise) {
           setLoading(true);
-          try { await result; } catch (_) { setLoading(false); return; }
+          try {
+            await result;
+          } catch (_) {
+            setLoading(false);
+            return;
+          }
           setLoading(false);
         }
       }
@@ -269,7 +278,10 @@ function openConfirmModal(props: ConfirmProps & { type?: string }) {
     return (
       <Modal
         open={open}
-        onCancel={() => { p.onCancel?.(); close(); }}
+        onCancel={() => {
+          p.onCancel?.();
+          close();
+        }}
         onOk={handleOk}
         confirmLoading={loading}
         okText={p.okText ?? 'OK'}
@@ -286,7 +298,14 @@ function openConfirmModal(props: ConfirmProps & { type?: string }) {
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <Button type="default" onClick={() => { p.onCancel?.(); close(); }} {...p.cancelButtonProps}>
+          <Button
+            type="default"
+            onClick={() => {
+              p.onCancel?.();
+              close();
+            }}
+            {...p.cancelButtonProps}
+          >
             {p.cancelText ?? 'Cancel'}
           </Button>
           <Button
@@ -308,7 +327,9 @@ function openConfirmModal(props: ConfirmProps & { type?: string }) {
   document.body.appendChild(container as unknown as Node);
 
   return {
-    destroy: () => { setTimeout(() => root.unmount(), 0); },
+    destroy: () => {
+      setTimeout(() => root.unmount(), 0);
+    },
     update: (newProps: ConfirmProps) => {
       resolveProps = { ...resolveProps, ...newProps };
       render(resolveProps);
@@ -323,7 +344,16 @@ Modal.warning = (props) => openConfirmModal({ ...props, type: 'warning' });
 Modal.warn = (props) => openConfirmModal({ ...props, type: 'warning' });
 Modal.error = (props) => openConfirmModal({ ...props, type: 'error' });
 Modal.destroyAll = () => {};
-Modal.useModal = () => [{ confirm: Modal.confirm, info: Modal.info, success: Modal.success, warning: Modal.warning, error: Modal.error }, null];
+Modal.useModal = () => [
+  {
+    confirm: Modal.confirm,
+    info: Modal.info,
+    success: Modal.success,
+    warning: Modal.warning,
+    error: Modal.error,
+  },
+  null,
+];
 
 // ── Drawer ────────────────────────────────────────────────────────────────────
 export interface DrawerProps {
@@ -378,7 +408,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     bottom: 'bottom',
   };
 
-  const defaultWidth = size === 'large' ? 736 : (width ?? 378);
+  const defaultWidth = size === 'large' ? 736 : width ?? 378;
 
   return (
     <Sheet open={isOpen} onOpenChange={(v) => !v && onClose?.()}>
@@ -387,7 +417,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         className={cn('flex flex-col', className)}
         style={{
           width: placement === 'left' || placement === 'right' ? defaultWidth : undefined,
-          height: placement === 'top' || placement === 'bottom' ? (height ?? 256) : undefined,
+          height: placement === 'top' || placement === 'bottom' ? height ?? 256 : undefined,
           ...style,
         }}
         onPointerDownOutside={maskClosable ? undefined : (e) => e.preventDefault()}
@@ -401,11 +431,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         <div className="flex-1 overflow-auto" style={bodyStyle}>
           {children}
         </div>
-        {footer && (
-          <SheetFooter className="border-t border-border pt-4 mt-4">
-            {footer}
-          </SheetFooter>
-        )}
+        {footer && <SheetFooter className="border-t border-border pt-4 mt-4">{footer}</SheetFooter>}
       </SheetContent>
     </Sheet>
   );
@@ -444,10 +470,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
   return (
     <TooltipProvider>
       <ShadcnTooltip>
-        <TooltipTrigger asChild><span className="inline-flex">{children}</span></TooltipTrigger>
+        <TooltipTrigger asChild>
+          <span className="inline-flex">{children}</span>
+        </TooltipTrigger>
         <TooltipContent
           className={cn(color && 'bg-[var(--tt-bg)] text-white', overlayClassName)}
-          style={{ ...(color ? { '--tt-bg': color } as any : {}), ...overlayStyle }}
+          style={{ ...(color ? ({ '--tt-bg': color } as any) : {}), ...overlayStyle }}
         >
           {title}
         </TooltipContent>
@@ -496,9 +524,13 @@ export const Popover: React.FC<PopoverProps> = ({
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
-      <PopoverTrigger asChild><span className="inline-flex">{children}</span></PopoverTrigger>
+      <PopoverTrigger asChild>
+        <span className="inline-flex">{children}</span>
+      </PopoverTrigger>
       <PopoverContent className={cn('w-auto', overlayClassName)} style={overlayStyle}>
-        {title && <div className="font-semibold text-sm mb-2 pb-2 border-b border-border">{title}</div>}
+        {title && (
+          <div className="font-semibold text-sm mb-2 pb-2 border-b border-border">{title}</div>
+        )}
         <div className="text-sm">{content}</div>
       </PopoverContent>
     </ShadcnPopover>
@@ -547,7 +579,7 @@ export const Popconfirm: React.FC<PopconfirmProps> = ({
 }) => {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const isControlled = open !== undefined || visible !== undefined;
-  const isOpen = isControlled ? (open ?? visible ?? false) : internalOpen;
+  const isOpen = isControlled ? open ?? visible ?? false : internalOpen;
 
   const setOpen = (v: boolean) => {
     if (!isControlled) setInternalOpen(v);
@@ -564,14 +596,19 @@ export const Popconfirm: React.FC<PopconfirmProps> = ({
           {icon ?? <AlertCircle className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />}
           <div className="min-w-0">
             {title && <div className="text-sm font-medium">{title}</div>}
-            {description && <div className="text-xs text-muted-foreground mt-0.5">{description}</div>}
+            {description && (
+              <div className="text-xs text-muted-foreground mt-0.5">{description}</div>
+            )}
           </div>
         </div>
         <div className="flex justify-end gap-2">
           <Button
             type="default"
             size="small"
-            onClick={(e) => { onCancel?.(e as any); setOpen(false); }}
+            onClick={(e) => {
+              onCancel?.(e as any);
+              setOpen(false);
+            }}
             {...cancelButtonProps}
           >
             {cancelText}
@@ -580,7 +617,10 @@ export const Popconfirm: React.FC<PopconfirmProps> = ({
             type={okType === 'danger' ? 'primary' : (okType as any) ?? 'primary'}
             danger={okType === 'danger'}
             size="small"
-            onClick={(e) => { onConfirm?.(e as any); setOpen(false); }}
+            onClick={(e) => {
+              onConfirm?.(e as any);
+              setOpen(false);
+            }}
             {...okButtonProps}
           >
             {okText}

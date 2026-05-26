@@ -16,78 +16,78 @@ export type { InputProps } from '@/components/ui/antd-input';
 
 // ── Display / data-display components ────────────────────────────────────────
 export {
-  Typography,
-  Tag,
-  Badge,
   Avatar,
-  Spin,
-  Empty,
-  Statistic,
+  Badge,
   Descriptions,
   DescriptionsItem,
+  Empty,
   List,
-  Result,
   Rate,
+  Result,
+  Spin,
+  Statistic,
+  Tag,
+  Typography,
 } from '@/components/ui/antd-display';
 export type {
-  TagProps,
-  BadgeProps,
   AvatarProps,
-  SpinProps,
-  EmptyProps,
-  StatisticProps,
-  DescriptionsProps,
+  BadgeProps,
   DescriptionsItemProps,
-  ListProps,
+  DescriptionsProps,
+  EmptyProps,
   ListItemProps,
-  ResultProps,
+  ListProps,
   RateProps,
+  ResultProps,
+  SpinProps,
+  StatisticProps,
+  TagProps,
 } from '@/components/ui/antd-display';
 
 // ── Layout ────────────────────────────────────────────────────────────────────
-export { Space, Row, Col, Layout, Divider, Grid } from '@/components/ui/antd-layout';
-export type { SpaceProps, RowProps, ColProps, DividerProps } from '@/components/ui/antd-layout';
+export { Col, Divider, Grid, Layout, Row, Space } from '@/components/ui/antd-layout';
+export type { ColProps, DividerProps, RowProps, SpaceProps } from '@/components/ui/antd-layout';
 
 // ── Overlay / feedback ────────────────────────────────────────────────────────
 export {
   Alert,
-  Modal,
   Drawer,
-  Tooltip,
-  Popover,
-  Popconfirm,
   message,
+  Modal,
   notification,
+  Popconfirm,
+  Popover,
+  Tooltip,
 } from '@/components/ui/antd-overlay';
 export type {
   AlertProps,
-  ModalProps,
   DrawerProps,
-  TooltipProps,
-  PopoverProps,
+  ModalProps,
   PopconfirmProps,
+  PopoverProps,
+  TooltipProps,
 } from '@/components/ui/antd-overlay';
 
 // ── Form controls / navigation ────────────────────────────────────────────────
 export {
-  Checkbox,
-  Switch,
-  Radio,
-  Progress,
-  Collapse,
-  Tabs,
-  Dropdown,
   Card,
+  Checkbox,
+  Collapse,
+  Dropdown,
+  Progress,
+  Radio,
+  Switch,
+  Tabs,
 } from '@/components/ui/antd-form';
 export type {
-  CheckboxProps,
-  SwitchProps,
-  RadioProps,
-  ProgressProps,
-  CollapseProps,
-  TabsProps,
-  DropdownProps,
   CardProps,
+  CheckboxProps,
+  CollapseProps,
+  DropdownProps,
+  ProgressProps,
+  RadioProps,
+  SwitchProps,
+  TabsProps,
 } from '@/components/ui/antd-form';
 
 // ── Form (rc-field-form based) ────────────────────────────────────────────────
@@ -97,33 +97,33 @@ export { Form } from '@/components/ui/antd-form-impl';
 export { Table } from '@/components/ui/antd-table-impl';
 
 // ── Select / AutoComplete (radix popover based) ───────────────────────────────
-export { Select, AutoComplete } from '@/components/ui/antd-select-impl';
+export { AutoComplete, Select } from '@/components/ui/antd-select-impl';
 
 // ── Date / Time pickers (shadcn calendar based) ───────────────────────────────
-export { DatePicker, TimePicker, Calendar } from '@/components/ui/antd-datepicker-impl';
+export { Calendar, DatePicker, TimePicker } from '@/components/ui/antd-datepicker-impl';
 
 // ── Upload (react-dropzone based) ─────────────────────────────────────────────
 export { Upload } from '@/components/ui/antd-upload-impl';
 
 // ── Misc (InputNumber, Menu, Steps, Slider, Timeline, Pagination, App, Config) ─
 export {
-  InputNumber,
-  Menu,
-  Steps,
-  Pagination,
-  Slider,
-  Timeline,
   App,
   ConfigProvider,
+  InputNumber,
+  Menu,
+  Pagination,
+  Slider,
+  Steps,
+  Timeline,
 } from '@/components/ui/antd-misc-impl';
 
 // ── Rarely-used stubs (TreeSelect, Transfer, Cascader, Mentions, ColorPicker) ─
 export {
-  TreeSelect,
-  Transfer,
   Cascader,
-  Mentions,
   ColorPicker,
+  Mentions,
+  Transfer,
+  TreeSelect,
 } from '@/components/ui/antd-passthrough';
 
 // ── Convenience re-exports used across the codebase ───────────────────────────

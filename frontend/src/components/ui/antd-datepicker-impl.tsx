@@ -4,14 +4,14 @@
  * (react-day-picker) + dayjs. Values in/out are dayjs objects to match
  * existing antd usage patterns.
  */
-import * as React from 'react';
-import * as PopoverPrimitive from '@radix-ui/react-popover';
-import { CalendarIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import type { DateRange } from 'react-day-picker';
 import { Calendar as ShadCalendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-import dayjs from 'dayjs';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import { CalendarIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import * as React from 'react';
+import type { DateRange } from 'react-day-picker';
 
 // ── Shared trigger button ─────────────────────────────────────────────────────
 function PickerButton({
@@ -26,8 +26,7 @@ function PickerButton({
   status?: string;
   size?: string;
 }) {
-  const h =
-    size === 'large' ? 'h-10 text-base' : size === 'small' ? 'h-7 text-xs' : 'h-9 text-sm';
+  const h = size === 'large' ? 'h-10 text-base' : size === 'small' ? 'h-7 text-xs' : 'h-9 text-sm';
   return (
     <button
       type="button"
@@ -40,7 +39,7 @@ function PickerButton({
         h,
         status === 'error' && 'border-destructive focus:ring-destructive',
         status === 'warning' && 'border-yellow-400',
-        className,
+        className
       )}
       style={style}
       {...rest}
@@ -97,13 +96,13 @@ const DatePickerBase = React.forwardRef<HTMLButtonElement, DatePickerProps>(
       id,
       renderExtraFooter,
     },
-    ref,
+    ref
   ) => {
     const displayFormat = fmt ?? 'YYYY-MM-DD';
     const isControlled = value !== undefined;
     const [internal, setInternal] = React.useState<Dayjs | null>(defaultValue ?? null);
     const [open, setOpen] = React.useState(false);
-    const current = isControlled ? (value ?? null) : internal;
+    const current = isControlled ? value ?? null : internal;
 
     const handleOpenChange = (next: boolean) => {
       if (openProp === undefined) setOpen(next);
@@ -163,7 +162,7 @@ const DatePickerBase = React.forwardRef<HTMLButtonElement, DatePickerProps>(
               'z-50 rounded-[var(--radius)] border border-border bg-popover p-0 shadow-md outline-none',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95'
             )}
             align="start"
             sideOffset={4}
@@ -184,7 +183,7 @@ const DatePickerBase = React.forwardRef<HTMLButtonElement, DatePickerProps>(
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
     );
-  },
+  }
 );
 DatePickerBase.displayName = 'DatePicker';
 
@@ -231,15 +230,15 @@ const RangePicker = React.forwardRef<HTMLButtonElement, RangePickerProps>(
       presets,
       id,
     },
-    ref,
+    ref
   ) => {
     const displayFormat = fmt ?? 'YYYY-MM-DD';
     const isControlled = value !== undefined;
     const [internal, setInternal] = React.useState<[Dayjs | null, Dayjs | null]>(
-      defaultValue ?? [null, null],
+      defaultValue ?? [null, null]
     );
     const [open, setOpen] = React.useState(false);
-    const current = isControlled ? (value ?? [null, null]) : internal;
+    const current = isControlled ? value ?? [null, null] : internal;
 
     const handleOpenChange = (next: boolean) => {
       if (openProp === undefined) setOpen(next);
@@ -318,7 +317,7 @@ const RangePicker = React.forwardRef<HTMLButtonElement, RangePickerProps>(
               'z-50 rounded-[var(--radius)] border border-border bg-popover p-0 shadow-md outline-none',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95'
             )}
             align="start"
             sideOffset={4}
@@ -331,7 +330,9 @@ const RangePicker = React.forwardRef<HTMLButtonElement, RangePickerProps>(
                       key={p.label}
                       type="button"
                       className="text-left text-sm px-2 py-1 rounded hover:bg-accent hover:text-accent-foreground transition-colors"
-                      onClick={() => handleSelect({ from: p.value[0].toDate(), to: p.value[1].toDate() })}
+                      onClick={() =>
+                        handleSelect({ from: p.value[0].toDate(), to: p.value[1].toDate() })
+                      }
                     >
                       {p.label}
                     </button>
@@ -351,7 +352,7 @@ const RangePicker = React.forwardRef<HTMLButtonElement, RangePickerProps>(
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
     );
-  },
+  }
 );
 RangePicker.displayName = 'DatePicker.RangePicker';
 
@@ -371,7 +372,11 @@ export interface TimePickerProps {
   minuteStep?: number;
   secondStep?: number;
   hideDisabledOptions?: boolean;
-  disabledTime?: (now: Dayjs) => { disabledHours?: () => number[]; disabledMinutes?: (h: number) => number[]; disabledSeconds?: (h: number, m: number) => number[] };
+  disabledTime?: (now: Dayjs) => {
+    disabledHours?: () => number[];
+    disabledMinutes?: (h: number) => number[];
+    disabledSeconds?: (h: number, m: number) => number[];
+  };
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   status?: 'error' | 'warning' | '';
@@ -416,14 +421,14 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
       showNow,
       id,
     },
-    ref,
+    ref
   ) => {
     const showSeconds = !fmt || fmt.includes('ss');
     const displayFormat = fmt ?? (use12Hours ? 'hh:mm A' : 'HH:mm:ss');
     const isControlled = value !== undefined;
     const [internal, setInternal] = React.useState<Dayjs | null>(defaultValue ?? null);
     const [open, setOpen] = React.useState(false);
-    const current = isControlled ? (value ?? null) : internal;
+    const current = isControlled ? value ?? null : internal;
 
     const [h, setH] = React.useState(current?.hour() ?? 0);
     const [m, setM] = React.useState(current?.minute() ?? 0);
@@ -476,7 +481,12 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
             style={style}
           >
             <span className="flex items-center gap-2 flex-1 min-w-0">
-              <svg className="h-4 w-4 text-muted-foreground shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="h-4 w-4 text-muted-foreground shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <circle cx="12" cy="12" r="10" strokeWidth="1.5" />
                 <path d="M12 6v6l4 2" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
@@ -508,7 +518,7 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
               'z-50 rounded-[var(--radius)] border border-border bg-popover shadow-md outline-none p-0',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95'
             )}
             align="start"
             sideOffset={4}
@@ -530,7 +540,7 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
                     className={cn(
                       'flex items-center justify-center h-8 text-sm cursor-pointer transition-colors',
                       'hover:bg-accent hover:text-accent-foreground',
-                      h === hour && 'bg-primary text-primary-foreground font-medium',
+                      h === hour && 'bg-primary text-primary-foreground font-medium'
                     )}
                     onClick={() => {
                       setH(hour);
@@ -549,7 +559,7 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
                     className={cn(
                       'flex items-center justify-center h-8 text-sm cursor-pointer transition-colors',
                       'hover:bg-accent hover:text-accent-foreground',
-                      m === min && 'bg-primary text-primary-foreground font-medium',
+                      m === min && 'bg-primary text-primary-foreground font-medium'
                     )}
                     onClick={() => {
                       setM(min);
@@ -569,7 +579,7 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
                       className={cn(
                         'flex items-center justify-center h-8 text-sm cursor-pointer transition-colors',
                         'hover:bg-accent hover:text-accent-foreground',
-                        s === sec && 'bg-primary text-primary-foreground font-medium',
+                        s === sec && 'bg-primary text-primary-foreground font-medium'
                       )}
                       onClick={() => {
                         setS(sec);
@@ -590,7 +600,7 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
                       className={cn(
                         'flex flex-1 items-center justify-center text-sm cursor-pointer transition-colors',
                         'hover:bg-accent hover:text-accent-foreground',
-                        ampm === period && 'bg-primary text-primary-foreground font-medium',
+                        ampm === period && 'bg-primary text-primary-foreground font-medium'
                       )}
                       onClick={() => {
                         setAmpm(period);
@@ -625,7 +635,7 @@ export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
     );
-  },
+  }
 );
 TimePicker.displayName = 'TimePicker';
 
@@ -641,7 +651,12 @@ export interface CalendarProps {
   disabledDate?: (current: Dayjs) => boolean;
   dateFullCellRender?: (date: Dayjs) => React.ReactNode;
   dateCellRender?: (date: Dayjs) => React.ReactNode;
-  headerRender?: (props: { value: Dayjs; type: string; onChange: (v: Dayjs) => void; onTypeChange: (t: string) => void }) => React.ReactNode;
+  headerRender?: (props: {
+    value: Dayjs;
+    type: string;
+    onChange: (v: Dayjs) => void;
+    onTypeChange: (t: string) => void;
+  }) => React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -707,7 +722,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           onClick={() => setViewMode('month')}
           className={cn(
             'px-2 py-1 text-xs rounded transition-colors',
-            viewMode === 'month' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent',
+            viewMode === 'month' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'
           )}
         >
           Month
@@ -717,7 +732,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           onClick={() => setViewMode('year')}
           className={cn(
             'px-2 py-1 text-xs rounded transition-colors',
-            viewMode === 'year' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent',
+            viewMode === 'year' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'
           )}
         >
           Year
@@ -731,7 +746,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       className={cn(
         'bg-card rounded-[var(--radius)] border border-border overflow-hidden',
         fullscreen && 'w-full',
-        className,
+        className
       )}
       style={style}
     >
@@ -755,7 +770,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             row: 'flex w-full mt-1',
             cell: cn(
               'flex-1 text-center text-sm relative p-0',
-              dateCellRender || dateFullCellRender ? '[&>button]:h-auto [&>button]:min-h-16' : '',
+              dateCellRender || dateFullCellRender ? '[&>button]:h-auto [&>button]:min-h-16' : ''
             ),
             day: 'h-9 w-full rounded-[var(--radius)] hover:bg-accent hover:text-accent-foreground transition-colors font-normal',
             day_selected: 'bg-primary text-primary-foreground hover:bg-primary',
