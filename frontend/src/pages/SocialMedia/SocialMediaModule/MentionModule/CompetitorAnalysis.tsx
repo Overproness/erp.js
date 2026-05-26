@@ -23,7 +23,7 @@ import {
   Statistic,
   Table,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import {
   BarElement,
   CategoryScale,

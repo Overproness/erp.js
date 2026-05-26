@@ -12,7 +12,7 @@ import {
   Space,
   Typography,
   Alert
-} from 'antd';
+} from '@/components/ui';
 import { 
   LockOutlined, 
   ClockCircleOutlined, 

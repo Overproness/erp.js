@@ -8,7 +8,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Row, Spin, Statistic, Typography } from 'antd';
+import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TeamDataTableModule } from './TeamModule/TeamDataTableModule';

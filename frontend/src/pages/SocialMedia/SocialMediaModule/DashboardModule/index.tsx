@@ -13,7 +13,7 @@ import {
   TwitterOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Progress, Row, Space, Statistic, Table, Typography } from 'antd';
+import { Button, Card, Col, Progress, Row, Space, Statistic, Table, Typography } from '@/components/ui';
 import {
   ArcElement,
   CategoryScale,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import useLanguage from '@/locale/useLanguage';
-import { Col, Row, Spin } from 'antd';
+import { Col, Row, Spin } from '@/components/ui';
 
 import { useMoney } from '@/settings';
 

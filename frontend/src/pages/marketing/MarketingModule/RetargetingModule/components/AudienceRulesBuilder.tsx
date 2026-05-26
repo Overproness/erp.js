@@ -10,7 +10,7 @@ import {
   Card,
   Tag,
   Typography
-} from 'antd';
+} from '@/components/ui';
 import { PlusOutlined, DeleteOutlined, FilterOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

@@ -8,7 +8,7 @@ import {
   ReloadOutlined,
   TwitterOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Modal, Row, Space, Tag, Typography } from 'antd';
+import { Button, Card, Col, Modal, Row, Space, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;

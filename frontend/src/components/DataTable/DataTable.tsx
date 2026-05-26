@@ -9,7 +9,7 @@ import {
   RedoOutlined,
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Dropdown, Input, Table } from 'antd';
+import { Button, Dropdown, Input, Table } from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';

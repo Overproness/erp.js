@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import useDebounce from '@/hooks/useDebounce';
 
-import { Select, Empty } from 'antd';
+import { Select, Empty } from '@/components/ui';
 
 import { SearchOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';

@@ -1,6 +1,6 @@
 // This file is no longer needed - using CreateUrlModule components instead
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Row, Col, Alert, Typography, Space, Tag, Tooltip } from 'antd';
+import { Form, Input, Button, Card, Row, Col, Alert, Typography, Space, Tag, Tooltip } from '@/components/ui';
 import { LinkOutlined, CheckCircleOutlined, ExclamationCircleOutlined, EditOutlined, HistoryOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import { validateUrl } from '@/utils/helpers';

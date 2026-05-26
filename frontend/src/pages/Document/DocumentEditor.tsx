@@ -22,7 +22,7 @@ import {
   Tabs,
   Typography,
   message,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 

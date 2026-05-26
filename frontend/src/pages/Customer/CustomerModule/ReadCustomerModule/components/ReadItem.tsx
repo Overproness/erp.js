@@ -59,7 +59,7 @@ import {
   Timeline,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';
 import { useDispatch, useSelector } from 'react-redux';

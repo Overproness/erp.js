@@ -14,7 +14,7 @@ import {
   message,
   Timeline,
   Tooltip
-} from 'antd';
+} from '@/components/ui';
 import {
   ArrowLeftOutlined,
   HeartOutlined,

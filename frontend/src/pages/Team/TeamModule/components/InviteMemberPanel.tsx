@@ -12,7 +12,7 @@ import {
   Select,
   Typography,
   message,
-} from 'antd';
+} from '@/components/ui';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 

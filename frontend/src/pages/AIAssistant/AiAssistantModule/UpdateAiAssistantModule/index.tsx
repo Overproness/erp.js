@@ -4,7 +4,7 @@ import { selectAssistantsLoading, selectCurrentAssistant } from '@/redux/ai/aiSe
 import { fetchAssistant, updateAssistant } from '@/redux/ai/aiThunks';
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Alert, Button, Form, message, Spin } from 'antd';
+import { Alert, Button, Form, message, Spin } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';

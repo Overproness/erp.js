@@ -1,4 +1,4 @@
-import { Spin, Col, Button } from 'antd';
+import { Spin, Col, Button } from '@/components/ui';
 import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
 import { useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';

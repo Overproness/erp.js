@@ -2,7 +2,7 @@ import apolloClient from '@/graphql/client';
 import { AI_AVAILABLE_MODELS, AI_CHAT, AI_SUGGEST } from '@/graphql/operations/ai';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import { selectAppSettings } from '@/redux/settings/selectors';
-import { notification } from 'antd';
+import { notification } from '@/components/ui';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 

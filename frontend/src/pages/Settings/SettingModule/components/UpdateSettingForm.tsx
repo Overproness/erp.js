@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/components/Loading';
 import useLanguage from '@/locale/useLanguage';
-import { Button, Form } from 'antd';
+import { Button, Form } from '@/components/ui';
 
 export default function UpdateSettingForm({ config, children, withUpload, uploadSettingKey }) {
   let { entity, settingsCategory } = config;

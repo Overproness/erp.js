@@ -10,7 +10,7 @@ import {
   RiseOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Alert, Button, Card, Col, Empty, Row, Space, Spin, Statistic, Typography } from 'antd';
+import { Alert, Button, Card, Col, Empty, Row, Space, Spin, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 

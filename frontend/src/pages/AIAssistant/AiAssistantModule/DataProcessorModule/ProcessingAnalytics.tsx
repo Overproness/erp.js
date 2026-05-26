@@ -26,7 +26,7 @@ import {
   Table,
   Tag,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {

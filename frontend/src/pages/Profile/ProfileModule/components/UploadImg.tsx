@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { message, Upload, Form, Button } from 'antd';
+import { message, Upload, Form, Button } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 // import photo from '@/style/images/photo.png';

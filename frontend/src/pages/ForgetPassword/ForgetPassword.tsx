@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Form, Result, Button, message } from 'antd';
+import { Form, Result, Button, message } from '@/components/ui';
 import { useForgotPassword } from '@/hooks/useAuthGql';
 import ForgetPasswordForm from '@/forms/ForgetPasswordForm';
 import useLanguage from '@/locale/useLanguage';

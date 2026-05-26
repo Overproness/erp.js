@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Upload, Button, Card, Divider, Tag, Space } from 'antd';
+import { Form, Input, Select, Upload, Button, Card, Divider, Tag, Space } from '@/components/ui';
 import { UploadOutlined, BookOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

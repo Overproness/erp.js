@@ -13,7 +13,7 @@ import {
   Button,
   Divider,
   Tag
-} from 'antd';
+} from '@/components/ui';
 import { 
   BarChartOutlined, 
   InfoCircleOutlined,

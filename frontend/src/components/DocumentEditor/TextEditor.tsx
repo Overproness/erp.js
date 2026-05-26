@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import AceEditor from 'react-ace';
 

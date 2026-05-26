@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Select, Space } from 'antd';
+import { Select, Space } from '@/components/ui';
 import apolloClient from '@/graphql/client';
 import { getListQuery, getFilterQuery } from '@/graphql/operations/crudFactory';
 import errorHandler from '@/request/errorHandler';

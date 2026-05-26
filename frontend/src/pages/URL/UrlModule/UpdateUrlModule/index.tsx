@@ -9,7 +9,7 @@ import {
   Divider,
   Steps,
   Alert
-} from 'antd';
+} from '@/components/ui';
 import {
   ArrowLeftOutlined,
   SaveOutlined,

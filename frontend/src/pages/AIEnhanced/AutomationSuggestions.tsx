@@ -26,7 +26,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 
 const { Title, Paragraph } = Typography;

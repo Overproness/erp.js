@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Tag, Avatar, Typography } from 'antd';
+import { Card, List, Tag, Avatar, Typography } from '@/components/ui';
 import { 
   BulbOutlined, 
   TrophyOutlined, 

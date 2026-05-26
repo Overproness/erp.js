@@ -14,7 +14,7 @@ import {
   Statistic,
   Table,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useColumns from './columns';

@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message } from '@/components/ui';
 
 const successHandler = (response, options = { notifyOnSuccess: false, notifyOnFailed: true }) => {
   const { data } = response;

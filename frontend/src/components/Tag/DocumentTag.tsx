@@ -1,6 +1,6 @@
 import useLanguage from '@/locale/useLanguage';
 import { getDocumentStatusColor } from '@/utils/documentTagColor';
-import { Tag } from 'antd';
+import { Tag } from '@/components/ui';
 
 export function DocumentStatusTag({ status = 'draft' }) {
   const translate = useLanguage();

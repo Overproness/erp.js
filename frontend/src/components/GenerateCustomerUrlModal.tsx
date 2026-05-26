@@ -27,7 +27,7 @@ import {
   Tag,
   Typography,
   message,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 

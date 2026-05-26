@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useProfileContext } from '@/context/profileContext';
 import { generate as uniqueId } from 'shortid';
 import { EditOutlined, LockOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Descriptions, Divider, Row } from 'antd';
+import { Avatar, Button, Col, Descriptions, Divider, Row } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import { useSelector } from 'react-redux';
 

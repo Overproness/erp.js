@@ -1,6 +1,6 @@
 import useLanguage from '@/locale/useLanguage';
 import { selectMoneyFormat } from '@/redux/settings/selectors';
-import { Form, Input, InputNumber, Select, Switch } from 'antd';
+import { Form, Input, InputNumber, Select, Switch } from '@/components/ui';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 

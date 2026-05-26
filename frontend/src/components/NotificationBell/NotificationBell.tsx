@@ -4,7 +4,7 @@
  */
 
 import { BellOutlined, CheckOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { Badge, Button, Empty, List, Popover, Spin, Typography } from 'antd';
+import { Badge, Button, Empty, List, Popover, Spin, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../hooks/useNotifications';

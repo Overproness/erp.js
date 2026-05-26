@@ -1,4 +1,4 @@
-import { Result, Button } from 'antd';
+import { Result, Button } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
 
 import useLanguage from '@/locale/useLanguage';

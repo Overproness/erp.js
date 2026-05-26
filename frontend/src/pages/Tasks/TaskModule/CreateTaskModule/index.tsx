@@ -17,7 +17,7 @@ import {
   Space,
   Typography,
   Upload,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

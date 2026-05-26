@@ -25,7 +25,7 @@ import {
   Tag,
   Timeline,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 
 const { Title, Text } = Typography;

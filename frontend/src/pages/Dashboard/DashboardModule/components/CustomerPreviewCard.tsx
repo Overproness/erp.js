@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Spin } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 export default function CustomerPreviewCard({

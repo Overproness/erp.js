@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Tabs, Button, Space, Typography } from 'antd';
+import { Card, Tabs, Button, Space, Typography } from '@/components/ui';
 import { ArrowLeftOutlined, SettingOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { ErpLayout } from '@/layout';

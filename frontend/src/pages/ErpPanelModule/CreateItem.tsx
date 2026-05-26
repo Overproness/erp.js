@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Divider, Form, Tag, message } from 'antd';
+import { Button, Divider, Form, Tag, message } from '@/components/ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 

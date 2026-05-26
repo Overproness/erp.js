@@ -30,7 +30,7 @@ import {
   Tooltip,
   Typography,
   message,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCallback, useEffect, useState } from 'react';

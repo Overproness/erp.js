@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Card, Typography } from 'antd';
+import { Alert, Button, Card, Typography } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 const { Title, Text } = Typography;

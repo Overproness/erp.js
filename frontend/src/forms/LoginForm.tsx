@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Form, Input } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 export default function LoginForm() {

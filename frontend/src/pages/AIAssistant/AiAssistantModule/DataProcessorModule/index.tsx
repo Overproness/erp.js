@@ -10,7 +10,7 @@ import {
   RobotOutlined,
   ScanOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from 'antd';
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

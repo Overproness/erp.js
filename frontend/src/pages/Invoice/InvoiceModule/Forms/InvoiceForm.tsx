@@ -1,10 +1,10 @@
-import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, Row, Select } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
 
-import { DatePicker } from 'antd';
+import { DatePicker } from '@/components/ui';
 
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 

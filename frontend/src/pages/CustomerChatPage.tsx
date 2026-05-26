@@ -1,6 +1,6 @@
 import CustomerChatInterface from '@/components/CustomerChatInterface';
 import { MessageOutlined, WarningOutlined } from '@ant-design/icons';
-import { Card, Result, Space, Spin, Typography } from 'antd';
+import { Card, Result, Space, Spin, Typography } from '@/components/ui';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';

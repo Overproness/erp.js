@@ -1,4 +1,4 @@
-import { Alert, Button, Space } from 'antd';
+import { Alert, Button, Space } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
 import { usePlan } from '../../hooks/usePlan';
 

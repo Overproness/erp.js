@@ -14,7 +14,7 @@ import {
   SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Badge, Button, Dropdown, Input, List, Typography } from 'antd';
+import { Avatar, Badge, Button, Dropdown, Input, List, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

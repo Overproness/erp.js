@@ -21,7 +21,7 @@ import {
   Select,
   Space,
   Tag,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 

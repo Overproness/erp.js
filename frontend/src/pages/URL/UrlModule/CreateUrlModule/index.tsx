@@ -9,7 +9,7 @@ import {
   Col,
   Typography,
   Divider
-} from 'antd';
+} from '@/components/ui';
 import { 
   ArrowLeftOutlined, 
   SaveOutlined, 

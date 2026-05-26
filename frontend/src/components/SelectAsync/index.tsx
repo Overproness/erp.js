@@ -3,7 +3,7 @@ import useLanguage from '@/locale/useLanguage';
 import apolloClient from '@/graphql/client';
 import { getListQuery } from '@/graphql/operations/crudFactory';
 import color from '@/utils/color';
-import { Select, Tag } from 'antd';
+import { Select, Tag } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { generate as uniqueId } from 'shortid';

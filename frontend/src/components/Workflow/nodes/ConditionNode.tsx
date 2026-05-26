@@ -1,5 +1,5 @@
 import { FormOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Space, Tag, Tooltip, Typography } from 'antd';
+import { Button, Card, Space, Tag, Tooltip, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import ConditionEditor from '../ConditionEditor';

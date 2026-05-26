@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Tabs, Button, Space, List, Card, Tag, Typography, Spin } from 'antd';
+import { Modal, Tabs, Button, Space, List, Card, Tag, Typography, Spin } from '@/components/ui';
 import {
   RobotOutlined,
   ExperimentOutlined,

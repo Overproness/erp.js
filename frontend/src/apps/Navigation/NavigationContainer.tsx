@@ -1,4 +1,4 @@
-import { Button, Drawer } from 'antd';
+import { Button, Drawer } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';

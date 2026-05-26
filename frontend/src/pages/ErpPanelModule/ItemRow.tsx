@@ -1,4 +1,4 @@
-import { Col, Form, Input, InputNumber, Row } from 'antd';
+import { Col, Form, Input, InputNumber, Row } from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 import { useMoneyOld } from '@/settings';

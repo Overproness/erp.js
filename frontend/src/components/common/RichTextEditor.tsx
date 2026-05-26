@@ -4,7 +4,7 @@ import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { Typography } from 'antd';
+import { Typography } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 const { Text } = Typography;

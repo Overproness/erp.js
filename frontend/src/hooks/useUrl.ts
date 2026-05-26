@@ -20,7 +20,7 @@ import {
   updatePagination,
   updateUrl,
 } from '@/redux/url';
-import { message } from 'antd';
+import { message } from '@/components/ui';
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 

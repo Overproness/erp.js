@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Switch } from 'antd';
+import { Form, Input, Switch } from '@/components/ui';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

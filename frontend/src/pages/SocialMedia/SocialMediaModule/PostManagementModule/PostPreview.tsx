@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button, Space, Tag, Avatar, Divider, Typography } from 'antd';
+import { Card, Button, Space, Tag, Avatar, Divider, Typography } from '@/components/ui';
 import {
   ArrowLeftOutlined,
   EditOutlined,

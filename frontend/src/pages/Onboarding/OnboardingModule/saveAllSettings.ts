@@ -1,5 +1,5 @@
 // Module for handling saving settings in the onboarding process
-import { message } from 'antd';
+import { message } from '@/components/ui';
 import * as actionTypes from '@/redux/auth/types';
 import storePersist from '@/redux/storePersist';
 import { settingsAction } from '@/redux/settings/actions';

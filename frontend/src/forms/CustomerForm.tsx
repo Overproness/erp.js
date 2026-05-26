@@ -1,4 +1,4 @@
-import { Form, Input, Select, DatePicker, InputNumber, Divider, Row, Col } from 'antd';
+import { Form, Input, Select, DatePicker, InputNumber, Divider, Row, Col } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 const { Option } = Select;

@@ -7,7 +7,7 @@ import { selectAuth } from '@/redux/auth/selectors';
 import { settingsAction } from '@/redux/settings/actions';
 import AuthRouter from '@/router/AuthRouter';
 import ProtectedRoutes from '@/router/ProtectedRoutes';
-import { App as AntdApp, notification } from 'antd';
+import { App as AntdApp, notification } from '@/components/ui';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';

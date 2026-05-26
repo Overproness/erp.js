@@ -10,7 +10,7 @@ import {
   Descriptions,
   Alert,
   Tooltip
-} from 'antd';
+} from '@/components/ui';
 import {
   LinkOutlined,
   ClockCircleOutlined,

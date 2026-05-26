@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useLanguage from '@/locale/useLanguage';
 
 import Loading from '@/components/Loading';
-import { Button, Form } from 'antd';
+import { Button, Form } from '@/components/ui';
 
 export default function CreateForm({ config, formElements, withUpload = false }) {
   let { entity } = config;

@@ -12,7 +12,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 

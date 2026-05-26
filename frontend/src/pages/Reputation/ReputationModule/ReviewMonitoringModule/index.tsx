@@ -28,7 +28,7 @@ import {
   Tag,
   Typography,
   message,
-} from 'antd';
+} from '@/components/ui';
 import { useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;

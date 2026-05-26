@@ -2,7 +2,7 @@ import { useProfileContext } from '@/context/profileContext';
 import useOnFetch from '@/hooks/useOnFetch';
 import apolloClient from '@/graphql/client';
 import { UPDATE_PROFILE_PASSWORD } from '@/graphql/operations/auth';
-import { Form, Input, Modal } from 'antd';
+import { Form, Input, Modal } from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';
 

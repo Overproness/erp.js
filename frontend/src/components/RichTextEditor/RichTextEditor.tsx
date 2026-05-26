@@ -1,4 +1,4 @@
-import { Card } from 'antd';
+import { Card } from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 // Import these with try/catch to handle potential errors

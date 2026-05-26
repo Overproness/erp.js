@@ -1,5 +1,5 @@
 import useLanguage from '@/locale/useLanguage';
-import { Button, Card, Layout, message, Typography } from 'antd';
+import { Button, Card, Layout, message, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReactFlowProvider } from 'reactflow';

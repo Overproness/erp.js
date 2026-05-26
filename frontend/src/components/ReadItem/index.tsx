@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col } from '@/components/ui';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { dataForRead } from '@/utils/dataStructure';

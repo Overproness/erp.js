@@ -12,7 +12,7 @@ import {
   Divider,
   Alert,
   Spin
-} from 'antd';
+} from '@/components/ui';
 import { 
   UserOutlined, 
   TeamOutlined, 

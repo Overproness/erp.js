@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Select, Divider, Switch, Space, Typography, Checkbox, Row, Col } from 'antd';
+import { Button, Form, Select, Divider, Switch, Space, Typography, Checkbox, Row, Col } from '@/components/ui';
 import { CloseOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { erp } from '@/redux/erp/actions';

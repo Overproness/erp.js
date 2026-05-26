@@ -6,7 +6,7 @@ import {
   ExclamationCircleOutlined,
   MinusOutlined,
 } from '@ant-design/icons';
-import { Spin, Tooltip } from 'antd';
+import { Spin, Tooltip } from '@/components/ui';
 import { useSelector } from 'react-redux';
 
 export default function SummaryCard({

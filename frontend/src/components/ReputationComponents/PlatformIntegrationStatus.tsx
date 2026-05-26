@@ -7,7 +7,7 @@ import {
   StarOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
-import { Badge, Button, Card, Col, Row, Space, Tooltip, Typography } from 'antd';
+import { Badge, Button, Card, Col, Row, Space, Tooltip, Typography } from '@/components/ui';
 
 const { Text, Title } = Typography;
 

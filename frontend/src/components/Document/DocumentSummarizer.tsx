@@ -6,7 +6,7 @@ import {
   InfoCircleOutlined,
   RobotOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, message, Modal, Space, Spin, Tag, Typography } from 'antd';
+import { Button, Divider, message, Modal, Space, Spin, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 
 const { Title, Paragraph, Text } = Typography;

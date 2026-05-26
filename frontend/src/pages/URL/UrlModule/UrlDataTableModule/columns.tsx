@@ -9,7 +9,7 @@ import {
   LinkOutlined,
   QrcodeOutlined,
 } from '@ant-design/icons';
-import { Badge, Button, Popconfirm, Space, Tag, Tooltip, Typography } from 'antd';
+import { Badge, Button, Popconfirm, Space, Tag, Tooltip, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QRCodeGenerator from '../Components/QRCodeGenerator';

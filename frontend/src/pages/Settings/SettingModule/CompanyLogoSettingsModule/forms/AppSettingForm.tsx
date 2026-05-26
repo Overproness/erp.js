@@ -1,4 +1,4 @@
-import { Button, Form, message, Upload } from 'antd';
+import { Button, Form, message, Upload } from '@/components/ui';
 
 import { UploadOutlined } from '@ant-design/icons';
 

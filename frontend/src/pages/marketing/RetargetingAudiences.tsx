@@ -35,7 +35,7 @@ import {
   Table,
   Tabs,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

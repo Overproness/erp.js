@@ -6,7 +6,7 @@ import {
   SecurityScanOutlined,
   UnlockOutlined,
 } from '@ant-design/icons';
-import { Tag, Tooltip } from 'antd';
+import { Tag, Tooltip } from '@/components/ui';
 
 export default function DataClassificationBadge({ classification }) {
   const translate = useLanguage();

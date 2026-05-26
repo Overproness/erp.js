@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Table, Tag, Progress } from 'antd';
+import { Card, Table, Tag, Progress } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 const UsageMetrics = ({ data, loading }) => {

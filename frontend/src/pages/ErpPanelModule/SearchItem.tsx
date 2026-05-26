@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 
-import { AutoComplete, Input } from 'antd';
+import { AutoComplete, Input } from '@/components/ui';
 import { SearchOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { erp } from '@/redux/erp/actions';
@@ -8,7 +8,7 @@ import { erp } from '@/redux/erp/actions';
 import { useErpContext } from '@/context/erp';
 import { selectSearchedItems } from '@/redux/erp/selectors';
 
-import { Empty } from 'antd';
+import { Empty } from '@/components/ui';
 
 export default function Search({ config }) {
   let { entity, searchConfig } = config;

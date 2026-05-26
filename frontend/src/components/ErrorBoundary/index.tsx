@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Result } from 'antd';
+import { Button, Result } from '@/components/ui';
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {

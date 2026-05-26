@@ -28,7 +28,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import React, { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import './WorkflowNode.css';

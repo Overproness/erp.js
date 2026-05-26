@@ -14,7 +14,7 @@ import {
   Upload,
   message,
   Divider,
-} from 'antd';
+} from '@/components/ui';
 import {
   MailOutlined,
   FileTextOutlined,

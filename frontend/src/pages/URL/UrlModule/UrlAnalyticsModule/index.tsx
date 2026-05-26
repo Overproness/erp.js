@@ -9,7 +9,7 @@ import {
   Typography,
   Dropdown,
   message
-} from 'antd';
+} from '@/components/ui';
 import {
   BarChartOutlined,
   DownloadOutlined,

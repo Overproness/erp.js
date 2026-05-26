@@ -1,6 +1,6 @@
 import React from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button } from '@/components/ui';
 
 const Notifications = () => {
   const [notifications, setNotifications] = React.useState([

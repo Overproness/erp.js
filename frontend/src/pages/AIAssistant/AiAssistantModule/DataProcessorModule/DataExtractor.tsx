@@ -14,7 +14,7 @@ import {
   Col,
   Tabs,
   Progress
-} from 'antd';
+} from '@/components/ui';
 import { 
   DatabaseOutlined, 
   PlayCircleOutlined, 

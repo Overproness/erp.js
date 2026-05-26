@@ -8,7 +8,7 @@ import { selectUpdatedItem } from '@/redux/crud/selectors';
 
 import useLanguage from '@/locale/useLanguage';
 
-import { Button, Form } from 'antd';
+import { Button, Form } from '@/components/ui';
 import Loading from '@/components/Loading';
 
 export default function UpdateForm({ config, formElements, withUpload = false }) {

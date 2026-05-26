@@ -12,7 +12,7 @@ import {
   Alert,
   Switch,
   InputNumber,
-} from 'antd';
+} from '@/components/ui';
 import { CodeOutlined, FormOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import CodeEditor from './CodeEditor';

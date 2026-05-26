@@ -25,7 +25,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Avatar, Button, Dropdown, Space, Table, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Dropdown, Space, Table, Tag, Tooltip } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

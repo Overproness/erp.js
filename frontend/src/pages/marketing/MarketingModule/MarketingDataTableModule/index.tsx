@@ -21,7 +21,7 @@ import {
   Space,
   Table,
   Tag,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

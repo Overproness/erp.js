@@ -1,6 +1,6 @@
 import { erp } from '@/redux/erp/actions';
 import { selectUpdatedItem } from '@/redux/erp/selectors';
-import { Button, Form } from 'antd';
+import { Button, Form } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -9,7 +9,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Alert, Card, Col, Empty, Modal, Progress, Row, Spin, Statistic, Tabs, Tag } from 'antd';
+import { Alert, Card, Col, Empty, Modal, Progress, Row, Spin, Statistic, Tabs, Tag } from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 const { TabPane } = Tabs;

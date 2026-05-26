@@ -20,7 +20,7 @@ import {
   InputNumber,
   Switch,
   Empty
-} from 'antd';
+} from '@/components/ui';
 import {
   MailOutlined,
   UserOutlined,

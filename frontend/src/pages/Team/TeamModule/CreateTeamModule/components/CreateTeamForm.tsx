@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Switch, Divider } from 'antd';
+import { Form, Input, Button, Switch, Divider } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import { useNavigate } from 'react-router-dom';
 

@@ -11,7 +11,7 @@ import {
   Space,
   Divider,
   Alert
-} from 'antd';
+} from '@/components/ui';
 import { 
   RobotOutlined, 
   MessageOutlined, 

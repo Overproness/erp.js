@@ -24,7 +24,7 @@ import {
   Tabs,
   Tag,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactFlow, {

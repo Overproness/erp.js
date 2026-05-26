@@ -5,7 +5,7 @@ import {
   PlayCircleOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { Card, Layout, Menu, Space, Tag, Typography } from 'antd';
+import { Card, Layout, Menu, Space, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 import N8nWorkflowManager from '../components/N8nWorkflowManager';
 import DashboardLayout from '../layout/DashboardLayout';

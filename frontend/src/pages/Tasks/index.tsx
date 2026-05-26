@@ -19,7 +19,7 @@ import {
   Statistic,
   Typography,
   message,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import task API request service

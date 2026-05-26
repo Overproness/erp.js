@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Button, Space } from 'antd';
+import { Tabs, Button, Space } from '@/components/ui';
 import { ArrowLeftOutlined, BulbOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ContentIdeas from './ContentIdeas';

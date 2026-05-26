@@ -10,7 +10,7 @@ import { loadConversation, resetChat } from '@/redux/ai/aiSlice';
 import { fetchConversation, fetchConversations, sendChatMessage } from '@/redux/ai/aiThunks';
 import { useDate } from '@/settings';
 import { DownOutlined, HistoryOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons';
-import { Avatar, Button, Dropdown, Empty, Layout, Space, Typography } from 'antd';
+import { Avatar, Button, Dropdown, Empty, Layout, Space, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ApiKeyWarning from './ApiKeyWarning';

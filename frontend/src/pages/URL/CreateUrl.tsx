@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { message } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import CreateUrlModule from './UrlModule/CreateUrlModule';
 import useLanguage from '@/locale/useLanguage';

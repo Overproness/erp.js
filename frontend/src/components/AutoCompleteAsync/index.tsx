@@ -6,7 +6,7 @@ import useOnFetch from '@/hooks/useOnFetch';
 import useDebounce from '@/hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
 
-import { Select, Empty } from 'antd';
+import { Select, Empty } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 export default function AutoCompleteAsync({

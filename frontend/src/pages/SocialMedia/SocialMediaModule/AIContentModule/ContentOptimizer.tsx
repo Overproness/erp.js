@@ -17,7 +17,7 @@ import {
   Slider,
   Switch,
   message
-} from 'antd';
+} from '@/components/ui';
 import {
   ThunderboltOutlined,
   CheckCircleOutlined,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Card, Form, Input, Button, Alert, Typography, Spin, Divider, Space, Row, Col, notification } from 'antd';
+import { Card, Form, Input, Button, Alert, Typography, Spin, Divider, Space, Row, Col, notification } from '@/components/ui';
 import { API_BASE_URL } from '@/config/serverApiConfig';
 import { clearAuthIfNeeded } from './utils';
 

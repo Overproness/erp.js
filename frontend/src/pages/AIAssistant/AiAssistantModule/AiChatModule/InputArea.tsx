@@ -8,7 +8,7 @@ import {
   PaperClipOutlined,
   SendOutlined,
 } from '@ant-design/icons';
-import { Alert, Button, Col, Input, Progress, Row, Space, Tag, Upload } from 'antd';
+import { Alert, Button, Col, Input, Progress, Row, Space, Tag, Upload } from '@/components/ui';
 import { useRef, useState } from 'react';
 import EmojiPicker from './EmojiPicker';
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { CloseCircleOutlined, FileTextOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Col, Descriptions, Divider, Row } from 'antd';
+import { Button, Col, Descriptions, Divider, Row } from '@/components/ui';
 
 import { generate as uniqueId } from 'shortid';
 

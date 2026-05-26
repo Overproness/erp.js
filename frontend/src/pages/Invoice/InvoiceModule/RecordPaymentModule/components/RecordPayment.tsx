@@ -1,4 +1,4 @@
-import { Button, Form } from 'antd';
+import { Button, Form } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 

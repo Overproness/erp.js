@@ -12,7 +12,7 @@ import {
   Alert,
   Button,
   Divider
-} from 'antd';
+} from '@/components/ui';
 import { 
   BarChartOutlined, 
   InfoCircleOutlined,

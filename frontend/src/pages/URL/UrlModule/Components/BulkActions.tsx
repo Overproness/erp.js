@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Space, Dropdown, message, Popconfirm } from 'antd';
+import { Button, Space, Dropdown, message, Popconfirm } from '@/components/ui';
 import {
   DeleteOutlined,
   PlayCircleOutlined,

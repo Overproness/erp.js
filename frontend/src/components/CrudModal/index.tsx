@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal } from '@/components/ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { crud } from '@/redux/crud/actions';

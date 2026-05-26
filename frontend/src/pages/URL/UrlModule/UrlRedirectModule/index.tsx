@@ -1,5 +1,5 @@
 import useLanguage from '@/locale/useLanguage';
-import { Spin, message } from 'antd';
+import { Spin, message } from '@/components/ui';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

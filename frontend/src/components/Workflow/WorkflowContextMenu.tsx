@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined, SettingOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
+import { Menu } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 
 const WorkflowContextMenu = ({ x, y, selectedNode, onDeleteNode, onDuplicateNode, onClose }) => {

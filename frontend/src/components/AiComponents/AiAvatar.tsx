@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Badge } from 'antd';
+import { Avatar, Badge } from '@/components/ui';
 import { RobotOutlined } from '@ant-design/icons';
 
 export default function AiAvatar({

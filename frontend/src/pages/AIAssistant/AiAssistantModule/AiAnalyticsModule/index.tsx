@@ -9,7 +9,7 @@ import {
   MessageOutlined,
   RobotOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Row, Space, Statistic, Typography } from 'antd';
+import { Button, Card, Col, Row, Space, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

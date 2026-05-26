@@ -1,5 +1,5 @@
 import useLanguage from '@/locale/useLanguage';
-import { Button, Card, Layout, message, Typography } from 'antd';
+import { Button, Card, Layout, message, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import WorkflowCanvas from '../../components/Workflow/WorkflowCanvas';

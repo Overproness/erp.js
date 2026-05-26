@@ -2,7 +2,7 @@ import SurveyForm from '@/forms/SurveyForm';
 import apolloClient from '@/graphql/client';
 import { GET_SURVEY, UPDATE_SURVEY } from '@/graphql/operations/survey';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Card, message, Spin, Typography } from 'antd';
+import { Card, message, Spin, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 

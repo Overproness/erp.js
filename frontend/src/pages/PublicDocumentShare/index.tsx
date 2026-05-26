@@ -21,7 +21,7 @@ import {
   Spin,
   Tag,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';

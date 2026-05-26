@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import useLanguage from '@/locale/useLanguage';
 
 import { useLogin } from '@/hooks/useAuthGql';
-import { Form } from 'antd';
+import { Form } from '@/components/ui';
 
 import Loading from '@/components/Loading';
 import LoginForm from '@/forms/LoginForm';

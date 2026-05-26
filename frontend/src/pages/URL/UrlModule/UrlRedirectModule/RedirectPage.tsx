@@ -8,7 +8,7 @@ import {
   Alert,
   Form,
   Divider
-} from 'antd';
+} from '@/components/ui';
 import {
   LockOutlined,
   ExclamationCircleOutlined,

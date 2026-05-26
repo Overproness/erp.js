@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message } from '@/components/ui';
 
 // Helper function to show error messages
 const showErrorMessage = (errorMsg, duration = 4.5) => {

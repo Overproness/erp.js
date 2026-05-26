@@ -8,7 +8,7 @@ import {
   SafetyOutlined,
   WarningOutlined,
 } from '@ant-design/icons';
-import { Alert, Badge, Card, Descriptions, List, Modal, Select, Spin, Tag, Typography } from 'antd';
+import { Alert, Badge, Card, Descriptions, List, Modal, Select, Spin, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;

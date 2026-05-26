@@ -1,4 +1,4 @@
-import { ConfigProvider } from 'antd';
+import { ConfigProvider } from '@/components/ui';
 
 export default function Localization({ children }) {
   return (

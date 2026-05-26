@@ -1,4 +1,4 @@
-import { Tag } from 'antd';
+import { Tag } from '@/components/ui';
 import useLanguage from '@/locale/useLanguage';
 
 export function StatusTag({ status = 'draft' }) {

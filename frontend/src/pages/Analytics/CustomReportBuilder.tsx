@@ -26,7 +26,7 @@ import {
   Switch,
   Tag,
   TimePicker,
-} from 'antd';
+} from '@/components/ui';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { useState } from 'react';

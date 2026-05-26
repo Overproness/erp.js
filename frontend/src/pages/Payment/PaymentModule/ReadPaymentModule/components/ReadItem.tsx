@@ -8,7 +8,7 @@ import {
   MailOutlined,
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Col, Descriptions, Divider, Row, Statistic, Typography } from 'antd';
+import { Button, Col, Descriptions, Divider, Row, Statistic, Typography } from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';

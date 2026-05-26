@@ -4,7 +4,7 @@ import {
   MessageOutlined,
   SendOutlined,
 } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message, Modal, Radio, Space } from 'antd';
+import { Button, Checkbox, Form, Input, message, Modal, Radio, Space } from '@/components/ui';
 import { useCallback, useEffect, useState } from 'react';
 
 /**

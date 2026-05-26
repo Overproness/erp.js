@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row } from '@/components/ui';
 import { useEffect, useLayoutEffect, useState } from 'react';
 
 import CreateForm from '@/components/CreateForm';

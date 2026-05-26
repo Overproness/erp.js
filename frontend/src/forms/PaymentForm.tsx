@@ -1,6 +1,6 @@
 import SelectAsync from '@/components/SelectAsync';
 import { useDate, useMoney } from '@/settings';
-import { DatePicker, Form, Input, InputNumber } from 'antd';
+import { DatePicker, Form, Input, InputNumber } from '@/components/ui';
 import dayjs from 'dayjs';
 
 import useLanguage from '@/locale/useLanguage';

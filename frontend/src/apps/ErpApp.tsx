@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Layout } from 'antd';
+import { Layout } from '@/components/ui';
 
 import Navigation from '@/apps/Navigation/NavigationContainer';
 

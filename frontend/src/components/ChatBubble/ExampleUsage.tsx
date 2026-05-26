@@ -4,7 +4,7 @@
  * This example shows how to integrate the AI copilot with module-specific context
  */
 
-import { Button, Card, Descriptions, Space } from 'antd';
+import { Button, Card, Descriptions, Space } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useCopilot } from '../../context/useCopilot';
 import { useCopilotModule } from '../../hooks/useCopilotModule';

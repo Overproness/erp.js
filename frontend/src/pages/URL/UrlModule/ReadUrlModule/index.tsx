@@ -9,7 +9,7 @@ import {
   Divider,
   message,
   Spin
-} from 'antd';
+} from '@/components/ui';
 import {
   ArrowLeftOutlined,
   EditOutlined,

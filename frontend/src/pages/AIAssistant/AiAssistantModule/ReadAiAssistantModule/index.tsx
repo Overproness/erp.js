@@ -28,7 +28,7 @@ import {
   Spin,
   Tag,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';

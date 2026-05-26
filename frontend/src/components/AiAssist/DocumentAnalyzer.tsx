@@ -12,7 +12,7 @@ import {
   List,
   Switch,
   App,
-} from 'antd';
+} from '@/components/ui';
 import {
   RobotOutlined,
   CheckOutlined,

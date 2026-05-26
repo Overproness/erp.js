@@ -1,6 +1,6 @@
 import useLanguage from '@/locale/useLanguage';
 import { RobotOutlined } from '@ant-design/icons';
-import { Avatar, Space } from 'antd';
+import { Avatar, Space } from '@/components/ui';
 
 const TypingIndicator = ({ assistant }) => {
   const translate = useLanguage();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Switch, InputNumber, Card, Divider } from 'antd';
+import { Form, Input, Select, Switch, InputNumber, Card, Divider } from '@/components/ui';
 import { SettingOutlined, UserOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

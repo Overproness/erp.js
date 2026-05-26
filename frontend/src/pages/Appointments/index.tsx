@@ -35,7 +35,7 @@ import {
   Table,
   Tag,
   Tooltip,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 

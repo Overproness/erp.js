@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, InputNumber, Select, Switch, Tag } from 'antd';
+import { DatePicker, Form, Input, InputNumber, Select, Switch, Tag } from '@/components/ui';
 import { useState } from 'react';
 
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Divider, Tag, Space } from 'antd';
+import { Card, Typography, Divider, Tag, Space } from '@/components/ui';
 
 const { Title, Text } = Typography;
 

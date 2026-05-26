@@ -6,7 +6,7 @@ import { selectListItems } from '@/redux/erp/selectors';
 import { useDate } from '@/settings'; // Import from settings index
 import { DeleteOutlined, EditOutlined, EyeOutlined, MailOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Dropdown, Table, Tag } from 'antd';
+import { Button, Dropdown, Table, Tag } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

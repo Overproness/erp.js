@@ -14,7 +14,7 @@ import {
   DatePicker,
   Tooltip,
   message
-} from 'antd';
+} from '@/components/ui';
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

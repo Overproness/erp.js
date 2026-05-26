@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Spin, Input } from 'antd';
+import { Spin, Input } from '@/components/ui';
 import RichTextErrorBoundary from '../ErrorBoundary/RichTextErrorBoundary';
 
 // Use dynamic import to load the rich text editor

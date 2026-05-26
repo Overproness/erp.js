@@ -9,7 +9,7 @@ import {
   RedoOutlined,
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Dropdown, Table } from 'antd';
+import { Button, Dropdown, Table } from '@/components/ui';
 import { cloneElement, isValidElement, useEffect, useRef } from 'react';
 
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';

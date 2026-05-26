@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Popover, Input, Space, Button } from 'antd';
+import { Popover, Input, Space, Button } from '@/components/ui';
 import { 
   CheckOutlined, 
   CloseOutlined,

@@ -7,7 +7,7 @@ import {
   SaveOutlined,
   SignatureOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Divider, Input, message, Modal, Space, Spin, Tabs, Typography } from 'antd';
+import { Button, Card, Divider, Input, message, Modal, Space, Spin, Tabs, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PDFViewer from './PDFViewer';

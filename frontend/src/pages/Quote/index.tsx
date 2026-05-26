@@ -10,7 +10,7 @@ import {
   DollarOutlined,
   FileTextOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
+import { Card, Col, Row, Spin, Statistic, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useDispatch } from 'react-redux';
 import QuoteDataTableModule from './QuoteModule/QuoteDataTableModule';

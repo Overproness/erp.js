@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Statistic, Progress, Typography, Space, Tag, Divider } from 'antd';
+import { Card, Row, Col, Statistic, Progress, Typography, Space, Tag, Divider } from '@/components/ui';
 import { StarOutlined, RiseOutlined, MessageOutlined, LikeOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

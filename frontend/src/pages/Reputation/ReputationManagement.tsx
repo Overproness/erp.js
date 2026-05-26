@@ -8,7 +8,7 @@ import {
   RiseOutlined,
   StarOutlined,
 } from '@ant-design/icons';
-import { Badge, Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from 'antd';
+import { Badge, Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReviewAnalyticsModule from './ReputationModule/ReviewAnalyticsModule';

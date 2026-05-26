@@ -27,7 +27,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

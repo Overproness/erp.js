@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined, UserAddOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Descriptions, Divider, Space, Table, Tabs, Tag, Typography, message } from 'antd';
+import { Button, Descriptions, Divider, Space, Table, Tabs, Tag, Typography, message } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';

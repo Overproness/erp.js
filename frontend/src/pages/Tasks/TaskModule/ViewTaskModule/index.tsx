@@ -30,7 +30,7 @@ import {
   Tag,
   Typography,
   Tooltip,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

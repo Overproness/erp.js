@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Spin } from '@/components/ui';
 
 // Lazy load components for better performance
 const AiAssistantDataTableModule = React.lazy(() => import('./AiAssistantDataTableModule'));

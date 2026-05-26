@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Typography, Space, Tag, Button } from 'antd';
+import { Avatar, Typography, Space, Tag, Button } from '@/components/ui';
 import { UserOutlined, RobotOutlined, CopyOutlined } from '@ant-design/icons';
 import { useDate } from '@/settings';
 import useLanguage from '@/locale/useLanguage';

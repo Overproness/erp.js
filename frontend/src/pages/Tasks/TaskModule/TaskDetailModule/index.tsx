@@ -37,7 +37,7 @@ import {
   Tag,
   Timeline,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

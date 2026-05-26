@@ -6,7 +6,7 @@ import {
   PercentageOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Row, Spin, Statistic, Typography } from 'antd';
+import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,7 +18,7 @@ import TaxForm from '@/forms/TaxForm';
 import CrudModule from '@/pages/CrudModule/CrudModule';
 import { erp } from '@/redux/erp/actions';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { Switch } from 'antd';
+import { Switch } from '@/components/ui';
 
 const { Title, Text } = Typography;
 

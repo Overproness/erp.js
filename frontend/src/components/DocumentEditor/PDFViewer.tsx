@@ -6,7 +6,7 @@ import {
   ZoomInOutlined,
   ZoomOutOutlined,
 } from '@ant-design/icons';
-import { Button, message, Space, Spin, Tooltip } from 'antd';
+import { Button, message, Space, Spin, Tooltip } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 
 // Check if we need to load the PDF.js worker

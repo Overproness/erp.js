@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Form, Card, Space, Button, Spin } from 'antd';
+import { Form, Card, Space, Button, Spin } from '@/components/ui';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';

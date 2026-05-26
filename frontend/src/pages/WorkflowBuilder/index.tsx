@@ -9,7 +9,7 @@ import {
   SaveOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, message, Modal, Row, Space, Spin, Statistic, Typography } from 'antd';
+import { Button, Card, Col, message, Modal, Row, Space, Spin, Statistic, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import WorkflowCanvas from '../../components/Workflow/WorkflowCanvas';

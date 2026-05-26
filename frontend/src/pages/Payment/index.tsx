@@ -14,7 +14,7 @@ import {
   SafetyOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Row, Spin, Statistic, Tag, Typography } from 'antd';
+import { Button, Card, Col, Row, Spin, Statistic, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';

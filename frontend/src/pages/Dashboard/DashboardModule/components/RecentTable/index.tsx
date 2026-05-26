@@ -1,4 +1,4 @@
-import { Dropdown, Table } from 'antd';
+import { Dropdown, Table } from '@/components/ui';
 
 import apolloClient from '@/graphql/client';
 import { getListQuery } from '@/graphql/operations/crudFactory';

@@ -11,7 +11,7 @@ import {
   Space,
   Tooltip,
   Empty
-} from 'antd';
+} from '@/components/ui';
 import {
   UserOutlined,
   LinkOutlined,

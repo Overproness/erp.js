@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
-import { Form } from 'antd';
+import { Form } from '@/components/ui';
 import { useRegister } from '@/hooks/useAuthGql';
 import RegisterForm from '@/forms/RegisterForm';
 import Loading from '@/components/Loading';

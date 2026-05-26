@@ -1,7 +1,7 @@
 import useLanguage from '@/locale/useLanguage';
 import { selectSettingsLoading, selectUserPreferences } from '@/redux/ai/aiSelectors';
 import { fetchUserPreferences, updateUserPreferences } from '@/redux/ai/aiThunks';
-import { Button, Divider, Form, InputNumber, message, Select, Switch } from 'antd';
+import { Button, Divider, Form, InputNumber, message, Select, Switch } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 

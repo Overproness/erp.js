@@ -14,7 +14,7 @@ import {
   Tabs,
   Tooltip,
   message
-} from 'antd';
+} from '@/components/ui';
 import {
   TrophyOutlined,
   BarChartOutlined,

@@ -1,5 +1,5 @@
 import { SmileOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 
 const EmojiPicker = ({ onEmojiSelect, disabled }) => {

@@ -1,4 +1,4 @@
-import { Divider } from 'antd';
+import { Divider } from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 import {
@@ -9,7 +9,7 @@ import {
   RetweetOutlined,
 } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Col, Descriptions, Row, Statistic } from 'antd';
+import { Button, Col, Descriptions, Row, Statistic } from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';

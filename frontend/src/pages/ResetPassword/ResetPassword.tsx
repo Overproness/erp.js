@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useResetPassword } from '@/hooks/useAuthGql';
 
-import { Form, Button } from 'antd';
+import { Form, Button } from '@/components/ui';
 
 import ResetPasswordForm from '@/forms/ResetPasswordForm';
 

@@ -8,7 +8,7 @@ import {
   StopOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Descriptions, List, Modal, Space, Tag, message } from 'antd';
+import { Button, Card, Descriptions, List, Modal, Space, Tag, message } from '@/components/ui';
 import { useState } from 'react';
 
 const { confirm } = Modal;

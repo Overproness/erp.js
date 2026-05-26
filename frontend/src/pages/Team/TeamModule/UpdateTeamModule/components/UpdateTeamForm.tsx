@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, Switch, Space, Divider } from 'antd';
+import { Form, Input, Button, Switch, Space, Divider } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

@@ -14,7 +14,7 @@ import {
   StarOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, message, Row, Select, Statistic } from 'antd';
+import { Button, Card, Col, DatePicker, message, Row, Select, Statistic } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import {

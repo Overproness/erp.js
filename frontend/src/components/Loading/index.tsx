@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Spin } from '@/components/ui';
 import { LoadingOutlined } from '@ant-design/icons';
 
 export default function Loading({ isLoading, children }) {

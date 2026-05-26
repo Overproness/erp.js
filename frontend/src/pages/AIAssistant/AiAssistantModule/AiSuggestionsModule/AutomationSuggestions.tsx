@@ -7,7 +7,7 @@ import {
   PlayCircleOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons';
-import { Alert, Button, Card, Empty, List, Space, Spin, Tag, Typography } from 'antd';
+import { Alert, Button, Card, Empty, List, Space, Spin, Tag, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 

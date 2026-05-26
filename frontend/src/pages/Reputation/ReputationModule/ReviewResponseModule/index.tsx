@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Tabs, Empty, List, Avatar, Rate, Typography, Tag, Button, Input, Space, Divider, Row, Col, Select, Badge } from 'antd';
+import { Card, Tabs, Empty, List, Avatar, Rate, Typography, Tag, Button, Input, Space, Divider, Row, Col, Select, Badge } from '@/components/ui';
 import { 
   UserOutlined, 
   MessageOutlined, 

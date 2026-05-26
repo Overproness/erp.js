@@ -16,7 +16,7 @@ import {
   Progress,
   message,
   Statistic
-} from 'antd';
+} from '@/components/ui';
 import {
   FileTextOutlined,
   DownloadOutlined,

@@ -13,7 +13,7 @@ import {
   PlayCircleOutlined,
   SendOutlined,
 } from '@ant-design/icons';
-import { Card, Space, Typography } from 'antd';
+import { Card, Space, Typography } from '@/components/ui';
 
 const { Text } = Typography;
 

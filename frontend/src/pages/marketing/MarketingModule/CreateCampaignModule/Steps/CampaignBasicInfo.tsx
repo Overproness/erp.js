@@ -10,7 +10,7 @@ import {
   Col,
   Typography,
   InputNumber,
-} from 'antd';
+} from '@/components/ui';
 import { MailOutlined, MobileOutlined, GlobalOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

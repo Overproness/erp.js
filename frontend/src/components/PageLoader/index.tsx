@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spin } from 'antd';
+import { Spin } from '@/components/ui';
 
 import { LoadingOutlined } from '@ant-design/icons';
 

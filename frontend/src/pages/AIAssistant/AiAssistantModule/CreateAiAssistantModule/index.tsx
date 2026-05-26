@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, message } from 'antd';
+import { Form, Button, message } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import { PlusOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { ErpLayout } from '@/layout';

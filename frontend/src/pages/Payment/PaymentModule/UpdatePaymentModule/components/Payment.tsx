@@ -4,7 +4,7 @@ import useLanguage from '@/locale/useLanguage';
 import { useMoney } from '@/settings';
 import { CloseCircleOutlined, FileTextOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-import { Button, Col, Descriptions, Divider, Row } from 'antd';
+import { Button, Col, Descriptions, Divider, Row } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
 import { generate as uniqueId } from 'shortid';
 import UpdatePayment from './UpdatePayment';

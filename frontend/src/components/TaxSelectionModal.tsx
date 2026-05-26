@@ -2,7 +2,7 @@ import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';
 import { selectListItems } from '@/redux/crud/selectors';
 import { CheckOutlined, CloseOutlined, PercentageOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, message, Modal, Spin, Switch, Table } from 'antd';
+import { Button, message, Modal, Spin, Switch, Table } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

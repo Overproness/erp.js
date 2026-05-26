@@ -11,7 +11,7 @@ import {
   Col,
   Button,
   Space
-} from 'antd';
+} from '@/components/ui';
 import { FilterOutlined, ClearOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import urlConfig from '../config/urlConfig';

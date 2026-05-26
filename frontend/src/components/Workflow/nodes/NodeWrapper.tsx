@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined, MoreOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, message, Tooltip } from 'antd';
+import { Button, Dropdown, Menu, message, Tooltip } from '@/components/ui';
 import { useReactFlow } from 'reactflow';
 
 const NodeWrapper = ({ children, nodeType, id, data }) => {

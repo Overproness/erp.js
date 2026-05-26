@@ -21,7 +21,7 @@ import {
   Table,
   Tag,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import {
   ArcElement,
   BarElement,

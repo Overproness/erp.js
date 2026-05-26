@@ -299,3 +299,245 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #c4c7cc;
 }
+
+/* ─── tweakcn / shadcn overrides for kept antd components ───────────────────
+   These scoped rules make Form, Table, Select, DatePicker, Upload, InputNumber
+   pick up the CSS variables defined in shadcn-vars.css inside .erp-app.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.erp-app {
+  /* antd global token bridge */
+  --ant-color-primary: oklch(0.6231 0.1880 259.8145);
+  --ant-color-primary-hover: oklch(0.6800 0.1600 259.8145);
+  --ant-color-border: hsl(var(--border));
+  --ant-border-radius: var(--radius);
+  --ant-border-radius-lg: calc(var(--radius) * 1.5);
+  --ant-color-bg-container: hsl(var(--background));
+  --ant-color-text: hsl(var(--foreground));
+  --ant-color-text-secondary: hsl(var(--muted-foreground));
+  --ant-color-error: hsl(var(--destructive));
+}
+
+/* Form */
+.erp-app .ant-form-item-label > label {
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.erp-app .ant-form-item-explain-error {
+  color: hsl(var(--destructive));
+  font-size: 0.75rem;
+}
+
+/* Inputs & Select inside antd Form */
+.erp-app .ant-input,
+.erp-app .ant-input-affix-wrapper,
+.erp-app .ant-input-number,
+.erp-app .ant-input-number-input,
+.erp-app .ant-picker,
+.erp-app .ant-select-selector {
+  background-color: hsl(var(--background)) !important;
+  border-color: hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+  color: hsl(var(--foreground)) !important;
+  box-shadow: none !important;
+  font-size: 0.875rem;
+}
+
+.erp-app .ant-input:focus,
+.erp-app .ant-input-affix-wrapper:focus,
+.erp-app .ant-input-affix-wrapper-focused,
+.erp-app .ant-input-number-focused,
+.erp-app .ant-picker-focused,
+.erp-app .ant-select-focused .ant-select-selector {
+  border-color: hsl(var(--ring)) !important;
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2) !important;
+}
+
+.erp-app .ant-input::placeholder,
+.erp-app .ant-input-number input::placeholder,
+.erp-app .ant-picker input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Select dropdown */
+.erp-app .ant-select-dropdown {
+  background-color: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0,0,0,.08));
+}
+
+.erp-app .ant-select-item {
+  color: hsl(var(--foreground));
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.erp-app .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.erp-app .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: hsl(var(--accent));
+}
+
+/* DatePicker popup */
+.erp-app .ant-picker-panel-container {
+  background-color: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.erp-app .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.erp-app .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.erp-app .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: hsl(var(--primary));
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.erp-app .ant-picker-today-btn,
+.erp-app .ant-picker-header-view button {
+  color: hsl(var(--primary));
+}
+
+/* Table */
+.erp-app .ant-table {
+  border-radius: var(--radius) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  overflow: hidden;
+  background: hsl(var(--card)) !important;
+  box-shadow: none !important;
+}
+
+.erp-app .ant-table-thead > tr > th {
+  background: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 16px !important;
+}
+
+.erp-app .ant-table-tbody > tr > td {
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  background: hsl(var(--card)) !important;
+  padding: 12px 16px !important;
+}
+
+.erp-app .ant-table-tbody > tr:hover > td {
+  background: hsl(var(--accent) / 0.4) !important;
+}
+
+.erp-app .ant-table-tbody > tr.ant-table-row-selected > td {
+  background: hsl(var(--primary) / 0.08) !important;
+}
+
+/* Upload */
+.erp-app .ant-upload-drag {
+  background: hsl(var(--muted) / 0.4) !important;
+  border: 2px dashed hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.erp-app .ant-upload-drag:hover {
+  border-color: hsl(var(--primary)) !important;
+  background: hsl(var(--primary) / 0.04) !important;
+}
+
+/* Pagination */
+.erp-app .ant-pagination-item-active {
+  background: hsl(var(--primary)) !important;
+  border-color: hsl(var(--primary)) !important;
+  border-radius: var(--radius) !important;
+}
+
+.erp-app .ant-pagination-item-active a {
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.erp-app .ant-pagination-item {
+  border-radius: var(--radius) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Menu */
+.erp-app .ant-menu {
+  background: transparent;
+  border: none;
+}
+
+.erp-app .ant-menu-item-selected {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+}
+
+.erp-app .ant-menu-item:hover {
+  background-color: hsl(var(--accent) / 0.6) !important;
+  color: hsl(var(--accent-foreground)) !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+}
+
+/* Steps */
+.erp-app .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.erp-app .ant-steps-item-process .ant-steps-item-icon {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+/* Spin */
+.erp-app .ant-spin-dot-item {
+  background-color: hsl(var(--primary));
+}
+
+/* Buttons (antd buttons still in passthrough context) */
+.erp-app .ant-btn-primary {
+  background: hsl(var(--primary)) !important;
+  border-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: none !important;
+}
+
+.erp-app .ant-btn-primary:hover {
+  background: hsl(var(--primary) / 0.9) !important;
+  border-color: transparent !important;
+}
+
+.erp-app .ant-btn-default {
+  border-color: hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  background: hsl(var(--background)) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* Dark mode adjustments */
+.erp-app.dark .ant-table-thead > tr > th,
+.dark .erp-app .ant-table-thead > tr > th {
+  background: hsl(var(--muted)) !important;
+}
+
+.erp-app.dark .ant-table-tbody > tr > td,
+.dark .erp-app .ant-table-tbody > tr > td {
+  background: hsl(var(--card)) !important;
+  border-bottom-color: hsl(var(--border)) !important;
+}
+
+.erp-app.dark .ant-select-dropdown,
+.dark .erp-app .ant-select-dropdown,
+.erp-app.dark .ant-picker-panel-container,
+.dark .erp-app .ant-picker-panel-container {
+  background-color: hsl(var(--popover));
+  border-color: hsl(var(--border));
+}
+

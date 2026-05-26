@@ -10,7 +10,7 @@ import {
   Select,
   Switch,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect } from 'react';
 
 const { Option } = Select;

@@ -7,7 +7,7 @@ import {
   SaveOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Divider, Form, Input, Row, Select, Switch, message } from 'antd';
+import { Button, Card, Col, Divider, Form, Input, Row, Select, Switch, message } from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 const { TextArea } = Input;

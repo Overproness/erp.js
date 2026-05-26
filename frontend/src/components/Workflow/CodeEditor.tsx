@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input } from '@/components/ui';
 
 const CodeEditor = ({ value, onChange, height = '200px' }) => {
   // For a real app, consider using a library like react-codemirror or monaco-editor

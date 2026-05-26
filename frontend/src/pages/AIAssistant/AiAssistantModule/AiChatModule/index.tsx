@@ -2,7 +2,7 @@ import { ErpLayout } from '@/layout';
 import { selectAssistantsList, selectAssistantsLoading } from '@/redux/ai/aiSelectors';
 import { setCurrentAssistant } from '@/redux/ai/aiSlice';
 import { fetchAssistants } from '@/redux/ai/aiThunks';
-import { Col, Layout, Row, Spin } from 'antd';
+import { Col, Layout, Row, Spin } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';

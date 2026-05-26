@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Empty } from 'antd';
+import { Card, Empty } from '@/components/ui';
 import { Line } from '@ant-design/charts';
 import useLanguage from '@/locale/useLanguage';
 

@@ -1,5 +1,5 @@
 import { ErpContextProvider } from '@/context/erp';
-import { Layout } from 'antd';
+import { Layout } from '@/components/ui';
 
 const { Content } = Layout;
 

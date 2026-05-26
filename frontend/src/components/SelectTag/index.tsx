@@ -1,4 +1,4 @@
-import { Select, Tag } from 'antd';
+import { Select, Tag } from '@/components/ui';
 import { generate as uniqueId } from 'shortid';
 
 export default function SelectTag({ options, defaultValue }) {

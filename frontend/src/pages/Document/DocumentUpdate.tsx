@@ -2,7 +2,7 @@ import DocumentAnalyzer from '@/components/AiAssist/DocumentAnalyzer';
 import DocumentForm from '@/forms/DocumentForm';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
-import { App, Button, Card, Form, Spin, Tabs } from 'antd';
+import { App, Button, Card, Form, Spin, Tabs } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';

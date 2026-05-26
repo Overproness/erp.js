@@ -11,7 +11,7 @@ import {
   Space,
   Button,
   Tooltip
-} from 'antd';
+} from '@/components/ui';
 import {
   DeleteOutlined,
   PlusOutlined,

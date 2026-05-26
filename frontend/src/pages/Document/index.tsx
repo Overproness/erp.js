@@ -33,7 +33,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

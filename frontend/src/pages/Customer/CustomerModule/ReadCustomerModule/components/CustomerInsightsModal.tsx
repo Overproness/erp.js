@@ -6,7 +6,7 @@ import {
   ExclamationCircleOutlined,
   RiseOutlined,
 } from '@ant-design/icons';
-import { Alert, Card, Divider, Empty, Modal, Spin, Typography } from 'antd';
+import { Alert, Card, Divider, Empty, Modal, Spin, Typography } from '@/components/ui';
 
 const { Title, Paragraph, Text } = Typography;
 

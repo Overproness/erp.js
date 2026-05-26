@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, message } from 'antd';
+import { Modal, message } from '@/components/ui';
 import { useDispatch, useSelector } from 'react-redux';
 import { erp } from '@/redux/erp/actions';
 import { useErpContext } from '@/context/erp';

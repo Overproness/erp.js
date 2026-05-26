@@ -5,7 +5,7 @@ import {
   QuestionCircleOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons';
-import { Card, Collapse, Tabs, Typography, message } from 'antd';
+import { Card, Collapse, Tabs, Typography, message } from '@/components/ui';
 import { useState } from 'react';
 
 const { TabPane } = Tabs;

@@ -1,7 +1,7 @@
 import { useProfileContext } from '@/context/profileContext';
 import { generate as uniqueId } from 'shortid';
 import { CloseCircleOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Row } from 'antd';
+import { Button, Col, Form, Row } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,14 @@ const UpdateAdmin = ({ config }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue(currentAdmin);
+    if (currentAdmin) {
+      form.setFieldsValue({
+        ...currentAdmin,
+        name: currentAdmin.name ?? '',
+        surname: currentAdmin.surname ?? '',
+        email: currentAdmin.email ?? '',
+      });
+    }
   }, [currentAdmin]);
 
   const handleSubmit = () => {

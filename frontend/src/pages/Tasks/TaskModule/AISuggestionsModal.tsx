@@ -23,7 +23,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;

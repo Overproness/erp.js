@@ -13,7 +13,7 @@ import {
   Alert,
   Tag,
   Progress
-} from 'antd';
+} from '@/components/ui';
 import { 
   LockOutlined, 
   ClockCircleOutlined, 

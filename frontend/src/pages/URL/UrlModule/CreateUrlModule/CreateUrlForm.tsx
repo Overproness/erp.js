@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Select, Switch, DatePicker, InputNumber, Card, Row, Col, Divider, Alert, Typography } from 'antd';
+import { Form, Input, Button, Select, Switch, DatePicker, InputNumber, Card, Row, Col, Divider, Alert, Typography } from '@/components/ui';
 import { LinkOutlined, CheckCircleOutlined, ExclamationCircleOutlined, GlobalOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 import { validateUrl } from '@/utils/helpers';

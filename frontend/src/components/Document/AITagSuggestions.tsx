@@ -5,7 +5,7 @@ import {
   RobotOutlined,
   TagsOutlined,
 } from '@ant-design/icons';
-import { Button, List, message, Modal, Space, Spin, Tag, Tooltip } from 'antd';
+import { Button, List, message, Modal, Space, Spin, Tag, Tooltip } from '@/components/ui';
 import { useState } from 'react';
 
 /**

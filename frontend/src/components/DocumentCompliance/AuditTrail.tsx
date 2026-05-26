@@ -10,7 +10,7 @@ import {
   LockOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Alert, Badge, Card, Empty, Space, Table, Tag, Typography } from 'antd';
+import { Alert, Badge, Card, Empty, Space, Table, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

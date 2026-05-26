@@ -1,7 +1,7 @@
 import './style/app.css';
 
 import { ApolloProvider } from '@apollo/client/react';
-import { App, ConfigProvider } from 'antd';
+import { App, ConfigProvider } from '@/components/ui';
 import { Suspense, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';

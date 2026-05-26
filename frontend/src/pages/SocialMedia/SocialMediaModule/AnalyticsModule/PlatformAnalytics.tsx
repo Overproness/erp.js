@@ -9,7 +9,7 @@ import {
   ShareAltOutlined,
   TwitterOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Progress, Row, Select, Statistic, Table, Tabs, Typography } from 'antd';
+import { Card, Col, Progress, Row, Select, Statistic, Table, Tabs, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 

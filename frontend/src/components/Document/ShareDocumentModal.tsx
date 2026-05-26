@@ -24,7 +24,7 @@ import {
   Space,
   Switch,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 

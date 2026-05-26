@@ -14,7 +14,7 @@ import {
   Col,
   message,
   Spin
-} from 'antd';
+} from '@/components/ui';
 import {
   BulbOutlined,
   RobotOutlined,

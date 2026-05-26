@@ -10,7 +10,7 @@ import {
   Card,
   message,
   Slider
-} from 'antd';
+} from '@/components/ui';
 import {
   DownloadOutlined,
   CopyOutlined,

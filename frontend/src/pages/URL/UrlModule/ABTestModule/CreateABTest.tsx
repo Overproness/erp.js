@@ -18,7 +18,7 @@ import {
   Tag,
   Spin,
   Empty
-} from 'antd';
+} from '@/components/ui';
 import {
   PlusOutlined,
   DeleteOutlined,

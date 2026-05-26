@@ -1,6 +1,6 @@
 import useLanguage from '@/locale/useLanguage';
 import { CheckCircleOutlined, DesktopOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Space, Spin, Statistic, Typography } from 'antd';
+import { Card, Col, Row, Space, Spin, Statistic, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 
 const { Text } = Typography;

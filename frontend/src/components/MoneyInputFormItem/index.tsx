@@ -1,4 +1,4 @@
-import { Form, InputNumber } from 'antd';
+import { Form, InputNumber } from '@/components/ui';
 import { useMoneyOld } from '@/settings';
 
 export default function MoneyInputFormItem({ updatePrice, value = 0, readOnly = false }) {

@@ -1,5 +1,5 @@
 import { LockOutlined } from '@ant-design/icons';
-import { Button, Result } from 'antd';
+import { Button, Result } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
 import { getMinimumPlan, PLAN_METADATA, type PlanTier } from '../../config/featureMap';
 

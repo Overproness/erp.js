@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Table, Button, Space, Upload, message } from 'antd';
+import { Card, Table, Button, Space, Upload, message } from '@/components/ui';
 import { UploadOutlined, DownloadOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
 

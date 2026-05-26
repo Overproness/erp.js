@@ -25,7 +25,7 @@ import {
   Tag,
   Timeline,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import {
   Area,

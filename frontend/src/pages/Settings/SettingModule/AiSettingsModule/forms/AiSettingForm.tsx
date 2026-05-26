@@ -1,7 +1,7 @@
 import useLanguage from '@/locale/useLanguage';
 import { selectAppSettings } from '@/redux/settings/selectors';
 import { InfoCircleOutlined, KeyOutlined, RobotOutlined } from '@ant-design/icons';
-import { Alert, Button, Card, Divider, Form, Input, Select, Space, Switch, Typography } from 'antd';
+import { Alert, Button, Card, Divider, Form, Input, Select, Space, Switch, Typography } from '@/components/ui';
 import apolloClient from '@/graphql/client';
 import { TEST_OPENAI_KEY, TEST_GEMINI_KEY, TEST_CLAUDE_KEY } from '@/graphql/operations/settings';
 import { useState } from 'react';

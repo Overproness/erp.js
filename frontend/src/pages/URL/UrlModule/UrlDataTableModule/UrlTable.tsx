@@ -11,7 +11,7 @@ import {
   Typography,
   Progress,
   Popconfirm
-} from 'antd';
+} from '@/components/ui';
 import {
   EyeOutlined,
   EditOutlined,

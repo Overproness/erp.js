@@ -10,7 +10,7 @@ import {
   Space, 
   Alert,
   Table
-} from 'antd';
+} from '@/components/ui';
 import {
   MailOutlined,
   UserOutlined,

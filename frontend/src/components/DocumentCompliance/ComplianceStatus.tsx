@@ -5,7 +5,7 @@ import {
   ExclamationCircleOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import { Tag, Tooltip } from 'antd';
+import { Tag, Tooltip } from '@/components/ui';
 
 export default function ComplianceStatus({ status, size = 'default' }) {
   const translate = useLanguage();

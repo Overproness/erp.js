@@ -2,7 +2,7 @@ import useLanguage from '@/locale/useLanguage';
 import { selectSuggestions, selectSuggestionsLoading } from '@/redux/ai/aiSelectors';
 import { fetchSuggestions } from '@/redux/ai/aiThunks';
 import { CheckCircleOutlined, RiseOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Card, Empty, List, Progress, Space, Spin, Tag, Typography } from 'antd';
+import { Button, Card, Empty, List, Progress, Space, Spin, Tag, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 

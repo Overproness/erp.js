@@ -1,6 +1,6 @@
 // import { generate as uniqueId } from 'shortid';
 // import { SyncOutlined } from '@ant-design/icons';
-import { Divider } from 'antd';
+import { Divider } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 import UpdateSettingForm from './UpdateSettingForm';
 

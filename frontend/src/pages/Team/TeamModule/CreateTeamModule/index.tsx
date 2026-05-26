@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'antd';
+import { Form } from '@/components/ui';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

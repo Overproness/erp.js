@@ -2,7 +2,7 @@ import useLanguage from '@/locale/useLanguage';
 import CreateItem from '@/pages/ErpPanelModule/CreateItem';
 import { selectCreatedItem } from '@/redux/erp/selectors'; // Changed from crud to erp
 import { InboxOutlined } from '@ant-design/icons';
-import { DatePicker, Form, Input, Select, Upload } from 'antd';
+import { DatePicker, Form, Input, Select, Upload } from '@/components/ui';
 import { useSelector } from 'react-redux';
 
 const { Option } = Select;

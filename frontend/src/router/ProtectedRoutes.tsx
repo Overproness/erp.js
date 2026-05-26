@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { message } from 'antd';
+import { message } from '@/components/ui';
 
 import { selectAuth } from '@/redux/auth/selectors';
 import { usePermissions } from '@/hooks/usePermissions';

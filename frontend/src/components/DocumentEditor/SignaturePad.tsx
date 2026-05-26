@@ -1,5 +1,5 @@
 import { CheckOutlined, ClearOutlined } from '@ant-design/icons';
-import { Button, Divider, Typography } from 'antd';
+import { Button, Divider, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 
 const SignaturePad = ({ onSignatureCapture }) => {

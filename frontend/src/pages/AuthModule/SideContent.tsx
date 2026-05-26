@@ -1,4 +1,4 @@
-import { Layout, Typography } from 'antd';
+import { Layout, Typography } from '@/components/ui';
 // import logo from '@/style/images/crm-erp.svg';
 import useLanguage from '@/locale/useLanguage';
 

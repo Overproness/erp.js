@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Button } from 'antd';
+import { Space, Button } from '@/components/ui';
 import { BulbOutlined } from '@ant-design/icons';
 
 const SuggestionChips = ({ suggestions, onSuggestionClick }) => {

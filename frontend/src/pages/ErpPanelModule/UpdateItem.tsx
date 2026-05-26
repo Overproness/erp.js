@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Form, Divider } from 'antd';
+import { Form, Divider } from '@/components/ui';
 import dayjs from 'dayjs';
-import { Button, Tag } from 'antd';
+import { Button, Tag } from '@/components/ui';
 import { PageHeader } from '@ant-design/pro-layout';
 
 import { useSelector, useDispatch } from 'react-redux';

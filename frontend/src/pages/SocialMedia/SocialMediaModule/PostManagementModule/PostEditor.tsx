@@ -16,7 +16,7 @@ import {
   Alert,
   message,
   Divider
-} from 'antd';
+} from '@/components/ui';
 import {
   PictureOutlined,
   VideoCameraOutlined,

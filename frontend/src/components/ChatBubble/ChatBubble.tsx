@@ -21,7 +21,7 @@ import {
   Tag,
   Tooltip,
   Typography,
-} from 'antd';
+} from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useCopilot } from '../../context/useCopilot';
 import './ChatBubble.css';

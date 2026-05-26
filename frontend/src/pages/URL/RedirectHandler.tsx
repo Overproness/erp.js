@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '@/config/serverApiConfig';
-import { Spin } from 'antd';
+import { Spin } from '@/components/ui';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Card, Row, Col, Typography, Button, Tabs, Tag, Divider, Statistic, Space, Form, Input, Select, Switch, message, Modal, Radio, Tooltip, Upload } from 'antd';
+import { Card, Row, Col, Typography, Button, Tabs, Tag, Divider, Statistic, Space, Form, Input, Select, Switch, message, Modal, Radio, Tooltip, Upload } from '@/components/ui';
 import { 
   ApiOutlined, 
   LinkOutlined, 

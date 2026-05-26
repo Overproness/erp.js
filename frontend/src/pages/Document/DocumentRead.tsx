@@ -13,7 +13,7 @@ import {
   HistoryOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Descriptions, Divider, message, Space, Tag, Typography } from 'antd';
+import { Button, Card, Descriptions, Divider, message, Space, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
