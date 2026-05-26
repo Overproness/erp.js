@@ -1,6 +1,12 @@
 import PageLoader from '@/components/PageLoader';
+import { Button, Card, Col, DatePicker, message, Row, Select, Statistic } from '@/components/ui';
 import apolloClient from '@/graphql/client';
-import { GENERATE_ANALYTICS_REPORT, GET_ANALYTICS_OVERVIEW, GET_REALTIME_ANALYTICS, GET_MODULE_ANALYTICS } from '@/graphql/operations/analytics';
+import {
+  GENERATE_ANALYTICS_REPORT,
+  GET_ANALYTICS_OVERVIEW,
+  GET_MODULE_ANALYTICS,
+  GET_REALTIME_ANALYTICS,
+} from '@/graphql/operations/analytics';
 import {
   BarChartOutlined,
   CheckCircleOutlined,
@@ -14,7 +20,6 @@ import {
   StarOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, message, Row, Select, Statistic } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -105,7 +110,12 @@ export default function AnalyticsReporting() {
     try {
       const { data } = await apolloClient.query({
         query: GET_MODULE_ANALYTICS,
-        variables: { module, period: dateRange ? `${dateRange[0].toISOString()}_${dateRange[1].toISOString()}` : undefined },
+        variables: {
+          module,
+          period: dateRange
+            ? `${dateRange[0].toISOString()}_${dateRange[1].toISOString()}`
+            : undefined,
+        },
         fetchPolicy: 'cache-first',
       });
       if (data.globalAnalyticsModule?.success) {

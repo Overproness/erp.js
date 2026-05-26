@@ -1,3 +1,4 @@
+import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
 import { crud } from '@/redux/crud/actions';
 import { selectCreatedItem } from '@/redux/crud/selectors';
 import {
@@ -6,7 +7,6 @@ import {
   PercentageOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,11 +14,11 @@ import { useTaxStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 
 import { DataImportButton } from '@/components/DataEntry';
+import { Switch } from '@/components/ui';
 import TaxForm from '@/forms/TaxForm';
 import CrudModule from '@/pages/CrudModule/CrudModule';
 import { erp } from '@/redux/erp/actions';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { Switch } from '@/components/ui';
 
 const { Title, Text } = Typography;
 

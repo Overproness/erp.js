@@ -130,52 +130,141 @@ Row.displayName = 'Row';
 // ── Col responsive helpers ────────────────────────────────────────────────────
 function getSpanNum(p: number | Record<string, number> | undefined): number | undefined {
   if (typeof p === 'number') return p;
-  if (typeof p === 'object' && p !== null && 'span' in p)
-    return (p as Record<string, number>).span;
+  if (typeof p === 'object' && p !== null && 'span' in p) return (p as Record<string, number>).span;
   return undefined;
 }
 
 // Explicit static maps so Tailwind JIT can scan and generate the classes.
 // Tailwind preflight is disabled; these handle responsive column widths.
 const BASE_W: Record<number, string> = {
-  1:'w-[4.1667%]', 2:'w-[8.3333%]', 3:'w-[12.5%]', 4:'w-1/6',
-  5:'w-[20.8333%]', 6:'w-1/4', 7:'w-[29.1667%]', 8:'w-1/3',
-  9:'w-[37.5%]', 10:'w-[41.6667%]', 11:'w-[45.8333%]', 12:'w-1/2',
-  13:'w-[54.1667%]', 14:'w-[58.3333%]', 15:'w-[62.5%]', 16:'w-2/3',
-  17:'w-[70.8333%]', 18:'w-3/4', 19:'w-[79.1667%]', 20:'w-[83.3333%]',
-  21:'w-[87.5%]', 22:'w-[91.6667%]', 23:'w-[95.8333%]', 24:'w-full',
+  1: 'w-[4.1667%]',
+  2: 'w-[8.3333%]',
+  3: 'w-[12.5%]',
+  4: 'w-1/6',
+  5: 'w-[20.8333%]',
+  6: 'w-1/4',
+  7: 'w-[29.1667%]',
+  8: 'w-1/3',
+  9: 'w-[37.5%]',
+  10: 'w-[41.6667%]',
+  11: 'w-[45.8333%]',
+  12: 'w-1/2',
+  13: 'w-[54.1667%]',
+  14: 'w-[58.3333%]',
+  15: 'w-[62.5%]',
+  16: 'w-2/3',
+  17: 'w-[70.8333%]',
+  18: 'w-3/4',
+  19: 'w-[79.1667%]',
+  20: 'w-[83.3333%]',
+  21: 'w-[87.5%]',
+  22: 'w-[91.6667%]',
+  23: 'w-[95.8333%]',
+  24: 'w-full',
 };
 const SM_W: Record<number, string> = {
-  1:'sm:w-[4.1667%]', 2:'sm:w-[8.3333%]', 3:'sm:w-[12.5%]', 4:'sm:w-1/6',
-  5:'sm:w-[20.8333%]', 6:'sm:w-1/4', 7:'sm:w-[29.1667%]', 8:'sm:w-1/3',
-  9:'sm:w-[37.5%]', 10:'sm:w-[41.6667%]', 11:'sm:w-[45.8333%]', 12:'sm:w-1/2',
-  13:'sm:w-[54.1667%]', 14:'sm:w-[58.3333%]', 15:'sm:w-[62.5%]', 16:'sm:w-2/3',
-  17:'sm:w-[70.8333%]', 18:'sm:w-3/4', 19:'sm:w-[79.1667%]', 20:'sm:w-[83.3333%]',
-  21:'sm:w-[87.5%]', 22:'sm:w-[91.6667%]', 23:'sm:w-[95.8333%]', 24:'sm:w-full',
+  1: 'sm:w-[4.1667%]',
+  2: 'sm:w-[8.3333%]',
+  3: 'sm:w-[12.5%]',
+  4: 'sm:w-1/6',
+  5: 'sm:w-[20.8333%]',
+  6: 'sm:w-1/4',
+  7: 'sm:w-[29.1667%]',
+  8: 'sm:w-1/3',
+  9: 'sm:w-[37.5%]',
+  10: 'sm:w-[41.6667%]',
+  11: 'sm:w-[45.8333%]',
+  12: 'sm:w-1/2',
+  13: 'sm:w-[54.1667%]',
+  14: 'sm:w-[58.3333%]',
+  15: 'sm:w-[62.5%]',
+  16: 'sm:w-2/3',
+  17: 'sm:w-[70.8333%]',
+  18: 'sm:w-3/4',
+  19: 'sm:w-[79.1667%]',
+  20: 'sm:w-[83.3333%]',
+  21: 'sm:w-[87.5%]',
+  22: 'sm:w-[91.6667%]',
+  23: 'sm:w-[95.8333%]',
+  24: 'sm:w-full',
 };
 const MD_W: Record<number, string> = {
-  1:'md:w-[4.1667%]', 2:'md:w-[8.3333%]', 3:'md:w-[12.5%]', 4:'md:w-1/6',
-  5:'md:w-[20.8333%]', 6:'md:w-1/4', 7:'md:w-[29.1667%]', 8:'md:w-1/3',
-  9:'md:w-[37.5%]', 10:'md:w-[41.6667%]', 11:'md:w-[45.8333%]', 12:'md:w-1/2',
-  13:'md:w-[54.1667%]', 14:'md:w-[58.3333%]', 15:'md:w-[62.5%]', 16:'md:w-2/3',
-  17:'md:w-[70.8333%]', 18:'md:w-3/4', 19:'md:w-[79.1667%]', 20:'md:w-[83.3333%]',
-  21:'md:w-[87.5%]', 22:'md:w-[91.6667%]', 23:'md:w-[95.8333%]', 24:'md:w-full',
+  1: 'md:w-[4.1667%]',
+  2: 'md:w-[8.3333%]',
+  3: 'md:w-[12.5%]',
+  4: 'md:w-1/6',
+  5: 'md:w-[20.8333%]',
+  6: 'md:w-1/4',
+  7: 'md:w-[29.1667%]',
+  8: 'md:w-1/3',
+  9: 'md:w-[37.5%]',
+  10: 'md:w-[41.6667%]',
+  11: 'md:w-[45.8333%]',
+  12: 'md:w-1/2',
+  13: 'md:w-[54.1667%]',
+  14: 'md:w-[58.3333%]',
+  15: 'md:w-[62.5%]',
+  16: 'md:w-2/3',
+  17: 'md:w-[70.8333%]',
+  18: 'md:w-3/4',
+  19: 'md:w-[79.1667%]',
+  20: 'md:w-[83.3333%]',
+  21: 'md:w-[87.5%]',
+  22: 'md:w-[91.6667%]',
+  23: 'md:w-[95.8333%]',
+  24: 'md:w-full',
 };
 const LG_W: Record<number, string> = {
-  1:'lg:w-[4.1667%]', 2:'lg:w-[8.3333%]', 3:'lg:w-[12.5%]', 4:'lg:w-1/6',
-  5:'lg:w-[20.8333%]', 6:'lg:w-1/4', 7:'lg:w-[29.1667%]', 8:'lg:w-1/3',
-  9:'lg:w-[37.5%]', 10:'lg:w-[41.6667%]', 11:'lg:w-[45.8333%]', 12:'lg:w-1/2',
-  13:'lg:w-[54.1667%]', 14:'lg:w-[58.3333%]', 15:'lg:w-[62.5%]', 16:'lg:w-2/3',
-  17:'lg:w-[70.8333%]', 18:'lg:w-3/4', 19:'lg:w-[79.1667%]', 20:'lg:w-[83.3333%]',
-  21:'lg:w-[87.5%]', 22:'lg:w-[91.6667%]', 23:'lg:w-[95.8333%]', 24:'lg:w-full',
+  1: 'lg:w-[4.1667%]',
+  2: 'lg:w-[8.3333%]',
+  3: 'lg:w-[12.5%]',
+  4: 'lg:w-1/6',
+  5: 'lg:w-[20.8333%]',
+  6: 'lg:w-1/4',
+  7: 'lg:w-[29.1667%]',
+  8: 'lg:w-1/3',
+  9: 'lg:w-[37.5%]',
+  10: 'lg:w-[41.6667%]',
+  11: 'lg:w-[45.8333%]',
+  12: 'lg:w-1/2',
+  13: 'lg:w-[54.1667%]',
+  14: 'lg:w-[58.3333%]',
+  15: 'lg:w-[62.5%]',
+  16: 'lg:w-2/3',
+  17: 'lg:w-[70.8333%]',
+  18: 'lg:w-3/4',
+  19: 'lg:w-[79.1667%]',
+  20: 'lg:w-[83.3333%]',
+  21: 'lg:w-[87.5%]',
+  22: 'lg:w-[91.6667%]',
+  23: 'lg:w-[95.8333%]',
+  24: 'lg:w-full',
 };
 const XL_W: Record<number, string> = {
-  1:'xl:w-[4.1667%]', 2:'xl:w-[8.3333%]', 3:'xl:w-[12.5%]', 4:'xl:w-1/6',
-  5:'xl:w-[20.8333%]', 6:'xl:w-1/4', 7:'xl:w-[29.1667%]', 8:'xl:w-1/3',
-  9:'xl:w-[37.5%]', 10:'xl:w-[41.6667%]', 11:'xl:w-[45.8333%]', 12:'xl:w-1/2',
-  13:'xl:w-[54.1667%]', 14:'xl:w-[58.3333%]', 15:'xl:w-[62.5%]', 16:'xl:w-2/3',
-  17:'xl:w-[70.8333%]', 18:'xl:w-3/4', 19:'xl:w-[79.1667%]', 20:'xl:w-[83.3333%]',
-  21:'xl:w-[87.5%]', 22:'xl:w-[91.6667%]', 23:'xl:w-[95.8333%]', 24:'xl:w-full',
+  1: 'xl:w-[4.1667%]',
+  2: 'xl:w-[8.3333%]',
+  3: 'xl:w-[12.5%]',
+  4: 'xl:w-1/6',
+  5: 'xl:w-[20.8333%]',
+  6: 'xl:w-1/4',
+  7: 'xl:w-[29.1667%]',
+  8: 'xl:w-1/3',
+  9: 'xl:w-[37.5%]',
+  10: 'xl:w-[41.6667%]',
+  11: 'xl:w-[45.8333%]',
+  12: 'xl:w-1/2',
+  13: 'xl:w-[54.1667%]',
+  14: 'xl:w-[58.3333%]',
+  15: 'xl:w-[62.5%]',
+  16: 'xl:w-2/3',
+  17: 'xl:w-[70.8333%]',
+  18: 'xl:w-3/4',
+  19: 'xl:w-[79.1667%]',
+  20: 'xl:w-[83.3333%]',
+  21: 'xl:w-[87.5%]',
+  22: 'xl:w-[91.6667%]',
+  23: 'xl:w-[95.8333%]',
+  24: 'xl:w-full',
 };
 
 // ── Col ───────────────────────────────────────────────────────────────────────
@@ -196,7 +285,22 @@ export interface ColProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Col = React.forwardRef<HTMLDivElement, ColProps>(
   (
-    { span, offset, flex: flexProp, order, className, style, children, xs, sm, md, lg, xl, xxl, ...rest },
+    {
+      span,
+      offset,
+      flex: flexProp,
+      order,
+      className,
+      style,
+      children,
+      xs,
+      sm,
+      md,
+      lg,
+      xl,
+      xxl,
+      ...rest
+    },
     ref
   ) => {
     const xsSpan = getSpanNum(xs);
@@ -212,16 +316,10 @@ export const Col = React.forwardRef<HTMLDivElement, ColProps>(
 
     // Base width: explicit span, or 100% mobile-first when responsive props are given
     const baseWidth =
-      baseSpan !== undefined
-        ? `${(baseSpan / 24) * 100}%`
-        : hasAnyBreakpoint
-        ? '100%'
-        : undefined;
+      baseSpan !== undefined ? `${(baseSpan / 24) * 100}%` : hasAnyBreakpoint ? '100%' : undefined;
 
     const colStyle: React.CSSProperties = {
-      ...(baseWidth !== undefined
-        ? { width: baseWidth, flex: '0 0 auto' }
-        : { flex: '1 1 0%' }),
+      ...(baseWidth !== undefined ? { width: baseWidth, flex: '0 0 auto' } : { flex: '1 1 0%' }),
       ...(offset ? { marginLeft: `${(offset / 24) * 100}%` } : {}),
       ...(flexProp ? { flex: flexProp } : {}),
       ...(order !== undefined ? { order } : {}),
@@ -234,11 +332,16 @@ export const Col = React.forwardRef<HTMLDivElement, ColProps>(
       smSpan !== undefined && SM_W[smSpan],
       mdSpan !== undefined && MD_W[mdSpan],
       lgSpan !== undefined && LG_W[lgSpan],
-      xlSpan !== undefined && XL_W[xlSpan],
+      xlSpan !== undefined && XL_W[xlSpan]
     );
 
     return (
-      <div ref={ref} className={cn('box-border', responsiveClasses, className)} style={colStyle} {...rest}>
+      <div
+        ref={ref}
+        className={cn('box-border', responsiveClasses, className)}
+        style={colStyle}
+        {...rest}
+      >
         {children}
       </div>
     );
