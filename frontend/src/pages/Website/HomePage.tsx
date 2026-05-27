@@ -1,10 +1,12 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import WebsiteLayout from './components/WebsiteLayout';
 
 const HeroScene = lazy(() => import('@/components/HeroScene'));
 
 export default function HomePage() {
+  const [isModelReady, setIsModelReady] = useState(false);
+
   return (
     <WebsiteLayout
       description="ERP.js unifies your CRM, workflows, and analytics into a single high-performance canvas. Built for developers, scaled for enterprise."
@@ -65,15 +67,22 @@ export default function HomePage() {
 
           {/* 3D Crystal Engine Model */}
           <div className="relative hidden lg:flex justify-center items-center h-[600px] rounded-2xl overflow-hidden">
-            <Suspense
-              fallback={
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-xl bg-[#0058c3]/10 animate-pulse"></div>
-                </div>
-              }
+            {/* Static poster – visible immediately, zero blocking time */}
+            <img
+              src="/hero-section-3d-model-static.webp"
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-contain"
+            />
+            {/* 3D canvas fades in once Three.js has initialised */}
+            <div
+              className="absolute inset-0 transition-opacity duration-700"
+              style={{ opacity: isModelReady ? 1 : 0 }}
             >
-              <HeroScene />
-            </Suspense>
+              <Suspense fallback={null}>
+                <HeroScene onReady={() => setIsModelReady(true)} />
+              </Suspense>
+            </div>
           </div>
         </div>
       </section>

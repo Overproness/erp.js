@@ -241,7 +241,7 @@ function CrystalCube({
   );
 }
 
-export default function HeroScene() {
+export default function HeroScene({ onReady }: { onReady?: () => void }) {
   return (
     <div className="w-full h-full" style={{ minHeight: '500px' }}>
       <Canvas
@@ -249,6 +249,7 @@ export default function HeroScene() {
         camera={{ position: [0, 0, 16], zoom: 40 }}
         style={{ background: 'transparent' }}
         gl={{ alpha: true, antialias: true, toneMappingExposure: 0.85 }}
+        onCreated={() => onReady?.()}
       >
         <ambientLight intensity={0.25} color="#c8deff" />
         <directionalLight
