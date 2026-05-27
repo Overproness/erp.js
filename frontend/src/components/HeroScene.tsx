@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { DragControls, Environment, Lightformer, RoundedBox, Edges } from '@react-three/drei';
+import { DragControls, Edges, Environment, Lightformer, RoundedBox } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { useMemo, useRef, useState } from 'react';

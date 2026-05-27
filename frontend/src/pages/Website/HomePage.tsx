@@ -67,12 +67,13 @@ export default function HomePage() {
 
           {/* 3D Crystal Engine Model */}
           <div className="relative hidden lg:flex justify-center items-center h-[600px] rounded-2xl overflow-hidden">
-            {/* Static poster – visible immediately, zero blocking time */}
+            {/* Static poster – visible immediately, fades out once 3D canvas is ready */}
             <img
               src="/hero-section-3d-model-static.webp"
               alt=""
               aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-contain"
+              className="absolute inset-0 w-full h-full object-contain transition-opacity duration-700"
+              style={{ opacity: isModelReady ? 0 : 1 }}
             />
             {/* 3D canvas fades in once Three.js has initialised */}
             <div
