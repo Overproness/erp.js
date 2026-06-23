@@ -6,7 +6,6 @@ require('dotenv').config({ path: '.env' });
 import mongoose from 'mongoose';
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
-import path from 'path';
 
 declare const global: typeof globalThis & { io?: SocketIOServer };
 
@@ -28,14 +27,7 @@ mongoose.connection.on('error', (error: Error) => {
 // ─────────────────────────────────────────────────────────────
 // Dynamically Load All Mongoose Models
 // ─────────────────────────────────────────────────────────────
-const { globSync } = require('glob');
-
-const modelFiles: string[] = globSync(path.join(__dirname, 'models/**/*.{js,ts}'), {
-  ignore: ['**/*.d.ts'],
-});
-for (const filePath of modelFiles) {
-  require(filePath);
-}
+require('./models');
 
 // ─────────────────────────────────────────────────────────────
 // Settings Initialization (Executed After Models Load)

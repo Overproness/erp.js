@@ -2,11 +2,14 @@
 const { basename, extname } = require('path');
 const { globSync } = require('glob');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
-const appModelsFiles = globSync('./src/models/appModels/**/*.{js,ts}');
-const pattern = './src/models/**/*.{js,ts}';
+const loadedModels = require('..');
 
-const modelsFiles = globSync(pattern).map((filePath) => {
+const appModelsFiles = globSync('./src/models/appModels/**/*.{js,cjs,ts}');
+const pattern = './src/models/**/*.{js,cjs,ts}';
+
+const globModelNames = globSync(pattern).map((filePath) => {
   const fileNameWithExtension = basename(filePath);
   const fileNameWithoutExtension = fileNameWithExtension.replace(
     extname(fileNameWithExtension),
@@ -14,6 +17,10 @@ const modelsFiles = globSync(pattern).map((filePath) => {
   );
   return fileNameWithoutExtension;
 });
+
+const modelsFiles = Array.from(
+  new Set([...globModelNames, ...Object.keys(loadedModels), ...mongoose.modelNames()])
+);
 
 const constrollersList = [];
 const appModelsList = [];
