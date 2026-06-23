@@ -71,11 +71,11 @@ export default function AiAssistant() {
           </div>
           <Space>
             <Button
-              type="primary"
+              // type="primary"
               icon={<MessageOutlined />}
               onClick={() => navigate('/ai-assistant/chat')}
               style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                // background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 border: 'none',
                 borderRadius: '8px',
               }}
@@ -87,7 +87,7 @@ export default function AiAssistant() {
               icon={<PlusOutlined />}
               onClick={() => navigate('/ai-assistant/create')}
               style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                // background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
                 border: 'none',
                 borderRadius: '8px',
               }}

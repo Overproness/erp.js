@@ -61,7 +61,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-lg font-semibold text-white text-base border-none cursor-pointer transition-all hover:opacity-90 active:scale-[0.98]"
+              className="w-full px-4 mt-4 py-2 rounded-lg font-semibold text-white text-base border-none cursor-pointer transition-all hover:opacity-90 active:scale-[0.98]"
               style={{ background: 'linear-gradient(135deg, #0058c3 0%, #0070f3 100%)' }}
             >
               {isLoading ? 'Signing in...' : translate('Log in')}

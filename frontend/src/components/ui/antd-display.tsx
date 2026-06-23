@@ -1,6 +1,12 @@
 import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from '@/components/ui/avatar';
 import { Badge as ShadcnBadge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Tooltip as ShadcnTooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { Star } from 'lucide-react';
 import * as React from 'react';
@@ -66,7 +72,7 @@ interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
   disabled?: boolean;
   mark?: boolean;
   keyboard?: boolean;
-  ellipsis?: boolean;
+  ellipsis?: boolean | { tooltip?: React.ReactNode };
 }
 
 const Text = React.forwardRef<HTMLSpanElement, TextProps>(
@@ -87,31 +93,46 @@ const Text = React.forwardRef<HTMLSpanElement, TextProps>(
       ...rest
     },
     ref
-  ) => (
-    <span
-      ref={ref}
-      className={cn(
-        'text-foreground',
-        type === 'secondary' && 'text-muted-foreground',
-        type === 'success' && 'text-green-600',
-        type === 'warning' && 'text-yellow-600',
-        type === 'danger' && 'text-destructive',
-        strong && 'font-semibold',
-        italic && 'italic',
-        underline && 'underline',
-        del && 'line-through',
-        code && 'font-mono bg-muted px-1 py-0.5 rounded text-sm',
-        mark && 'bg-yellow-200 dark:bg-yellow-800 px-0.5 rounded',
-        keyboard && 'font-mono border border-border rounded px-1 text-xs',
-        disabled && 'opacity-40 cursor-not-allowed',
-        ellipsis && 'truncate',
-        className
-      )}
-      {...rest}
-    >
-      {children}
-    </span>
-  )
+  ) => {
+    const tooltipContent = typeof ellipsis === 'object' && ellipsis ? ellipsis.tooltip : null;
+
+    const node = (
+      <span
+        ref={ref}
+        className={cn(
+          'text-foreground',
+          type === 'secondary' && 'text-muted-foreground',
+          type === 'success' && 'text-green-600',
+          type === 'warning' && 'text-yellow-600',
+          type === 'danger' && 'text-destructive',
+          strong && 'font-semibold',
+          italic && 'italic',
+          underline && 'underline',
+          del && 'line-through',
+          code && 'font-mono bg-muted px-1 py-0.5 rounded text-sm',
+          mark && 'bg-yellow-200 dark:bg-yellow-800 px-0.5 rounded',
+          keyboard && 'font-mono border border-border rounded px-1 text-xs',
+          disabled && 'opacity-40 cursor-not-allowed',
+          ellipsis && 'inline-block max-w-full truncate align-bottom',
+          className
+        )}
+        {...rest}
+      >
+        {children}
+      </span>
+    );
+
+    if (!tooltipContent) return node;
+
+    return (
+      <TooltipProvider>
+        <ShadcnTooltip>
+          <TooltipTrigger asChild>{node}</TooltipTrigger>
+          <TooltipContent>{tooltipContent}</TooltipContent>
+        </ShadcnTooltip>
+      </TooltipProvider>
+    );
+  }
 );
 Text.displayName = 'Typography.Text';
 
@@ -123,7 +144,7 @@ interface ParagraphProps extends React.HTMLAttributes<HTMLParagraphElement> {
   underline?: boolean;
   italic?: boolean;
   copyable?: boolean;
-  ellipsis?: boolean | { rows?: number };
+  ellipsis?: boolean | { rows?: number; tooltip?: React.ReactNode };
 }
 
 const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
@@ -137,32 +158,59 @@ const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
       italic,
       ellipsis,
       className,
+      style,
       children,
       ...rest
     },
     ref
-  ) => (
-    <p
-      ref={ref}
-      className={cn(
-        'leading-relaxed text-foreground',
-        type === 'secondary' && 'text-muted-foreground',
-        type === 'success' && 'text-green-600',
-        type === 'warning' && 'text-yellow-600',
-        type === 'danger' && 'text-destructive',
-        strong && 'font-semibold',
-        italic && 'italic',
-        del && 'line-through',
-        underline && 'underline',
-        disabled && 'opacity-40',
-        typeof ellipsis === 'boolean' && ellipsis && 'truncate',
-        className
-      )}
-      {...rest}
-    >
-      {children}
-    </p>
-  )
+  ) => {
+    const ellipsisConfig: { rows?: number; tooltip?: React.ReactNode } | null = ellipsis
+      ? typeof ellipsis === 'object'
+        ? ellipsis
+        : {}
+      : null;
+    const rows = ellipsisConfig?.rows ?? 1;
+    const isMultiline = rows > 1;
+
+    const node = (
+      <p
+        ref={ref}
+        className={cn(
+          'leading-relaxed text-foreground',
+          type === 'secondary' && 'text-muted-foreground',
+          type === 'success' && 'text-green-600',
+          type === 'warning' && 'text-yellow-600',
+          type === 'danger' && 'text-destructive',
+          strong && 'font-semibold',
+          italic && 'italic',
+          del && 'line-through',
+          underline && 'underline',
+          disabled && 'opacity-40',
+          ellipsisConfig && (isMultiline ? 'overflow-hidden' : 'truncate'),
+          className
+        )}
+        style={
+          ellipsisConfig && isMultiline
+            ? { ...style, display: '-webkit-box', WebkitLineClamp: rows, WebkitBoxOrient: 'vertical' }
+            : style
+        }
+        {...rest}
+      >
+        {children}
+      </p>
+    );
+
+    if (!ellipsisConfig?.tooltip) return node;
+
+    return (
+      <TooltipProvider>
+        <ShadcnTooltip>
+          <TooltipTrigger asChild>{node}</TooltipTrigger>
+          <TooltipContent>{ellipsisConfig.tooltip}</TooltipContent>
+        </ShadcnTooltip>
+      </TooltipProvider>
+    );
+  }
 );
 Paragraph.displayName = 'Typography.Paragraph';
 

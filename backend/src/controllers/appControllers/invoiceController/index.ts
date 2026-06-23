@@ -9,6 +9,7 @@ const update = require('./update');
 const remove = require('./remove');
 const paginatedList = require('./paginatedList');
 const read = require('./read');
+const { generateRecurringInvoice, getRecurringInvoiceHistory } = require('./recurringBilling');
 
 methods.mail = sendMail;
 methods.create = create;
@@ -17,5 +18,7 @@ methods.delete = remove;
 methods.summary = summary;
 methods.list = paginatedList;
 methods.read = read;
+methods.generateRecurring = generateRecurringInvoice;
+methods.recurringHistory = getRecurringInvoiceHistory;
 
 module.exports = methods;

@@ -152,3 +152,5 @@ exports.getDocumentAuditSummary = async (req, res) => {
 };
 
 module.exports.createAuditLog = createAuditLog;
+// Alias for GraphQL resolver
+exports.getAuditTrail = exports.getDocumentAuditTrail;

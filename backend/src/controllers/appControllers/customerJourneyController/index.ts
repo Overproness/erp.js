@@ -291,6 +291,12 @@ function modelController() {
   };
   methods.getJourneyAnalytics = getJourneyAnalytics;
 
+  // Aliases for GraphQL resolvers
+  methods.getJourney = getClientJourney;
+  methods.getAnalytics = getJourneyAnalytics;
+  methods.initialize = initializeJourney;
+  methods.transition = transitionStage;
+
   return methods;
 }
 

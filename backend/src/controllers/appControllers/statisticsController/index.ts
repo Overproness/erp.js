@@ -1051,6 +1051,7 @@ const getWorkflowStats = async (req, res) => {
 
 module.exports = {
   getDashboardStats,
+  dashboard: getDashboardStats,
   getClientStats,
   getInvoiceStats,
   getQuoteStats,

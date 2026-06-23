@@ -2450,4 +2450,7 @@ class CampaignController {
   }
 }
 
-module.exports = new CampaignController();
+const campaignControllerInstance = new CampaignController();
+// Alias for GraphQL resolver
+campaignControllerInstance.bulkUpdate = campaignControllerInstance.bulkOperations.bind(campaignControllerInstance);
+module.exports = campaignControllerInstance;

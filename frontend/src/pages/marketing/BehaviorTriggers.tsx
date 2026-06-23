@@ -391,19 +391,25 @@ export default function BehaviorTriggers() {
       </Row>
 
       {/* Search and Actions */}
-      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          marginBottom: '16px',
+          gap: '16px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <Search
           placeholder={translate('Search triggers')}
+          // className="p-4"
           allowClear
           style={{ width: 300 }}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
-        <Space>
-          <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateTrigger}>
-            {translate('Create Trigger')}
-          </Button>
-        </Space>
+        <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateTrigger}>
+          {translate('Create Trigger')}
+        </Button>
       </div>
 
       {/* Triggers Table */}

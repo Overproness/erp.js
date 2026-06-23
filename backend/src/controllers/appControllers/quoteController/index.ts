@@ -32,6 +32,11 @@ methods.getDeliveryHistory = getDeliveryHistory;
 methods.checkDeliveryStatus = checkDeliveryStatus;
 methods.sendBulkQuotes = sendBulkQuotes;
 
+// Aliases for GraphQL resolvers
+methods.deliveryHistory = getDeliveryHistory;
+methods.deliveryStatus = checkDeliveryStatus;
+methods.send = sendQuote;
+
 methods.create = create;
 methods.update = update;
 methods.convert = convertQuoteToInvoice;

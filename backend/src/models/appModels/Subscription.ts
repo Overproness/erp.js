@@ -43,8 +43,4 @@ subscriptionSchema.pre('save', function (next) {
   next();
 });
 
-subscriptionSchema.index({ companyOwner: 1 });
-subscriptionSchema.index({ stripeCustomerId: 1 });
-subscriptionSchema.index({ stripeSubscriptionId: 1 });
-
 module.exports = mongoose.model('Subscription', subscriptionSchema);

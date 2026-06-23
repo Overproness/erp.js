@@ -75,6 +75,12 @@ const reviewTemplateController = require('./reviewTemplateController');
 const copilotController = require('./copilotController');
 const aiEnhancedController = require('./aiEnhancedController');
 
+// Additional controllers not previously included
+const chatQueueController = require('./chatQueueController');
+const surveyResponseController = require('./surveyResponseController');
+const dataEntryController = require('./dataEntryController');
+const taskCommentController = require('./taskController/taskCommentController');
+
 // Create missing controllers if they don't exist
 let auditTrailModelController, dataRetentionPolicyModelController, consentRecordModelController;
 let aiProcessingWorkflowController, aiConversationController;
@@ -192,4 +198,9 @@ module.exports = {
   aiEnhancedController,
   // Survey
   surveyController,
+  // Additional controllers
+  chatQueueController,
+  surveyResponseController,
+  dataEntryController,
+  taskCommentController,
 };
