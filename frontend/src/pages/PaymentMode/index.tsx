@@ -1,6 +1,3 @@
-import { crud } from '@/redux/crud/actions';
-
-import { selectCreatedItem } from '@/redux/crud/selectors';
 import {
   BankOutlined,
   CheckCircleOutlined,
@@ -8,27 +5,23 @@ import {
   SettingOutlined,
 } from '@/components/icons';
 import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { usePaymentModeStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
 
 import { DataImportButton } from '@/components/DataEntry';
-import PaymentModeForm from '@/forms/PaymentModeForm';
-import CrudModule from '@/pages/CrudModule/CrudModule';
 import { erp } from '@/redux/erp/actions';
 import { CheckOutlined, CloseOutlined } from '@/components/icons';
 import { Switch } from '@/components/ui';
+import PaymentModeDataTableModule from './PaymentModeDataTableModule';
 
 const { Title, Text } = Typography;
 
 export default function PaymentMode() {
   const translate = useLanguage();
   const dispatch = useDispatch();
-  const { isLoading, isSuccess } = useSelector(selectCreatedItem);
   const entity = 'paymentMode';
-  const loadedRef = useRef(false);
 
   // Use dynamic statistics from API
   const {
@@ -49,20 +42,8 @@ export default function PaymentMode() {
     recentlyAdded: paymentModeStats?.newThisMonth || 0,
   };
 
-  // Load payment modes on component mount
-  useEffect(() => {
-    if (loadedRef.current) return;
-    loadedRef.current = true;
-    dispatch(crud.list({ entity }));
-  }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(crud.resetAction({ actionType: 'create' }));
-    }
-  }, [isSuccess]);
-
   const searchConfig = {
+    entity,
     displayLabels: ['name'],
     searchFields: 'name',
     outputValue: '_id',
@@ -122,22 +103,16 @@ export default function PaymentMode() {
 
   const configPage = {
     entity,
+    routePath: '/payment/mode',
     ...Labels,
   };
   const config = {
     ...configPage,
+    disableDownload: true,
     readColumns,
     dataTableColumns,
     searchConfig,
     deleteModalLabels,
-    extra: (
-      <DataImportButton
-        moduleName="paymentMode"
-        onImportComplete={(result) => {
-          dispatch(erp.list({ entity: 'paymentMode' }));
-        }}
-      />
-    ),
   };
 
   return (
@@ -233,10 +208,16 @@ export default function PaymentMode() {
 
       {/* Main Content */}
 
-      <CrudModule
-        createForm={<PaymentModeForm />}
-        updateForm={<PaymentModeForm isUpdateForm={true} />}
+      <PaymentModeDataTableModule
         config={config}
+        extra={
+          <DataImportButton
+            moduleName="paymentMode"
+            onImportComplete={(result) => {
+              dispatch(erp.list({ entity: 'paymentMode' }));
+            }}
+          />
+        }
       />
     </div>
   );

@@ -43,8 +43,14 @@ const Payment = lazy(() => import('@/pages/Payment/index'));
 const PaymentRead = lazy(() => import('@/pages/Payment/PaymentRead'));
 
 const PaymentMode = lazy(() => import('@/pages/PaymentMode'));
+const PaymentModeCreate = lazy(() => import('@/pages/PaymentMode/PaymentModeCreate'));
+const PaymentModeRead = lazy(() => import('@/pages/PaymentMode/PaymentModeRead'));
+const PaymentModeUpdate = lazy(() => import('@/pages/PaymentMode/PaymentModeUpdate'));
 
 const Taxes = lazy(() => import('@/pages/Taxes'));
+const TaxesCreate = lazy(() => import('@/pages/Taxes/TaxesCreate'));
+const TaxesRead = lazy(() => import('@/pages/Taxes/TaxesRead'));
+const TaxesUpdate = lazy(() => import('@/pages/Taxes/TaxesUpdate'));
 
 const Profile = lazy(() => import('@/pages/Profile/Profile'));
 
@@ -345,8 +351,38 @@ let routes = {
       permissions: ['payment:read'],
     },
     {
+      path: '/payment/mode/create',
+      element: <PaymentModeCreate />,
+      permissions: ['payment:read'],
+    },
+    {
+      path: '/payment/mode/read/:id',
+      element: <PaymentModeRead />,
+      permissions: ['payment:read'],
+    },
+    {
+      path: '/payment/mode/update/:id',
+      element: <PaymentModeUpdate />,
+      permissions: ['payment:read'],
+    },
+    {
       path: '/taxes',
       element: <Taxes />,
+      permissions: ['settings:read'],
+    },
+    {
+      path: '/taxes/create',
+      element: <TaxesCreate />,
+      permissions: ['settings:read'],
+    },
+    {
+      path: '/taxes/read/:id',
+      element: <TaxesRead />,
+      permissions: ['settings:read'],
+    },
+    {
+      path: '/taxes/update/:id',
+      element: <TaxesUpdate />,
       permissions: ['settings:read'],
     },
     {

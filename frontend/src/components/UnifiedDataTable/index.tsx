@@ -41,7 +41,7 @@ import { selectListItems as selectErpListItems } from '@/redux/erp/selectors';
  * UnifiedDataTable - A single table component for both CrudModule (panel) and ErpPanelModule (navigate) modes.
  *
  * Props:
- *  - config: { entity, dataTableColumns, fields, DATATABLE_TITLE, ADD_NEW_ENTITY, searchConfig, disableAdd, dropdownExtra }
+ *  - config: { entity, routePath, dataTableColumns, fields, DATATABLE_TITLE, ADD_NEW_ENTITY, searchConfig, disableAdd, disableDownload, dropdownExtra }
  *  - extra: extra dropdown menu items or header buttons
  *  - mode: 'panel' (CrudModule side-panel UX) | 'navigate' (ErpPanelModule page-navigation UX)
  */
@@ -57,12 +57,18 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
     dataTableColumns: rawColumns,
     fields,
     DATATABLE_TITLE,
+    routePath,
     searchConfig,
     disableAdd = false,
+    disableDownload = false,
     dropdownExtra = [],
   } = config;
 
   const isNavigateMode = mode === 'navigate';
+  const entityPath = useMemo(() => {
+    const path = routePath || `/${entity.toLowerCase()}`;
+    return path.startsWith('/') ? path : `/${path}`;
+  }, [entity, routePath]);
 
   // Select the right Redux slice and context based on mode
   const actions = isNavigateMode ? erp : crud;
@@ -95,7 +101,7 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
   const handleRead = (record) => {
     if (isNavigateMode) {
       dispatch(erp.currentItem({ data: record }));
-      navigate(`/${entity}/read/${record._id}`);
+      navigate(`${entityPath}/read/${record._id}`);
     } else {
       dispatch(crud.currentItem({ data: record }));
       crudContextAction.panel.open();
@@ -107,7 +113,7 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
   const handleEdit = (record) => {
     if (isNavigateMode) {
       dispatch(erp.currentAction({ actionType: 'update', data: { ...record } }));
-      navigate(`/${entity}/update/${record._id}`);
+      navigate(`${entityPath}/update/${record._id}`);
     } else {
       dispatch(crud.currentItem({ data: record }));
       dispatch(crud.currentAction({ actionType: 'update', data: record }));
@@ -154,7 +160,7 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
   const menuItems = [
     { label: translate('Show'), key: 'read', icon: <EyeOutlined /> },
     { label: translate('Edit'), key: 'edit', icon: <EditOutlined /> },
-    ...(isNavigateMode
+    ...(isNavigateMode && !disableDownload
       ? [{ label: translate('Download'), key: 'download', icon: <FilePdfOutlined /> }]
       : []),
     ...dropdownExtra,
@@ -240,7 +246,7 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
   // --- Add new ---
   const handleAddNew = () => {
     if (isNavigateMode) {
-      navigate(`/${entity.toLowerCase()}/create`);
+      navigate(`${entityPath}/create`);
     } else {
       crudContextAction.panel.open();
       crudContextAction.collapsedBox.close();

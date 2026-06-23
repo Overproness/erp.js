@@ -5,10 +5,7 @@ import {
   SettingOutlined,
 } from '@/components/icons';
 import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
-import { crud } from '@/redux/crud/actions';
-import { selectCreatedItem } from '@/redux/crud/selectors';
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { useTaxStats } from '@/hooks/useStatistics';
 import useLanguage from '@/locale/useLanguage';
@@ -16,18 +13,15 @@ import useLanguage from '@/locale/useLanguage';
 import { DataImportButton } from '@/components/DataEntry';
 import { CheckOutlined, CloseOutlined } from '@/components/icons';
 import { Switch } from '@/components/ui';
-import TaxForm from '@/forms/TaxForm';
-import CrudModule from '@/pages/CrudModule/CrudModule';
 import { erp } from '@/redux/erp/actions';
+import TaxesDataTableModule from './TaxesDataTableModule';
 
 const { Title, Text } = Typography;
 
 export default function Taxes() {
   const translate = useLanguage();
   const dispatch = useDispatch();
-  const { isLoading, isSuccess } = useSelector(selectCreatedItem);
   const entity = 'taxes';
-  const loadedRef = useRef(false);
 
   // Use dynamic statistics from API
   const {
@@ -48,21 +42,8 @@ export default function Taxes() {
     averageRate: taxStats?.averageRate || 0,
   };
 
-  // Load taxes on component mount
-  useEffect(() => {
-    if (loadedRef.current) return;
-    loadedRef.current = true;
-    dispatch(crud.list({ entity }));
-  }, []);
-
-  // Reset create action when creation is successful
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(crud.resetAction({ actionType: 'create' }));
-    }
-  }, [isSuccess]);
-
   const searchConfig = {
+    entity,
     displayLabels: ['name'],
     searchFields: 'name',
     outputValue: '_id',
@@ -127,23 +108,17 @@ export default function Taxes() {
 
   const configPage = {
     entity,
+    routePath: '/taxes',
     ...Labels,
   };
 
   const config = {
     ...configPage,
+    disableDownload: true,
     readColumns,
     dataTableColumns,
     searchConfig,
     deleteModalLabels,
-    extra: (
-      <DataImportButton
-        moduleName="taxes"
-        onImportComplete={(result) => {
-          dispatch(erp.list({ entity: 'taxes' }));
-        }}
-      />
-    ),
   };
 
   return (
@@ -238,10 +213,16 @@ export default function Taxes() {
       </div>
 
       {/* Main Content */}
-      <CrudModule
-        createForm={<TaxForm />}
-        updateForm={<TaxForm isUpdateForm={true} />}
+      <TaxesDataTableModule
         config={config}
+        extra={
+          <DataImportButton
+            moduleName="taxes"
+            onImportComplete={(result) => {
+              dispatch(erp.list({ entity: 'taxes' }));
+            }}
+          />
+        }
       />
     </div>
   );
