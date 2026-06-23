@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined, MoreOutlined, SettingOutlined } from '@/components/icons';
-import { Button, Dropdown, Menu, message, Tooltip } from '@/components/ui';
+import { Button, Dropdown, message, Tooltip } from '@/components/ui';
 import { useReactFlow } from 'reactflow';
 
 const NodeWrapper = ({ children, nodeType, id, data }) => {
@@ -41,23 +41,17 @@ const NodeWrapper = ({ children, nodeType, id, data }) => {
   };
 
   // Context menu items
-  const menu = (
-    <Menu>
-      <Menu.Item key="1" icon={<SettingOutlined />} onClick={() => {}}>
-        Configure
-      </Menu.Item>
-      <Menu.Item key="2" icon={<CopyOutlined />} onClick={onDuplicate}>
-        Duplicate
-      </Menu.Item>
-      <Menu.Item key="3" icon={<DeleteOutlined />} onClick={onDelete} danger>
-        Delete
-      </Menu.Item>
-    </Menu>
-  );
+  const menu = {
+    items: [
+      { key: 'configure', icon: <SettingOutlined />, label: 'Configure', onClick: () => {} },
+      { key: 'duplicate', icon: <CopyOutlined />, label: 'Duplicate', onClick: onDuplicate },
+      { key: 'delete', danger: true, icon: <DeleteOutlined />, label: 'Delete', onClick: onDelete },
+    ],
+  };
 
   return (
     <div className="node-wrapper" style={{ position: 'relative' }}>
-      <Dropdown overlay={menu} trigger={['contextMenu']}>
+      <Dropdown menu={menu} trigger={['contextMenu']}>
         <div style={{ minWidth: '200px', maxWidth: '250px' }}>{children}</div>
       </Dropdown>
 

@@ -21,6 +21,7 @@ interface FormCtxValue {
   layout: 'vertical' | 'horizontal' | 'inline';
   labelCol?: { span?: number };
   wrapperCol?: { span?: number };
+  labelAlign?: 'left' | 'right';
   colon?: boolean;
   disabled?: boolean;
 }
@@ -90,7 +91,12 @@ const FormItem: React.FC<FormItemProps> = ({
   style,
   children,
 }) => {
-  const { layout, colon: ctxColon, disabled: ctxDisabled } = React.useContext(FormCtx);
+  const {
+    layout,
+    labelAlign,
+    colon: ctxColon,
+    disabled: ctxDisabled,
+  } = React.useContext(FormCtx);
   const showColon = colon ?? ctxColon ?? true;
 
   const isRequired =
@@ -132,6 +138,7 @@ const FormItem: React.FC<FormItemProps> = ({
             className={cn(
               'block mb-1.5 text-sm font-medium leading-none',
               layout === 'horizontal' && 'inline-block pt-2',
+              labelAlign === 'right' ? 'text-right' : 'text-left',
               hasError && 'text-destructive'
             )}
           >
@@ -217,6 +224,7 @@ export interface FormProps {
   layout?: 'vertical' | 'horizontal' | 'inline';
   labelCol?: { span?: number; offset?: number };
   wrapperCol?: { span?: number; offset?: number };
+  labelAlign?: 'left' | 'right';
   colon?: boolean;
   disabled?: boolean;
   size?: 'large' | 'middle' | 'small';
@@ -236,6 +244,7 @@ const FormComponent = React.forwardRef<FormInstance, FormProps>(
       layout = 'vertical',
       labelCol,
       wrapperCol,
+      labelAlign,
       colon,
       disabled,
       className,
@@ -246,7 +255,7 @@ const FormComponent = React.forwardRef<FormInstance, FormProps>(
     },
     ref
   ) => (
-    <FormCtx.Provider value={{ layout, labelCol, wrapperCol, colon, disabled }}>
+    <FormCtx.Provider value={{ layout, labelCol, wrapperCol, labelAlign, colon, disabled }}>
       <RcForm
         ref={ref}
         component={component}

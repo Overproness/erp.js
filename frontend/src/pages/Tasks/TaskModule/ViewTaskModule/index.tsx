@@ -22,7 +22,6 @@ import {
   Dropdown,
   Empty,
   Input,
-  Menu,
   message,
   Select,
   Space,
@@ -408,22 +407,27 @@ const ViewTaskModule = ({
             size="small"
           />
           <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key="delete" onClick={() => handleTaskAction('delete', record)}>
-                  <DeleteOutlined style={{ color: '#ff4d4f' }} /> {translate('Delete')}
-                </Menu.Item>
-                {record.status !== 'completed' && (
-                  <Menu.Item
-                    key="markComplete"
-                    onClick={() => handleTaskAction('markComplete', record)}
-                  >
-                    <CheckCircleOutlined style={{ color: '#52c41a' }} />{' '}
-                    {translate('Mark Complete')}
-                  </Menu.Item>
-                )}
-              </Menu>
-            }
+            menu={{
+              items: [
+                {
+                  key: 'delete',
+                  danger: true,
+                  icon: <DeleteOutlined />,
+                  label: translate('Delete'),
+                  onClick: () => handleTaskAction('delete', record),
+                },
+                ...(record.status !== 'completed'
+                  ? [
+                      {
+                        key: 'markComplete',
+                        icon: <CheckCircleOutlined />,
+                        label: translate('Mark Complete'),
+                        onClick: () => handleTaskAction('markComplete', record),
+                      },
+                    ]
+                  : []),
+              ],
+            }}
             trigger={['click']}
           >
             <Button type="text" icon={<MoreOutlined />} size="small" />
