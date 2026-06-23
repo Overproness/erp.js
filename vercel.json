@@ -12,11 +12,7 @@
     },
     "rewrites": [
         {
-            "source": "/_/backend/(.*)",
-            "destination": "/_/backend/$1"
-        },
-        {
-            "source": "/(.*)",
+            "source": "/((?!_/backend).*)",
             "destination": "/"
         }
     ]
