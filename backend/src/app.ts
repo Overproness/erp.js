@@ -8,6 +8,7 @@ import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import fileUpload from 'express-fileupload';
 import fs from 'fs';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 import path from 'path';
 
@@ -86,12 +87,15 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // ─────────────────────────────────────────────────────────────
 // Health Check (no middleware overhead)
 // ─────────────────────────────────────────────────────────────
+const mongooseStateNames = ['disconnected', 'connected', 'connecting', 'disconnecting'];
 app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime()),
     environment: process.env.NODE_ENV || 'development',
+    mongooseState: mongooseStateNames[mongoose.connection.readyState] || mongoose.connection.readyState,
+    graphqlReady: (app as any).graphqlReady === true,
   });
 });
 
@@ -215,6 +219,7 @@ async function setupGraphQL() {
     })
   );
 
+  (app as any).graphqlReady = true;
   console.log('🚀 GraphQL endpoint ready at /graphql');
 }
 
