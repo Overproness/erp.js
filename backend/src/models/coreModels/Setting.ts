@@ -50,6 +50,5 @@ settingSchema.index({ category: 1, owner: 1 }, { unique: true });
 settingSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Setting = mongoose.model('Setting', settingSchema);
-module.exports = Setting;
-export { };
+export = Setting;
 
