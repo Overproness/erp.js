@@ -1,7 +1,9 @@
 // @ts-nocheck
-const { modelsFiles } = require('@/models/utils');
-
 const mongoose = require('mongoose');
+
+// Register all models before resolving a CRUD controller.  Filesystem-based
+// discovery is not available in bundled serverless deployments.
+require('@/models');
 
 const create = require('./create');
 const read = require('./read');
@@ -17,11 +19,13 @@ const bulkUpdate = require('./bulkUpdate');
 const bulkDelete = require('./bulkDelete');
 
 const createCRUDController = (modelName, registeredModelName) => {
-  if (!modelsFiles.includes(modelName)) {
+  const resolvedModelName = registeredModelName || modelName;
+
+  if (!mongoose.modelNames().includes(resolvedModelName)) {
     throw new Error(`Model ${modelName} does not exist`);
   }
 
-  const Model = mongoose.model(registeredModelName || modelName);
+  const Model = mongoose.model(resolvedModelName);
   const crudMethods = {
     create: (req, res) => create(Model, req, res),
     read: (req, res) => read(Model, req, res),
