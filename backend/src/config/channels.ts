@@ -273,5 +273,5 @@ const channels = {
 };
 
 // Export configurations
-export default channels;
-module.exports = channels;
+(channels as any).default = channels;
+export = channels;

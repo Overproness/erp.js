@@ -623,5 +623,5 @@ const triggers = {
   }
 };
 
-export default triggers;
-module.exports = triggers;
+(triggers as any).default = triggers;
+export = triggers;

@@ -399,5 +399,5 @@ if ((analyticsConfig.environments as Record<string, any>)[currentEnv]) {
   deepMerge(analyticsConfig, envConfig);
 }
 
-export default analyticsConfig;
-module.exports = analyticsConfig;
+(analyticsConfig as any).default = analyticsConfig;
+export = analyticsConfig;

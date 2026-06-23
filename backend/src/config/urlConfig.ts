@@ -327,5 +327,5 @@ if ((urlConfig.environments as Record<string, any>)[currentEnv]) {
   deepMerge(urlConfig, envConfig);
 }
 
-export default urlConfig;
-module.exports = urlConfig;
+(urlConfig as any).default = urlConfig;
+export = urlConfig;

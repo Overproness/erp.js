@@ -563,5 +563,5 @@ const aiSettings = {
   }
 };
 
-export default aiSettings;
-module.exports = aiSettings;
+(aiSettings as any).default = aiSettings;
+export = aiSettings;

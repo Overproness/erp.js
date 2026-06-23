@@ -4,12 +4,12 @@
  * Exports all configuration files for the marketing automation system
  */
 
-import channels from './channels';
-import triggers from './triggers';
-import aiSettings from './aiSettings';
-import analyticsConfig from './analyticsConfig';
-import notificationConfig from './notificationConfig';
-import urlConfig from './urlConfig';
+const channels = require('./channels');
+const triggers = require('./triggers');
+const aiSettings = require('./aiSettings');
+const analyticsConfig = require('./analyticsConfig');
+const notificationConfig = require('./notificationConfig');
+const urlConfig = require('./urlConfig');
 
 export { channels, triggers, aiSettings, analyticsConfig, notificationConfig, urlConfig };
 
