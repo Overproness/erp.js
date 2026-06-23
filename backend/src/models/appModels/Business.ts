@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const BusinessSchema = new Schema(
@@ -137,4 +137,4 @@ BusinessSchema.index({ 'address.city': 1, 'address.country': 1 });
 BusinessSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Business', BusinessSchema);
-module.exports = exportedModel;
+export default exportedModel;

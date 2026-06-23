@@ -1,9 +1,9 @@
 // @ts-nocheck
-const SocialAccount = require('@/models/appModels/SocialAccount');
-const { facebookAuth } = require('@/utils/socialMedia/facebookAuth');
-const { instagramAuth } = require('@/utils/socialMedia/instagramAuth');
-const { twitterAuth } = require('@/utils/socialMedia/twitterAuth');
 
+import { facebookAuth } from '@/utils/socialMedia/facebookAuth';
+import { instagramAuth } from '@/utils/socialMedia/instagramAuth';
+import { twitterAuth } from '@/utils/socialMedia/twitterAuth';
+import SocialAccount from '@/models/appModels/SocialAccount';
 // Create or connect social media account
 const connectAccount = async (req, res) => {
   try {
@@ -381,7 +381,7 @@ const getAuthUrl = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   connectAccount,
   getAccounts,
   getAccount,

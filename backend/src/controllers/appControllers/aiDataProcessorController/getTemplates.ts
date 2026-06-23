@@ -1,6 +1,6 @@
 // @ts-nocheck
-const AiExtractionTemplate = require('@/models/appModels/AiExtractionTemplate');
 
+import AiExtractionTemplate from '@/models/appModels/AiExtractionTemplate';
 const getTemplates = async (req, res) => {
   try {
     const {
@@ -125,4 +125,4 @@ const getTemplates = async (req, res) => {
   }
 };
 
-module.exports = getTemplates;
+export = getTemplates;

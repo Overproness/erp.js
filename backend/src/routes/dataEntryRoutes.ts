@@ -1,20 +1,20 @@
 // @ts-nocheck
-const express = require('express');
+import { requireFeature } from '../middlewares/planMiddleware';
+import { getAllSchemas, getModuleSchema } from '../services/dataEntry/moduleSchemas';
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import { promises as fs } from 'fs';
+import enhancedOCRService from '../services/dataEntry/enhancedOCRService';
+import enhancedSpreadsheetService from '../services/dataEntry/enhancedSpreadsheetService';
+import urlImportService from '../services/dataEntry/urlImportService';
+import dataValidationService from '../services/dataEntry/dataValidationService';
+import * as models from '../models';
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs').promises;
-const { requireFeature } = require('../middlewares/planMiddleware');
 
 // Import data entry services
-const enhancedOCRService = require('../services/dataEntry/enhancedOCRService');
-const enhancedSpreadsheetService = require('../services/dataEntry/enhancedSpreadsheetService');
-const urlImportService = require('../services/dataEntry/urlImportService');
-const dataValidationService = require('../services/dataEntry/dataValidationService');
-const { getAllSchemas, getModuleSchema } = require('../services/dataEntry/moduleSchemas');
 
 // Import models
-const models = require('../models');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -449,4 +449,4 @@ router.post('/save/:moduleName', async (req, res) => {
   }
 });
 
-module.exports = router;
+export = router;

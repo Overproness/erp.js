@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const workflowSchema = new mongoose.Schema({
   removed: {
@@ -126,4 +126,4 @@ workflowSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const AiWorkflow = mongoose.model('AiWorkflow', workflowSchema);
 
-module.exports = AiWorkflow;
+export default AiWorkflow;

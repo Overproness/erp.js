@@ -1,8 +1,8 @@
 // @ts-nocheck
-const Survey = require('../../models/appModels/Survey');
-const SurveyResponse = require('../../models/appModels/SurveyResponse');
-const surveyAnalysisHelper = require('../../helpers/surveyAnalysisHelper');
 
+import Survey from '../../models/appModels/Survey';
+import SurveyResponse from '../../models/appModels/SurveyResponse';
+import surveyAnalysisHelper from '../../helpers/surveyAnalysisHelper';
 /**
  * Create a new survey
  */
@@ -671,7 +671,7 @@ const getAISuggestions = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   create,
   list,
   read,

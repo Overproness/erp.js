@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const attendeeSchema = new mongoose.Schema({
   name: {
@@ -414,4 +414,4 @@ appointmentSchema.statics.findNeedingReminders = function () {
 };
 
 const exportedModel = mongoose.model('Appointment', appointmentSchema);
-module.exports = exportedModel;
+export default exportedModel;

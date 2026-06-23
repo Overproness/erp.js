@@ -1,8 +1,8 @@
 // @ts-nocheck
-const User = require('@/models/appModels/User');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
+import User from '@/models/appModels/User';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 const acceptInvitation = async (req, res) => {
   try {
     console.log('Accepting invitation with token:', req.params.token);
@@ -116,4 +116,4 @@ const acceptInvitation = async (req, res) => {
   }
 };
 
-module.exports = acceptInvitation;
+export = acceptInvitation;

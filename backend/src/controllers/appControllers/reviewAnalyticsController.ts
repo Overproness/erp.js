@@ -1,9 +1,9 @@
 // @ts-nocheck
-const Review = require('../../models/appModels/Review');
-const Business = require('../../models/appModels/Business');
-const ReviewLink = require('../../models/appModels/ReviewLink');
-const { reviewAnalyticsService } = require('../../services/reviewAnalyticsService');
 
+import { reviewAnalyticsService } from '../../services/reviewAnalyticsService';
+import Review from '../../models/appModels/Review';
+import Business from '../../models/appModels/Business';
+import ReviewLink from '../../models/appModels/ReviewLink';
 /**
  * Get dashboard data
  */
@@ -1090,7 +1090,7 @@ const exportReviews = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   getDashboard,
   getSentimentTrends,
   getPlatformComparison,

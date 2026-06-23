@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const campaignSchema = new Schema({
@@ -266,4 +266,4 @@ campaignSchema.statics.getDueCampaigns = function() {
 };
 
 const Campaign = mongoose.model('Campaign', campaignSchema);
-module.exports = Campaign;
+export default Campaign;

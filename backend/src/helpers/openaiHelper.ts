@@ -1,7 +1,7 @@
 // @ts-nocheck
-const axios = require('axios');
-const Setting = require('../models/coreModels/Setting');
 
+import axios from 'axios';
+import Setting from '../models/coreModels/Setting';
 class OpenAIHelper {
   constructor(userApiKey = null) {
     this.apiKey = userApiKey || process.env.OPENAI_API_KEY;
@@ -258,4 +258,4 @@ class OpenAIHelper {
   }
 }
 
-module.exports = OpenAIHelper;
+export = OpenAIHelper;

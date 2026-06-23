@@ -4,12 +4,14 @@
  *
  * Real-time processing of customer behavior events and trigger evaluation
  */
-const { CustomerBehavior, TriggerRule, Customer } = require('../models');
-const triggerEvaluator = require('../utils/triggerEvaluator');
-const segmentMatcher = require('../utils/segmentMatcher');
-const analyticsService = require('./analyticsService');
+import { Campaign, Customer, CustomerBehavior, TriggerExecution, TriggerRule } from '../models';
+import triggerEvaluator from '../utils/triggerEvaluator';
+import segmentMatcher from '../utils/segmentMatcher';
+import analyticsService from './analyticsService';
+import { createRequire } from 'module';
 
-const getCampaignExecutor = () => require('./CampaignExecutor');
+const load = createRequire(__filename);
+const getCampaignExecutor = () => load('./CampaignExecutor');
 
 class BehaviorProcessor {
   constructor() {
@@ -340,7 +342,7 @@ class BehaviorProcessor {
    */
   async executeSendEmailAction(action, customer, trigger) {
     try {
-      const emailService = require('./emailService');
+      const emailService = load('./emailService');
 
       const emailData = {
         to: customer.email,
@@ -371,7 +373,7 @@ class BehaviorProcessor {
    */
   async executeSendSMSAction(action, customer) {
     try {
-      const smsService = require('./smsService');
+      const smsService = load('./smsService');
 
       if (!customer.phone) {
         throw new Error('Customer has no phone number');
@@ -468,8 +470,6 @@ class BehaviorProcessor {
    */
   async executeStartCampaignAction(action, customer) {
     try {
-      const { Campaign } = require('../models');
-
       const campaignId = action.campaignId;
       if (!campaignId) {
         throw new Error('Campaign ID is required');
@@ -540,7 +540,7 @@ class BehaviorProcessor {
 
       // Email to team members
       if (action.teamEmails && action.teamEmails.length > 0) {
-        const emailService = require('./emailService');
+        const emailService = load('./emailService');
 
         for (const email of action.teamEmails) {
           await emailService.sendEmail({
@@ -575,7 +575,7 @@ class BehaviorProcessor {
    */
   async sendSlackNotification(webhookUrl, customer, trigger, events, message) {
     try {
-      const axios = require('axios');
+      const axios = load('axios');
 
       // Create Slack message
       const payload = {
@@ -640,7 +640,7 @@ class BehaviorProcessor {
    */
   async executeWebhookAction(action, customer, trigger, events) {
     try {
-      const axios = require('axios');
+      const axios = load('axios');
 
       if (!action.url) {
         throw new Error('Webhook URL is required');
@@ -696,8 +696,6 @@ class BehaviorProcessor {
    */
   async recordTriggerExecution(trigger, customer, events) {
     try {
-      const { TriggerExecution } = require('../models');
-
       await TriggerExecution.create({
         triggerId: trigger._id,
         triggerName: trigger.name,
@@ -717,6 +715,7 @@ class BehaviorProcessor {
 
   /**
    * Get all active triggers from cache or DB
+   * @returns {Promise<Array>} List of active trigger rules
    * @returns {Promise<Array>} List of active trigger rules
    */
   async getActiveTriggers() {
@@ -777,8 +776,6 @@ class BehaviorProcessor {
    */
   async isInCooldown(customerId, triggerId) {
     try {
-      const { TriggerExecution } = require('../models');
-
       // Check for recent executions
       const recentExecution = await TriggerExecution.findOne({
         triggerId,
@@ -825,4 +822,4 @@ class BehaviorProcessor {
   }
 }
 
-module.exports = new BehaviorProcessor();
+export = new BehaviorProcessor();

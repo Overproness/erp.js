@@ -1,7 +1,7 @@
 // @ts-nocheck
-const axios = require('axios');
-const Setting = require('../models/coreModels/Setting');
 
+import axios from 'axios';
+import Setting from '../models/coreModels/Setting';
 class ClaudeHelper {
   constructor(userApiKey = null) {
     this.apiKey = userApiKey || process.env.CLAUDE_API_KEY;
@@ -176,4 +176,4 @@ class ClaudeHelper {
   }
 }
 
-module.exports = ClaudeHelper;
+export = ClaudeHelper;

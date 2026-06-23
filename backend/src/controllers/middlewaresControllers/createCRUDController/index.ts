@@ -1,22 +1,22 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import mongoose from 'mongoose';
+import create from './create';
+import read from './read';
+import update from './update';
+import remove from './remove';
+import search from './search';
+import filter from './filter';
+import summary from './summary';
+import listAll from './listAll';
+import paginatedList from './paginatedList';
+import bulkCreate from './bulkCreate';
+import bulkUpdate from './bulkUpdate';
+import bulkDelete from './bulkDelete';
+import '@/models';
 // Register all models before resolving a CRUD controller.  Filesystem-based
 // discovery is not available in bundled serverless deployments.
-require('@/models');
 
-const create = require('./create');
-const read = require('./read');
-const update = require('./update');
-const remove = require('./remove');
-const search = require('./search');
-const filter = require('./filter');
-const summary = require('./summary');
-const listAll = require('./listAll');
-const paginatedList = require('./paginatedList');
-const bulkCreate = require('./bulkCreate');
-const bulkUpdate = require('./bulkUpdate');
-const bulkDelete = require('./bulkDelete');
 
 const createCRUDController = (modelName, registeredModelName) => {
   const resolvedModelName = registeredModelName || modelName;
@@ -43,4 +43,4 @@ const createCRUDController = (modelName, registeredModelName) => {
   return crudMethods;
 };
 
-module.exports = createCRUDController;
+export = createCRUDController;

@@ -1,9 +1,9 @@
 // @ts-nocheck
-const Appointment = require('@/models/appModels/Appointment');
-const AutomatedReminder = require('@/models/appModels/AutomatedReminder');
-const URL = require('@/models/appModels/URL');
-const { generateUniqueCode } = require('@/helpers/urlShortener');
 
+import { generateUniqueCode } from '@/helpers/urlShortener';
+import Appointment from '@/models/appModels/Appointment';
+import AutomatedReminder from '@/models/appModels/AutomatedReminder';
+import URL from '@/models/appModels/URL';
 // Create appointment
 const createAppointment = async (req, res) => {
   try {
@@ -583,7 +583,7 @@ const bookAppointmentViaUrl = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   createAppointment,
   getAppointments,
   getAppointment,

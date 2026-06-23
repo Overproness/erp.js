@@ -1,16 +1,16 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const searchService = require('../../services/searchService');
 
+import mongoose from 'mongoose';
+import searchService from '../../services/searchService';
+import Client from '../../models/appModels/Client';
+import Invoice from '../../models/appModels/Invoice';
+import Quote from '../../models/appModels/Quote';
+import Document from '../../models/appModels/Document';
+import Task from '../../models/appModels/Task';
+import User from '../../models/appModels/User';
+import SavedSearch from '../../models/appModels/SavedSearch';
+import SearchHistory from '../../models/appModels/SearchHistory';
 // Import models
-const Client = require('../../models/appModels/Client');
-const Invoice = require('../../models/appModels/Invoice');
-const Quote = require('../../models/appModels/Quote');
-const Document = require('../../models/appModels/Document');
-const Task = require('../../models/appModels/Task');
-const User = require('../../models/appModels/User');
-const SavedSearch = require('../../models/appModels/SavedSearch');
-const SearchHistory = require('../../models/appModels/SearchHistory');
 
 /**
  * Advanced Search Controller
@@ -1165,7 +1165,7 @@ const recordUserInteraction = async (userId, interaction) => {
   console.log('Recording user interaction:', { userId, interaction });
 };
 
-module.exports = {
+export = {
   search,
   filter,
   saveSearch,

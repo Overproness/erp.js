@@ -1,13 +1,13 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const moment = require('moment');
 
+import mongoose from 'mongoose';
+import moment from 'moment';
+import '../../../models/appModels/Payment';
 // Ensure Payment model is registered
 let Model;
 try {
   Model = mongoose.model('Payment');
 } catch (error) {
-  require('../../../models/appModels/Payment');
   Model = mongoose.model('Payment');
 }
 // Removed loadSettings import as it's not being used in this controller
@@ -135,4 +135,4 @@ const summary = async (req, res) => {
   }
 };
 
-module.exports = summary;
+export = summary;

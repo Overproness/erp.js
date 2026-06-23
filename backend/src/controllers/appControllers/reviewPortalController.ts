@@ -1,12 +1,12 @@
 // @ts-nocheck
-const ReviewLink = require('../../models/appModels/ReviewLink');
-const Business = require('../../models/appModels/Business');
-const Review = require('../../models/appModels/Review');
-const { sentimentAnalysisService } = require('../../services/sentimentAnalysisService');
-const { notificationService } = require('../../services/notificationService');
-const path = require('path');
-const fs = require('fs');
 
+import { sentimentAnalysisService } from '../../services/sentimentAnalysisService';
+import { notificationService } from '../../services/notificationService';
+import ReviewLink from '../../models/appModels/ReviewLink';
+import Business from '../../models/appModels/Business';
+import Review from '../../models/appModels/Review';
+import path from 'path';
+import fs from 'fs';
 /**
  * Get review portal configuration
  */
@@ -419,7 +419,7 @@ function detectDeviceType(userAgent) {
   return 'desktop';
 }
 
-module.exports = {
+export = {
   getPortalConfig,
   submitReview,
   getRecentReviews,

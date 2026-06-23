@@ -1,6 +1,6 @@
 // @ts-nocheck
-const AiExtractionTemplate = require('@/models/appModels/AiExtractionTemplate');
 
+import AiExtractionTemplate from '@/models/appModels/AiExtractionTemplate';
 const deleteTemplate = async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,4 +54,4 @@ const deleteTemplate = async (req, res) => {
   }
 };
 
-module.exports = deleteTemplate;
+export = deleteTemplate;

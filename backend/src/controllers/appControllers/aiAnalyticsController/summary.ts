@@ -1,7 +1,7 @@
 // @ts-nocheck
-const AiAnalytics = require('@/models/appModels/AiAnalytics');
-const aiAnalyticsHelper = require('@/helpers/aiAnalyticsHelper');
 
+import AiAnalytics from '@/models/appModels/AiAnalytics';
+import aiAnalyticsHelper from '@/helpers/aiAnalyticsHelper';
 const summary = async (req, res) => {
   try {
     // Resolve owner context - try different possible owner fields
@@ -95,4 +95,4 @@ const summary = async (req, res) => {
   }
 };
 
-module.exports = summary;
+export = summary;

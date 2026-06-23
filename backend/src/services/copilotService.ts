@@ -1,9 +1,9 @@
 // @ts-nocheck
-const AiAssistant = require('../models/appModels/AiAssistant');
-const AiConversation = require('../models/appModels/AiConversation');
-const UnifiedAIHelper = require('../helpers/unifiedAIHelper');
-const contextAwareService = require('./contextAwareService');
 
+import AiAssistant from '../models/appModels/AiAssistant';
+import AiConversation from '../models/appModels/AiConversation';
+import UnifiedAIHelper from '../helpers/unifiedAIHelper';
+import contextAwareService from './contextAwareService';
 /**
  * Copilot Service - Modular AI chatbot system
  * Provides base LLM functionality with extensible module-specific capabilities
@@ -491,4 +491,4 @@ Be context-aware, proactive, and helpful. Always consider the current module and
 // Create singleton instance
 const copilotService = new CopilotService();
 
-module.exports = copilotService;
+export = copilotService;

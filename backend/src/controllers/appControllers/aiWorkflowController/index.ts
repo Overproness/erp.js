@@ -1,8 +1,8 @@
 // @ts-nocheck
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const AiWorkflow = require('../../../models/appModels/AiWorkflow');
-const { catchErrors } = require('../../../handlers/errorHandlers');
 
+import { catchErrors } from '../../../handlers/errorHandlers';
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import AiWorkflow from '../../../models/appModels/AiWorkflow';
 const methods = createCRUDController('AiWorkflow');
 
 // Process workflow execution
@@ -223,7 +223,7 @@ const getProcessingStats = catchErrors(async (req, res) => {
   });
 });
 
-module.exports = {
+export = {
   ...methods,
   processWorkflow,
   getProcessingStats,

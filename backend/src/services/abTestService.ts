@@ -1,8 +1,8 @@
 // @ts-nocheck
-const ABTest = require('@/models/appModels/ABTest');
-const URLClick = require('@/models/appModels/URLClick');
-const mongoose = require('mongoose');
 
+import ABTest from '@/models/appModels/ABTest';
+import URLClick from '@/models/appModels/URLClick';
+import mongoose from 'mongoose';
 class ABTestService {
   /**
    * Assign user to test variant
@@ -491,4 +491,4 @@ class ABTestService {
   }
 }
 
-module.exports = new ABTestService();
+export = new ABTestService();

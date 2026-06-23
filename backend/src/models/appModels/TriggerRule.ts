@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const triggerRuleSchema = new Schema({
@@ -332,4 +332,4 @@ triggerRuleSchema.statics.findDueTimeBasedTriggers = function() {
 };
 
 const TriggerRule = mongoose.model('TriggerRule', triggerRuleSchema);
-module.exports = TriggerRule;
+export default TriggerRule;

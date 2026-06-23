@@ -1,7 +1,7 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const reviewLinkSchema = new Schema({
   business: {
@@ -216,4 +216,4 @@ reviewLinkSchema.statics.findByTargetPlatform = function(businessId, platform) {
 };
 
 const ReviewLink = mongoose.model('ReviewLink', reviewLinkSchema);
-module.exports = ReviewLink;
+export default ReviewLink;

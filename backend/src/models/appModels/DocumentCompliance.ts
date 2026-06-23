@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const DocumentComplianceSchema = new Schema(
@@ -106,4 +106,4 @@ const DocumentComplianceSchema = new Schema(
 DocumentComplianceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('DocumentCompliance', DocumentComplianceSchema);
-module.exports = exportedModel;
+export default exportedModel;

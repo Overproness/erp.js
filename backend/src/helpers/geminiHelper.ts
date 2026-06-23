@@ -1,7 +1,7 @@
 // @ts-nocheck
-const axios = require('axios');
-const Setting = require('../models/coreModels/Setting');
 
+import axios from 'axios';
+import Setting from '../models/coreModels/Setting';
 class GeminiHelper {
   constructor(userApiKey = null) {
     this.apiKey = userApiKey || process.env.GEMINI_API_KEY;
@@ -194,4 +194,4 @@ class GeminiHelper {
   }
 }
 
-module.exports = GeminiHelper;
+export = GeminiHelper;

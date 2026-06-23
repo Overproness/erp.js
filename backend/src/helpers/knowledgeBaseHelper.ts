@@ -1,6 +1,6 @@
 // @ts-nocheck
-const AiKnowledgeBase = require('../models/appModels/AiKnowledgeBase');
 
+import AiKnowledgeBase from '../models/appModels/AiKnowledgeBase';
 class KnowledgeBaseHelper {
   async createKnowledgeBase(data, userId) {
     try {
@@ -378,4 +378,4 @@ class KnowledgeBaseHelper {
   }
 }
 
-module.exports = new KnowledgeBaseHelper();
+export = new KnowledgeBaseHelper();

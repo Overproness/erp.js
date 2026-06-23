@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const taxesSchema = new Schema({
@@ -53,6 +53,5 @@ const taxesSchema = new Schema({
 taxesSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Taxes', taxesSchema);
-module.exports = exportedModel;
-export { };
+export default exportedModel;
 

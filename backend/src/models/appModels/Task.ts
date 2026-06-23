@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import autopopulate from 'mongoose-autopopulate';
+import mongoose from 'mongoose';
 
 const commentSchema = new mongoose.Schema({
   content: {
@@ -308,7 +309,7 @@ const taskSchema = new mongoose.Schema(
 );
 
 // Add autopopulate plugin
-taskSchema.plugin(require('mongoose-autopopulate'));
+taskSchema.plugin(autopopulate);
 
 // Pre-save hook to automatically set status to 'assigned' when assignedTo is set
 taskSchema.pre('save', function (this: any, next: (err?: Error) => void) {
@@ -324,6 +325,5 @@ taskSchema.pre('save', function (this: any, next: (err?: Error) => void) {
 taskSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = (mongoose.models['Task'] as any) || mongoose.model('Task', taskSchema);
-module.exports = exportedModel;
-export { };
+export default exportedModel;
 

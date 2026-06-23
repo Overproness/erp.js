@@ -1,11 +1,11 @@
 // @ts-nocheck
-const { CustomerBehavior, Campaign, CustomerSegment } = require('../../models');
-const segmentMatcher = require('../../utils/segmentMatcher');
-const marketingURLHelper = require('../../utils/marketingURLHelper');
-const campaignExecutorService = require('../../services/campaignExecutorService');
-const retargetingEngine = require('../../services/RetargetingEngine');
-const analyticsService = require('../../services/analyticsService');
 
+import { CustomerBehavior, Campaign, CustomerSegment } from '../../models';
+import segmentMatcher from '../../utils/segmentMatcher';
+import marketingURLHelper from '../../utils/marketingURLHelper';
+import campaignExecutorService from '../../services/campaignExecutorService';
+import retargetingEngine from '../../services/RetargetingEngine';
+import analyticsService from '../../services/analyticsService';
 /**
  * Retargeting Controller
  * Manages retargeting audiences and personalized message delivery
@@ -517,4 +517,4 @@ class RetargetingController {
   }
 }
 
-module.exports = new RetargetingController();
+export = new RetargetingController();

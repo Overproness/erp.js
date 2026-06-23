@@ -1,11 +1,11 @@
 // @ts-nocheck
-const SocialPost = require('@/models/appModels/SocialPost');
-const SocialAccount = require('@/models/appModels/SocialAccount');
-const { facebookService } = require('@/services/facebookService');
-const { instagramService } = require('@/services/instagramService');
-const { twitterService } = require('@/services/twitterService');
-const { urlShortener } = require('@/helpers/urlShortener');
 
+import { facebookService } from '@/services/facebookService';
+import { instagramService } from '@/services/instagramService';
+import { twitterService } from '@/services/twitterService';
+import { urlShortener } from '@/helpers/urlShortener';
+import SocialPost from '@/models/appModels/SocialPost';
+import SocialAccount from '@/models/appModels/SocialAccount';
 // Create a new social media post
 const createPost = async (req, res) => {
   try {
@@ -505,7 +505,7 @@ const getScheduledPosts = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   createPost,
   getPosts,
   getPost,

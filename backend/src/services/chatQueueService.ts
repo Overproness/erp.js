@@ -1,9 +1,10 @@
 // @ts-nocheck
-const ChatQueue = require('../models/appModels/ChatQueue');
-const copilotService = require('./copilotService');
-const cron = require('node-cron');
-const mongoose = require('mongoose');
 
+import { notificationService } from './notificationService';
+import ChatQueue from '../models/appModels/ChatQueue';
+import copilotService from './copilotService';
+import cron from 'node-cron';
+import mongoose from 'mongoose';
 /**
  * 24/7 Chat Queue Service
  * Handles offline messages and ensures 24/7 availability
@@ -156,7 +157,6 @@ class ChatQueueService {
    */
   async notifyUser(queueItem) {
     try {
-      const { notificationService } = require('./notificationService');
 
       await notificationService.sendNotification({
         recipientId: queueItem.owner,
@@ -375,4 +375,4 @@ class ChatQueueService {
 
 const chatQueueService = new ChatQueueService();
 
-module.exports = chatQueueService;
+export = chatQueueService;

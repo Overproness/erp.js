@@ -1,16 +1,16 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const URL = require('@/models/appModels/URL');
-const URLClick = require('@/models/appModels/URLClick');
-const ABTest = require('@/models/appModels/ABTest');
 
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const { catchErrors } = require('@/handlers/errorHandlers');
 
-const urlHelpers = require('@/helpers/urlHelpers');
-const analyticsHelpers = require('@/helpers/analyticsHelpers');
+import { catchErrors } from '@/handlers/errorHandlers';
+import mongoose from 'mongoose';
+import URL from '@/models/appModels/URL';
+import URLClick from '@/models/appModels/URLClick';
+import ABTest from '@/models/appModels/ABTest';
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import urlHelpers from '@/helpers/urlHelpers';
+import analyticsHelpers from '@/helpers/analyticsHelpers';
+import urlService from '@/services/urlService';
 // FIX: Import urlService as an object, not destructured
-const urlService = require('@/services/urlService');
 
 const Model = mongoose.model('URL');
 
@@ -998,7 +998,7 @@ const deleteUrl = catchErrors(async (req, res) => {
 });
 
 // Export methods
-module.exports = {
+export = {
   ...crudController,
   create,
   read,

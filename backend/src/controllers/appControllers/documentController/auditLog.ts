@@ -1,13 +1,13 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import mongoose from 'mongoose';
+import '../../../models/appModels/auditTrailModel';
 // Ensure the model is loaded
 let AuditTrail;
 try {
   AuditTrail = mongoose.model('AuditTrail');
 } catch (error) {
   // Model not registered yet, require it
-  require('../../../models/appModels/auditTrailModel');
   AuditTrail = mongoose.model('AuditTrail');
 }
 
@@ -80,7 +80,7 @@ const getDocumentAuditLogs = async ({ documentId, page = 1, limit = 20 }) => {
   }
 };
 
-module.exports = {
+export = {
   createAuditLog,
   getDocumentAuditLogs,
 };

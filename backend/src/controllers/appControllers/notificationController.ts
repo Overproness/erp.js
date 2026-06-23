@@ -1,11 +1,11 @@
 // @ts-nocheck
+import { notificationService } from '@/services/notificationService';
+import Notification from '@/models/appModels/Notification';
 /**
  * Notification Controller
  * Handles HTTP requests for notification management
  */
 
-const Notification = require('@/models/appModels/Notification');
-const { notificationService } = require('@/services/notificationService');
 
 const notificationController = {
   /**
@@ -361,4 +361,4 @@ const notificationController = {
   getAggregated: notificationService.getAggregatedNotifications,
 };
 
-module.exports = notificationController;
+export = notificationController;

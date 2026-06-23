@@ -1,9 +1,9 @@
 // @ts-nocheck
-const SocialMention = require('@/models/appModels/SocialMention');
-const { facebookService } = require('@/services/facebookService');
-const { instagramService } = require('@/services/instagramService');
-const { twitterService } = require('@/services/twitterService');
 
+import { facebookService } from '@/services/facebookService';
+import { instagramService } from '@/services/instagramService';
+import { twitterService } from '@/services/twitterService';
+import SocialMention from '@/models/appModels/SocialMention';
 // Get all mentions
 const getMentions = async (req, res) => {
   try {
@@ -452,7 +452,7 @@ const searchMentions = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   getMentions,
   getMention,
   updateMention,

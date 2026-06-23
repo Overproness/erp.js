@@ -1,7 +1,7 @@
 // @ts-nocheck
-const axios = require('axios');
-const Setting = require('../models/coreModels/Setting');
 
+import axios from 'axios';
+import Setting from '../models/coreModels/Setting';
 class SentimentAnalysisService {
   constructor() {
     this.apiKey = null;
@@ -128,4 +128,4 @@ class SentimentAnalysisService {
 }
 
 const sentimentAnalysisService = new SentimentAnalysisService();
-module.exports = { sentimentAnalysisService };
+export = { sentimentAnalysisService };

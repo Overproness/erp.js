@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const aiAssistantSchema = new mongoose.Schema({
   removed: {
@@ -115,4 +115,4 @@ aiAssistantSchema.index({ name: 'text', description: 'text' });
 aiAssistantSchema.index({ companyID: 1 }, { sparse: true });
 
 const exportedModel = mongoose.model('AiAssistant', aiAssistantSchema);
-module.exports = exportedModel;
+export default exportedModel;

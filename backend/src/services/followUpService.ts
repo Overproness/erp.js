@@ -1,12 +1,14 @@
 // @ts-nocheck
-const CustomerFollowUp = require('../models/appModels/CustomerFollowUp');
-const Client = require('../models/appModels/Client');
-const Quote = require('../models/appModels/Quote');
-const Invoice = require('../models/appModels/Invoice');
-const sendMail = require('../helpers/sendMail');
-const cron = require('node-cron');
-const mongoose = require('mongoose');
 
+import CustomerFollowUp from '../models/appModels/CustomerFollowUp';
+import Client from '../models/appModels/Client';
+import Quote from '../models/appModels/Quote';
+import Invoice from '../models/appModels/Invoice';
+import sendMail from '../helpers/sendMail';
+import cron from 'node-cron';
+import mongoose from 'mongoose';
+import Notification from '../models/appModels/Notification';
+import Task from '../models/appModels/Task';
 /**
  * Automated Customer Follow-Up Service
  * Handles scheduled follow-ups based on customer interactions and business rules
@@ -290,7 +292,6 @@ class FollowUpService {
    */
   async sendFollowUpNotification(followUp) {
     try {
-      const Notification = require('../models/appModels/Notification');
 
       await Notification.create({
         owner: followUp.owner,
@@ -317,7 +318,6 @@ class FollowUpService {
    */
   async createFollowUpTask(followUp) {
     try {
-      const Task = require('../models/appModels/Task');
 
       await Task.create({
         owner: followUp.owner,
@@ -662,4 +662,4 @@ class FollowUpService {
 
 const followUpService = new FollowUpService();
 
-module.exports = followUpService;
+export = followUpService;

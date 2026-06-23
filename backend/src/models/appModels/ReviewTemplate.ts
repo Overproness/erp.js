@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const reviewTemplateSchema = new Schema({
@@ -204,4 +204,4 @@ reviewTemplateSchema.statics.findByRatingRange = function(businessId, rating) {
 };
 
 const ReviewTemplate = mongoose.model('ReviewTemplate', reviewTemplateSchema);
-module.exports = ReviewTemplate;
+export default ReviewTemplate;

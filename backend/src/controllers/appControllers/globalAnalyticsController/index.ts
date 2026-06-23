@@ -1,21 +1,8 @@
 // @ts-nocheck
-const {
-  Client,
-  Invoice,
-  Quote,
-  Payment,
-  Campaign,
-  Review,
-  Survey,
-  Task,
-  Appointment,
-  Document,
-  SocialPost,
-  URL,
-} = require('../../../models');
-const predictiveService = require('../../../services/predictiveService');
-const aiInsightsService = require('../../../services/aiInsightsService');
 
+import { Client, Invoice, Quote, Payment, Campaign, Review, Survey, Task, Appointment, Document, SocialPost, URL, } from '../../../models';
+import predictiveService from '../../../services/predictiveService';
+import aiInsightsService from '../../../services/aiInsightsService';
 /**
  * Global Analytics Controller
  * Provides comprehensive analytics across all modules
@@ -779,7 +766,7 @@ const getTrendAnalysis = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   getGlobalDashboard,
   getRealTimeMetrics,
   getModuleAnalytics,

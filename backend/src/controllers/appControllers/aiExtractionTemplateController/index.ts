@@ -1,8 +1,8 @@
 // @ts-nocheck
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const AiExtractionTemplate = require('../../../models/appModels/AiExtractionTemplate');
-const { catchErrors } = require('../../../handlers/errorHandlers');
 
+import { catchErrors } from '../../../handlers/errorHandlers';
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import AiExtractionTemplate from '../../../models/appModels/AiExtractionTemplate';
 const methods = createCRUDController('AiExtractionTemplate');
 
 // Override create to add default templates for new users
@@ -109,7 +109,7 @@ const createDefaultTemplates = catchErrors(async (ownerId) => {
   await AiExtractionTemplate.insertMany(defaultTemplates);
 });
 
-module.exports = {
+export = {
   ...methods,
   create,
   getByCategory,

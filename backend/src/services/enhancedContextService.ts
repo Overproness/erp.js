@@ -1,12 +1,12 @@
 // @ts-nocheck
-const contextAwareService = require('./contextAwareService');
-const patternRecognitionService = require('./patternRecognitionService');
-const Client = require('../models/appModels/Client');
-const Invoice = require('../models/appModels/Invoice');
-const Quote = require('../models/appModels/Quote');
-const Workflow = require('../models/appModels/Workflow');
-const AILearningData = require('../models/appModels/AILearningData');
 
+import contextAwareService from './contextAwareService';
+import patternRecognitionService from './patternRecognitionService';
+import Client from '../models/appModels/Client';
+import Invoice from '../models/appModels/Invoice';
+import Quote from '../models/appModels/Quote';
+import Workflow from '../models/appModels/Workflow';
+import AILearningData from '../models/appModels/AILearningData';
 /**
  * Enhanced Context-Aware Recommendations Service
  * Provides cross-module recommendations and predictive suggestions
@@ -677,4 +677,4 @@ class EnhancedContextService {
 
 const enhancedContextService = new EnhancedContextService();
 
-module.exports = enhancedContextService;
+export = enhancedContextService;

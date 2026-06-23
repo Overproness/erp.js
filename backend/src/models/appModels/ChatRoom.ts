@@ -1,5 +1,6 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import * as crypto from 'crypto';
+import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
   sender: {
@@ -176,7 +177,6 @@ chatRoomSchema.statics.generateRoomId = function () {
 };
 
 chatRoomSchema.statics.generateAccessToken = function () {
-  const crypto = require('crypto');
   return crypto.randomBytes(32).toString('hex');
 };
 
@@ -269,4 +269,4 @@ chatRoomSchema.methods.closeRoom = async function (closedBy: string, reason: str
 };
 
 const exportedModel = mongoose.model('ChatRoom', chatRoomSchema);
-module.exports = exportedModel;
+export default exportedModel;

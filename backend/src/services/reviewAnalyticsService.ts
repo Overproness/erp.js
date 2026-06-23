@@ -1,10 +1,10 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const Review = require('../models/appModels/Review');
-const ReviewResponse = require('../models/appModels/ReviewResponse');
-const ReviewLink = require('../models/appModels/ReviewLink');
-const Business = require('../models/appModels/Business');
 
+import mongoose from 'mongoose';
+import Review from '../models/appModels/Review';
+import ReviewResponse from '../models/appModels/ReviewResponse';
+import ReviewLink from '../models/appModels/ReviewLink';
+import Business from '../models/appModels/Business';
 class ReviewAnalyticsService {
   async getDashboardAnalytics(businessId, period = 30) {
     try {
@@ -325,4 +325,4 @@ class ReviewAnalyticsService {
 }
 
 const reviewAnalyticsService = new ReviewAnalyticsService();
-module.exports = { reviewAnalyticsService };
+export = { reviewAnalyticsService };

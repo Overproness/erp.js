@@ -1,8 +1,8 @@
 // @ts-nocheck
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const AiUserPreference = require('../../../models/appModels/AiUserPreference');
-const { catchErrors } = require('../../../handlers/errorHandlers');
 
+import { catchErrors } from '../../../handlers/errorHandlers';
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import AiUserPreference from '../../../models/appModels/AiUserPreference';
 const methods = createCRUDController('AiUserPreference');
 
 // Get user preferences
@@ -118,7 +118,7 @@ async function createDefaultPreferences(ownerId) {
   return await defaultPreferences.save();
 }
 
-module.exports = {
+export = {
   ...methods,
   read,
   update,

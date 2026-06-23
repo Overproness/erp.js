@@ -1,8 +1,8 @@
 // @ts-nocheck
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const AiKnowledgeBase = require('@/models/appModels/AiKnowledgeBase');
-const { catchErrors } = require('@/handlers/errorHandlers');
 
+import { catchErrors } from '@/handlers/errorHandlers';
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import AiKnowledgeBase from '@/models/appModels/AiKnowledgeBase';
 const methods = createCRUDController('AiKnowledgeBase');
 
 // Override list to include search functionality
@@ -238,7 +238,7 @@ const addFeedback = catchErrors(async (req, res) => {
   });
 });
 
-module.exports = {
+export = {
   ...methods,
   list,
   read,

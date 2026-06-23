@@ -1,8 +1,8 @@
 // @ts-nocheck
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const CustomerJourney = require('@/models/appModels/CustomerJourney');
-const Interaction = require('@/models/appModels/Interaction');
 
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import CustomerJourney from '@/models/appModels/CustomerJourney';
+import Interaction from '@/models/appModels/Interaction';
 function modelController() {
   const Model = CustomerJourney;
   const methods = createCRUDController('CustomerJourney');
@@ -300,4 +300,4 @@ function modelController() {
   return methods;
 }
 
-module.exports = modelController();
+export = modelController();

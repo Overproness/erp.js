@@ -17,7 +17,11 @@
     "urlsetup": "ts-node -r tsconfig-paths/register src/setup/urlSetup.ts",
     "reset": "ts-node -r tsconfig-paths/register src/setup/reset.ts",
     "lint": "eslint 'src/**/*.ts'",
-    "lint:fix": "eslint 'src/**/*.ts' --fix"
+    "lint:fix": "eslint 'src/**/*.ts' --fix",
+    "check:model-esm": "node scripts/check-model-esm.cjs",
+    "smoke:models": "tsx scripts/model-loading-smoke.ts",
+    "smoke:app": "tsx scripts/app-startup-smoke.ts",
+    "test:smoke": "npm run check:model-esm && npm run smoke:models && npm run smoke:app"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",

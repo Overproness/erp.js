@@ -1,7 +1,7 @@
 // @ts-nocheck
-const Team = require('../../../models/appModels/Team');
-const { createTeamSchema } = require('./schemaValidate');
 
+import { createTeamSchema } from './schemaValidate';
+import Team from '../../../models/appModels/Team';
 const create = async (req, res) => {
   try {
     // Validate request body
@@ -49,4 +49,4 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = create;
+export = create;

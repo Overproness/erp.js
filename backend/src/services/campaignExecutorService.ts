@@ -1,16 +1,19 @@
 // @ts-nocheck
+import { Campaign, TriggerRule, CustomerBehavior } from '../models';
+import campaignScheduler from '../utils/campaignScheduler';
+import segmentMatcher from '../utils/segmentMatcher';
+import marketingURLHelper from '../utils/marketingURLHelper';
+import emailService from './emailService';
+import analyticsService from './analyticsService';
+import smsService from './smsService';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
 /**
  * Campaign Executor Service
  * Background service for scheduled campaign execution across channels
  */
-const { Campaign, TriggerRule, CustomerBehavior } = require('../models');
-const campaignScheduler = require('../utils/campaignScheduler');
-const segmentMatcher = require('../utils/segmentMatcher');
-const marketingURLHelper = require('../utils/marketingURLHelper');
-const emailService = require('./emailService');
-const analyticsService = require('./analyticsService');
 
-const getPushNotificationService = () => require('./pushNotificationService');
+const getPushNotificationService = () => load('./pushNotificationService');
 
 class CampaignExecutorService {
   /**
@@ -332,7 +335,6 @@ class CampaignExecutorService {
     }
 
     try {
-      const smsService = require('./smsService');
       await smsService.sendSMS({
         to: customer.phone,
         body: content,
@@ -440,4 +442,4 @@ class CampaignExecutorService {
   }
 }
 
-module.exports = new CampaignExecutorService();
+export = new CampaignExecutorService();

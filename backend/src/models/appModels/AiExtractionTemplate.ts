@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const fieldSchema = new mongoose.Schema({
   key: {
@@ -130,4 +130,4 @@ aiExtractionTemplateSchema.statics.findPopular = function(limit = 10) {
 };
 
 const exportedModel = mongoose.model('AiExtractionTemplate', aiExtractionTemplateSchema);
-module.exports = exportedModel;
+export default exportedModel;

@@ -1,12 +1,12 @@
 // @ts-nocheck
+import { Campaign, CustomerBehavior } from '../models';
+import campaignExecutor from './CampaignExecutor';
+import analyticsService from './analyticsService';
 /**
  * AIOptimizer Service
  * 
  * Machine learning service for campaign performance optimization
  */
-const { Campaign, CustomerBehavior } = require('../models');
-const campaignExecutor = require('./CampaignExecutor');
-const analyticsService = require('./analyticsService');
 
 class AIOptimizer {
   constructor() {
@@ -705,4 +705,4 @@ class AIOptimizer {
   }
 }
 
-module.exports = new AIOptimizer();
+export = new AIOptimizer();

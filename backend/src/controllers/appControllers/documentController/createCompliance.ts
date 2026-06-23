@@ -1,6 +1,8 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import { createAuditLog } from './auditLog';
+import mongoose from 'mongoose';
+import '../../../models/appModels/DocumentCompliance';
 // Ensure the model is loaded
 let DocumentCompliance;
 try {
@@ -8,7 +10,6 @@ try {
 } catch (error) {
   // Model not registered yet, require it
   try {
-    require('../../../models/appModels/DocumentCompliance');
     DocumentCompliance = mongoose.model('DocumentCompliance');
   } catch (requireError) {
     // If model file doesn't exist, create a minimal schema
@@ -23,7 +24,6 @@ try {
   }
 }
 const Document = mongoose.model('AppDocument');
-const { createAuditLog } = require('./auditLog');
 
 /**
  * Creates or updates compliance information for a document
@@ -195,4 +195,4 @@ const createCompliance = async (req, res) => {
   }
 };
 
-module.exports = createCompliance;
+export = createCompliance;

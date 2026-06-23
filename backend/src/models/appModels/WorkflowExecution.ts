@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Node execution result schema
 const nodeExecutionSchema = new mongoose.Schema({
@@ -378,4 +378,4 @@ workflowExecutionSchema.statics.getExecutionTrends = function (workflowId = null
 };
 
 const exportedModel = mongoose.model('WorkflowExecution', workflowExecutionSchema);
-module.exports = exportedModel;
+export default exportedModel;

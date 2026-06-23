@@ -1,10 +1,10 @@
 // @ts-nocheck
+import jwt from 'jsonwebtoken';
+import Notification from '../models/appModels/Notification';
 /**
  * Socket.io handlers for real-time notifications
  */
 
-const jwt = require('jsonwebtoken');
-const Notification = require('../models/appModels/Notification');
 
 // Store active user connections
 const activeConnections = new Map(); // userId -> Set of socketIds
@@ -35,7 +35,7 @@ const authenticateSocket = (socket, next) => {
 /**
  * Initialize notification socket handlers
  */
-module.exports = (io) => {
+export = (io) => {
   // Apply authentication middleware
   io.use(authenticateSocket);
 

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const reviewResponseSchema = new Schema({
@@ -182,5 +182,5 @@ reviewResponseSchema.statics.getResponseRate = async function(businessId) {
 };
 
 const ReviewResponse = mongoose.model('ReviewResponse', reviewResponseSchema);
-module.exports = ReviewResponse;
+export default ReviewResponse;
 

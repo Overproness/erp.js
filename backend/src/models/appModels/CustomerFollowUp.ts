@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const customerFollowUpSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.ObjectId, ref: 'CompanyOwner', required: true, index: true },
@@ -111,4 +111,4 @@ customerFollowUpSchema.pre('save', function (next) {
 });
 
 const exportedModel = mongoose.model('CustomerFollowUp', customerFollowUpSchema);
-module.exports = exportedModel;
+export default exportedModel;

@@ -1,8 +1,8 @@
 // @ts-nocheck
-const Review = require('@/models/appModels/Review');
-const Business = require('@/models/appModels/Business');
-const ReviewTemplate = require('@/models/appModels/ReviewTemplate');
 
+import Review from '@/models/appModels/Review';
+import Business from '@/models/appModels/Business';
+import ReviewTemplate from '@/models/appModels/ReviewTemplate';
 class ReviewAggregationService {
   /**
    * Get aggregated review statistics for a business
@@ -493,4 +493,4 @@ class ReviewAggregationService {
   }
 }
 
-module.exports = new ReviewAggregationService();
+export = new ReviewAggregationService();

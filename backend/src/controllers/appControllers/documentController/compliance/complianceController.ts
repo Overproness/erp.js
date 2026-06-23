@@ -1,17 +1,15 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const DataRetentionPolicy = require('@/models/appModels/dataRetentionPolicyModel');
-const ConsentRecord = require('@/models/appModels/consentRecordModel');
+import { createAuditTrail, } from '@/controllers/appControllers/documentController/audit/auditTrailController';
+import { parse } from 'json2csv';
+import mongoose from 'mongoose';
+import DataRetentionPolicy from '@/models/appModels/dataRetentionPolicyModel';
+import ConsentRecord from '@/models/appModels/consentRecordModel';
+import AuditTrail from '@/models/appModels/auditTrailModel';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
 const Document = mongoose.model('AppDocument');
 const User = mongoose.model('User');
-const AuditTrail = require('@/models/appModels/auditTrailModel');
-const {
-  createAuditTrail,
-} = require('@/controllers/appControllers/documentController/audit/auditTrailController');
-const { parse } = require('json2csv');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
 
 // Data Retention Policy Management
 exports.createRetentionPolicy = async (req, res) => {

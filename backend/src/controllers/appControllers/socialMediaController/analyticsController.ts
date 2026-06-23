@@ -1,11 +1,11 @@
 // @ts-nocheck
-const SocialAnalytics = require('@/models/appModels/SocialAnalytics');
-const SocialAccount = require('@/models/appModels/SocialAccount');
-const SocialPost = require('@/models/appModels/SocialPost');
-const { facebookService } = require('@/services/facebookService');
-const { instagramService } = require('@/services/instagramService');
-const { twitterService } = require('@/services/twitterService');
 
+import { facebookService } from '@/services/facebookService';
+import { instagramService } from '@/services/instagramService';
+import { twitterService } from '@/services/twitterService';
+import SocialAnalytics from '@/models/appModels/SocialAnalytics';
+import SocialAccount from '@/models/appModels/SocialAccount';
+import SocialPost from '@/models/appModels/SocialPost';
 // Get analytics for specific account
 const getAccountAnalytics = async (req, res) => {
   try {
@@ -363,7 +363,7 @@ function calculateTrends(analytics, days) {
   };
 }
 
-module.exports = {
+export = {
   getAccountAnalytics,
   getAnalyticsDashboard,
   syncAnalytics,

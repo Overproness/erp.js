@@ -1,6 +1,7 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const commonFields = require('../utils/commonFields');
+import autopopulate from 'mongoose-autopopulate';
+import mongoose from 'mongoose';
+import commonFields from '../utils/commonFields';
 
 const paymentSchema = new mongoose.Schema({
   ...commonFields,
@@ -59,7 +60,7 @@ const paymentSchema = new mongoose.Schema({
     type: String,
           },
 });
-paymentSchema.plugin(require('mongoose-autopopulate'));
+paymentSchema.plugin(autopopulate);
 
 paymentSchema.pre('save', async function(next) {
   if (this.isNew) {
@@ -73,4 +74,4 @@ paymentSchema.pre('save', async function(next) {
 paymentSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Payment', paymentSchema);
-module.exports = exportedModel;
+export default exportedModel;

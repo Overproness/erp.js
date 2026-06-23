@@ -1,6 +1,6 @@
 // @ts-nocheck
-const BusinessProcess = require('@/models/appModels/BusinessProcess');
 
+import BusinessProcess from '@/models/appModels/BusinessProcess';
 // Create business process
 const createBusinessProcess = async (req, res) => {
   try {
@@ -484,7 +484,7 @@ const duplicateAsTemplate = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   createBusinessProcess,
   getBusinessProcesses,
   getBusinessProcess,

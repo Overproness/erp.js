@@ -1,10 +1,10 @@
 // @ts-nocheck
+import { URL, URLClick } from '../models';
+import crypto from 'crypto';
 /**
  * Marketing URL Helper
  * Utilities for generating and tracking marketing campaign URLs
  */
-const { URL, URLClick } = require('../models');
-const crypto = require('crypto');
 
 /**
  * Generate a campaign tracking URL
@@ -197,7 +197,7 @@ const getCampaignURLMetrics = async (campaignId) => {
   }
 };
 
-module.exports = {
+export = {
   generateCampaignURL,
   recordURLClick,
   getCampaignURLMetrics,

@@ -1,12 +1,14 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const URL = require('@/models/appModels/URL');
-const URLClick = require('@/models/appModels/URLClick');
 
-const { catchErrors } = require('@/handlers/errorHandlers');
-const analyticsService = require('@/services/urlAnalyticsService');
-const analyticsHelpers = require('@/helpers/analyticsHelpers');
 
+import { catchErrors } from '@/handlers/errorHandlers';
+import mongoose from 'mongoose';
+import URL from '@/models/appModels/URL';
+import URLClick from '@/models/appModels/URLClick';
+import analyticsService from '@/services/urlAnalyticsService';
+import analyticsHelpers from '@/helpers/analyticsHelpers';
+import XLSX from 'xlsx';
+import PDFDocument from 'pdfkit';
 // Helper to get ownerId from request
 function getOwnerId(req) {
   // Only companyOwner or user
@@ -587,7 +589,6 @@ const exportAnalytics = catchErrors(async (req, res) => {
       return res.json(exportData);
     } else if (format === 'xlsx' || format === 'excel') {
       // Excel export using xlsx
-      const XLSX = require('xlsx');
       let wb, ws;
       if (Array.isArray(exportData)) {
         ws = XLSX.utils.json_to_sheet(exportData);
@@ -611,7 +612,6 @@ const exportAnalytics = catchErrors(async (req, res) => {
       return res.send(buffer);
     } else if (format === 'pdf') {
       // PDF export using pdfkit
-      const PDFDocument = require('pdfkit');
       const doc = new PDFDocument({ margin: 30, size: 'A4' });
       const filename = `analytics-${url.shortCode}-${Date.now()}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
@@ -1197,7 +1197,7 @@ const getDailyDistribution = async (matchStage) => {
 };
 
 // Export methods
-module.exports = {
+export = {
   getAnalytics,
   getClickHistory,
   getGeographicData,

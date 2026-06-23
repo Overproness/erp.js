@@ -5,7 +5,11 @@ import mongoose from 'mongoose';
 import { AdminUser, GraphQLContext } from '../types/context';
 import { initializeResolvers } from './resolvers';
 import typeDefs from './typeDefs';
-const { makeExecutableSchema } = require('@graphql-tools/schema');
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import controllers from '../controllers/appControllers';
+import coreControllers from '../controllers/coreControllers/adminAuth';
+import settingController from '../controllers/coreControllers/settingController';
+import adminController from '../controllers/coreControllers/adminController';
 
 /** Remove resolver entries that have no matching field in the schema */
 function filterResolversToSchema(resolvers: any, schema: any) {
@@ -24,11 +28,6 @@ function filterResolversToSchema(resolvers: any, schema: any) {
 
 async function createApolloServer(): Promise<ApolloServer> {
   // Import all app controllers and wire them into the resolvers
-  const controllers = require('../controllers/appControllers');
-  const coreControllers = require('../controllers/coreControllers/adminAuth');
-  const settingController = require('../controllers/coreControllers/settingController');
-  const adminController = require('../controllers/coreControllers/adminController');
-
   const resolvers = initializeResolvers({
     ...controllers,
     adminAuth: coreControllers,
@@ -124,4 +123,3 @@ async function buildContext({ req, res }: { req: any; res: any }): Promise<Graph
 }
 
 export { buildContext, createApolloServer };
-

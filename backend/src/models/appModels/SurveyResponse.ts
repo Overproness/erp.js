@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const answerSchema = new Schema(
@@ -297,4 +297,4 @@ surveyResponseSchema.post('save', async function (doc) {
 });
 
 const exportedModel = mongoose.model('SurveyResponse', surveyResponseSchema);
-module.exports = exportedModel;
+export default exportedModel;

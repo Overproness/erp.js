@@ -1,9 +1,9 @@
 // @ts-nocheck
+import { Customer, CustomerBehavior, CustomerSegment, Invoice } from '../models';
 /**
  * Segment Matcher
  * Customer segment qualification and audience matching algorithms
  */
-const { Customer, CustomerBehavior, CustomerSegment, Invoice } = require('../models');
 
 /**
  * Match a customer against a segment definition
@@ -232,7 +232,7 @@ const getSegmentMembers = async (segmentId) => {
   }
 };
 
-module.exports = {
+export = {
   matchCustomerToSegment,
   matchDemographics,
   matchBehaviors,

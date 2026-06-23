@@ -1,8 +1,9 @@
 // @ts-nocheck
-const followUpService = require('../../services/followUpService');
-const { catchErrors } = require('../../handlers/errorHandlers');
-const { getCurrentUserId } = require('../../utils/authUtils');
 
+import { catchErrors } from '../../handlers/errorHandlers';
+import { getCurrentUserId } from '../../utils/authUtils';
+import followUpService from '../../services/followUpService';
+import CustomerFollowUp from '../../models/appModels/CustomerFollowUp';
 /**
  * Create a customer follow-up
  */
@@ -158,7 +159,6 @@ const listFollowUps = async (req, res) => {
     const userId = getCurrentUserId(req);
     const { status, type, limit = 50, skip = 0, customerId } = req.query;
 
-    const CustomerFollowUp = require('../../models/appModels/CustomerFollowUp');
 
     const query = { owner: userId };
 
@@ -197,7 +197,7 @@ const listFollowUps = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   createFollowUp: catchErrors(createFollowUp),
   listFollowUps: catchErrors(listFollowUps),
   getAnalytics: catchErrors(getAnalytics),

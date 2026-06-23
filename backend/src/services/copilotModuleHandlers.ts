@@ -1,10 +1,10 @@
 // @ts-nocheck
+import Client from '../models/appModels/Client';
 /**
  * Example Copilot Module Handlers
  * Demonstrates how to create module-specific AI functionality
  */
 
-const Client = require('../models/appModels/Client');
 
 /**
  * Customer Module Handler
@@ -197,7 +197,7 @@ Be friendly, concise, and helpful.`,
   },
 };
 
-module.exports = {
+export = {
   customerModuleHandler,
   generalModuleHandler,
 };

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const processStepSchema = new mongoose.Schema({
   id: {
@@ -541,4 +541,4 @@ businessProcessSchema.statics.findScheduled = function () {
 };
 
 const exportedModel = mongoose.model('BusinessProcess', businessProcessSchema);
-module.exports = exportedModel;
+export default exportedModel;

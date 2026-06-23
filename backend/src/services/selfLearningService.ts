@@ -1,8 +1,8 @@
 // @ts-nocheck
-const AILearningData = require('../models/appModels/AILearningData');
-const mongoose = require('mongoose');
-const cron = require('node-cron');
 
+import AILearningData from '../models/appModels/AILearningData';
+import mongoose from 'mongoose';
+import cron from 'node-cron';
 /**
  * AI Self-Learning Service
  * Tracks interactions, learns from feedback, and improves responses over time
@@ -685,4 +685,4 @@ class SelfLearningService {
 
 const selfLearningService = new SelfLearningService();
 
-module.exports = selfLearningService;
+export = selfLearningService;

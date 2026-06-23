@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const socialAnalyticsSchema = new mongoose.Schema({
   post: {
@@ -335,4 +335,4 @@ socialAnalyticsSchema.statics.getTopPerformingPosts = function(ownerId, platform
 };
 
 const exportedModel = mongoose.model('SocialAnalytics', socialAnalyticsSchema);
-module.exports = exportedModel;
+export default exportedModel;

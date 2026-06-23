@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const customerSegmentSchema = new Schema({
@@ -205,4 +205,4 @@ customerSegmentSchema.statics.findSegmentsNeedingRefresh = function() {
 };
 
 const CustomerSegment = mongoose.model('CustomerSegment', customerSegmentSchema);
-module.exports = CustomerSegment;
+export default CustomerSegment;

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ChatMessageSchema = new mongoose.Schema({
   sender: {
@@ -37,4 +37,4 @@ ChatMessageSchema.index({ companyID: 1, createdAt: -1 });
 ChatMessageSchema.index({ sender: 1, receiver: 1 });
 
 const exportedModel = mongoose.model('ChatMessage', ChatMessageSchema);
-module.exports = exportedModel;
+export default exportedModel;

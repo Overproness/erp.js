@@ -1,9 +1,9 @@
 // @ts-nocheck
-const AutomatedReminder = require('@/models/appModels/AutomatedReminder');
-const Appointment = require('@/models/appModels/Appointment');
-const Task = require('@/models/appModels/Task');
-const { sendEmail } = require('@/helpers/sendMail');
 
+import { sendEmail } from '@/helpers/sendMail';
+import AutomatedReminder from '@/models/appModels/AutomatedReminder';
+import Appointment from '@/models/appModels/Appointment';
+import Task from '@/models/appModels/Task';
 // Create automated reminder
 const createReminder = async (req, res) => {
   try {
@@ -476,7 +476,7 @@ const getReminderStats = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   createReminder,
   getReminders,
   getReminder,

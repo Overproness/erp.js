@@ -1,6 +1,7 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const commonFields = require('../utils/commonFields');
+import autopopulate from 'mongoose-autopopulate';
+import mongoose from 'mongoose';
+import commonFields from '../utils/commonFields';
 
 const quoteSchema = new mongoose.Schema({
   ...commonFields,
@@ -168,7 +169,7 @@ const quoteSchema = new mongoose.Schema({
   },
 });
 
-quoteSchema.plugin(require('mongoose-autopopulate'));
+quoteSchema.plugin(autopopulate);
 
 quoteSchema.pre('save', async function (next) {
   if (this.isNew) {
@@ -182,4 +183,4 @@ quoteSchema.pre('save', async function (next) {
 quoteSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Quote', quoteSchema);
-module.exports = exportedModel;
+export default exportedModel;

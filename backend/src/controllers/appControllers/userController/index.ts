@@ -1,8 +1,8 @@
 // @ts-nocheck
-const createCRUDController = require('../../middlewaresControllers/createCRUDController');
-const User = require('@/models/appModels/User');
-const mongoose = require('mongoose');
 
+import createCRUDController from '../../middlewaresControllers/createCRUDController';
+import User from '@/models/appModels/User';
+import mongoose from 'mongoose';
 // Add permissions method
 const permissions = async (req, res) => {
   try {
@@ -145,4 +145,4 @@ const permissions = async (req, res) => {
   }
 };
 
-module.exports = permissions;
+export = permissions;

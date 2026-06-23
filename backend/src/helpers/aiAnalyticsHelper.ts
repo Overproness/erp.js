@@ -1,7 +1,7 @@
 // @ts-nocheck
-const AiAnalytics = require('../models/appModels/AiAnalytics');
-const AiConversation = require('../models/appModels/AiConversation');
 
+import AiAnalytics from '../models/appModels/AiAnalytics';
+import AiConversation from '../models/appModels/AiConversation';
 class AiAnalyticsHelper {
   async recordUsage(userId, assistantId, type, data) {
     try {
@@ -331,4 +331,4 @@ class AiAnalyticsHelper {
   }
 }
 
-module.exports = new AiAnalyticsHelper();
+export = new AiAnalyticsHelper();

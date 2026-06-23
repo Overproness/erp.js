@@ -1,7 +1,9 @@
 // @ts-nocheck
-const Joi = require('joi');
-const aiUtils = require('../../utils/aiUtils');
 
+import Joi from 'joi';
+import aiUtils from '../../utils/aiUtils';
+import AiAssistant from '../../models/appModels/AiAssistant';
+import AiAnalytics from '../../models/appModels/AiAnalytics';
 // Validation schemas
 const createAssistantSchema = Joi.object({
   name: Joi.string().required().min(1).max(100),
@@ -108,7 +110,6 @@ const validateAssistantAccess = async (req, res, next) => {
       });
     }
 
-    const AiAssistant = require('../../models/appModels/AiAssistant');
     const assistant = await AiAssistant.findOne({
       _id: assistantId,
       owner: req.companyOwner?._id || req.user?.companyOwner,
@@ -180,7 +181,6 @@ const checkUsageLimits = async (req, res, next) => {
     const userPlan = req.companyOwner?.plan || 'free';
 
     // Check monthly usage limits
-    const AiAnalytics = require('../../models/appModels/AiAnalytics');
     const currentMonth = new Date();
     currentMonth.setDate(1);
     currentMonth.setHours(0, 0, 0, 0);
@@ -252,7 +252,7 @@ const checkUsageLimits = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export = {
   validateAiRequest: {
     createAssistant,
     updateAssistant,

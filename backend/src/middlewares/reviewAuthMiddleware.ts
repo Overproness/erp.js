@@ -1,8 +1,8 @@
 // @ts-nocheck
-const ReviewLink = require('@/models/appModels/ReviewLink');
-const Business = require('@/models/appModels/Business');
-const { createError } = require('@/handlers/errorHandlers');
 
+import { createError } from '@/handlers/errorHandlers';
+import ReviewLink from '@/models/appModels/ReviewLink';
+import Business from '@/models/appModels/Business';
 /**
  * Middleware to authenticate review links and attach link data to request
  */
@@ -153,7 +153,7 @@ const verifyBusinessOwnership = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export = {
   verifyReviewLink,
   verifyReviewSubmission,
   verifyBusinessOwnership

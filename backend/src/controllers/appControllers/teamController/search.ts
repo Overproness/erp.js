@@ -1,6 +1,6 @@
 // @ts-nocheck
-const Team = require('@/models/appModels/Team');
 
+import Team from '@/models/appModels/Team';
 const search = async (req, res) => {
   try {
     const { q } = req.query;
@@ -44,4 +44,4 @@ const search = async (req, res) => {
   }
 };
 
-module.exports = search;
+export = search;

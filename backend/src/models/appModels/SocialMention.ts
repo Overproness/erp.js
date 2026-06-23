@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const socialMentionSchema = new mongoose.Schema({
   platform: {
@@ -388,4 +388,4 @@ socialMentionSchema.statics.getSentimentAnalysis = function(ownerId, dateRange) 
 };
 
 const exportedModel = mongoose.model('SocialMention', socialMentionSchema);
-module.exports = exportedModel;
+export default exportedModel;

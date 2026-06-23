@@ -1,11 +1,11 @@
 // @ts-nocheck
-const cron = require('node-cron');
-const AutomatedReminder = require('@/models/appModels/AutomatedReminder');
-const Appointment = require('@/models/appModels/Appointment');
-const Task = require('@/models/appModels/Task');
-const BusinessProcess = require('@/models/appModels/BusinessProcess');
-const { sendEmail } = require('@/helpers/sendMail');
 
+import { sendEmail } from '@/helpers/sendMail';
+import cron from 'node-cron';
+import AutomatedReminder from '@/models/appModels/AutomatedReminder';
+import Appointment from '@/models/appModels/Appointment';
+import Task from '@/models/appModels/Task';
+import BusinessProcess from '@/models/appModels/BusinessProcess';
 class ReminderSchedulerService {
   constructor() {
     this.jobs = new Map();
@@ -472,4 +472,4 @@ class ReminderSchedulerService {
 // Create singleton instance
 const reminderScheduler = new ReminderSchedulerService();
 
-module.exports = reminderScheduler;
+export = reminderScheduler;

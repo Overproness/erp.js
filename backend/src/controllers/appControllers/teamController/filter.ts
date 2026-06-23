@@ -1,6 +1,6 @@
 // @ts-nocheck
-const Team = require('@/models/appModels/Team');
 
+import Team from '@/models/appModels/Team';
 const filter = async (req, res) => {
   try {
     const { enabled, hasTeamLead, memberCount } = req.query;
@@ -49,4 +49,4 @@ const filter = async (req, res) => {
   }
 };
 
-module.exports = filter;
+export = filter;

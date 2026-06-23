@@ -55,5 +55,3 @@ export function requireLimit(
     }
   };
 }
-
-module.exports = { requireFeature, requireLimit };

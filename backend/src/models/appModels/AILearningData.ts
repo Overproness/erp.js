@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const aiLearningDataSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.ObjectId, ref: 'CompanyOwner', required: true, index: true },
@@ -97,4 +97,4 @@ aiLearningDataSchema.pre('save', function (next) {
 });
 
 const exportedModel = mongoose.model('AILearningData', aiLearningDataSchema);
-module.exports = exportedModel;
+export default exportedModel;

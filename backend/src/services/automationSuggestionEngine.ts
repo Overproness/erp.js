@@ -1,12 +1,12 @@
 // @ts-nocheck
-const Workflow = require('../models/appModels/Workflow');
-const AILearningData = require('../models/appModels/AILearningData');
-const patternRecognitionService = require('./patternRecognitionService');
-const Client = require('../models/appModels/Client');
-const Invoice = require('../models/appModels/Invoice');
-const Quote = require('../models/appModels/Quote');
-const Task = require('../models/appModels/Task');
 
+import Workflow from '../models/appModels/Workflow';
+import AILearningData from '../models/appModels/AILearningData';
+import patternRecognitionService from './patternRecognitionService';
+import Client from '../models/appModels/Client';
+import Invoice from '../models/appModels/Invoice';
+import Quote from '../models/appModels/Quote';
+import Task from '../models/appModels/Task';
 /**
  * Automation Suggestion Engine
  * Analyzes business patterns and suggests workflow automations
@@ -655,4 +655,4 @@ class AutomationSuggestionEngine {
 
 const automationSuggestionEngine = new AutomationSuggestionEngine();
 
-module.exports = automationSuggestionEngine;
+export = automationSuggestionEngine;

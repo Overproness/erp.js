@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const questionSchema = new Schema(
@@ -300,6 +300,5 @@ surveySchema.methods.calculateCSAT = async function () {
 };
 
 const exportedModel = mongoose.model('Survey', surveySchema);
-module.exports = exportedModel;
-export { };
+export default exportedModel;
 

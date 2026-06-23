@@ -1,6 +1,6 @@
 // @ts-nocheck
-const SocialAccount = require('@/models/appModels/SocialAccount');
 
+import SocialAccount from '@/models/appModels/SocialAccount';
 // Stub auth utilities to prevent import errors
 const stubAuth = {
   exchangeCodeForToken: async () => ({ accountId: 'stub', accessToken: 'stub' }),
@@ -157,7 +157,7 @@ const getTwitterProfile = async (req, res) => {
   res.json({ success: true, result: {}, message: 'Twitter profile (stub)' });
 };
 
-module.exports = {
+export = {
   getAccounts,
   connectAccount,
   read,

@@ -1,11 +1,11 @@
 // @ts-nocheck
+import { Campaign, SocialCampaign } from '../models';
+import mongoose from 'mongoose';
 /**
  * Campaign Auth Middleware
  * 
  * Authentication and authorization for campaign management
  */
-const { Campaign, SocialCampaign } = require('../models');
-const mongoose = require('mongoose');
 
 /**
  * Verify if user owns the campaign
@@ -359,7 +359,7 @@ const checkCampaignBudget = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export = {
   verifyCampaignOwnership,
   verifySocialCampaignOwnership,
   verifyCampaignRole,

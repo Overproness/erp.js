@@ -1,6 +1,6 @@
 // @ts-nocheck
-const AiConversation = require('../models/appModels/AiConversation');
 
+import AiConversation from '../models/appModels/AiConversation';
 class ConversationHelper {
   async createConversation(assistantId, userId, context = {}) {
     try {
@@ -320,4 +320,4 @@ class ConversationHelper {
   }
 }
 
-module.exports = new ConversationHelper();
+export = new ConversationHelper();

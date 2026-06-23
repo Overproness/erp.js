@@ -1,12 +1,15 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import { calculate } from '../../../helpers';
+import mongoose from 'mongoose';
+import schema from './schemaValidate';
+import '../../../models/appModels/Payment';
+import '../../../models/appModels/Invoice';
 // Ensure Payment model is registered
 let Model;
 try {
   Model = mongoose.model('Payment');
 } catch (error) {
-  require('../../../models/appModels/Payment');
   Model = mongoose.model('Payment');
 }
 
@@ -15,11 +18,8 @@ let Invoice;
 try {
   Invoice = mongoose.model('Invoice');
 } catch (error) {
-  require('../../../models/appModels/Invoice');
   Invoice = mongoose.model('Invoice');
 }
-const schema = require('./schemaValidate');
-const { calculate } = require('../../../helpers');
 
 const create = async (req, res) => {
   try {
@@ -141,4 +141,4 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = create;
+export = create;

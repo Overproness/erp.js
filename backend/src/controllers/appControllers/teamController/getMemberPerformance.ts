@@ -1,12 +1,12 @@
 // @ts-nocheck
-const Team = require('@/models/appModels/Team');
-const Client = require('@/models/appModels/Client');
-const Quote = require('@/models/appModels/Quote');
-const Invoice = require('@/models/appModels/Invoice');
-const Payment = require('@/models/appModels/Payment');
-const Task = require('@/models/appModels/Task');
-const CustomerFollowUp = require('@/models/appModels/CustomerFollowUp');
 
+import Team from '@/models/appModels/Team';
+import Client from '@/models/appModels/Client';
+import Quote from '@/models/appModels/Quote';
+import Invoice from '@/models/appModels/Invoice';
+import Payment from '@/models/appModels/Payment';
+import Task from '@/models/appModels/Task';
+import CustomerFollowUp from '@/models/appModels/CustomerFollowUp';
 const getMemberPerformance = async (req, res) => {
   try {
     const { teamId, memberId } = req.params;
@@ -308,4 +308,4 @@ const getMemberPerformance = async (req, res) => {
   }
 };
 
-module.exports = getMemberPerformance;
+export = getMemberPerformance;

@@ -1,7 +1,7 @@
 // @ts-nocheck
-const { Campaign, CustomerBehavior } = require('../../models');
-const analyticsService = require('../../services/analyticsService');
 
+import { Campaign, CustomerBehavior } from '../../models';
+import analyticsService from '../../services/analyticsService';
 /**
  * Analytics Controller
  * Generates campaign reports and real-time performance dashboards
@@ -405,4 +405,4 @@ class AnalyticsController {
   }
 }
 
-module.exports = new AnalyticsController();
+export = new AnalyticsController();

@@ -1,6 +1,6 @@
 // @ts-nocheck
-const User = require('@/models/appModels/User');
 
+import User from '@/models/appModels/User';
 const getInvitationDetails = async (req, res) => {
   try {
     // Log some info to help debug requests
@@ -70,4 +70,4 @@ const getInvitationDetails = async (req, res) => {
   }
 };
 
-module.exports = getInvitationDetails;
+export = getInvitationDetails;

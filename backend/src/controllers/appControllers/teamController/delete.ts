@@ -1,6 +1,6 @@
 // @ts-nocheck
-const Team = require('@/models/appModels/Team');
 
+import Team from '@/models/appModels/Team';
 const deleteTeam = async (req, res) => {
   try {
     const { id } = req.params;
@@ -58,4 +58,4 @@ const deleteTeam = async (req, res) => {
   }
 };
 
-module.exports = deleteTeam;
+export = deleteTeam;

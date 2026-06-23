@@ -1,13 +1,13 @@
 // @ts-nocheck
+import { CustomerBehavior } from '../models';
+import { getClientIp } from 'request-ip';
+import BehaviorProcessor from '../services/BehaviorProcessor';
+import UAParser from 'ua-parser-js';
 /**
  * Behavior Tracking Middleware
  *
  * Captures and logs customer behavior across all endpoints
  */
-const { CustomerBehavior } = require('../models');
-const BehaviorProcessor = require('../services/BehaviorProcessor');
-const { getClientIp } = require('request-ip');
-const UAParser = require('ua-parser-js');
 
 /**
  * Extract tracking parameters from URL
@@ -353,7 +353,7 @@ const trackCustomEvent = (req, res) => {
 };
 
 // Export all middleware functions
-module.exports = {
+export = {
   trackPageView,
   trackApiInteraction,
   trackFormSubmission,

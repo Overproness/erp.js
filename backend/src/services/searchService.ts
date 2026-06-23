@@ -1,14 +1,16 @@
 // @ts-nocheck
-// const mongoose = require('mongoose');
-const Client = require('../models/appModels/Client');
-const Invoice = require('../models/appModels/Invoice');
-const Quote = require('../models/appModels/Quote');
-const Payment = require('../models/appModels/Payment');
-const Document = require('../models/appModels/Document');
-const Task = require('../models/appModels/Task');
-const User = require('../models/appModels/User');
-const Team = require('../models/appModels/Team');
-const SavedSearch = require('../models/appModels/SavedSearch');
+import Client from '../models/appModels/Client';
+import Invoice from '../models/appModels/Invoice';
+import Quote from '../models/appModels/Quote';
+import Payment from '../models/appModels/Payment';
+import Document from '../models/appModels/Document';
+import Task from '../models/appModels/Task';
+import User from '../models/appModels/User';
+import Team from '../models/appModels/Team';
+import SavedSearch from '../models/appModels/SavedSearch';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
+// const mongoose = load('mongoose');
 
 /**
  * Advanced Search Service
@@ -240,4 +242,4 @@ class SearchService {
   }
 }
 
-module.exports = new SearchService();
+export = new SearchService();

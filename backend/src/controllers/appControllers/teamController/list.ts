@@ -1,7 +1,7 @@
 // @ts-nocheck
-const Team = require('../../../models/appModels/Team');
-const User = require('../../../models/appModels/User');
 
+import Team from '../../../models/appModels/Team';
+import User from '../../../models/appModels/User';
 const list = async (req, res) => {
   try {
     // Get current user from request - prioritize companyOwner for owners
@@ -92,4 +92,4 @@ const list = async (req, res) => {
   }
 };
 
-module.exports = list;
+export = list;

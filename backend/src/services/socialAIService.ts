@@ -1,7 +1,7 @@
 // @ts-nocheck
-const openaiHelper = require('../helpers/openaiHelper');
-const Setting = require('../models/coreModels/Setting');
 
+import openaiHelper from '../helpers/openaiHelper';
+import Setting from '../models/coreModels/Setting';
 class SocialAIService {
   constructor() {
     this.initialized = false;
@@ -455,4 +455,4 @@ Platform-specific guidelines for ${platform}:`;
   }
 }
 
-module.exports = new SocialAIService();
+export = new SocialAIService();

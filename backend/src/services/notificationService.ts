@@ -1,14 +1,15 @@
 // @ts-nocheck
+import mongoose from 'mongoose';
+import sendMail from '../helpers/sendMail';
+import ReviewResponse from '../models/appModels/ReviewResponse';
 /**
  * Notification Service
  * Handles sending notifications to users and teams via Socket.io and MongoDB
  */
 
-const mongoose = require('mongoose');
 
 const Notification = mongoose.model('Notification');
 const CompanyOwner = mongoose.model('CompanyOwner');
-const sendMail = require('../helpers/sendMail');
 
 class NotificationService {
   constructor() {
@@ -498,7 +499,6 @@ class NotificationService {
 
   async notifyReviewApproval(responseId, approved, ownerId) {
     try {
-      const ReviewResponse = require('../models/appModels/ReviewResponse');
       const response = await ReviewResponse.findById(responseId)
         .populate('review')
         .populate('business');
@@ -685,4 +685,4 @@ class NotificationService {
 }
 
 const notificationService = new NotificationService();
-module.exports = { notificationService };
+export = { notificationService };

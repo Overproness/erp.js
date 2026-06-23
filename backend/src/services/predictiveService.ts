@@ -1,6 +1,6 @@
 // @ts-nocheck
-const { Invoice, Client, Quote, Payment } = require('../models');
 
+import { Invoice, Client, Quote, Payment } from '../models';
 /**
  * Predictive Service
  * Uses statistical methods for forecasting and trend analysis
@@ -332,7 +332,7 @@ function analyzeSeasonality(data) {
   };
 }
 
-module.exports = {
+export = {
   predict,
   getHistoricalData,
   linearRegression,

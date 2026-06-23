@@ -1,10 +1,10 @@
 // @ts-nocheck
+import { TriggerRule, CustomerBehavior, Campaign } from '../models';
+import segmentMatcher from './segmentMatcher';
 /**
  * Trigger Evaluator
  * Evaluate behavioral triggers against customer actions
  */
-const { TriggerRule, CustomerBehavior, Campaign } = require('../models');
-const segmentMatcher = require('./segmentMatcher');
 
 /**
  * Evaluate a new customer behavior against all active triggers
@@ -169,7 +169,7 @@ const getCampaignTriggers = async (campaignId) => {
   }
 };
 
-module.exports = {
+export = {
   evaluateBehaviorAgainstTriggers,
   evaluateConditions,
   checkTriggerCooldown,

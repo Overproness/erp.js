@@ -1,19 +1,14 @@
 // @ts-nocheck
+import { Campaign, CustomerBehavior, CustomerSegment, TriggerRule } from '../models';
+import segmentMatcher from '../utils/segmentMatcher';
+import campaignExecutor from './CampaignExecutor';
+import aiOptimizer from './AIOptimizer';
+import triggerEvaluator from '../utils/triggerEvaluator';
 /**
  * RetargetingEngine Service
  * 
  * Automated retargeting campaign creation based on behavior patterns
  */
-const { 
-  Campaign, 
-  CustomerBehavior, 
-  CustomerSegment,
-  TriggerRule
-} = require('../models');
-const segmentMatcher = require('../utils/segmentMatcher');
-const campaignExecutor = require('./CampaignExecutor');
-const aiOptimizer = require('./AIOptimizer');
-const triggerEvaluator = require('../utils/triggerEvaluator');
 
 class RetargetingEngine {
   constructor() {
@@ -820,4 +815,4 @@ class RetargetingEngine {
   }
 }
 
-module.exports = new RetargetingEngine();
+export = new RetargetingEngine();

@@ -1,14 +1,14 @@
 // @ts-nocheck
-const AiAssistant = require('../models/appModels/AiAssistant');
-const AiConversation = require('../models/appModels/AiConversation');
-const AiAnalytics = require('../models/appModels/AiAnalytics');
-const OpenAIHelper = require('../helpers/openaiHelper');
-const nlpService = require('./nlpService');
-const patternRecognitionService = require('./patternRecognitionService');
-const contextAwareService = require('./contextAwareService');
-const aiUtils = require('../utils/aiUtils');
-const promptTemplates = require('../utils/promptTemplates');
 
+import AiAssistant from '../models/appModels/AiAssistant';
+import AiConversation from '../models/appModels/AiConversation';
+import AiAnalytics from '../models/appModels/AiAnalytics';
+import OpenAIHelper from '../helpers/openaiHelper';
+import nlpService from './nlpService';
+import patternRecognitionService from './patternRecognitionService';
+import contextAwareService from './contextAwareService';
+import aiUtils from '../utils/aiUtils';
+import promptTemplates from '../utils/promptTemplates';
 class AiService {
   constructor() {
     this.conversationCache = new Map();
@@ -369,4 +369,4 @@ class AiService {
   }
 }
 
-module.exports = new AiService();
+export = new AiService();

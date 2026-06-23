@@ -1,10 +1,10 @@
 // @ts-nocheck
-const ReviewLink = require('@/models/appModels/ReviewLink');
-const Business = require('@/models/appModels/Business');
-const emailService = require('./emailService');
-const smsService = require('./smsService');
-const urlGenerator = require('@/utils/urlGenerator');
 
+import ReviewLink from '@/models/appModels/ReviewLink';
+import Business from '@/models/appModels/Business';
+import emailService from './emailService';
+import smsService from './smsService';
+import urlGenerator from '@/utils/urlGenerator';
 class ReviewRequestService {
   /**
    * Create a new review request link
@@ -323,4 +323,4 @@ class ReviewRequestService {
   }
 }
 
-module.exports = new ReviewRequestService();
+export = new ReviewRequestService();

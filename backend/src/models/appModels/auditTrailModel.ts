@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const AuditTrailSchema = new mongoose.Schema(
   {
@@ -57,6 +57,5 @@ AuditTrailSchema.index({ documentId: 1, timestamp: -1 });
 AuditTrailSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 // Export the model - ensure it's only registered once
-module.exports = mongoose.models.AuditTrail || mongoose.model('AuditTrail', AuditTrailSchema);
-export { };
+export default mongoose.models.AuditTrail || mongoose.model('AuditTrail', AuditTrailSchema);
 

@@ -1,8 +1,8 @@
 // @ts-nocheck
-const ChatMessage = require('@/models/appModels/ChatMessage');
-const User = require('@/models/appModels/User');
-const CompanyOwner = require('@/models/coreModels/CompanyOwner');
 
+import ChatMessage from '@/models/appModels/ChatMessage';
+import User from '@/models/appModels/User';
+import CompanyOwner from '@/models/coreModels/CompanyOwner';
 // Send a message
 const sendMessage = async (req, res) => {
   try {
@@ -292,7 +292,7 @@ const getCompanyUsers = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   sendMessage,
   getChatHistory,
   getChatList,

@@ -1,13 +1,15 @@
 // @ts-nocheck
-const Business = require('../models/appModels/Business');
-const SocialAccount = require('../models/appModels/SocialAccount');
-const Review = require('../models/appModels/Review');
-const { sentimentAnalysisService } = require('./sentimentAnalysisService');
-const { facebookService } = require('./facebookService');
-const { instagramService } = require('./instagramService');
-const { twitterService } = require('./twitterService');
-const { notificationService } = require('./notificationService');
 
+import { sentimentAnalysisService } from './sentimentAnalysisService';
+import { facebookService } from './facebookService';
+import { instagramService } from './instagramService';
+import { twitterService } from './twitterService';
+import { notificationService } from './notificationService';
+import Business from '../models/appModels/Business';
+import SocialAccount from '../models/appModels/SocialAccount';
+import Review from '../models/appModels/Review';
+import ReviewTemplate from '../models/appModels/ReviewTemplate';
+import ReviewResponse from '../models/appModels/ReviewResponse';
 class ReviewMonitoringService {
   constructor() {
     this.platforms = {
@@ -256,7 +258,6 @@ class ReviewMonitoringService {
   async generateAndSendResponse(review, templateId, business) {
     try {
       // Get the template
-      const ReviewTemplate = require('../models/appModels/ReviewTemplate');
       const template = await ReviewTemplate.findById(templateId);
       
       if (!template) return;
@@ -274,7 +275,6 @@ class ReviewMonitoringService {
       const responseText = template.fillTemplate(responseData);
       
       // Create response
-      const ReviewResponse = require('../models/appModels/ReviewResponse');
       const response = new ReviewResponse({
         review: review._id,
         business: business._id,
@@ -336,4 +336,4 @@ class ReviewMonitoringService {
 }
 
 const reviewMonitoringService = new ReviewMonitoringService();
-module.exports = { reviewMonitoringService };
+export = { reviewMonitoringService };

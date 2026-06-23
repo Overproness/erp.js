@@ -1,7 +1,7 @@
 // @ts-nocheck
-const OpenAI = require('openai');
-const AiExtractionTemplate = require('@/models/appModels/AiExtractionTemplate');
 
+import OpenAI from 'openai';
+import AiExtractionTemplate from '@/models/appModels/AiExtractionTemplate';
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -312,4 +312,4 @@ function calculateCost(tokens) {
   return (tokens / 1000) * costPer1000Tokens;
 }
 
-module.exports = extractData;
+export = extractData;

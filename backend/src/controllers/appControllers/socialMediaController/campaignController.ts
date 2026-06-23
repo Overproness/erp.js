@@ -1,8 +1,8 @@
 // @ts-nocheck
-const SocialCampaign = require('@/models/appModels/SocialCampaign');
-const SocialPost = require('@/models/appModels/SocialPost');
-const SocialAccount = require('@/models/appModels/SocialAccount');
 
+import SocialCampaign from '@/models/appModels/SocialCampaign';
+import SocialPost from '@/models/appModels/SocialPost';
+import SocialAccount from '@/models/appModels/SocialAccount';
 // Create new campaign
 const createCampaign = async (req, res) => {
   try {
@@ -451,7 +451,7 @@ const getActiveCampaigns = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   createCampaign,
   getCampaigns,
   getCampaign,

@@ -1,5 +1,6 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import autopopulate from 'mongoose-autopopulate';
+import mongoose from 'mongoose';
 
 /**
  * Interaction Model
@@ -280,6 +281,6 @@ interactionSchema.statics.getClientSummary = async function (clientId) {
   ]);
 };
 
-interactionSchema.plugin(require('mongoose-autopopulate'));
+interactionSchema.plugin(autopopulate);
 const exportedModel = mongoose.model('Interaction', interactionSchema);
-module.exports = exportedModel;
+export default exportedModel;

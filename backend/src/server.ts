@@ -1,7 +1,18 @@
+// @ts-nocheck
+import { initializeCopilotModules } from './setup/copilotSetup';
+import { initializeAIServices } from './services/aiServicesInitializer';
+import initDefaultSettings from './middlewares/settings/initDefaultSettings';
+import migrateSetting from './middlewares/settings/migrateSetting';
+import reminderScheduler from './services/reminderScheduler';
+import app from './app';
+import errorHandlers from './handlers/errorHandlers';
+import './models';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
 if (process.env.NODE_ENV === 'production') {
-  require('module-alias/register');
+  load('module-alias/register');
 }
-require('dotenv').config({ path: '.env' });
+load('dotenv').config({ path: '.env' });
 
 import mongoose from 'mongoose';
 import http from 'http';
@@ -27,19 +38,11 @@ mongoose.connection.on('error', (error: Error) => {
 // ─────────────────────────────────────────────────────────────
 // Dynamically Load All Mongoose Models
 // ─────────────────────────────────────────────────────────────
-require('./models');
 
 // ─────────────────────────────────────────────────────────────
 // Settings Initialization (Executed After Models Load)
 // ─────────────────────────────────────────────────────────────
-const initDefaultSettings = require('./middlewares/settings/initDefaultSettings');
-const migrateSetting = require('./middlewares/settings/migrateSetting');
-const { initializeCopilotModules } = require('./setup/copilotSetup');
-const { initializeAIServices } = require('./services/aiServicesInitializer');
-const reminderScheduler = require('./services/reminderScheduler');
 
-const app = require('./app');
-const errorHandlers = require('./handlers/errorHandlers');
 
 mongoose.connection.once('open', async () => {
   // Settings initialization (non-critical)
@@ -107,8 +110,8 @@ const io = new SocketIOServer(server, {
 app.set('io', io);
 global.io = io;
 
-require('./sockets/notificationSocket')(io);
-require('./sockets/chatSocket')(io);
+load('./sockets/notificationSocket')(io);
+load('./sockets/chatSocket')(io);
 // server.listen() is called inside mongoose.connection.once('open') after
 // setupGraphQL() completes — ensuring the server is fully ready before
 // accepting any requests.

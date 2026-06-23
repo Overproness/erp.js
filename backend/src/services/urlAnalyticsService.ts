@@ -1,11 +1,11 @@
 // @ts-nocheck
-const URLClick = require('@/models/appModels/URLClick');
-const URL = require('@/models/appModels/URL');
-const mongoose = require('mongoose');
-const UAParser = require('ua-parser-js');
-const geoip = require('geoip-lite');
-const crypto = require('crypto');
 
+import URLClick from '@/models/appModels/URLClick';
+import URL from '@/models/appModels/URL';
+import mongoose from 'mongoose';
+import UAParser from 'ua-parser-js';
+import geoip from 'geoip-lite';
+import crypto from 'crypto';
 class URLAnalyticsService {
   /**
    * Record a click event
@@ -1050,4 +1050,4 @@ class URLAnalyticsService {
   }
 }
 
-module.exports = new URLAnalyticsService();
+export = new URLAnalyticsService();

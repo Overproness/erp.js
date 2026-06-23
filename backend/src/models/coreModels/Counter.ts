@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const counterSchema = mongoose.Schema(
   {
@@ -33,4 +33,4 @@ counterSchema.index({ name: 1, owner: 1, year: 1 }, { unique: true });
 counterSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const Counter = mongoose.model('Counter', counterSchema);
-module.exports = Counter;
+export default Counter;

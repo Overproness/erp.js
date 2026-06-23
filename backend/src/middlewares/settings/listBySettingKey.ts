@@ -1,13 +1,13 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import mongoose from 'mongoose';
+import '../../models/coreModels/Setting';
 // Ensure the Setting model is loaded
 let Model;
 try {
   Model = mongoose.model('Setting');
 } catch (error) {
   // If model isn't registered yet, require it
-  require('../../models/coreModels/Setting');
   Model = mongoose.model('Setting');
 }
 
@@ -37,4 +37,4 @@ const listBySettingKey = async ({ settingKeyArray = [] }) => {
   }
 };
 
-module.exports = listBySettingKey;
+export = listBySettingKey;

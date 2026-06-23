@@ -1,6 +1,7 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const commonFields = require('../utils/commonFields');
+import autopopulate from 'mongoose-autopopulate';
+import mongoose from 'mongoose';
+import commonFields from '../utils/commonFields';
 
 const schema = new mongoose.Schema(
   {
@@ -197,6 +198,6 @@ schema.index({ name: 1, owner: 1 }); // For name filtering
 schema.index({ enabled: 1, owner: 1, removed: 1 }); // For enabled client queries
 schema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
-schema.plugin(require('mongoose-autopopulate'));
+schema.plugin(autopopulate);
 const exportedModel = mongoose.model('Client', schema);
-module.exports = exportedModel;
+export default exportedModel;

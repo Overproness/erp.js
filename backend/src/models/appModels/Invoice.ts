@@ -1,6 +1,7 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const commonFields = require('../utils/commonFields');
+import autopopulate from 'mongoose-autopopulate';
+import mongoose from 'mongoose';
+import commonFields from '../utils/commonFields';
 
 const invoiceSchema = new mongoose.Schema({
   ...commonFields,
@@ -208,7 +209,7 @@ const invoiceSchema = new mongoose.Schema({
   },
 });
 
-invoiceSchema.plugin(require('mongoose-autopopulate'));
+invoiceSchema.plugin(autopopulate);
 
 invoiceSchema.pre('save', async function (next) {
   if (this.isNew) {
@@ -222,4 +223,4 @@ invoiceSchema.pre('save', async function (next) {
 invoiceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('Invoice', invoiceSchema);
-module.exports = exportedModel;
+export default exportedModel;

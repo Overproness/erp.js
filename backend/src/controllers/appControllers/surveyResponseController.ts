@@ -1,9 +1,9 @@
 // @ts-nocheck
-const Survey = require('../../models/appModels/Survey');
-const SurveyResponse = require('../../models/appModels/SurveyResponse');
-const Client = require('../../models/appModels/Client');
-const surveyAnalysisHelper = require('../../helpers/surveyAnalysisHelper');
 
+import Survey from '../../models/appModels/Survey';
+import SurveyResponse from '../../models/appModels/SurveyResponse';
+import Client from '../../models/appModels/Client';
+import surveyAnalysisHelper from '../../helpers/surveyAnalysisHelper';
 /**
  * Get public survey by short code
  */
@@ -390,7 +390,7 @@ const deleteResponse = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   getPublicSurvey,
   submitResponse,
   savePartialResponse,

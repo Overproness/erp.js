@@ -1,9 +1,9 @@
 // @ts-nocheck
-const Review = require('../../models/appModels/Review');
-const Business = require('../../models/appModels/Business');
-const { notificationService } = require('../../services/notificationService');
-const { sentimentAnalysisService } = require('../../services/sentimentAnalysisService');
 
+import { notificationService } from '../../services/notificationService';
+import { sentimentAnalysisService } from '../../services/sentimentAnalysisService';
+import Review from '../../models/appModels/Review';
+import Business from '../../models/appModels/Business';
 /**
  * Create a new review
  * Can be used for both internal creation and public submission
@@ -532,7 +532,7 @@ const getStats = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   create,
   read,
   update,

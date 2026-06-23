@@ -1,8 +1,8 @@
 // @ts-nocheck
-const AiProcessingWorkflow = require('@/models/appModels/AiProcessingWorkflow');
-const processOCR = require('./processOCR');
-const extractData = require('./extractData');
 
+import AiProcessingWorkflow from '@/models/appModels/AiProcessingWorkflow';
+import processOCR from './processOCR';
+import extractData from './extractData';
 const processWorkflow = async (req, res) => {
   try {
     const { workflowId, inputData, files } = req.body;
@@ -366,4 +366,4 @@ function calculateField(formula, data) {
   }
 }
 
-module.exports = processWorkflow;
+export = processWorkflow;

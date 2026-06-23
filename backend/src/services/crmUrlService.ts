@@ -1,8 +1,9 @@
 // @ts-nocheck
-const urlIntegration = require('../integration/urlIntegration');
-const Client = require('@/models/appModels/Client');
-const crypto = require('crypto');
 
+import urlIntegration from '../integration/urlIntegration';
+import Client from '@/models/appModels/Client';
+import crypto from 'crypto';
+import URL from '@/models/appModels/URL';
 class CRMUrlService {
   constructor() {
     this.urlIntegration = urlIntegration;
@@ -535,7 +536,6 @@ class CRMUrlService {
    */
   async getCustomerUrls(customerId, filters = {}) {
     try {
-      const URL = require('@/models/appModels/URL');
 
       const query = {
         linkedModule: 'customer',
@@ -680,4 +680,4 @@ class CRMUrlService {
   }
 }
 
-module.exports = new CRMUrlService();
+export = new CRMUrlService();

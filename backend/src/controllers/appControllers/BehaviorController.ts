@@ -1,10 +1,10 @@
 // @ts-nocheck
-const { CustomerBehavior, TriggerRule } = require('../../models');
-const behaviorProcessor = require('../../services/BehaviorProcessor');
-const triggerEvaluator = require('../../utils/triggerEvaluator');
-const segmentMatcher = require('../../utils/segmentMatcher');
-const analyticsService = require('../../services/analyticsService');
 
+import { CustomerBehavior, TriggerRule } from '../../models';
+import behaviorProcessor from '../../services/BehaviorProcessor';
+import triggerEvaluator from '../../utils/triggerEvaluator';
+import segmentMatcher from '../../utils/segmentMatcher';
+import analyticsService from '../../services/analyticsService';
 /**
  * Behavior Controller
  * Processes customer behavior events and executes trigger-based actions
@@ -564,4 +564,4 @@ class BehaviorController {
   }
 }
 
-module.exports = new BehaviorController();
+export = new BehaviorController();

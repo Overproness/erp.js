@@ -1,10 +1,10 @@
 // @ts-nocheck
+import jwt from 'jsonwebtoken';
+import ChatRoom from '../models/appModels/ChatRoom';
 /**
  * Socket.io handlers for real-time chat communication
  */
 
-const jwt = require('jsonwebtoken');
-const ChatRoom = require('../models/appModels/ChatRoom');
 
 // Store active chat connections
 const activeChatConnections = new Map(); // roomId -> Map of userId -> socketId
@@ -41,7 +41,7 @@ const authenticateChatSocket = (socket, next) => {
 /**
  * Initialize chat socket handlers
  */
-module.exports = (io) => {
+const registerChatSocket = (io) => {
   const chatNamespace = io.of('/chat');
 
   chatNamespace.use(authenticateChatSocket);
@@ -326,4 +326,6 @@ module.exports = (io) => {
   console.log('💬 Chat socket handlers initialized');
 };
 
-module.exports.getActiveChatConnections = () => activeChatConnections;
+registerChatSocket.getActiveChatConnections = () => activeChatConnections;
+
+export = registerChatSocket;

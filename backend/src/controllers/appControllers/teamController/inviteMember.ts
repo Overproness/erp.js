@@ -1,12 +1,12 @@
 // @ts-nocheck
-const crypto = require('crypto');
-const Team = require('@/models/appModels/Team');
-const User = require('@/models/appModels/User');
-const URL = require('@/models/appModels/URL');
-const { inviteMemberSchema } = require('./schemaValidate');
-const sendMail = require('@/helpers/sendMail');
-const urlService = require('@/services/urlService');
 
+import { inviteMemberSchema } from './schemaValidate';
+import crypto from 'crypto';
+import Team from '@/models/appModels/Team';
+import User from '@/models/appModels/User';
+import URL from '@/models/appModels/URL';
+import sendMail from '@/helpers/sendMail';
+import urlService from '@/services/urlService';
 const inviteMember = async (req, res) => {
   try {
     console.log('---[inviteMember]--- Start');
@@ -349,4 +349,4 @@ ${companyOwnerName}
   }
 };
 
-module.exports = inviteMember;
+export = inviteMember;

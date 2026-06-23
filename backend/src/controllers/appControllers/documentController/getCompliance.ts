@@ -1,17 +1,17 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import { createAuditLog } from './auditLog';
+import mongoose from 'mongoose';
+import '../../../models/appModels/DocumentCompliance';
 // Ensure the model is loaded
 let DocumentCompliance;
 try {
   DocumentCompliance = mongoose.model('DocumentCompliance');
 } catch (error) {
   // Model not registered yet, require it
-  require('../../../models/appModels/DocumentCompliance');
   DocumentCompliance = mongoose.model('DocumentCompliance');
 }
 const Document = mongoose.model('AppDocument');
-const { createAuditLog } = require('./auditLog');
 
 /**
  * Gets compliance information for a document
@@ -83,4 +83,4 @@ const getCompliance = async (req, res) => {
   }
 };
 
-module.exports = getCompliance;
+export = getCompliance;

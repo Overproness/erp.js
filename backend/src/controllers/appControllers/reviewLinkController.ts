@@ -1,8 +1,8 @@
 // @ts-nocheck
-const crypto = require('crypto');
-const ReviewLink = require('../../models/appModels/ReviewLink');
-const Business = require('../../models/appModels/Business');
 
+import crypto from 'crypto';
+import ReviewLink from '../../models/appModels/ReviewLink';
+import Business from '../../models/appModels/Business';
 /**
  * Create a new review link
  */
@@ -541,7 +541,7 @@ function detectDeviceType(userAgent) {
   return 'desktop';
 }
 
-module.exports = {
+export = {
   create,
   read,
   update,

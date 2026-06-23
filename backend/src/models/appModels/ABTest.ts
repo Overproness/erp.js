@@ -1,6 +1,6 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-
+import * as crypto from 'crypto';
+import mongoose from 'mongoose';
 const abTestSchema = new mongoose.Schema({
   // Basic Information
   testName: {
@@ -351,7 +351,7 @@ abTestSchema.methods.assignVariant = function(userId) {
   }
   
   // Use consistent hash function based on userId and test ID
-  const hash = require('crypto')
+  const hash = crypto
     .createHash('md5')
     .update(userId + this._id.toString())
     .digest('hex');
@@ -478,4 +478,4 @@ abTestSchema.statics.findActiveTestsForUrl = function(urlId) {
 };
 
 const exportedModel = mongoose.model('ABTest', abTestSchema);
-module.exports = exportedModel;
+export default exportedModel;

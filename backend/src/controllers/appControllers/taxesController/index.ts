@@ -1,17 +1,17 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import mongoose from 'mongoose';
+import createCRUDController from '../../middlewaresControllers/createCRUDController';
+import '../../../models/appModels/Taxes';
 // Ensure Taxes model is registered
 let Model;
 try {
   Model = mongoose.model('Taxes');
 } catch (error) {
   // Model not registered, require it
-  require('../../../models/appModels/Taxes');
   Model = mongoose.model('Taxes');
 }
 
-const createCRUDController = require('../../middlewaresControllers/createCRUDController');
 const methods = createCRUDController('Taxes');
 
 methods.create = async (req, res) => {
@@ -323,4 +323,4 @@ methods.read = async (req, res) => {
   }
 };
 
-module.exports = methods;
+export = methods;

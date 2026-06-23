@@ -1,8 +1,8 @@
 // @ts-nocheck
-const Business = require('@/models/appModels/Business');
-const ReviewLink = require('@/models/appModels/ReviewLink');
-const { createError } = require('@/handlers/errorHandlers');
 
+import { createError } from '@/handlers/errorHandlers';
+import Business from '@/models/appModels/Business';
+import ReviewLink from '@/models/appModels/ReviewLink';
 /**
  * Load and attach business branding to request
  */
@@ -144,7 +144,7 @@ const injectBrandingToJson = (req, res, next) => {
   next();
 };
 
-module.exports = {
+export = {
   loadBusinessBranding,
   loadLinkCustomization,
   applyBrandingToTemplate,

@@ -1,9 +1,9 @@
 // @ts-nocheck
-const Invoice = require('../models/appModels/Invoice');
-const Quote = require('../models/appModels/Quote');
-const Payment = require('../models/appModels/Payment');
-const Client = require('../models/appModels/Client');
 
+import Invoice from '../models/appModels/Invoice';
+import Quote from '../models/appModels/Quote';
+import Payment from '../models/appModels/Payment';
+import Client from '../models/appModels/Client';
 const patternRecognitionService = {
   // Analyze invoice patterns
   async analyzeInvoicePatterns(ownerId, timeframe = 90) {
@@ -374,4 +374,4 @@ const patternRecognitionService = {
   },
 };
 
-module.exports = patternRecognitionService;
+export = patternRecognitionService;

@@ -1,11 +1,9 @@
 // @ts-nocheck
-const { basename, extname } = require('path');
-const { globSync } = require('glob');
-const fs = require('fs');
-const mongoose = require('mongoose');
-
-const loadedModels = require('..');
-
+import { basename, extname } from 'path';
+import { globSync } from 'glob';
+import fs from 'fs';
+import mongoose from 'mongoose';
+import * as loadedModels from '..';
 const appModelsFiles = globSync('./src/models/appModels/**/*.{js,cjs,ts}');
 const pattern = './src/models/**/*.{js,cjs,ts}';
 
@@ -68,4 +66,4 @@ for (const filePath of appModelsFiles) {
   }
 }
 
-module.exports = { constrollersList, appModelsList, modelsFiles, entityList, routesList };
+export default { constrollersList, appModelsList, modelsFiles, entityList, routesList };

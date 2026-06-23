@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const aiAnalyticsSchema = new mongoose.Schema({
   removed: {
@@ -84,4 +84,4 @@ aiAnalyticsSchema.index({ owner: 1, type: 1 });
 aiAnalyticsSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('AiAnalytics', aiAnalyticsSchema);
-module.exports = exportedModel;
+export default exportedModel;

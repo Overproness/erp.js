@@ -1,9 +1,12 @@
 // @ts-nocheck
-const analyticsHelpers = require('../helpers/analyticsHelpers');
-const ReviewLink = require('@/models/appModels/ReviewLink');
-const Review = require('@/models/appModels/Review');
-const { createError } = require('@/handlers/errorHandlers');
 
+import { createError } from '@/handlers/errorHandlers';
+import analyticsHelpers from '../helpers/analyticsHelpers';
+import ReviewLink from '@/models/appModels/ReviewLink';
+import Review from '@/models/appModels/Review';
+import crypto from 'crypto';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
 class AnalyticsMiddleware {
   /**
    * Track page views for URLs
@@ -563,7 +566,6 @@ class AnalyticsMiddleware {
    * @returns {string} Session ID
    */
   _generateSessionId(req) {
-    const crypto = require('crypto');
     const data = (req.ip || '') + (req.get('User-Agent') || '') + Date.now();
     return crypto.createHash('md5').update(data).digest('hex');
   }
@@ -737,7 +739,7 @@ class AnalyticsMiddleware {
    * @returns {string} Hashed IP
    */
   _hashIP(ipAddress) {
-    const crypto = require('crypto');
+    const crypto = load('crypto');
     return crypto.createHash('sha256').update(ipAddress).digest('hex').substring(0, 8);
   }
 
@@ -794,7 +796,7 @@ class AnalyticsMiddleware {
     // Simple hash-based assignment
     if (req.query.abtest) {
       const sessionId = req.sessionID || this._generateSessionId(req);
-      const hash = require('crypto').createHash('md5').update(sessionId + req.query.abtest).digest('hex');
+      const hash = load('crypto').createHash('md5').update(sessionId + req.query.abtest).digest('hex');
       const hashValue = parseInt(hash.substring(0, 8), 16);
       return hashValue % 2 === 0 ? 'control' : 'variant';
     }
@@ -885,4 +887,4 @@ class AnalyticsMiddleware {
   }
 }
 
-module.exports = new AnalyticsMiddleware();
+export = new AnalyticsMiddleware();

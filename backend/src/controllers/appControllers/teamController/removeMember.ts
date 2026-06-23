@@ -1,7 +1,7 @@
 // @ts-nocheck
-const Team = require('../../../models/appModels/Team');
-const User = require('../../../models/appModels/User');
 
+import Team from '../../../models/appModels/Team';
+import User from '../../../models/appModels/User';
 const removeMember = async (req, res) => {
   try {
     // Use params from the URL
@@ -94,4 +94,4 @@ const removeMember = async (req, res) => {
   }
 };
 
-module.exports = removeMember;
+export = removeMember;

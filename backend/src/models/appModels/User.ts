@@ -1,6 +1,6 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
@@ -310,4 +310,4 @@ userSchema.index({ name: 'text', email: 'text' });
 
 // Check if this model has already been compiled to prevent the OverwriteModelError
 const User = mongoose.models.User || mongoose.model('User', userSchema);
-module.exports = User;
+export default User;

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const chatQueueSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.ObjectId, ref: 'CompanyOwner', required: true, index: true },
@@ -34,4 +34,4 @@ chatQueueSchema.index({ owner: 1, status: 1, priority: 1 });
 chatQueueSchema.index({ created: 1 });
 
 const exportedModel = mongoose.model('ChatQueue', chatQueueSchema);
-module.exports = exportedModel;
+export default exportedModel;

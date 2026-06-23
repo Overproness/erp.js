@@ -1,9 +1,9 @@
 // @ts-nocheck
-const ChatRoom = require('@/models/appModels/ChatRoom');
-const Client = require('@/models/appModels/Client');
-const User = require('@/models/appModels/User');
-const CompanyOwner = require('@/models/coreModels/CompanyOwner');
 
+import ChatRoom from '@/models/appModels/ChatRoom';
+import Client from '@/models/appModels/Client';
+import User from '@/models/appModels/User';
+import CompanyOwner from '@/models/coreModels/CompanyOwner';
 class ChatUrlService {
   constructor() {
     this.baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -319,4 +319,4 @@ class ChatUrlService {
   }
 }
 
-module.exports = new ChatUrlService();
+export = new ChatUrlService();

@@ -1,12 +1,14 @@
 // @ts-nocheck
-const URL = require('@/models/appModels/URL');
-const URLClick = require('@/models/appModels/URLClick');
-const ABTest = require('@/models/appModels/ABTest');
 
-const { catchErrors } = require('@/handlers/errorHandlers');
-const urlService = require('@/services/urlService');
-const analyticsService = require('@/services/urlAnalyticsService');
 
+import { catchErrors } from '@/handlers/errorHandlers';
+import URL from '@/models/appModels/URL';
+import URLClick from '@/models/appModels/URLClick';
+import ABTest from '@/models/appModels/ABTest';
+import urlService from '@/services/urlService';
+import analyticsService from '@/services/urlAnalyticsService';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
 const getUrl = catchErrors(async (req, res) => {
   const { shortCode } = req.params;
   const { preview = false, password } = req.query;
@@ -110,7 +112,7 @@ const getUrl = catchErrors(async (req, res) => {
         const userId = user?._id || clientInfo.userId;
 
         // Simple variant assignment based on user ID hash
-        const hash = require('crypto').createHash('md5').update(userId.toString()).digest('hex');
+        const hash = load('crypto').createHash('md5').update(userId.toString()).digest('hex');
         const hashInt = parseInt(hash.substring(0, 8), 16);
         const variantIndex = hashInt % test.variants.length;
         abTestVariant = test.variants[variantIndex]?.name || 'control';
@@ -438,7 +440,7 @@ const extractUserFromToken = async (authHeader) => {
   }
 };
 
-module.exports = {
+export = {
   getUrl,
   checkPassword,
   generateQRCode,

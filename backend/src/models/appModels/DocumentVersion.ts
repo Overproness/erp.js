@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const DocumentVersionSchema = new Schema(
@@ -170,4 +170,4 @@ DocumentVersionSchema.methods.resolveConflicts = function (resolvedBy: string) {
 };
 
 const exportedModel = mongoose.model('DocumentVersion', DocumentVersionSchema);
-module.exports = exportedModel;
+export default exportedModel;

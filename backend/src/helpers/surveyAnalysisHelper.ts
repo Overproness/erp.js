@@ -1,8 +1,8 @@
 // @ts-nocheck
-const Survey = require('../models/appModels/Survey');
-const SurveyResponse = require('../models/appModels/SurveyResponse');
-const nlpService = require('./nlpService');
 
+import Survey from '../models/appModels/Survey';
+import SurveyResponse from '../models/appModels/SurveyResponse';
+import nlpService from './nlpService';
 /**
  * Analyze feedback using AI
  */
@@ -518,7 +518,7 @@ const generateAISuggestions = async (survey, responses) => {
   }
 };
 
-module.exports = {
+export = {
   analyzeFeedback,
   getDetailedAnalytics,
   calculateNPSBreakdown,

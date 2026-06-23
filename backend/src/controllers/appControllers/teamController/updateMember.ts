@@ -1,8 +1,8 @@
 // @ts-nocheck
-const Team = require('@/models/appModels/Team');
-const User = require('@/models/appModels/User');
-const { updateMemberSchema } = require('./schemaValidate');
 
+import { updateMemberSchema } from './schemaValidate';
+import Team from '@/models/appModels/Team';
+import User from '@/models/appModels/User';
 const updateMember = async (req, res) => {
   try {
     const { teamId, memberId } = req.params;
@@ -90,4 +90,4 @@ const updateMember = async (req, res) => {
   }
 };
 
-module.exports = updateMember;
+export = updateMember;

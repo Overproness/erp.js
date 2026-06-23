@@ -1,13 +1,13 @@
 // @ts-nocheck
-const { Campaign, CustomerSegment } = require('../../../models');
-const campaignExecutorService = require('../../../services/campaignExecutorService');
-const campaignScheduler = require('../../../utils/campaignScheduler');
-const marketingURLHelper = require('../../../utils/marketingURLHelper');
-const analyticsService = require('../../../services/analyticsService');
-const aiOptimizer = require('../../../services/AIOptimizer');
-const channels = require('../../../config/channels');
-const { getCurrentUserId } = require('../../../utils/authUtils');
 
+import { Campaign, CustomerSegment } from '../../../models';
+import { getCurrentUserId } from '../../../utils/authUtils';
+import campaignExecutorService from '../../../services/campaignExecutorService';
+import campaignScheduler from '../../../utils/campaignScheduler';
+import marketingURLHelper from '../../../utils/marketingURLHelper';
+import analyticsService from '../../../services/analyticsService';
+import aiOptimizer from '../../../services/AIOptimizer';
+import channels from '../../../config/channels';
 /**
  * Campaign Controller
  * Orchestrates multi-channel campaign execution and optimization
@@ -2453,4 +2453,4 @@ class CampaignController {
 const campaignControllerInstance = new CampaignController();
 // Alias for GraphQL resolver
 campaignControllerInstance.bulkUpdate = campaignControllerInstance.bulkOperations.bind(campaignControllerInstance);
-module.exports = campaignControllerInstance;
+export = campaignControllerInstance;

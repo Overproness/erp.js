@@ -1,9 +1,11 @@
 // @ts-nocheck
-const crypto = require('crypto');
-const URL = require('@/models/appModels/URL');
-const URLClick = require('@/models/appModels/URLClick');
-const { customAlphabet } = require('nanoid');
 
+import { customAlphabet } from 'nanoid';
+import crypto from 'crypto';
+import URL from '@/models/appModels/URL';
+import URLClick from '@/models/appModels/URLClick';
+import QRCode from 'qrcode';
+import bcrypt from 'bcryptjs';
 // Custom alphabet for short codes (excluding confusing characters)
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 7);
@@ -271,7 +273,6 @@ class URLService {
    */
   async generateQRCode(url, options = {}) {
     try {
-      const QRCode = require('qrcode');
       
       const qrOptions = {
         width: options.width || 300,
@@ -506,7 +507,6 @@ class URLService {
    * @returns {Promise<string>} Hashed password
    */
   async hashPassword(password) {
-    const bcrypt = require('bcryptjs');
     const saltRounds = 10;
     return await bcrypt.hash(password, saltRounds);
   }
@@ -518,7 +518,6 @@ class URLService {
    * @returns {Promise<boolean>}
    */
   async verifyPassword(plainPassword, hashedPassword) {
-    const bcrypt = require('bcryptjs');
     if (!plainPassword || !hashedPassword) return false;
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
@@ -534,4 +533,4 @@ class URLService {
   }
 }
 
-module.exports = new URLService();
+export = new URLService();

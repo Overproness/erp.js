@@ -1,7 +1,7 @@
 // @ts-nocheck
-const UnifiedAIHelper = require('../helpers/unifiedAIHelper');
-const { Client, Invoice, Quote, Campaign, Review, Task } = require('../models');
 
+import { Client, Invoice, Quote, Campaign, Review, Task } from '../models';
+import UnifiedAIHelper from '../helpers/unifiedAIHelper';
 /**
  * AI Insights Service
  * Provides AI-powered business insights and recommendations
@@ -519,7 +519,7 @@ async function getTaskInsights(ownerId) {
   return data;
 }
 
-module.exports = {
+export = {
   analyzeModules,
   getModuleInsights,
   gatherModuleData,

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const SavedSearchSchema = new Schema(
@@ -117,4 +117,4 @@ SavedSearchSchema.pre(/^find/, function () {
 });
 
 const exportedModel = mongoose.model('SavedSearch', SavedSearchSchema);
-module.exports = exportedModel;
+export default exportedModel;

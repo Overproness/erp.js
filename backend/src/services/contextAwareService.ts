@@ -1,13 +1,13 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import Client from '../models/appModels/Client';
+import Invoice from '../models/appModels/Invoice';
+import Quote from '../models/appModels/Quote';
+import Payment from '../models/appModels/Payment';
+import Document from '../models/appModels/Document';
+import Task from '../models/appModels/Task';
+import Team from '../models/appModels/Team';
 const Setting = mongoose.model('Setting');
-const Client = require('../models/appModels/Client');
-const Invoice = require('../models/appModels/Invoice');
-const Quote = require('../models/appModels/Quote');
-const Payment = require('../models/appModels/Payment');
-const Document = require('../models/appModels/Document');
-const Task = require('../models/appModels/Task');
-const Team = require('../models/appModels/Team');
 
 class ContextAwareService {
   async buildContext(module, data = {}, userId) {
@@ -591,4 +591,4 @@ class ContextAwareService {
   }
 }
 
-module.exports = new ContextAwareService();
+export = new ContextAwareService();

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const aiUserPreferenceSchema = new mongoose.Schema({
   removed: {
@@ -126,4 +126,4 @@ aiUserPreferenceSchema.pre('save', function (next) {
 aiUserPreferenceSchema.index({ companyID: 1 }, { sparse: true }); // Index for companyID
 
 const exportedModel = mongoose.model('AiUserPreference', aiUserPreferenceSchema);
-module.exports = exportedModel;
+export default exportedModel;

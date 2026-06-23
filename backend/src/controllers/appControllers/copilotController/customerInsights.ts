@@ -1,9 +1,9 @@
 // @ts-nocheck
-const copilotService = require('../../../services/copilotService');
-const { catchErrors } = require('../../../handlers/errorHandlers');
-const { getCurrentUserId } = require('../../../utils/authUtils');
-const Client = require('../../../models/appModels/Client');
 
+import { catchErrors } from '../../../handlers/errorHandlers';
+import { getCurrentUserId } from '../../../utils/authUtils';
+import copilotService from '../../../services/copilotService';
+import Client from '../../../models/appModels/Client';
 /**
  * Get AI-powered customer insights and recommendations
  * Analyzes customer data and provides actionable recommendations
@@ -201,4 +201,4 @@ function extractBulletPoints(text, ...keywords) {
   return bulletPoints;
 }
 
-module.exports = catchErrors(customerInsights);
+export = catchErrors(customerInsights);

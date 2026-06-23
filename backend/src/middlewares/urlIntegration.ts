@@ -1,11 +1,11 @@
 // @ts-nocheck
+import { URL, Campaign, URLClick } from '../models';
+import marketingURLHelper from '../utils/marketingURLHelper';
 /**
  * URL Integration Middleware
  * 
  * Integrates marketing campaigns with existing URL system
  */
-const { URL, Campaign, URLClick } = require('../models');
-const marketingURLHelper = require('../utils/marketingURLHelper');
 
 /**
  * Process campaign tracking parameters
@@ -261,7 +261,7 @@ const generateCampaignUrls = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   processCampaignUrl,
   attachCampaignParameters,
   trackCampaignUrlClick,

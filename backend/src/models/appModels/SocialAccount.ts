@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const socialAccountSchema = new mongoose.Schema({
   platform: {
@@ -151,6 +151,5 @@ socialAccountSchema.statics.findByOwnerAndPlatform = function(ownerId: string, p
 };
 
 const exportedModel = mongoose.model('SocialAccount', socialAccountSchema);
-module.exports = exportedModel;
-export { };
+export default exportedModel;
 

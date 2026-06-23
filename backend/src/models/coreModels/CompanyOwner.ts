@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const companyOwnerSchema = new Schema({
@@ -54,6 +54,5 @@ companyOwnerSchema.pre('save', function (this: any, next: (err?: Error) => void)
 });
 
 const CompanyOwner = mongoose.model('CompanyOwner', companyOwnerSchema);
-module.exports = CompanyOwner;
-export { };
+export default CompanyOwner;
 

@@ -1,17 +1,20 @@
 // @ts-nocheck
+import { Campaign, CustomerSegment, TriggerRule, CustomerBehavior } from '../models';
+import segmentMatcher from '../utils/segmentMatcher';
+import campaignScheduler from '../utils/campaignScheduler';
+import analyticsService from './analyticsService';
+import smsService from './smsService';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
 /**
  * Campaign Executor Service
  * 
  * Background service for scheduled campaign execution across channels
  */
-const { Campaign, CustomerSegment, TriggerRule, CustomerBehavior } = require('../models');
-const segmentMatcher = require('../utils/segmentMatcher');
-const campaignScheduler = require('../utils/campaignScheduler');
-const analyticsService = require('./analyticsService');
 
-const getEmailService = () => require('./emailService');
-const getPushNotificationService = () => require('./pushNotificationService');
-const getSocialMediaService = () => require('./socialMediaService');
+const getEmailService = () => load('./emailService');
+const getPushNotificationService = () => load('./pushNotificationService');
+const getSocialMediaService = () => load('./socialMediaService');
 
 class CampaignExecutor {
   constructor() {
@@ -235,7 +238,6 @@ class CampaignExecutor {
       };
     }
 
-    const smsService = require('./smsService');
     
     for (const recipient of recipients) {
       if (!recipient.phone) {
@@ -518,4 +520,4 @@ class CampaignExecutor {
   }
 }
 
-module.exports = new CampaignExecutor();
+export = new CampaignExecutor();

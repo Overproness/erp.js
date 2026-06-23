@@ -1,5 +1,5 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const customerBehaviorSchema = new Schema(
@@ -223,4 +223,4 @@ customerBehaviorSchema.statics.getBehaviorFrequency = async function (
 };
 
 const CustomerBehavior = mongoose.model('CustomerBehavior', customerBehaviorSchema);
-module.exports = CustomerBehavior;
+export default CustomerBehavior;

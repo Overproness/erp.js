@@ -1,7 +1,7 @@
 // @ts-nocheck
-const Team = require('@/models/appModels/Team');
-const User = require('@/models/appModels/User');
 
+import Team from '@/models/appModels/Team';
+import User from '@/models/appModels/User';
 const listMembers = async (req, res) => {
   try {
     const { teamId } = req.params;
@@ -44,4 +44,4 @@ const listMembers = async (req, res) => {
   }
 };
 
-module.exports = listMembers;
+export = listMembers;

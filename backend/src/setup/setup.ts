@@ -1,11 +1,18 @@
 // @ts-nocheck
-require('dotenv').config({ path: '.env' });
-require('dotenv').config({ path: '.env.local' });
-const { globSync } = require('glob');
-const fs = require('fs');
-const { generate: uniqueId } = require('shortid');
+import { globSync } from 'glob';
+import { generate as uniqueId } from 'shortid';
+import fs from 'fs';
+import mongoose from 'mongoose';
+import CompanyOwner from '../models/coreModels/CompanyOwner';
+import CompanyOwnerPassword from '../models/coreModels/CompanyOwnerPassword';
+import Setting from '../models/coreModels/Setting';
+import PaymentMode from '../models/appModels/PaymentMode';
+import Taxes from '../models/appModels/Taxes';
+import { createRequire } from 'module';
+const load = createRequire(__filename);
+load('dotenv').config({ path: '.env' });
+load('dotenv').config({ path: '.env.local' });
 
-const mongoose = require('mongoose');
 
 async function connectToDatabase() {
   console.log('🔌 Connecting to database...');
@@ -64,11 +71,6 @@ async function setupApp() {
 
     console.log('📦 Creating core data...');
 
-    const CompanyOwner = require('../models/coreModels/CompanyOwner');
-    const CompanyOwnerPassword = require('../models/coreModels/CompanyOwnerPassword');
-    const Setting = require('../models/coreModels/Setting');
-    const PaymentMode = require('../models/appModels/PaymentMode');
-    const Taxes = require('../models/appModels/Taxes');
 
     console.log('👤 Creating company owner user...');
     const demoOwner = {
@@ -273,4 +275,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { setupApp };
+export = { setupApp };

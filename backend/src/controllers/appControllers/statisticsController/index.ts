@@ -1,17 +1,17 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
 
+import mongoose from 'mongoose';
+import Client from '../../models/appModels/Client';
+import Invoice from '../../models/appModels/Invoice';
+import Quote from '../../models/appModels/Quote';
+import Payment from '../../models/appModels/Payment';
+import PaymentMode from '../../models/appModels/PaymentMode';
+import Tax from '../../models/appModels/Taxes';
+import Task from '../../models/appModels/Task';
+import Team from '../../models/appModels/Team';
+import Document from '../../models/appModels/Document';
+import Workflow from '../../models/appModels/Workflow';
 // Import models
-const Client = require('../../models/appModels/Client');
-const Invoice = require('../../models/appModels/Invoice');
-const Quote = require('../../models/appModels/Quote');
-const Payment = require('../../models/appModels/Payment');
-const PaymentMode = require('../../models/appModels/PaymentMode');
-const Tax = require('../../models/appModels/Taxes');
-const Task = require('../../models/appModels/Task');
-const Team = require('../../models/appModels/Team');
-const Document = require('../../models/appModels/Document');
-const Workflow = require('../../models/appModels/Workflow');
 
 /**
  * Get dashboard statistics
@@ -1049,7 +1049,7 @@ const getWorkflowStats = async (req, res) => {
   }
 };
 
-module.exports = {
+export = {
   getDashboardStats,
   dashboard: getDashboardStats,
   getClientStats,

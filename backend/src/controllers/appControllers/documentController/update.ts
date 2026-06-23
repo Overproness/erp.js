@@ -1,11 +1,11 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
+import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import '../../../models/appModels/DocumentVersion';
 const Model = mongoose.model('AppDocument');
 
 // Import DocumentVersion model to ensure it's registered
-require('../../../models/appModels/DocumentVersion');
 const DocumentVersion = mongoose.model('DocumentVersion');
 
 const update = async (req, res) => {
@@ -208,4 +208,4 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = update;
+export = update;

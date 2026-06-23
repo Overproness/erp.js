@@ -1,8 +1,8 @@
 // @ts-nocheck
-const AiAssistant = require('../../../models/appModels/AiAssistant');
-const AiConversation = require('../../../models/appModels/AiConversation');
-const { catchErrors } = require('../../../handlers/errorHandlers');
 
+import { catchErrors } from '../../../handlers/errorHandlers';
+import AiAssistant from '../../../models/appModels/AiAssistant';
+import AiConversation from '../../../models/appModels/AiConversation';
 const deleteAssistant = async (req, res) => {
   try {
     // Get owner from either user or companyOwner context
@@ -71,4 +71,4 @@ const deleteAssistant = async (req, res) => {
   }
 };
 
-module.exports = catchErrors(deleteAssistant);
+export = catchErrors(deleteAssistant);

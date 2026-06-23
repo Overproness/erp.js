@@ -1,14 +1,14 @@
 // @ts-nocheck
-const mongoose = require('mongoose');
-const ABTest = require('@/models/appModels/ABTest');
-const URL = require('@/models/appModels/URL');
-const URLClick = require('@/models/appModels/URLClick');
-
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const { catchErrors } = require('@/handlers/errorHandlers');
-const abTestService = require('@/services/abTestService');
 
 
+
+import { catchErrors } from '@/handlers/errorHandlers';
+import mongoose from 'mongoose';
+import ABTest from '@/models/appModels/ABTest';
+import URL from '@/models/appModels/URL';
+import URLClick from '@/models/appModels/URLClick';
+import createCRUDController from '@/controllers/middlewaresControllers/createCRUDController';
+import abTestService from '@/services/abTestService';
 const Model = mongoose.model('ABTest');
 
 // Create base CRUD controller
@@ -592,7 +592,7 @@ const summary = catchErrors(async (req, res) => {
   });
 });
 
-module.exports = {
+export = {
   ...crudController,
   create,
   start,

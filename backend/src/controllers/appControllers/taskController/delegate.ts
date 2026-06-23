@@ -1,9 +1,9 @@
 // @ts-nocheck
-const Task = require('../../../models/appModels/Task');
-const User = require('../../../models/appModels/User');
-const Team = require('../../../models/appModels/Team');
-const { notificationService } = require('../../../services/notificationService');
 
+import { notificationService } from '../../../services/notificationService';
+import Task from '../../../models/appModels/Task';
+import User from '../../../models/appModels/User';
+import Team from '../../../models/appModels/Team';
 const delegate = async (req, res) => {
   try {
     const { id } = req.params;
@@ -120,4 +120,4 @@ const delegate = async (req, res) => {
   }
 };
 
-module.exports = delegate;
+export = delegate;

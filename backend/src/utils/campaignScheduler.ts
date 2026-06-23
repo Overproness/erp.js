@@ -1,10 +1,10 @@
 // @ts-nocheck
+import { Campaign, CustomerBehavior, Customer } from '../models';
+import segmentMatcher from './segmentMatcher';
 /**
  * Campaign Scheduler
  * Utilities for campaign timing and scheduling optimization
  */
-const { Campaign, CustomerBehavior, Customer } = require('../models');
-const segmentMatcher = require('./segmentMatcher');
 
 /**
  * Get optimal send time for a customer
@@ -492,7 +492,7 @@ const addInterval = (date, interval) => {
   return newDate;
 };
 
-module.exports = {
+export = {
   getOptimalSendTime,
   getDefaultSendTime,
   getOptimalTimesForSegment,
