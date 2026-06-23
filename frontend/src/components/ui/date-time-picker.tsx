@@ -14,40 +14,38 @@ import * as React from 'react';
 import type { DateRange } from 'react-day-picker';
 
 // ── Shared trigger button ─────────────────────────────────────────────────────
-function PickerButton({
-  children,
-  className,
-  disabled,
-  style,
-  status,
-  size,
-  ...rest
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type PickerButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   status?: string;
   size?: string;
-}) {
-  const h = size === 'large' ? 'h-10 text-base' : size === 'small' ? 'h-7 text-xs' : 'h-9 text-sm';
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      className={cn(
-        'flex w-full items-center justify-between rounded-[var(--radius)] border border-input',
-        'bg-background px-3 py-1.5 text-sm ring-offset-background',
-        'hover:border-ring/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
-        'disabled:cursor-not-allowed disabled:opacity-50 transition-colors',
-        h,
-        status === 'error' && 'border-destructive focus:ring-destructive',
-        status === 'warning' && 'border-yellow-400',
-        className
-      )}
-      style={style}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
-}
+};
+
+const PickerButton = React.forwardRef<HTMLButtonElement, PickerButtonProps>(
+  ({ children, className, disabled, style, status, size, ...rest }, ref) => {
+    const h = size === 'large' ? 'h-10 text-base' : size === 'small' ? 'h-7 text-xs' : 'h-9 text-sm';
+    return (
+      <button
+        ref={ref}
+        type="button"
+        disabled={disabled}
+        className={cn(
+          'flex w-full items-center justify-between rounded-[var(--radius)] border border-input',
+          'bg-background px-3 py-1.5 text-sm ring-offset-background',
+          'hover:border-ring/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
+          'disabled:cursor-not-allowed disabled:opacity-50 transition-colors',
+          h,
+          status === 'error' && 'border-destructive focus:ring-destructive',
+          status === 'warning' && 'border-yellow-400',
+          className
+        )}
+        style={style}
+        {...rest}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+PickerButton.displayName = 'PickerButton';
 
 // ── DatePicker ────────────────────────────────────────────────────────────────
 export interface DatePickerProps {

@@ -5,7 +5,7 @@ import initDefaultSettings from './middlewares/settings/initDefaultSettings';
 import migrateSetting from './middlewares/settings/migrateSetting';
 import reminderScheduler from './services/reminderScheduler';
 import app from './app';
-import errorHandlers from './handlers/errorHandlers';
+import { notFound, productionErrors } from './handlers/errorHandlers';
 import './models';
 import { createRequire } from 'module';
 const load = createRequire(__filename);
@@ -63,8 +63,8 @@ mongoose.connection.once('open', async () => {
 
   // Register error handlers AFTER GraphQL so /graphql sits before
   // the 404 handler in Express's middleware stack.
-  app.use(errorHandlers.notFound);
-  app.use(errorHandlers.productionErrors);
+  app.use(notFound);
+  app.use(productionErrors);
 
   // Start listening only after GraphQL and error handlers are fully wired up
   server.listen(PORT, () => {

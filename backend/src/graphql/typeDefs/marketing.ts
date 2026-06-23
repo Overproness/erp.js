@@ -21,20 +21,18 @@ const marketingTypeDefs = gql`
 
   type CustomerFollowUp {
     _id: ID!
-    client: ID
+    customer: ID
     type: String
+    reason: String
     status: String
     scheduledDate: DateTime
-    completedDate: DateTime
-    notes: String
-    assignedTo: ID
+    subject: String
+    message: String
     priority: String
-    outcome: String
     removed: Boolean
     owner: ID
-    companyID: ID
-    createdAt: DateTime
-    updatedAt: DateTime
+    created: DateTime
+    updated: DateTime
   }
 
   type CustomerJourney {
@@ -69,11 +67,12 @@ const marketingTypeDefs = gql`
   }
 
   input CustomerFollowUpCreateInput {
-    client: ID!
-    type: String
-    scheduledDate: DateTime
-    notes: String
-    assignedTo: ID
+    customerId: ID!
+    type: String!
+    reason: String!
+    scheduledDate: DateTime!
+    subject: String
+    message: String!
     priority: String
   }
 

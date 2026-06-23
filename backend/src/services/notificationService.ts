@@ -1,15 +1,13 @@
 // @ts-nocheck
-import mongoose from 'mongoose';
 import sendMail from '../helpers/sendMail';
+import CompanyOwner from '../models/coreModels/CompanyOwner';
+import Notification from '../models/appModels/Notification';
 import ReviewResponse from '../models/appModels/ReviewResponse';
 /**
  * Notification Service
  * Handles sending notifications to users and teams via Socket.io and MongoDB
  */
 
-
-const Notification = mongoose.model('Notification');
-const CompanyOwner = mongoose.model('CompanyOwner');
 
 class NotificationService {
   constructor() {

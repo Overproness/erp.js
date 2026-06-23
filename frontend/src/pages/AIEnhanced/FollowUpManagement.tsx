@@ -1,10 +1,10 @@
 import { DataImportButton } from '@/components/DataEntry';
 import apolloClient from '@/graphql/client';
 import {
-  getCreateMutation,
-  getDeleteMutation,
-  getListQuery,
-} from '@/graphql/operations/crudFactory';
+  CREATE_CUSTOMER_FOLLOWUP,
+  DELETE_CUSTOMER_FOLLOWUP,
+  GET_CUSTOMER_FOLLOWUPS,
+} from '@/graphql/operations/marketing';
 import {
   CalendarOutlined,
   CheckCircleOutlined,
@@ -66,8 +66,8 @@ export default function FollowUpManagement() {
     setLoading(true);
     try {
       const { data } = await apolloClient.query({
-        query: getListQuery('customerFollowUp'),
-        fetchPolicy: 'cache-first',
+        query: GET_CUSTOMER_FOLLOWUPS,
+        fetchPolicy: 'network-only',
       });
       if (data.customerFollowUpList?.success) {
         setFollowUps(data.customerFollowUpList.result || []);
@@ -107,7 +107,7 @@ export default function FollowUpManagement() {
   const handleCreateFollowUp = async (values) => {
     try {
       const { data } = await apolloClient.mutate({
-        mutation: getCreateMutation('customerFollowUp'),
+        mutation: CREATE_CUSTOMER_FOLLOWUP,
         variables: {
           input: {
             customerId: values.customerId,
@@ -138,7 +138,7 @@ export default function FollowUpManagement() {
   const handleCancelFollowUp = async (followUpId) => {
     try {
       const { data } = await apolloClient.mutate({
-        mutation: getDeleteMutation('customerFollowUp'),
+        mutation: DELETE_CUSTOMER_FOLLOWUP,
         variables: { id: followUpId },
       });
 

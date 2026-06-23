@@ -157,19 +157,38 @@ const cancelFollowUp = async (req, res) => {
 const listFollowUps = async (req, res) => {
   try {
     const userId = getCurrentUserId(req);
-    const { status, type, limit = 50, skip = 0, customerId } = req.query;
+    const {
+      status,
+      type,
+      limit: requestedLimit,
+      skip: requestedSkip,
+      page: requestedPage,
+      customerId,
+      sortBy,
+      sortValue,
+    } = req.query;
 
+    const parsedLimit = Number.parseInt(requestedLimit, 10);
+    const limit = Number.isFinite(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 100) : 50;
+    const parsedPage = Number.parseInt(requestedPage, 10);
+    const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+    const parsedSkip = Number.parseInt(requestedSkip, 10);
+    const skip = Number.isFinite(parsedSkip) && parsedSkip >= 0 ? parsedSkip : (page - 1) * limit;
 
-    const query = { owner: userId };
+    const query = { owner: userId, removed: false };
 
     if (status) query.status = status;
     if (type) query.type = type;
     if (customerId) query.customer = customerId;
 
+    const sortableFields = new Set(['scheduledDate', 'created', 'updated', 'status', 'priority', 'type']);
+    const sortField = sortableFields.has(sortBy) ? sortBy : 'created';
+    const sortDirection = ['asc', 'ascend', '1'].includes(String(sortValue).toLowerCase()) ? 1 : -1;
+
     const followUps = await CustomerFollowUp.find(query)
-      .sort({ createdAt: -1 })
-      .limit(parseInt(limit))
-      .skip(parseInt(skip))
+      .sort({ [sortField]: sortDirection })
+      .limit(limit)
+      .skip(skip)
       .populate('customer', 'name email company')
       .lean();
 
@@ -179,10 +198,15 @@ const listFollowUps = async (req, res) => {
       success: true,
       result: followUps,
       pagination: {
+        // ListResponse requires these fields and the GraphQL API accepts page/limit.
+        page: Math.floor(skip / limit) + 1,
+        count: followUps.length,
+        pages: Math.ceil(total / limit),
         total,
-        limit: parseInt(limit),
-        skip: parseInt(skip),
-        hasMore: total > parseInt(skip) + parseInt(limit),
+        // Keep the REST pagination fields for existing callers.
+        limit,
+        skip,
+        hasMore: total > skip + limit,
       },
       message: 'Follow-ups retrieved successfully',
     });

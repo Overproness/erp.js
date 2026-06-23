@@ -40,6 +40,7 @@ const { Search } = Input;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { confirm } = Modal;
+const EMPTY_CAMPAIGNS = [];
 
 const MarketingDataTableModule = () => {
   const translate = useLanguage();
@@ -47,7 +48,7 @@ const MarketingDataTableModule = () => {
   const navigate = useNavigate();
 
   // Redux state
-  const campaigns = useSelector((state) => state.campaign?.campaigns ?? []);
+  const campaigns = useSelector((state) => state.campaign?.campaigns ?? EMPTY_CAMPAIGNS);
   const loading = useSelector((state) => state.campaign?.loading ?? false);
 
   // Local state for filtering and table management

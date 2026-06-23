@@ -1483,9 +1483,17 @@ function createEntitySpecificResolvers(controllers) {
       },
       customerFollowUpList: async (parent, args, context) => {
         const { req, res, getResponse } = createReqRes(args, context);
+        req.query.page = args.page;
+        req.query.limit = args.limit;
+        req.query.sortBy = args.sortBy;
+        req.query.sortValue = args.sortValue;
         try {
           await controllers.followUpController.listFollowUps(req, res);
-          return getResponse().data;
+          return getResponse().data || {
+            success: false,
+            result: [],
+            message: 'No response while retrieving follow-ups',
+          };
         } catch (error) {
           return { success: false, result: [], message: error.message };
         }
@@ -3583,6 +3591,7 @@ function createEntitySpecificResolvers(controllers) {
         requirePlanFeature(context, 'FOLLOW_UP_AUTOMATION');
         const { req, res, getResponse } = createReqRes(args, context);
         req.params.id = args.id;
+        req.params.followUpId = args.id;
         try {
           await controllers.followUpController.cancelFollowUp(req, res);
           return getResponse().data;
