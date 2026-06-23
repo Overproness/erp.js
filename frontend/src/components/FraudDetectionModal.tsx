@@ -7,7 +7,7 @@ import {
   RobotOutlined,
   SafetyOutlined,
   WarningOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Alert, Badge, Card, Descriptions, List, Modal, Select, Spin, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 

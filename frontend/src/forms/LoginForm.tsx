@@ -47,7 +47,7 @@ export default function LoginForm() {
             boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
           }}
           onFocus={(e) => {
-            const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
+            const el = e.target.closest('.input-affix-wrapper') as HTMLElement;
             if (el) {
               el.style.border = '1.5px solid #0058c3';
               el.style.boxShadow =
@@ -55,7 +55,7 @@ export default function LoginForm() {
             }
           }}
           onBlur={(e) => {
-            const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
+            const el = e.target.closest('.input-affix-wrapper') as HTMLElement;
             if (el) {
               el.style.border = '1.5px solid transparent';
               el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';

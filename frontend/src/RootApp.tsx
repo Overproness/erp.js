@@ -1,14 +1,13 @@
 import './style/app.css';
 
 import { ApolloProvider } from '@apollo/client/react';
-import { App, ConfigProvider } from '@/components/ui';
+import { App } from '@/components/ui';
 import { Suspense, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { antdTheme } from './config/theme';
 import toastConfig from './config/toastConfig';
 import { CopilotProvider } from './context/CopilotContext';
 import { NotificationProvider } from './context/NotificationContext';
@@ -31,23 +30,21 @@ const RootApp: React.FC = () => {
     <ErrorBoundary>
       <Provider store={store}>
         <ApolloProvider client={apolloClient}>
-          <ConfigProvider theme={antdTheme}>
-            <HelmetProvider>
-              <App>
-                <NotificationProvider>
-                  <CopilotProvider>
-                    <Router>
-                      <ScrollToTop />
-                      <Suspense fallback={<div className="loading-container">Loading...</div>}>
-                        <ErpOs />
-                      </Suspense>
-                    </Router>
-                  </CopilotProvider>
-                </NotificationProvider>
-                <ToastContainer {...toastConfig} />
-              </App>
-            </HelmetProvider>
-          </ConfigProvider>
+          <HelmetProvider>
+            <App>
+              <NotificationProvider>
+                <CopilotProvider>
+                  <Router>
+                    <ScrollToTop />
+                    <Suspense fallback={<div className="loading-container">Loading...</div>}>
+                      <ErpOs />
+                    </Suspense>
+                  </Router>
+                </CopilotProvider>
+              </NotificationProvider>
+              <ToastContainer {...toastConfig} />
+            </App>
+          </HelmetProvider>
         </ApolloProvider>
       </Provider>
     </ErrorBoundary>

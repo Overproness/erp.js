@@ -21,7 +21,7 @@ import {
   InfoCircleOutlined,
   BarChartOutlined,
   ReloadOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 // Chart registration (ensures Chart.js behaves correctly with React)

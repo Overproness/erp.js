@@ -4,7 +4,7 @@ import {
   FileOutlined,
   LinkOutlined,
   MessageOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Alert,
   Button,

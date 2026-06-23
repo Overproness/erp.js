@@ -16,7 +16,7 @@ import {
   SwapOutlined,
   SyncOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Form,

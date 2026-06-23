@@ -161,9 +161,9 @@ vi.mock('@/../request', () => ({
   },
 }));
 
-// Mock Ant Design components that might cause issues
-vi.mock('antd', async () => {
-  const actual = await vi.importActual('antd');
+// Mock layout components that might cause issues in jsdom
+vi.mock('@/components/ui', async () => {
+  const actual = await vi.importActual('@/components/ui');
   return {
     ...actual,
     Col: ({ children, ...props }) => (

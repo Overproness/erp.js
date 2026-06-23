@@ -30,7 +30,7 @@ import {
   FrownOutlined,
   MehOutlined,
   ClockCircleOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { useMentions } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';

@@ -9,7 +9,7 @@ import {
   RocketOutlined,
   StarFilled,
   TrophyOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

@@ -8,7 +8,7 @@ import {
   ShareAltOutlined,
   TwitterOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Card,
   Col,

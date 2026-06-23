@@ -1,5 +1,5 @@
 import { Spin, Col, Button } from '@/components/ui';
-import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
+import { FileTextOutlined, PlusOutlined } from '@/components/icons';
 import { useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import useLanguage from '@/locale/useLanguage';

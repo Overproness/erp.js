@@ -4,7 +4,7 @@ import {
   PlusOutlined,
   RobotOutlined,
   TagsOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, List, message, Modal, Space, Spin, Tag, Tooltip } from '@/components/ui';
 import { useState } from 'react';
 
@@ -92,7 +92,7 @@ export default function AITagSuggestions({ selectedDocuments, onSuccess }) {
           onClick={handleGetSuggestions}
           disabled={!selectedDocuments || selectedDocuments.length === 0}
           style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            // background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             border: 'none',
           }}
         >

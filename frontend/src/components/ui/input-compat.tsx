@@ -77,8 +77,8 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
           status === 'error' && 'border-destructive focus-visible:ring-destructive',
           status === 'warning' && 'border-yellow-400 focus-visible:ring-yellow-400',
           !bordered && 'border-0 shadow-none',
-          (prefix || addonBefore) && 'rounded-l-none',
-          (suffix || addonAfter || allowClear) && 'rounded-r-none',
+          prefix || addonBefore,
+          suffix || addonAfter || allowClear,
           !hasWrapper && className
         )}
         style={!hasWrapper ? style : undefined}
@@ -114,8 +114,9 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
               status === 'error' && 'border-destructive focus-visible:ring-destructive',
               status === 'warning' && 'border-yellow-400 focus-visible:ring-yellow-400',
               !bordered && 'border-0 shadow-none',
-              addonBefore && 'rounded-l-none',
-              (addonAfter || allowClear) && 'rounded-r-none'
+              addonBefore,
+              addonAfter || allowClear,
+              'fix-border-input'
             )}
             {...rest}
           />

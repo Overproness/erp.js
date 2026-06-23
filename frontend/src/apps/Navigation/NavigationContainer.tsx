@@ -44,7 +44,7 @@ import {
   TeamOutlined,
   UsergroupAddOutlined,
   WalletOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 
 export default function Navigation() {
   const { isMobile } = useResponsive();

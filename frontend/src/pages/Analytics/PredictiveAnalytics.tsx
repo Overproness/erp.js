@@ -1,6 +1,6 @@
 import apolloClient from '@/graphql/client';
 import { AI_PREDICT } from '@/graphql/operations/ai';
-import { FallOutlined, LineChartOutlined, MinusOutlined, RiseOutlined } from '@ant-design/icons';
+import { FallOutlined, LineChartOutlined, MinusOutlined, RiseOutlined } from '@/components/icons';
 import { Alert, Button, Card, Modal, Select, Spin, Statistic, Tag } from '@/components/ui';
 import { useState } from 'react';
 import {

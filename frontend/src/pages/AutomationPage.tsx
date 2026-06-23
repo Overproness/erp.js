@@ -4,7 +4,7 @@ import {
   CloudServerOutlined,
   PlayCircleOutlined,
   SettingOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Layout, Menu, Space, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 import N8nWorkflowManager from '../components/N8nWorkflowManager';

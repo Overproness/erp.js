@@ -1,7 +1,7 @@
 import useLanguage from '@/locale/useLanguage';
 import CreateItem from '@/pages/ErpPanelModule/CreateItem';
 import { selectCreatedItem } from '@/redux/erp/selectors'; // Changed from crud to erp
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined } from '@/components/icons';
 import { DatePicker, Form, Input, Select, Upload } from '@/components/ui';
 import { useSelector } from 'react-redux';
 
@@ -107,13 +107,13 @@ export default function DocumentCreate() {
             maxCount={1}
             accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png"
           >
-            <p className="ant-upload-drag-icon">
+            <p className="upload-drag-icon">
               <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p className="upload-text">
               {translate('Click or drag file to this area to upload')}
             </p>
-            <p className="ant-upload-hint">
+            <p className="upload-hint">
               {translate('Support for PDF, Word, Excel, text and image files')}
             </p>
           </Upload.Dragger>

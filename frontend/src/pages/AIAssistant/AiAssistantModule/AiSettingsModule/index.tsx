@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Tabs, Button, Space, Typography } from '@/components/ui';
-import { ArrowLeftOutlined, SettingOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, SettingOutlined, DatabaseOutlined, UserOutlined } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import { ErpLayout } from '@/layout';
 import AiPreferences from './AiPreferences';

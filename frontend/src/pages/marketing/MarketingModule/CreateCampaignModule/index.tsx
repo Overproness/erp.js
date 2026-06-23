@@ -34,7 +34,7 @@ import {
   InstagramOutlined,
   TwitterOutlined,
   LinkedinOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import { RichTextEditor } from '@/components/common/RichTextEditor';
 

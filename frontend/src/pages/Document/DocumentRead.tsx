@@ -12,7 +12,7 @@ import {
   FileOutlined,
   HistoryOutlined,
   ShareAltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Descriptions, Divider, message, Space, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';

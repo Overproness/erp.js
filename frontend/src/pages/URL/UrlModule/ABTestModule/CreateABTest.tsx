@@ -23,7 +23,7 @@ import {
   PlusOutlined,
   DeleteOutlined,
   InfoCircleOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import apolloClient from '@/graphql/client';
 import { GET_URLS } from '@/graphql/operations/url';

@@ -25,7 +25,7 @@ import {
   DollarOutlined, 
   GlobalOutlined, 
   SettingOutlined 
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { settingsAction } from '@/redux/settings/actions';
 import { selectAuth } from '@/redux/auth/selectors';
 import { selectCurrentSettings } from '@/redux/settings/selectors';

@@ -1,6 +1,6 @@
 import color from '@/utils/color';
 import { countryList } from '@/utils/countryList';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@/components/icons';
 import { Switch, Tag } from '@/components/ui';
 import dayjs from 'dayjs';
 import { generate as uniqueId } from 'shortid';

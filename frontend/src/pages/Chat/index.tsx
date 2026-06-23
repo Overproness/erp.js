@@ -10,7 +10,7 @@ import {
   SmileOutlined,
   TeamOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';

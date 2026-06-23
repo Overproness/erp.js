@@ -24,7 +24,7 @@ import {
   ExclamationCircleOutlined,
   ClockCircleOutlined,
   LockOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';

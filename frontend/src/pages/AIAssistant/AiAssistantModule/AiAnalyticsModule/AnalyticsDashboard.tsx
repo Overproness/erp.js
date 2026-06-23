@@ -8,7 +8,7 @@ import {
   MessageOutlined,
   RobotOutlined,
   TrophyOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Avatar,
   Card,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from '@/components/ui';
-import { MailOutlined } from '@ant-design/icons';
+import { MailOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 export default function ForgetPasswordForm() {

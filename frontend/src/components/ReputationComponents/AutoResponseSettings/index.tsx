@@ -18,7 +18,7 @@ import {
   PlusOutlined, 
   SaveOutlined,
   StarOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { TextArea } = Input;

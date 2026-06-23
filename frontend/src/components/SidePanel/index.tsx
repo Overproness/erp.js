@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCrudContext } from '@/context/crud';
 import { useAppContext } from '@/context/appContext';
 import { Grid, Layout, Drawer } from '@/components/ui';
-import { MenuOutlined } from '@ant-design/icons';
+import { MenuOutlined } from '@/components/icons';
 import CollapseBox from '../CollapseBox';
 
 const { useBreakpoint } = Grid;

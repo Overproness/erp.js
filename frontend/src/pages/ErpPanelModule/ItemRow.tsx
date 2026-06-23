@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { useMoneyOld } from '@/settings';
 import calculate from '@/utils/calculate';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@/components/icons';
 
 export default function ItemRow({ field, remove, current = null }) {
   const [totalState, setTotal] = useState(undefined);

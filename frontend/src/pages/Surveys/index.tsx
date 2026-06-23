@@ -18,7 +18,7 @@ import {
   PlayCircleOutlined,
   PlusOutlined,
   ShareAltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,
@@ -39,12 +39,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
+const { Search } = Input;
 
 export default function Survey() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const translate = useLanguage();
   const entity = 'survey';
+
+  const [searchText, setSearchText] = useState('');
 
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -299,19 +302,39 @@ export default function Survey() {
             </Card>
           </Col>
         </Row>
-
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          size="large"
-          onClick={() => navigate('/survey/create')}
-        >
-          {translate('Create Survey')}
-        </Button>
       </div>
 
       {/* Survey Table */}
-      <Card>
+      <Card
+        style={{
+          borderRadius: '12px',
+          boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)',
+        }}
+      >
+        <div
+          style={{
+            marginBottom: '16px',
+            display: 'flex',
+            gap: '16px',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Search
+            placeholder={translate('Search surveys')}
+            allowClear
+            style={{ width: 300 }}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            size="large"
+            onClick={() => navigate('/survey/create')}
+          >
+            {translate('Create Survey')}
+          </Button>
+        </div>
         <Table
           columns={columns}
           dataSource={surveyList}

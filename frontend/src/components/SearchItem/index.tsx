@@ -4,7 +4,7 @@ import useDebounce from '@/hooks/useDebounce';
 
 import { Select, Empty } from '@/components/ui';
 
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@/components/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { crud } from '@/redux/crud/actions';
 

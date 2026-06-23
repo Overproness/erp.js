@@ -17,7 +17,7 @@ import {
   SendOutlined,
   TeamOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Alert,
   Avatar,

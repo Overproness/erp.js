@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Select, Switch, InputNumber, Card, Divider } from '@/components/ui';
-import { SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { SettingOutlined, UserOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Option } = Select;

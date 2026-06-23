@@ -20,7 +20,7 @@ import {
   SwapOutlined,
   SyncOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Modal, Space, Tooltip, Typography } from '@/components/ui';
 import { useCallback, useMemo, useState } from 'react';
 import { Handle, Position } from 'reactflow';

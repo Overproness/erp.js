@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Switch } from '@/components/ui';
-import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { CloseOutlined, CheckOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 export default function PaymentModeForm({ isUpdateForm = false }) {

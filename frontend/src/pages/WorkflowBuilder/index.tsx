@@ -8,7 +8,7 @@ import {
   PlayCircleOutlined,
   SaveOutlined,
   ShareAltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Col, message, Modal, Row, Space, Spin, Statistic, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';

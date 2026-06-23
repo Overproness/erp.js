@@ -2,7 +2,6 @@
 @import './shadcn-vars.css';
 
 @import './partials/rest.css';
-@import './partials/customAntd.css';
 @import './partials/layout.css';
 @import './partials/core.css';
 @import './partials/auth.css';

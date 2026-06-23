@@ -1,7 +1,7 @@
 /**
- * antd-upload-impl.tsx
+ * upload.tsx
  * Upload & Upload.Dragger built with react-dropzone.
- * Mimics antd Upload's fileList / onChange / beforeUpload / action API.
+ * Supports fileList / onChange / beforeUpload / action upload props.
  */
 import { cn } from '@/lib/utils';
 import { AlertCircle, CheckCircle, Loader2, Upload as UploadIcon, X } from 'lucide-react';

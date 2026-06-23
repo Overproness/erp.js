@@ -9,7 +9,7 @@ import {
 import { loadConversation, resetChat } from '@/redux/ai/aiSlice';
 import { fetchConversation, fetchConversations, sendChatMessage } from '@/redux/ai/aiThunks';
 import { useDate } from '@/settings';
-import { DownOutlined, HistoryOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons';
+import { DownOutlined, HistoryOutlined, PlusOutlined, RobotOutlined } from '@/components/icons';
 import { Avatar, Button, Dropdown, Empty, Layout, Space, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

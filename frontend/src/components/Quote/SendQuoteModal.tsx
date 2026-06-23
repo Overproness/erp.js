@@ -3,7 +3,7 @@ import {
   MailOutlined,
   MessageOutlined,
   SendOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Checkbox, Form, Input, message, Modal, Radio, Space } from '@/components/ui';
 import { useCallback, useEffect, useState } from 'react';
 

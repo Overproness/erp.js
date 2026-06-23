@@ -1,32 +1,31 @@
 /**
- * antd-passthrough.tsx
+ * uncommon.tsx
  *
  * Re-exports all complex components from their proper shadcn-based
- * implementations. No direct antd dependency here.
+ * implementations. No external design-system dependency here.
  */
-export { Calendar, DatePicker, TimePicker } from '@/components/ui/antd-datepicker-impl';
-export { Form } from '@/components/ui/antd-form-impl';
+export { Calendar, DatePicker, TimePicker } from '@/components/ui/date-time-picker';
+export { Form } from '@/components/ui/form-compat';
 export {
   App,
-  ConfigProvider,
   InputNumber,
   Menu,
   Pagination,
   Slider,
   Steps,
   Timeline,
-} from '@/components/ui/antd-misc-impl';
-export { AutoComplete, Select } from '@/components/ui/antd-select-impl';
-export { Table } from '@/components/ui/antd-table-impl';
-export { Upload } from '@/components/ui/antd-upload-impl';
+} from '@/components/ui/composite';
+export { AutoComplete, Select } from '@/components/ui/select-compat';
+export { Table } from '@/components/ui/data-table';
+export { Upload } from '@/components/ui/upload';
 
-// Grid — already in antd-layout, re-export here for backwards compat
-export { Grid } from '@/components/ui/antd-layout';
+// Grid — already in layout-compat, re-export here for compatibility
+export { Grid } from '@/components/ui/layout-compat';
 
 // Rate — forward from display components
-export { Rate as AntdRate } from '@/components/ui/antd-display';
+export { Rate as CompatRate } from '@/components/ui/display';
 
-// ── Stub components for rarely/never-used antd components ─────────────────────
+// ── Stub components for rarely used components ─────────────────────
 // These are not used in the codebase but are exported for API completeness.
 import React from 'react';
 

@@ -21,7 +21,7 @@ import {
   InfoCircleOutlined,
   CloudDownloadOutlined,
   CloseOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import PlatformIntegrationStatus from '@/components/ReputationComponents/PlatformIntegrationStatus';
 import { QRCodeCanvas } from 'qrcode.react'; // Fixed import statement

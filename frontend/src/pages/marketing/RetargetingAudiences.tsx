@@ -20,7 +20,7 @@ import {
   SyncOutlined,
   TwitterOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Avatar,
   Badge,
@@ -320,7 +320,14 @@ export default function RetargetingAudiences() {
         }}
       >
         {/* Search and Actions */}
-        <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            marginBottom: '16px',
+            display: 'flex',
+            gap: '16px',
+            justifyContent: 'space-between',
+          }}
+        >
           <Search
             placeholder={translate('Search audiences')}
             allowClear
@@ -328,11 +335,9 @@ export default function RetargetingAudiences() {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <Space>
-            <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateAudience}>
-              {translate('Create Audience')}
-            </Button>
-          </Space>
+          <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateAudience}>
+            {translate('Create Audience')}
+          </Button>
         </div>
 
         {/* Audiences Table */}

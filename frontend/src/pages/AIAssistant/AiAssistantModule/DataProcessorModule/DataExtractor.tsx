@@ -21,7 +21,7 @@ import {
   DownloadOutlined,
   EyeOutlined,
   SettingOutlined 
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Title, Text } = Typography;

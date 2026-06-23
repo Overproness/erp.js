@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@/components/ui';
 import ReadUrlModule from './UrlModule/ReadUrlModule';
 import useLanguage from '@/locale/useLanguage';
 

@@ -4,7 +4,7 @@ import {
   PlayCircleOutlined,
   QuestionCircleOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Collapse, Tabs, Typography, message } from '@/components/ui';
 import { useState } from 'react';
 

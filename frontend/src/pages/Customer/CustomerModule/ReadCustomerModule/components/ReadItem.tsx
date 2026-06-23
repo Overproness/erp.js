@@ -32,8 +32,8 @@ import {
   TwitterOutlined,
   UserOutlined,
   WhatsAppOutlined,
-} from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+} from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import {
   Alert,
   Avatar,

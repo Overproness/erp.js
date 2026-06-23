@@ -8,7 +8,7 @@ import {
   SendOutlined,
   ThunderboltOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Avatar,
   Button,

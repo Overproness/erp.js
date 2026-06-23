@@ -7,8 +7,8 @@ import {
   FilePdfOutlined,
   PlusOutlined,
   RedoOutlined,
-} from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+} from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import { Button, Dropdown, Table } from '@/components/ui';
 import { cloneElement, isValidElement, useEffect, useRef } from 'react';
 

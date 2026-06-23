@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Empty } from '@/components/ui';
-import { Line } from '@ant-design/charts';
+import { Line } from '@/components/charts/simple-charts';
 import useLanguage from '@/locale/useLanguage';
 
 const PredictiveCharts = ({ data, loading }) => {

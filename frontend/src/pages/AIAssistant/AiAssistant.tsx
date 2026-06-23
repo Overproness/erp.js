@@ -5,7 +5,7 @@ import {
   selectAssistantsLoading,
 } from '@/redux/ai/aiSelectors';
 import { fetchAssistants } from '@/redux/ai/aiThunks';
-import { BarChartOutlined, MessageOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons';
+import { BarChartOutlined, MessageOutlined, PlusOutlined, RobotOutlined } from '@/components/icons';
 import { Button, Card, Col, Row, Space, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

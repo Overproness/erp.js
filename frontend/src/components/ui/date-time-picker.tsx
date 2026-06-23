@@ -1,8 +1,8 @@
 /**
- * antd-datepicker-impl.tsx
+ * date-time-picker.tsx
  * DatePicker, RangePicker, TimePicker, Calendar — built with shadcn Calendar
  * (react-day-picker) + dayjs. Values in/out are dayjs objects to match
- * existing antd usage patterns.
+ * existing date-picker usage patterns.
  */
 import { Calendar as ShadCalendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';

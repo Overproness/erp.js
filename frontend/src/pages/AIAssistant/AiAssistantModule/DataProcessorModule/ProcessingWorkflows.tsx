@@ -20,7 +20,7 @@ import {
   DeleteOutlined,
   SettingOutlined,
   CheckCircleOutlined 
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Title, Text } = Typography;

@@ -10,7 +10,7 @@ import {
   RiseOutlined,
   SearchOutlined,
   TwitterOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

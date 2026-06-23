@@ -18,7 +18,7 @@ import {
   CopyOutlined,
   DeleteOutlined,
   DownloadOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
 import { useUrlManagement } from '@/hooks/useUrl';

@@ -9,7 +9,7 @@ import {
   PayCircleOutlined,
   StarOutlined,
   TeamOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

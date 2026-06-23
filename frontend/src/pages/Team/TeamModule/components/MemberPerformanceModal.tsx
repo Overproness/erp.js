@@ -8,7 +8,7 @@ import {
   RiseOutlined,
   TeamOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Alert, Card, Col, Empty, Modal, Progress, Row, Spin, Statistic, Tabs, Tag } from '@/components/ui';
 import { useEffect, useState } from 'react';
 

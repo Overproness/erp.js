@@ -9,7 +9,7 @@ import {
   ClockCircleOutlined,
   DollarOutlined,
   FileTextOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Col, Row, Spin, Statistic, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useDispatch } from 'react-redux';

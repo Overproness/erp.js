@@ -11,7 +11,7 @@ import {
   Typography,
   InputNumber,
 } from '@/components/ui';
-import { MailOutlined, MobileOutlined, GlobalOutlined } from '@ant-design/icons';
+import { MailOutlined, MobileOutlined, GlobalOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Title, Text } = Typography;

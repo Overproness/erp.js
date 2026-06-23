@@ -7,7 +7,7 @@ import {
   CheckCircleOutlined,
   TeamOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

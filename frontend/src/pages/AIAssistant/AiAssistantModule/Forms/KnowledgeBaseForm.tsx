@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Select, Upload, Button, Card, Divider, Tag, Space } from '@/components/ui';
-import { UploadOutlined, BookOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { UploadOutlined, BookOutlined, DeleteOutlined, PlusOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { TextArea } = Input;
@@ -92,13 +92,13 @@ export default function KnowledgeBaseForm({ initialValues, isUpdate = false }) {
           label={translate('Upload Documents')}
         >
           <Upload.Dragger {...uploadProps}>
-            <p className="ant-upload-drag-icon">
+            <p className="upload-drag-icon">
               <UploadOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p className="upload-text">
               {translate('Click or drag files to this area to upload')}
             </p>
-            <p className="ant-upload-hint">
+            <p className="upload-hint">
               {translate('Support for PDF, DOC, DOCX, TXT, and MD files')}
             </p>
           </Upload.Dragger>

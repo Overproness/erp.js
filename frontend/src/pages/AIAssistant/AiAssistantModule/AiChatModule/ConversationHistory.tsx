@@ -13,7 +13,7 @@ import {
   SearchOutlined,
   SettingOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Avatar, Badge, Button, Dropdown, Input, List, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';

@@ -4,8 +4,8 @@ import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
 import { selectListItems } from '@/redux/erp/selectors';
 import { useDate } from '@/settings'; // Import from settings index
-import { DeleteOutlined, EditOutlined, EyeOutlined, MailOutlined } from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+import { DeleteOutlined, EditOutlined, EyeOutlined, MailOutlined } from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import { Button, Dropdown, Table, Tag } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';

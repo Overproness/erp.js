@@ -1,7 +1,7 @@
 import useLanguage from '@/locale/useLanguage';
 import { settingsAction } from '@/redux/settings/actions';
 import { currencyOptions } from '@/utils/currencyList';
-import { DollarOutlined, GlobalOutlined, SettingOutlined, ShopOutlined } from '@ant-design/icons';
+import { DollarOutlined, GlobalOutlined, SettingOutlined, ShopOutlined } from '@/components/icons';
 import { Button, Form, Input, message, Modal, Select, Spin, Steps, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';

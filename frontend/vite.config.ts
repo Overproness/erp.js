@@ -92,9 +92,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         'react-dom',
         'react-router-dom',
         'redux',
-        'antd',
-        '@ant-design/icons',
-        '@ant-design/charts',
         'react/jsx-runtime',
         'react/jsx-dev-runtime',
         'react-ace',
@@ -196,7 +193,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'editor-vendor';
             }
 
-            // NOTE: recharts, D3 (d3-*), chart.js, @antv/*, @ant-design/charts,
+            // NOTE: recharts, D3 (d3-*), chart.js, @antv/*,
             // and their transitive deps intentionally fall through to the
             // 'vendor' chunk below.  Isolating them in a separate chunk causes
             // Rollup to linearize their circular ESM references incorrectly,
@@ -243,8 +240,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'radix-vendor';
             }
 
-            // NOTE: antd / @ant-design/*, react, react-dom, react-router, redux,
-            // @reduxjs/*, and react-redux intentionally fall through to the
+            // NOTE: react, react-dom, react-router, redux, @reduxjs/*,
+            // and react-redux intentionally fall through to the
             // 'vendor' chunk below.  Isolating any of them in a separate chunk
             // causes Rollup to initialise that chunk before react is ready,
             // so calls like React.createContext / React.useState / React.useLayoutEffect

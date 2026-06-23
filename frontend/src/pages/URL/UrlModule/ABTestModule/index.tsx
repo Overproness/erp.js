@@ -11,7 +11,7 @@ import {
   PlusOutlined,
   StopOutlined,
   TrophyOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

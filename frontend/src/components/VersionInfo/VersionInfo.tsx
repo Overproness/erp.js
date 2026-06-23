@@ -1,5 +1,5 @@
 import useLanguage from '@/locale/useLanguage';
-import { CheckCircleOutlined, DesktopOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, DesktopOutlined, InfoCircleOutlined } from '@/components/icons';
 import { Card, Col, Row, Space, Spin, Statistic, Typography } from '@/components/ui';
 import { useEffect, useState } from 'react';
 

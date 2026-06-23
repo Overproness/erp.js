@@ -6,8 +6,8 @@ import {
   ExportOutlined,
   FilePdfOutlined,
   MailOutlined,
-} from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+} from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import { Button, Col, Descriptions, Divider, Row, Statistic, Typography } from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';

@@ -1,18 +1,17 @@
 /**
  * @/components/ui/index.tsx
  *
- * Single drop-in replacement for `import { ... } from 'antd'`.
- * Change every antd import to `from '@/components/ui'` and everything
- * continues working with the tweakcn/shadcn design system.
+ * Shared application UI exports built on shadcn, Radix, TanStack, and small
+ * local compatibility components.
  */
 
 // ── Button ────────────────────────────────────────────────────────────────────
-export { Button } from '@/components/ui/antd-button';
-export type { ButtonProps } from '@/components/ui/antd-button';
+export { Button } from '@/components/ui/button-compat';
+export type { ButtonProps } from '@/components/ui/button-compat';
 
 // ── Input family ──────────────────────────────────────────────────────────────
-export { Input, TextArea } from '@/components/ui/antd-input';
-export type { InputProps } from '@/components/ui/antd-input';
+export { Input, TextArea } from '@/components/ui/input-compat';
+export type { InputProps } from '@/components/ui/input-compat';
 
 // ── Display / data-display components ────────────────────────────────────────
 export {
@@ -28,7 +27,7 @@ export {
   Statistic,
   Tag,
   Typography,
-} from '@/components/ui/antd-display';
+} from '@/components/ui/display';
 export type {
   AvatarProps,
   BadgeProps,
@@ -42,11 +41,11 @@ export type {
   SpinProps,
   StatisticProps,
   TagProps,
-} from '@/components/ui/antd-display';
+} from '@/components/ui/display';
 
 // ── Layout ────────────────────────────────────────────────────────────────────
-export { Col, Divider, Grid, Layout, Row, Space } from '@/components/ui/antd-layout';
-export type { ColProps, DividerProps, RowProps, SpaceProps } from '@/components/ui/antd-layout';
+export { Col, Divider, Grid, Layout, Row, Space } from '@/components/ui/layout-compat';
+export type { ColProps, DividerProps, RowProps, SpaceProps } from '@/components/ui/layout-compat';
 
 // ── Overlay / feedback ────────────────────────────────────────────────────────
 export {
@@ -58,7 +57,7 @@ export {
   Popconfirm,
   Popover,
   Tooltip,
-} from '@/components/ui/antd-overlay';
+} from '@/components/ui/feedback';
 export type {
   AlertProps,
   DrawerProps,
@@ -66,7 +65,7 @@ export type {
   PopconfirmProps,
   PopoverProps,
   TooltipProps,
-} from '@/components/ui/antd-overlay';
+} from '@/components/ui/feedback';
 
 // ── Form controls / navigation ────────────────────────────────────────────────
 export {
@@ -78,7 +77,7 @@ export {
   Radio,
   Switch,
   Tabs,
-} from '@/components/ui/antd-form';
+} from '@/components/ui/controls';
 export type {
   CardProps,
   CheckboxProps,
@@ -88,34 +87,33 @@ export type {
   RadioProps,
   SwitchProps,
   TabsProps,
-} from '@/components/ui/antd-form';
+} from '@/components/ui/controls';
 
 // ── Form (rc-field-form based) ────────────────────────────────────────────────
-export { Form } from '@/components/ui/antd-form-impl';
+export { Form } from '@/components/ui/form-compat';
 
 // ── Table (@tanstack/react-table based) ───────────────────────────────────────
-export { Table } from '@/components/ui/antd-table-impl';
+export { Table } from '@/components/ui/data-table';
 
 // ── Select / AutoComplete (radix popover based) ───────────────────────────────
-export { AutoComplete, Select } from '@/components/ui/antd-select-impl';
+export { AutoComplete, Select } from '@/components/ui/select-compat';
 
 // ── Date / Time pickers (shadcn calendar based) ───────────────────────────────
-export { Calendar, DatePicker, TimePicker } from '@/components/ui/antd-datepicker-impl';
+export { Calendar, DatePicker, TimePicker } from '@/components/ui/date-time-picker';
 
 // ── Upload (react-dropzone based) ─────────────────────────────────────────────
-export { Upload } from '@/components/ui/antd-upload-impl';
+export { Upload } from '@/components/ui/upload';
 
 // ── Misc (InputNumber, Menu, Steps, Slider, Timeline, Pagination, App, Config) ─
 export {
   App,
-  ConfigProvider,
   InputNumber,
   Menu,
   Pagination,
   Slider,
   Steps,
   Timeline,
-} from '@/components/ui/antd-misc-impl';
+} from '@/components/ui/composite';
 
 // ── Rarely-used stubs (TreeSelect, Transfer, Cascader, Mentions, ColorPicker) ─
 export {
@@ -124,11 +122,12 @@ export {
   Mentions,
   Transfer,
   TreeSelect,
-} from '@/components/ui/antd-passthrough';
+} from '@/components/ui/uncommon';
+
+// ── Page structure ────────────────────────────────────────────────────────────
+export { PageHeader } from '@/components/ui/page-header';
 
 // ── Convenience re-exports used across the codebase ───────────────────────────
-// `App as AntdApp` pattern
-export { App as AntdApp } from '@/components/ui/antd-misc-impl';
 
 // Separator exposed as its own named export (some files import it directly)
 export { Separator } from '@/components/ui/separator';

@@ -4,7 +4,7 @@ import { renderWithProviders } from '../../../test/utils.jsx';
 import SummaryCard from './SummaryCard';
 
 // Mock Ant Design icons
-vi.mock('@ant-design/icons', () => ({
+vi.mock('@/components/icons', () => ({
   ArrowUpOutlined: () => <div data-testid="arrow-up">↑</div>,
   ArrowDownOutlined: () => <div data-testid="arrow-down">↓</div>,
   MinusOutlined: () => <div data-testid="minus">-</div>,

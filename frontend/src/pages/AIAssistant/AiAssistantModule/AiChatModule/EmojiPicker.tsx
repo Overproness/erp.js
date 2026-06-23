@@ -1,4 +1,4 @@
-import { SmileOutlined } from '@ant-design/icons';
+import { SmileOutlined } from '@/components/icons';
 import { Button } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 

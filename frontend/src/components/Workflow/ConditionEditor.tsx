@@ -13,7 +13,7 @@ import {
   Switch,
   InputNumber,
 } from '@/components/ui';
-import { CodeOutlined, FormOutlined } from '@ant-design/icons';
+import { CodeOutlined, FormOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import CodeEditor from './CodeEditor';
 

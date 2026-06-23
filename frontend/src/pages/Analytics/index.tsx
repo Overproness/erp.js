@@ -19,7 +19,7 @@ import {
   ShoppingOutlined,
   StarOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import {

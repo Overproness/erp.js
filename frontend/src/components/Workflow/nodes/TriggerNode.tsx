@@ -1,4 +1,4 @@
-import { ThunderboltOutlined } from '@ant-design/icons';
+import { ThunderboltOutlined } from '@/components/icons';
 import BaseNode from './BaseNode';
 
 const TriggerNode = ({ data, selected }) => {

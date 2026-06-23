@@ -9,7 +9,7 @@ import {
   UserOutlined,
   CreditCardOutlined,
   BankOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 
 export const IconMenu = ({ name }) => {
   const elements = {

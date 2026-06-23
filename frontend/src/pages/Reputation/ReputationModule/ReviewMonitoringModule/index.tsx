@@ -8,7 +8,7 @@ import {
   SortAscendingOutlined,
   SortDescendingOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Avatar,
   Badge,

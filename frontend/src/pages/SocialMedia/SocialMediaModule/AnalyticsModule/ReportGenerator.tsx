@@ -25,7 +25,7 @@ import {
   InstagramOutlined,
   TwitterOutlined,
   BarChartOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
 import dummyPosts from '@/data/dummyPostsData';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@/components/icons';
 import { Button } from '@/components/ui';
 
 const Notifications = () => {

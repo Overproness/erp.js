@@ -1,4 +1,4 @@
-import { ClockCircleOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined } from '@/components/icons';
 import BaseNode from './BaseNode';
 
 const DelayNode = ({ data, selected }) => {

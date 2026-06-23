@@ -1,4 +1,4 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined } from '@/components/icons';
 import {
   Button,
   Col,

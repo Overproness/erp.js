@@ -15,7 +15,7 @@ import {
   DownloadOutlined,
   CopyOutlined,
   QrcodeOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import QRCode from 'qrcode';
 import useLanguage from '@/locale/useLanguage';
 

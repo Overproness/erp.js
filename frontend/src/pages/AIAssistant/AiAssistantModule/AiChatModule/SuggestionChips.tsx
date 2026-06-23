@@ -1,6 +1,6 @@
 import React from 'react';
 import { Space, Button } from '@/components/ui';
-import { BulbOutlined } from '@ant-design/icons';
+import { BulbOutlined } from '@/components/icons';
 
 const SuggestionChips = ({ suggestions, onSuggestionClick }) => {
   if (!suggestions || suggestions.length === 0) return null;

@@ -7,7 +7,7 @@ import {
   PlusOutlined,
   ReloadOutlined,
   TwitterOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Col, Modal, Row, Space, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 

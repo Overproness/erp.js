@@ -1,4 +1,4 @@
-import { FormOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { FormOutlined, QuestionCircleOutlined } from '@/components/icons';
 import { Button, Card, Space, Tag, Tooltip, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { Handle, Position } from 'reactflow';

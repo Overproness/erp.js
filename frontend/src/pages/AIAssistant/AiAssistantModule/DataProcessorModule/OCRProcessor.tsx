@@ -24,7 +24,7 @@ import {
   EyeOutlined,
   CopyOutlined,
   CheckCircleOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { processOCR, extractData } from '@/redux/ai/aiThunks';
 import useLanguage from '@/locale/useLanguage';
 
@@ -271,13 +271,13 @@ This agreement is effective from the date signed by both parties.`,
             </Space>
 
             <Dragger {...uploadProps} style={{ marginBottom: 16 }}>
-              <p className="ant-upload-drag-icon">
+              <p className="upload-drag-icon">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">
+              <p className="upload-text">
                 {translate('Click or drag files to this area to upload')}
               </p>
-              <p className="ant-upload-hint">
+              <p className="upload-hint">
                 {translate('Support for PDF, JPG, PNG, TIFF files. Maximum file size: 50MB')}
               </p>
             </Dragger>

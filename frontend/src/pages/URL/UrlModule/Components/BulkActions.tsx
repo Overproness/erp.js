@@ -7,7 +7,7 @@ import {
   DownloadOutlined,
   CopyOutlined,
   MoreOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const BulkActions = ({ 

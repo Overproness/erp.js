@@ -1,6 +1,6 @@
 import useLanguage from '@/locale/useLanguage';
 import { selectAppSettings } from '@/redux/settings/selectors';
-import { InfoCircleOutlined, KeyOutlined, RobotOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, KeyOutlined, RobotOutlined } from '@/components/icons';
 import { Alert, Button, Card, Divider, Form, Input, Select, Space, Switch, Typography } from '@/components/ui';
 import apolloClient from '@/graphql/client';
 import { TEST_OPENAI_KEY, TEST_GEMINI_KEY, TEST_CLAUDE_KEY } from '@/graphql/operations/settings';
@@ -270,7 +270,7 @@ export default function AiSettingForm() {
             extra={translate('Get your API key from https://console.anthropic.com/settings/keys')}
           >
             <Input.Password
-              placeholder={translate('Enter your Claude API key (sk-ant-...)')}
+              placeholder={translate('Enter your Claude API key (sk-...)')}
               prefix={<KeyOutlined />}
             />
           </Form.Item>

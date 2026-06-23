@@ -8,7 +8,7 @@ import {
   DollarOutlined,
   MessageOutlined,
   RobotOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Col, Row, Space, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

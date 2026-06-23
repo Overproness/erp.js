@@ -6,7 +6,7 @@ import {
   CustomerServiceOutlined,
   SendOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Avatar,
   Badge,

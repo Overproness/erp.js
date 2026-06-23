@@ -31,18 +31,18 @@
 }
 
 /* Card headers */
-.reputation-dashboard .ant-card-head,
-.review-detail-view .ant-card-head,
-.platform-integration-status .ant-card-head,
-.platform-connections .ant-card-head {
+.reputation-dashboard .ui-card-head,
+.review-detail-view .ui-card-head,
+.platform-integration-status .ui-card-head,
+.platform-connections .ui-card-head {
   border-bottom: 1px solid #f0f0f0;
   padding: 16px 24px;
 }
 
 /* Progress bars */
-.reputation-dashboard .ant-progress-bg,
-.review-detail-view .ant-progress-bg,
-.platform-integration-status .ant-progress-bg {
+.reputation-dashboard .ui-progress-bg,
+.review-detail-view .ui-progress-bg,
+.platform-integration-status .ui-progress-bg {
   height: 8px !important;
 }
 
@@ -54,13 +54,13 @@
   overflow: hidden;
 }
 
-.platform-connections .ant-card-actions {
+.platform-connections .ui-card-actions {
   border-top: none;
   padding: 0 12px 12px 12px;
   background: transparent;
 }
 
-.platform-connections .ant-steps-item-title {
+.platform-connections .ui-steps-item-title {
   font-size: 14px;
 }
 
@@ -83,16 +83,16 @@
   margin-top: 4px;
 }
 
-.review-detail-view .ant-timeline {
+.review-detail-view .ui-timeline {
   padding: 8px;
 }
 
-.review-detail-view .ant-timeline-item {
+.review-detail-view .ui-timeline-item {
   padding-bottom: 20px;
 }
 
 /* Platform integration status */
-.platform-integration-status .ant-statistic-title {
+.platform-integration-status .ui-statistic-title {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.45);
 }
@@ -129,7 +129,7 @@
 }
 
 /* Rating stars */
-.ant-rate-star:not(:last-child) {
+.ui-rate-star:not(:last-child) {
   margin-right: 4px;
 }
 

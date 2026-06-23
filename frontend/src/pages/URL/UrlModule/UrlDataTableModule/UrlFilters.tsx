@@ -12,7 +12,7 @@ import {
   Button,
   Space
 } from '@/components/ui';
-import { FilterOutlined, ClearOutlined } from '@ant-design/icons';
+import { FilterOutlined, ClearOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import urlConfig from '../config/urlConfig';
 

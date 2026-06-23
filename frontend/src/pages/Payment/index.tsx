@@ -13,7 +13,7 @@ import {
   DollarOutlined,
   SafetyOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Col, Row, Spin, Statistic, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';

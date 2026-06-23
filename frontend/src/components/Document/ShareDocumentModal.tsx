@@ -8,7 +8,7 @@ import {
   InfoCircleOutlined,
   LockOutlined,
   ShareAltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Alert,
   Button,

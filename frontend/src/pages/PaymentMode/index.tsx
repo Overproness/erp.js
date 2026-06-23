@@ -6,7 +6,7 @@ import {
   CheckCircleOutlined,
   CreditCardOutlined,
   SettingOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Col, Row, Spin, Statistic, Typography } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ import { DataImportButton } from '@/components/DataEntry';
 import PaymentModeForm from '@/forms/PaymentModeForm';
 import CrudModule from '@/pages/CrudModule/CrudModule';
 import { erp } from '@/redux/erp/actions';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@/components/icons';
 import { Switch } from '@/components/ui';
 
 const { Title, Text } = Typography;

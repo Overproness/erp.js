@@ -8,7 +8,7 @@ import {
   FilePdfOutlined,
   FileTextOutlined,
   MailOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

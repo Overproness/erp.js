@@ -1,4 +1,4 @@
-import { DislikeOutlined, LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
+import { DislikeOutlined, LikeOutlined, MessageOutlined, StarOutlined } from '@/components/icons';
 import { Button, Input, message, Modal, Rate, Space, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { recordAIFeedback } from '../../services/aiEnhancedService';

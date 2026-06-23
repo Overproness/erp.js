@@ -2,7 +2,7 @@ import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, Row, Select }
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@/components/icons';
 
 import { DatePicker } from '@/components/ui';
 

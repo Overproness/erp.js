@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { LogoutOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, ToolOutlined, UserOutlined } from '@/components/icons';
 
 import NotificationBell from '@/components/NotificationBell/NotificationBell';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';

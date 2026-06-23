@@ -1,4 +1,4 @@
-import { CopyOutlined, DeleteOutlined, MoreOutlined, SettingOutlined } from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, MoreOutlined, SettingOutlined } from '@/components/icons';
 import { Button, Dropdown, Menu, message, Tooltip } from '@/components/ui';
 import { useReactFlow } from 'reactflow';
 

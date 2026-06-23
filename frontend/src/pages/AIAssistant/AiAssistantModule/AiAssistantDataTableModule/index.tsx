@@ -23,8 +23,8 @@ import {
   ScanOutlined,
   SettingOutlined,
   UserOutlined,
-} from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+} from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import { Avatar, Button, Dropdown, Space, Table, Tag, Tooltip } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -6,7 +6,7 @@ import {
   ClockCircleOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

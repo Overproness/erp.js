@@ -1,4 +1,4 @@
-import { InfoCircleOutlined, ReloadOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, ReloadOutlined } from '@/components/icons';
 import { Button, Card, Spin, Statistic, Tooltip } from '@/components/ui';
 import PropTypes from 'prop-types';
 

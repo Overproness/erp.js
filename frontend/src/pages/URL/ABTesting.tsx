@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@/components/ui';
 import ABTestModule from './UrlModule/ABTestModule';
 import useLanguage from '@/locale/useLanguage';
 

@@ -5,7 +5,7 @@ import {
   SafetyOutlined,
   SecurityScanOutlined,
   UnlockOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Tag, Tooltip } from '@/components/ui';
 
 export default function DataClassificationBadge({ classification }) {

@@ -7,7 +7,7 @@ import {
   PlayCircleOutlined,
   StopOutlined,
   SyncOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Descriptions, List, Modal, Space, Tag, message } from '@/components/ui';
 import { useState } from 'react';
 

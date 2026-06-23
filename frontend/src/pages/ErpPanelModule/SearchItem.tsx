@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 
 import { AutoComplete, Input } from '@/components/ui';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@/components/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { erp } from '@/redux/erp/actions';
 

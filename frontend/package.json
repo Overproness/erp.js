@@ -7,9 +7,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@ant-design/charts": "^2.6.1",
-    "@ant-design/icons": "^5.3.0",
-    "@ant-design/pro-layout": "^7.17.19",
     "@apollo/client": "^4.1.6",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -43,7 +40,6 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@tanstack/react-table": "^8.21.3",
     "@vitejs/plugin-react": "^4.3.1",
-    "antd": "^5.26.2",
     "axios": "^1.6.2",
     "chart.js": "^4.5.0",
     "class-variance-authority": "^0.7.1",

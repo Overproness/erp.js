@@ -30,7 +30,7 @@ import {
   TwitterOutlined,
   BulbOutlined,
   ReloadOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { useAIContent } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
 

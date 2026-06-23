@@ -18,7 +18,7 @@ import {
   InfoCircleOutlined,
   CopyOutlined,
   EyeOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import urlConfig from '../config/urlConfig';
 

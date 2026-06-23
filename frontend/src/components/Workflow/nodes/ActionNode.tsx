@@ -1,4 +1,4 @@
-import { PlayCircleOutlined } from '@ant-design/icons';
+import { PlayCircleOutlined } from '@/components/icons';
 import BaseNode from './BaseNode';
 
 const ActionNode = ({ data, selected }) => {

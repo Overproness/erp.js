@@ -27,7 +27,7 @@ import {
   FacebookOutlined,
   InstagramOutlined,
   TwitterOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { usePostManagement, useAccountManagement, useAIContent } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';

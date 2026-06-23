@@ -23,7 +23,7 @@ import {
   ApiOutlined,
   UserOutlined,
   QuestionCircleOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Option } = Select;

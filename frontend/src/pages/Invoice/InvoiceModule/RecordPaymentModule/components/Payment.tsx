@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { CloseCircleOutlined, FileTextOutlined } from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+import { CloseCircleOutlined, FileTextOutlined } from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import { Button, Col, Descriptions, Divider, Row } from '@/components/ui';
 
 import { generate as uniqueId } from 'shortid';

@@ -1,6 +1,6 @@
 import apolloClient from '@/graphql/client';
 import { AI_ANALYTICS_INSIGHTS } from '@/graphql/operations/analytics';
-import { BulbOutlined, RobotOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { BulbOutlined, RobotOutlined, ThunderboltOutlined } from '@/components/icons';
 import { Alert, Button, Card, Checkbox, Modal, Spin, Typography } from '@/components/ui';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';

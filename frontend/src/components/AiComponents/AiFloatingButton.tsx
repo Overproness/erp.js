@@ -1,7 +1,7 @@
 import useLanguage from '@/locale/useLanguage';
 import AiChatModule from '@/pages/AiAssistant/AiAssistantModule/AiChatModule';
 import { selectChatOpen } from '@/redux/ai/aiSelectors';
-import { CloseOutlined, MessageOutlined, RobotOutlined } from '@ant-design/icons';
+import { CloseOutlined, MessageOutlined, RobotOutlined } from '@/components/icons';
 import { Badge, Button, Drawer, Tooltip } from '@/components/ui';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';

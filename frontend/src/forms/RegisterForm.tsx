@@ -20,7 +20,7 @@ const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 };
 
 const handlePasswordFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-  const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
+  const el = e.target.closest('.input-affix-wrapper') as HTMLElement;
   if (el) {
     el.style.border = '1.5px solid #0058c3';
     el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
@@ -28,7 +28,7 @@ const handlePasswordFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 };
 
 const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-  const el = e.target.closest('.ant-input-affix-wrapper') as HTMLElement;
+  const el = e.target.closest('.input-affix-wrapper') as HTMLElement;
   if (el) {
     el.style.border = '1.5px solid transparent';
     // el.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';

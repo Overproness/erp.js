@@ -5,7 +5,7 @@ import {
   LockOutlined,
   SafetyCertificateOutlined,
   ShieldOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Alert,
   Button,

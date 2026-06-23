@@ -9,7 +9,7 @@ import {
   FileTextOutlined,
   RobotOutlined,
   ScanOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

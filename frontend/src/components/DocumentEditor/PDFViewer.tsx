@@ -5,7 +5,7 @@ import {
   RightOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, message, Space, Spin, Tooltip } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 

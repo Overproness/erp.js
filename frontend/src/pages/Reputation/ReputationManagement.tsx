@@ -7,7 +7,7 @@ import {
   MessageOutlined,
   RiseOutlined,
   StarOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Badge, Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

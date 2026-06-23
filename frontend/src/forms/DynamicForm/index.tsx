@@ -5,7 +5,7 @@ import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 import SelectAsync from '@/components/SelectAsync';
 import useLanguage from '@/locale/useLanguage';
 import { useDate, useMoney } from '@/settings';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@/components/icons';
 import { generate as uniqueId } from 'shortid';
 
 import { countryList } from '@/utils/countryList';

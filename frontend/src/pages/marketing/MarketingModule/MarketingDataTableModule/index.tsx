@@ -9,7 +9,7 @@ import {
   PlayCircleOutlined,
   PlusOutlined,
   TeamOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   DatePicker,

@@ -1,7 +1,7 @@
 /**
- * antd-form-impl.tsx
- * Form built on rc-field-form (the exact library antd uses internally).
- * API is 100% compatible with antd Form — no existing form files need changes.
+ * form-compat.tsx
+ * Form built on rc-field-form.
+ * API follows the existing form usage so current form files do not need changes.
  */
 import RcForm, { Field, FieldContext, List, useForm, useWatch } from 'rc-field-form';
 import type { FieldData, FormInstance, NamePath, Rule, Store } from 'rc-field-form/lib/interface';

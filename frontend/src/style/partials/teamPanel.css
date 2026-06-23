@@ -11,6 +11,6 @@
   overflow: auto;
 }
 
-.erp-panel-container .ant-typography + .ant-typography {
+.erp-panel-container .ui-typography + .ui-typography {
   margin-top: 16px;
 }

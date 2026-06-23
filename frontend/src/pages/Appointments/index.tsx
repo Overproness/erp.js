@@ -19,7 +19,7 @@ import {
   PercentageOutlined,
   PlusOutlined,
   TableOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Badge,
   Button,

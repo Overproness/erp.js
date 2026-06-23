@@ -5,7 +5,7 @@ import {
   RobotOutlined,
   SettingOutlined,
   TrophyOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 
 import TabsContent from '@/components/TabsContent/TabsContent';
 

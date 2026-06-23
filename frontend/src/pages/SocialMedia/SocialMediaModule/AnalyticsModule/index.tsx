@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, Button, Space } from '@/components/ui';
-import { ArrowLeftOutlined, BarChartOutlined, LineChartOutlined, FileTextOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BarChartOutlined, LineChartOutlined, FileTextOutlined } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import Overview from './Overview';
 import PlatformAnalytics from './PlatformAnalytics';

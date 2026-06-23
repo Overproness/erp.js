@@ -3,7 +3,7 @@ import {
   Alert as ShadcnAlert,
   AlertTitle as ShadcnAlertTitle,
 } from '@/components/ui/alert';
-import { Button } from '@/components/ui/antd-button';
+import { Button } from '@/components/ui/button-compat';
 import {
   Dialog,
   DialogContent,

@@ -1,7 +1,7 @@
 // import { generate as uniqueId } from 'shortid';
-// import { SyncOutlined } from '@ant-design/icons';
+// import { SyncOutlined } from '@/components/icons';
 import { Divider } from '@/components/ui';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@/components/ui';
 import UpdateSettingForm from './UpdateSettingForm';
 
 export default function UpdateSettingModule({

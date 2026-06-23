@@ -4,7 +4,7 @@ import {
   CloseCircleOutlined,
   ExclamationCircleOutlined,
   QuestionCircleOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Tag, Tooltip } from '@/components/ui';
 
 export default function ComplianceStatus({ status, size = 'default' }) {

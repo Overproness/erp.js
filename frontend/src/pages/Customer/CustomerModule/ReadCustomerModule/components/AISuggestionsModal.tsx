@@ -14,7 +14,7 @@ import {
   TrophyOutlined,
   UserOutlined,
   WarningOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Alert,
   Badge,

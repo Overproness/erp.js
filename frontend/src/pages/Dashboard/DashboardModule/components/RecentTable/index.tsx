@@ -4,7 +4,7 @@ import apolloClient from '@/graphql/client';
 import { getListQuery } from '@/graphql/operations/crudFactory';
 import useFetch from '@/hooks/useFetch';
 
-import { EllipsisOutlined, EyeOutlined, EditOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, EyeOutlined, EditOutlined, FilePdfOutlined } from '@/components/icons';
 import { useDispatch } from 'react-redux';
 import { erp } from '@/redux/erp/actions';
 import useLanguage from '@/locale/useLanguage';

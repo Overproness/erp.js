@@ -6,7 +6,7 @@ import {
   FrownOutlined,
   MehOutlined,
   SmileOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

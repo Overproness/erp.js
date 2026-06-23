@@ -5,7 +5,7 @@ import {
   FileTextOutlined,
   InfoCircleOutlined,
   RobotOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Divider, message, Modal, Space, Spin, Tag, Typography } from '@/components/ui';
 import { useState } from 'react';
 

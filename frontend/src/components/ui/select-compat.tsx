@@ -1,5 +1,5 @@
 /**
- * antd-select-impl.tsx
+ * select-compat.tsx
  * Select & AutoComplete built with @radix-ui/react-popover + custom searchable list.
  * Supports: options prop, Select.Option children, showSearch, mode="multiple", allowClear, loading.
  */

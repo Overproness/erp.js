@@ -11,7 +11,7 @@ import {
   Tag,
   Typography
 } from '@/components/ui';
-import { PlusOutlined, DeleteOutlined, FilterOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, FilterOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Option } = Select;

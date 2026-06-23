@@ -3,15 +3,15 @@
   align-items: center;
 }
 
-.review-stars-small .ant-rate-star {
+.review-stars-small .ui-rate-star {
   font-size: 12px;
 }
 
-.review-stars-default .ant-rate-star {
+.review-stars-default .ui-rate-star {
   font-size: 16px;
 }
 
-.review-stars-large .ant-rate-star {
+.review-stars-large .ui-rate-star {
   font-size: 24px;
 }
 
@@ -25,18 +25,18 @@
 }
 
 /* Custom colors */
-.review-stars-positive .ant-rate-star-full .ant-rate-star-first,
-.review-stars-positive .ant-rate-star-full .ant-rate-star-second {
+.review-stars-positive .ui-rate-star-full .ui-rate-star-first,
+.review-stars-positive .ui-rate-star-full .ui-rate-star-second {
   color: #52c41a;
 }
 
-.review-stars-negative .ant-rate-star-full .ant-rate-star-first,
-.review-stars-negative .ant-rate-star-full .ant-rate-star-second {
+.review-stars-negative .ui-rate-star-full .ui-rate-star-first,
+.review-stars-negative .ui-rate-star-full .ui-rate-star-second {
   color: #ff4d4f;
 }
 
-.review-stars-neutral .ant-rate-star-full .ant-rate-star-first,
-.review-stars-neutral .ant-rate-star-full .ant-rate-star-second {
+.review-stars-neutral .ui-rate-star-full .ui-rate-star-first,
+.review-stars-neutral .ui-rate-star-full .ui-rate-star-second {
   color: #faad14;
 }
 
@@ -47,7 +47,7 @@
 }
 
 /* Disabled state */
-.review-stars-readonly .ant-rate-star {
+.review-stars-readonly .ui-rate-star {
   cursor: default;
 }
 

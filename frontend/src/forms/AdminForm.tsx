@@ -1,5 +1,5 @@
 import { Form, Input, Select } from '@/components/ui';
-import { UploadOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { UploadOutlined, CloseOutlined, CheckOutlined } from '@/components/icons';
 import { message, Upload, Button, Switch } from '@/components/ui';
 
 import useLanguage from '@/locale/useLanguage';

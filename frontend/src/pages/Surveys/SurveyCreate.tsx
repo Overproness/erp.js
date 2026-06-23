@@ -1,7 +1,7 @@
 import SurveyForm from '@/forms/SurveyForm';
 import apolloClient from '@/graphql/client';
 import { CREATE_SURVEY } from '@/graphql/operations/survey';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@/components/icons';
 import { Card, Typography, message } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
 

@@ -15,7 +15,7 @@ import {
   Tooltip,
   message
 } from '@/components/ui';
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Option } = Select;

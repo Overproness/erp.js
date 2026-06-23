@@ -1,6 +1,6 @@
-import useLanguage from '@/locale/useLanguage';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@/components/icons';
 import { Form, Input, InputNumber, Switch } from '@/components/ui';
+import useLanguage from '@/locale/useLanguage';
 
 export default function TaxForm({ isUpdateForm = false }) {
   const translate = useLanguage();

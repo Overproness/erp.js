@@ -1,7 +1,7 @@
 import apolloClient from '@/graphql/client';
 import { DELETE_URL, GET_URLS, URL_SUMMARY } from '@/graphql/operations/url';
 import useLanguage from '@/locale/useLanguage';
-import { LinkOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { LinkOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@/components/icons';
 import {
   Button,
   Card,
@@ -18,6 +18,8 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useColumns from './columns';
+
+const { Search } = Input;
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -214,7 +216,7 @@ export default function UrlDataTableModule({ config, extra }) {
               icon={<LinkOutlined />}
               onClick={() => navigate('/url/ab-testing')}
               style={{
-                background: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)',
+                // background: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)',
                 border: 'none',
                 borderRadius: '6px',
                 color: '#333',
@@ -227,7 +229,7 @@ export default function UrlDataTableModule({ config, extra }) {
               icon={<PlusOutlined />}
               onClick={() => navigate('/url/create')}
               style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                // background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 border: 'none',
                 borderRadius: '6px',
               }}
@@ -238,9 +240,9 @@ export default function UrlDataTableModule({ config, extra }) {
         }
       >
         {/* Filters */}
-        <Row gutter={16} style={{ marginBottom: 16 }}>
-          <Col span={12}>
-            <Input
+        <Row gutter={16} style={{ marginBottom: 16, justifyContent: 'space-between' }}>
+          <Col span={18}>
+            <Search
               placeholder={translate('Search URLs...')}
               prefix={<SearchOutlined />}
               value={filters.search}
@@ -254,6 +256,7 @@ export default function UrlDataTableModule({ config, extra }) {
               value={filters.status}
               onChange={(value) => handleFilterChange('status', value)}
               style={{ width: '100%' }}
+              className="fix-border-input"
             >
               <Option value="">{translate('All Statuses')}</Option>
               <Option value="active">{translate('Active')}</Option>

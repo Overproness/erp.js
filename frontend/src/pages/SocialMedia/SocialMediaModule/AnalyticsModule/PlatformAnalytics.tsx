@@ -8,7 +8,7 @@ import {
   RiseOutlined,
   ShareAltOutlined,
   TwitterOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Col, Progress, Row, Select, Statistic, Table, Tabs, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';

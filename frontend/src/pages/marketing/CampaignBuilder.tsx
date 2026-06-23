@@ -1,6 +1,6 @@
 import { useMarketing } from '@/context/useMarketing';
 import useLanguage from '@/locale/useLanguage';
-import { ArrowLeftOutlined, SaveOutlined, SendOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, SaveOutlined, SendOutlined } from '@/components/icons';
 import { Button, Card, Space, Steps, Typography, message } from '@/components/ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

@@ -10,7 +10,7 @@
   position: relative;
 }
 
-.headerIcon.ant-avatar {
+.headerIcon.ui-avatar {
   float: right;
   margin-left: 12px;
   margin-top: 8px;
@@ -18,7 +18,7 @@
   background: transparent;
   transition: all 0.3s ease;
 }
-.headerIcon.ant-avatar:hover {
+.headerIcon.ui-avatar:hover {
   background: #f0f0f0;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -58,7 +58,7 @@
 }
 
 /* Modern header styling */
-.ant-layout-header {
+.ui-layout-header {
   box-shadow: none !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
 }

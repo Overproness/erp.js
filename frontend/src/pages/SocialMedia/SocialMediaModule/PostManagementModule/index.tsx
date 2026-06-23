@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, Button, Space } from '@/components/ui';
-import { ArrowLeftOutlined, CalendarOutlined, PlusOutlined, EditOutlined, UnorderedListOutlined, EyeOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, CalendarOutlined, PlusOutlined, EditOutlined, UnorderedListOutlined, EyeOutlined } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import PostEditor from './PostEditor';
 import PostList from './PostList';

@@ -12,7 +12,7 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.notification-popover .ant-popover-inner {
+.notification-popover .ui-popover-inner {
   padding: 0;
   border-radius: 8px;
 }
@@ -43,14 +43,14 @@
   overflow-y: auto;
 }
 
-.notification-list .ant-list-item {
+.notification-list .ui-list-item {
   padding: 12px 16px;
   cursor: pointer;
   transition: background-color 0.2s;
   border-bottom: 1px solid #f5f5f5;
 }
 
-.notification-list .ant-list-item:hover {
+.notification-list .ui-list-item:hover {
   background-color: #fafafa;
 }
 

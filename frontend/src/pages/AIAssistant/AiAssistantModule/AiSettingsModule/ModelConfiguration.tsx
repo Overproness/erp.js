@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Table, Tag, Button, Space } from '@/components/ui';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const ModelConfiguration = () => {

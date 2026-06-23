@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, Select, Upload, message } from '@/components/ui';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined } from '@/components/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
@@ -223,13 +223,13 @@ const DocumentForm = ({ isUpdateForm = false, form }) => {
           ]}
         >
           <Dragger {...uploadProps}>
-            <p className="ant-upload-drag-icon">
+            <p className="upload-drag-icon">
               <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p className="upload-text">
               {translate('Click or drag file to this area to upload')}
             </p>
-            <p className="ant-upload-hint">
+            <p className="upload-hint">
               {translate('Support for a single file upload. Max file size: 10MB.')}
             </p>
           </Dragger>

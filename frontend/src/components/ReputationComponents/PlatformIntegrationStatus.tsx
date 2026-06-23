@@ -6,7 +6,7 @@ import {
   GoogleOutlined,
   StarOutlined,
   SyncOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Badge, Button, Card, Col, Row, Space, Tooltip, Typography } from '@/components/ui';
 
 const { Text, Title } = Typography;

@@ -6,7 +6,7 @@ import {
   CrownOutlined,
   RocketOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Badge,
   Button,

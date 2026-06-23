@@ -5,7 +5,7 @@ import {
   ExperimentOutlined,
   TagsOutlined,
   FileTextOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import { useDispatch, useSelector } from 'react-redux';
 import { erp } from '@/redux/erp/actions';

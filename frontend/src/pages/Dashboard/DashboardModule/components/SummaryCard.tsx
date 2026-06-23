@@ -5,7 +5,7 @@ import {
   ArrowUpOutlined,
   ExclamationCircleOutlined,
   MinusOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Spin, Tooltip } from '@/components/ui';
 import { useSelector } from 'react-redux';
 

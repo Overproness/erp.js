@@ -17,7 +17,7 @@ import {
   FormOutlined,
   PlusOutlined,
   ShareAltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,
@@ -411,19 +411,19 @@ export default function Document() {
 
           <Space>
             <Button
+              icon={<FileSearchOutlined />}
+              onClick={() => setAdvancedSearchVisible(true)}
+              style={{ borderRadius: '8px' }}
+            >
+              {translate('Advanced Search')}
+            </Button>
+            <Button
               type="primary"
               icon={<PlusOutlined />}
               onClick={handleCreateNew}
               style={{ borderRadius: '8px' }}
             >
               {translate('Upload')}
-            </Button>
-            <Button
-              icon={<FileSearchOutlined />}
-              onClick={() => setAdvancedSearchVisible(true)}
-              style={{ borderRadius: '8px' }}
-            >
-              {translate('Advanced Search')}
             </Button>
           </Space>
         </div>

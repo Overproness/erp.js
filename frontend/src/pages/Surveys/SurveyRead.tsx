@@ -15,7 +15,7 @@ import {
   PauseCircleOutlined,
   PlayCircleOutlined,
   ShareAltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

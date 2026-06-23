@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useProfileContext } from '@/context/profileContext';
 import { generate as uniqueId } from 'shortid';
-import { EditOutlined, LockOutlined, LogoutOutlined } from '@ant-design/icons';
+import { EditOutlined, LockOutlined, LogoutOutlined } from '@/components/icons';
 import { Avatar, Button, Col, Descriptions, Divider, Row } from '@/components/ui';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@/components/ui';
 import { useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';

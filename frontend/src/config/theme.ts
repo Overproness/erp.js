@@ -1,5 +1,5 @@
 /**
- * Shared design tokens used by Ant Design ConfigProvider and Tailwind.
+ * Shared design tokens used by the application UI and Tailwind.
  * Single source of truth for colors, spacing, typography, and border radius.
  */
 const theme = {
@@ -38,24 +38,6 @@ const theme = {
     md: 16,
     lg: 24,
     xl: 32,
-  },
-};
-
-/**
- * Ant Design theme token configuration for ConfigProvider.
- */
-export const antdTheme = {
-  token: {
-    colorPrimary: theme.colors.primary,
-    colorSuccess: theme.colors.success,
-    colorWarning: theme.colors.warning,
-    colorError: theme.colors.error,
-    colorInfo: theme.colors.info,
-    colorTextBase: theme.colors.textPrimary,
-    colorBorder: theme.colors.border,
-    colorBgLayout: theme.colors.background,
-    borderRadius: theme.borderRadius.md,
-    fontSize: theme.fontSize.md,
   },
 };
 

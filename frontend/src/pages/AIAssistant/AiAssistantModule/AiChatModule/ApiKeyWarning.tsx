@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Button, Space, Typography } from '@/components/ui';
-import { SettingOutlined, KeyOutlined } from '@ant-design/icons';
+import { SettingOutlined, KeyOutlined } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
 import { useSelector } from 'react-redux';

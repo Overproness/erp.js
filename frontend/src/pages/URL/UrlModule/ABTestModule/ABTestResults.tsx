@@ -23,8 +23,8 @@ import {
   CloseCircleOutlined,
   QuestionCircleOutlined,
   DownloadOutlined
-} from '@ant-design/icons';
-import { Line, Column, Pie } from '@ant-design/charts';
+} from '@/components/icons';
+import { Line, Column, Pie } from '@/components/charts/simple-charts';
 import useLanguage from '@/locale/useLanguage';
 import { calculateStatisticalSignificance } from './utils/analyticsUtils';
 import dayjs from 'dayjs';

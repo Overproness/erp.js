@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Row, Col, Statistic, Progress, Typography, Space, Tag, Divider } from '@/components/ui';
-import { StarOutlined, RiseOutlined, MessageOutlined, LikeOutlined } from '@ant-design/icons';
+import { StarOutlined, RiseOutlined, MessageOutlined, LikeOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { Text, Title } = Typography;

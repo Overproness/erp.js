@@ -1,7 +1,7 @@
 /**
- * antd-table-impl.tsx
+ * data-table.tsx
  * Table built on @tanstack/react-table v8 + shadcn Table primitives.
- * Accepts antd Table's column/dataSource/pagination API.
+ * Accepts the existing column/dataSource/pagination table API.
  */
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -28,8 +28,8 @@ import {
 import { ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react';
 import * as React from 'react';
 
-// ── antd column type ──────────────────────────────────────────────────────────
-export interface AntdColumnType<T = any> {
+// ── table column type ──────────────────────────────────────────────────────────
+export interface TableColumnType<T = any> {
   title?: React.ReactNode;
   dataIndex?: string | string[];
   key?: string;
@@ -41,7 +41,7 @@ export interface AntdColumnType<T = any> {
   ellipsis?: boolean;
   className?: string;
   onCell?: (record: T, index: number) => React.TdHTMLAttributes<HTMLTableCellElement>;
-  children?: AntdColumnType<T>[]; // grouped columns
+  children?: TableColumnType<T>[]; // grouped columns
   responsive?: string[];
   hidden?: boolean;
   defaultSortOrder?: 'ascend' | 'descend' | null;
@@ -61,7 +61,7 @@ function getNestedValue(record: any, dataIndex?: string | string[]): any {
   return keys.reduce((obj, key) => (obj == null ? obj : obj[key]), record);
 }
 
-function toTanstackColumns<T>(cols: AntdColumnType<T>[]): ColumnDef<T>[] {
+function toTanstackColumns<T>(cols: TableColumnType<T>[]): ColumnDef<T>[] {
   return cols.map((col) => {
     const id = String(
       col.key ??
@@ -164,7 +164,7 @@ export interface TableRowSelection<T = any> {
 }
 
 export interface TableProps<T = any> {
-  columns?: AntdColumnType<T>[];
+  columns?: TableColumnType<T>[];
   dataSource?: T[];
   rowKey?: string | ((record: T) => string);
   loading?: boolean | { spinning?: boolean; tip?: string };
@@ -206,7 +206,7 @@ export interface TableProps<T = any> {
   components?: any;
   onRow?: (record: T, index: number) => React.HTMLAttributes<HTMLTableRowElement>;
   onHeaderRow?: (
-    columns: AntdColumnType<T>[],
+    columns: TableColumnType<T>[],
     index: number
   ) => React.HTMLAttributes<HTMLTableRowElement>;
   getPopupContainer?: (triggerNode: HTMLElement) => HTMLElement;

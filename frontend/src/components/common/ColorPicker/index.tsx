@@ -5,7 +5,7 @@ import {
   CheckOutlined, 
   CloseOutlined,
   BgColorsOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 
 /**
  * A simple color picker component with preset colors and custom input

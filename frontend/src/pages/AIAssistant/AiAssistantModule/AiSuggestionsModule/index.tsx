@@ -7,7 +7,7 @@ import {
   BarChartOutlined,
   BulbOutlined,
   SettingOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Button, Card, Space, Tabs, Typography } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

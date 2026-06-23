@@ -25,7 +25,7 @@ import {
   RollbackOutlined,
   SaveOutlined,
   SignatureOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PDFViewer from './PDFViewer';

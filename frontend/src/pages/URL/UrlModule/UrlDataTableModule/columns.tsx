@@ -8,7 +8,7 @@ import {
   EyeOutlined,
   LinkOutlined,
   QrcodeOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Badge, Button, Popconfirm, Space, Tag, Tooltip, Typography } from '@/components/ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

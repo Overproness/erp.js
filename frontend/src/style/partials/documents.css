@@ -42,7 +42,7 @@
   gap: 6px;
 }
 
-.document-tags .ant-tag {
+.document-tags .ui-tag {
   margin-right: 0;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@
 }
 
 /* Upload area styling */
-.ant-upload-drag {
+.ui-upload-drag {
   border: 2px dashed #d9d9d9;
   border-radius: 8px;
   padding: 20px;
@@ -76,24 +76,24 @@
   cursor: pointer;
 }
 
-.ant-upload-drag:hover {
+.ui-upload-drag:hover {
   border-color: #1890ff;
   background-color: #f0f7ff;
 }
 
-.ant-upload-drag-icon {
+.upload-drag-icon {
   margin-bottom: 16px;
   font-size: 48px;
   color: #1890ff;
 }
 
-.ant-upload-text {
+.upload-text {
   margin: 0 0 8px;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.85);
 }
 
-.ant-upload-hint {
+.upload-hint {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.45);
 }

@@ -7,7 +7,7 @@ import { selectAuth } from '@/redux/auth/selectors';
 import { settingsAction } from '@/redux/settings/actions';
 import AuthRouter from '@/router/AuthRouter';
 import ProtectedRoutes from '@/router/ProtectedRoutes';
-import { App as AntdApp, notification } from '@/components/ui';
+import { App as AppShell, notification } from '@/components/ui';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -47,8 +47,7 @@ export default function ErpOs() {
       window.removeEventListener('online', handleStatusChange);
       window.removeEventListener('offline', handleStatusChange);
     };
-  }, [isOnline]); // Use AntdApp to provide message, notification and modal global methods
-  // This resolves the context warning for message
+  }, [isOnline]);
   // Add a settings reload when user comes online
   const dispatch = useDispatch(); // Use the useDispatch hook from react-redux
   const location = useLocation(); // <-- Add this line
@@ -91,7 +90,7 @@ export default function ErpOs() {
 
   return (
     <div className="erp-app min-h-screen">
-      <AntdApp>
+      <AppShell>
         {!isLoggedIn ? (
           <Localization>
             <AuthRouter />
@@ -109,7 +108,7 @@ export default function ErpOs() {
             </AppContextProvider>
           </Localization>
         )}
-      </AntdApp>
+      </AppShell>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Select, Switch, InputNumber, Divider, Card, Space, Alert } from '@/components/ui';
-import { RobotOutlined, SettingOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { RobotOutlined, SettingOutlined, InfoCircleOutlined } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
 const { TextArea } = Input;

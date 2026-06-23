@@ -2,7 +2,7 @@ import apolloClient from '@/graphql/client';
 import { getListQuery } from '@/graphql/operations/crudFactory';
 import { GET_TEAMS, LIST_TEAM_MEMBERS } from '@/graphql/operations/team';
 import useLanguage from '@/locale/useLanguage';
-import { CloseOutlined, InboxOutlined, SaveOutlined } from '@ant-design/icons';
+import { CloseOutlined, InboxOutlined, SaveOutlined } from '@/components/icons';
 import {
   Button,
   Card,
@@ -390,11 +390,11 @@ const CreateTaskModule = ({ initialValues = null, isUpdateForm = false, onSave, 
 
             <Form.Item name="attachments" label={translate('Attachments')}>
               <Upload.Dragger {...uploadProps}>
-                <p className="ant-upload-drag-icon">
+                <p className="upload-drag-icon">
                   <InboxOutlined />
                 </p>
-                <p className="ant-upload-text">{translate('Click or drag files to upload')}</p>
-                <p className="ant-upload-hint">
+                <p className="upload-text">{translate('Click or drag files to upload')}</p>
+                <p className="upload-hint">
                   {translate('Support for documents, images, etc.')}
                 </p>
               </Upload.Dragger>

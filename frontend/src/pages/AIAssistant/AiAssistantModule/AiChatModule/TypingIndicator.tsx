@@ -1,5 +1,5 @@
 import useLanguage from '@/locale/useLanguage';
-import { RobotOutlined } from '@ant-design/icons';
+import { RobotOutlined } from '@/components/icons';
 import { Avatar, Space } from '@/components/ui';
 
 const TypingIndicator = ({ assistant }) => {

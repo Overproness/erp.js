@@ -15,18 +15,18 @@
 }
 
 /* Main layout adjustments for fixed sidebar */
-.ant-layout {
+.ui-layout {
   margin-left: 220px;
   min-height: 100vh;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.ant-layout.collapsed {
+.ui-layout.collapsed {
   margin-left: 220px;
 }
 
 /* Header adjustments */
-.ant-layout-header {
+.ui-layout-header {
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -36,7 +36,7 @@
 }
 
 /* Content area improvements */
-.ant-layout-content {
+.ui-layout-content {
   background: #f8f9fa;
   min-height: calc(100vh - 64px);
   padding: 24px;
@@ -44,11 +44,15 @@
 
 /* Mobile adjustments */
 @media only screen and (max-width: 768px) {
-  .ant-layout {
+  .ui-layout {
     margin-left: 0;
   }
 
-  .ant-layout.collapsed {
+  .ui-layout.collapsed {
     margin-left: 0;
   }
+}
+
+.fix-border-input {
+  border: 1px solid #bfbfbf;
 }

@@ -9,7 +9,7 @@ import {
   InfoCircleOutlined,
   LockOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Alert, Badge, Card, Empty, Space, Table, Tag, Typography } from '@/components/ui';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';

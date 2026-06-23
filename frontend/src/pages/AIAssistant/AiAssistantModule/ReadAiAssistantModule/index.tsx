@@ -14,7 +14,7 @@ import {
   RobotOutlined,
   SettingOutlined,
   UserOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Alert,
   Avatar,

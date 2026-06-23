@@ -1,4 +1,4 @@
-import { CopyOutlined, DeleteOutlined, SettingOutlined } from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, SettingOutlined } from '@/components/icons';
 import { Menu } from '@/components/ui';
 import { useEffect, useRef } from 'react';
 

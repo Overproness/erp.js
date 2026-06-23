@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Rate } from '@/components/ui';
-import { StarFilled, StarOutlined } from '@ant-design/icons';
+import { StarFilled, StarOutlined } from '@/components/icons';
 import './ReviewStarRating.css';
 
 const ReviewStarRating = ({ 

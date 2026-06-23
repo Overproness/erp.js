@@ -1,9 +1,9 @@
 /**
- * antd-misc-impl.tsx
- * InputNumber, Menu, Steps, Pagination, Slider, Timeline, App, ConfigProvider
- * All built with shadcn/tweakcn primitives — no antd dependency.
+ * composite.tsx
+ * InputNumber, Menu, Steps, Pagination, Slider, Timeline, App
+ * Built with shadcn/tweakcn primitives.
  */
-import { message, notification } from '@/components/ui/antd-overlay';
+import { message, notification } from '@/components/ui/feedback';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import * as SliderPrimitive from '@radix-ui/react-slider';
@@ -1042,10 +1042,3 @@ AppRoot.displayName = 'App';
 export const App = Object.assign(AppRoot, {
   useApp: () => React.useContext(AppContext),
 });
-
-// ── ConfigProvider ────────────────────────────────────────────────────────────
-// Thin wrapper — antd theming is now done via CSS variables; just renders children.
-export const ConfigProvider: React.FC<{ children?: React.ReactNode; [key: string]: any }> = ({
-  children,
-}) => <>{children}</>;
-ConfigProvider.displayName = 'ConfigProvider';

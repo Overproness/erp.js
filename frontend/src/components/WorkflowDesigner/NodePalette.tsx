@@ -12,7 +12,7 @@ import {
   MailOutlined,
   PlayCircleOutlined,
   SendOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import { Card, Space, Typography } from '@/components/ui';
 
 const { Text } = Typography;

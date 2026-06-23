@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-import { 
-  Card, 
-  Button, 
-  Space, 
-  Steps, 
-  message, 
-  Row, 
+import {
+  Card,
+  Button,
+  Space,
+  Steps,
+  message,
+  Row,
   Col,
   Typography,
-  Divider
+  Divider,
 } from '@/components/ui';
-import { 
-  ArrowLeftOutlined, 
-  SaveOutlined, 
+import {
+  ArrowLeftOutlined,
+  SaveOutlined,
   EyeOutlined,
   CheckOutlined,
-  LinkOutlined
-} from '@ant-design/icons';
+  LinkOutlined,
+} from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import useLanguage from '@/locale/useLanguage';
 import { useUrlManagement } from '@/hooks/useUrl';
@@ -32,7 +32,7 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
   const translate = useLanguage();
   const navigate = useNavigate();
   const { createUrl, isLoading } = useUrlManagement();
-  
+
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     originalUrl: '',
@@ -52,7 +52,7 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
     utmTerm: '',
     utmContent: '',
     isActive: true,
-    enableAnalytics: true
+    enableAnalytics: true,
   });
   const [previewData, setPreviewData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -61,23 +61,23 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
     {
       title: translate('Basic Info'),
       description: translate('Enter URL and basic information'),
-      key: 'basic'
+      key: 'basic',
     },
     {
       title: translate('Advanced Settings'),
       description: translate('Configure security and access controls'),
-      key: 'advanced'
+      key: 'advanced',
     },
     {
       title: translate('UTM Parameters'),
       description: translate('Add tracking parameters'),
-      key: 'utm'
+      key: 'utm',
     },
     {
       title: translate('Preview & Create'),
       description: translate('Review and create your URL'),
-      key: 'preview'
-    }
+      key: 'preview',
+    },
   ];
 
   const handleNext = () => {
@@ -108,7 +108,7 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
           return false;
         }
         return true;
-      
+
       case 1:
         if (formData.isPasswordProtected && !formData.password) {
           message.error(translate('Password is required when password protection is enabled'));
@@ -116,29 +116,33 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
         }
         if (formData.hasClickLimit) {
           const clickLimitNum = Number(formData.clickLimit);
-          if (
-            isNaN(clickLimitNum) ||
-            clickLimitNum < 1
-          ) {
+          if (isNaN(clickLimitNum) || clickLimitNum < 1) {
             message.error(translate('Click limit must be at least 1'));
             return false;
           }
         }
-        if (formData.hasExpiration && (!formData.expirationDate || formData.expirationDate.valueOf() < Date.now())) {
+        if (
+          formData.hasExpiration &&
+          (!formData.expirationDate || formData.expirationDate.valueOf() < Date.now())
+        ) {
           message.error(translate('Expiration date must be in the future'));
           return false;
         }
         return true;
-      
+
       case 2:
         if (formData.enableUtm) {
           if (!formData.utmSource || !formData.utmMedium || !formData.utmCampaign) {
-            message.error(translate('UTM Source, Medium, and Campaign are required when UTM tracking is enabled'));
+            message.error(
+              translate(
+                'UTM Source, Medium, and Campaign are required when UTM tracking is enabled'
+              )
+            );
             return false;
           }
         }
         return true;
-      
+
       default:
         return true;
     }
@@ -159,16 +163,18 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
         security: {
           passwordProtected: formData.isPasswordProtected,
           clickLimit: formData.hasClickLimit ? formData.clickLimit : null,
-          expiration: formData.hasExpiration ? formData.expirationDate : null
+          expiration: formData.hasExpiration ? formData.expirationDate : null,
         },
-        utm: formData.enableUtm ? {
-          source: formData.utmSource,
-          medium: formData.utmMedium,
-          campaign: formData.utmCampaign,
-          term: formData.utmTerm,
-          content: formData.utmContent
-        } : null
-      }
+        utm: formData.enableUtm
+          ? {
+              source: formData.utmSource,
+              medium: formData.utmMedium,
+              campaign: formData.utmCampaign,
+              term: formData.utmTerm,
+              content: formData.utmContent,
+            }
+          : null,
+      },
     };
     setPreviewData(preview);
   };
@@ -177,13 +183,13 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
     try {
       const url = new URL(formData.originalUrl);
       const params = new URLSearchParams(url.search);
-      
+
       if (formData.utmSource) params.set('utm_source', formData.utmSource);
       if (formData.utmMedium) params.set('utm_medium', formData.utmMedium);
       if (formData.utmCampaign) params.set('utm_campaign', formData.utmCampaign);
       if (formData.utmTerm) params.set('utm_term', formData.utmTerm);
       if (formData.utmContent) params.set('utm_content', formData.utmContent);
-      
+
       url.search = params.toString();
       return url.toString();
     } catch {
@@ -207,7 +213,10 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
         passwordProtected: formData.isPasswordProtected,
         ...(formData.isPasswordProtected && formData.password && { password: formData.password }),
         maxClicks: formData.hasClickLimit ? Number(formData.clickLimit) : null,
-        expiresAt: formData.hasExpiration && formData.expirationDate ? formData.expirationDate.toISOString?.() || formData.expirationDate : null,
+        expiresAt:
+          formData.hasExpiration && formData.expirationDate
+            ? formData.expirationDate.toISOString?.() || formData.expirationDate
+            : null,
         utmSource: formData.enableUtm ? formData.utmSource : null,
         utmMedium: formData.enableUtm ? formData.utmMedium : null,
         utmCampaign: formData.enableUtm ? formData.utmCampaign : null,
@@ -215,7 +224,7 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
         utmContent: formData.enableUtm ? formData.utmContent : null,
         isActive: formData.isActive,
         enableAnalytics: formData.enableAnalytics,
-        tags: formData.tags || []
+        tags: formData.tags || [],
       };
       console.log('Submitting to backend:', finalData);
       await onSubmit(finalData);
@@ -235,40 +244,22 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
     switch (currentStep) {
       case 0:
         return (
-          <CreateUrlForm
-            data={formData}
-            onChange={handleFormDataChange}
-            disabled={isLoading}
-          />
+          <CreateUrlForm data={formData} onChange={handleFormDataChange} disabled={isLoading} />
         );
-      
+
       case 1:
         return (
-          <AdvancedSettings
-            data={formData}
-            onChange={handleFormDataChange}
-            disabled={isLoading}
-          />
+          <AdvancedSettings data={formData} onChange={handleFormDataChange} disabled={isLoading} />
         );
-      
+
       case 2:
-        return (
-          <UtmBuilder
-            data={formData}
-            onChange={handleFormDataChange}
-            disabled={isLoading}
-          />
-        );
-      
+        return <UtmBuilder data={formData} onChange={handleFormDataChange} disabled={isLoading} />;
+
       case 3:
         return (
-          <UrlPreview
-            data={previewData}
-            formData={formData}
-            onEdit={() => setCurrentStep(0)}
-          />
+          <UrlPreview data={previewData} formData={formData} onEdit={() => setCurrentStep(0)} />
         );
-      
+
       default:
         return null;
     }
@@ -284,14 +275,12 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
             disabled={isLoading}
             mode="all"
           />
-          
+
           <Divider />
-          
+
           <div style={{ textAlign: 'right' }}>
             <Space>
-              <Button onClick={() => navigate('/url')}>
-                {translate('Cancel')}
-              </Button>
+              <Button onClick={() => navigate('/url')}>{translate('Cancel')}</Button>
               <Button
                 type="primary"
                 icon={<SaveOutlined />}
@@ -326,18 +315,14 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
       {/* Content */}
       <Card>
         {renderStepContent()}
-        
+
         <Divider />
-        
+
         {/* Navigation */}
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             {currentStep > 0 && (
-              <Button
-                size="large"
-                onClick={handlePrev}
-                disabled={loading}
-              >
+              <Button size="large" onClick={handlePrev} disabled={loading}>
                 {translate('Previous')}
               </Button>
             )}
@@ -345,7 +330,7 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
 
           <div>
             {currentStep < steps.length - 1 ? (
-              <Button 
+              <Button
                 type="primary"
                 size="large"
                 onClick={handleNext}
@@ -366,7 +351,7 @@ const CreateUrlModule = ({ mode = 'wizard', onSubmit }) => {
                 loading={loading}
                 icon={<SaveOutlined />}
                 style={{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  // background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   border: 'none',
                   borderRadius: '6px',
                 }}

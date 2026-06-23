@@ -23,7 +23,7 @@ import {
   ApiOutlined,
   AppstoreOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
 import { selectAnalysisState } from '@/redux/erp/selectors';

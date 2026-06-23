@@ -16,8 +16,8 @@ import {
   DeleteOutlined,
   PlusOutlined,
   SwapOutlined
-} from '@ant-design/icons';
-import { Line, Column, Bar } from '@ant-design/charts';
+} from '@/components/icons';
+import { Line, Column, Bar } from '@/components/charts/simple-charts';
 import useLanguage from '@/locale/useLanguage';
 import { useUrlManagement } from '@/hooks/useUrl';
 

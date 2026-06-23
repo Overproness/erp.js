@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Divider } from '@/components/ui';
 import dayjs from 'dayjs';
 import { Button, Tag } from '@/components/ui';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@/components/ui';
 
 import { useSelector, useDispatch } from 'react-redux';
 import useLanguage from '@/locale/useLanguage';
@@ -13,7 +13,7 @@ import { generate as uniqueId } from 'shortid';
 import { selectUpdatedItem } from '@/redux/erp/selectors';
 import Loading from '@/components/Loading';
 
-import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, PlusOutlined } from '@/components/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { settingsAction } from '@/redux/settings/actions';

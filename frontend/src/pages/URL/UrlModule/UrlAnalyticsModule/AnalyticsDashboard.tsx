@@ -16,9 +16,9 @@ import {
   UserOutlined,
   LinkOutlined,
   ClockCircleOutlined
-} from '@ant-design/icons';
+} from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
-import { Line, Bar } from '@ant-design/charts';
+import { Line, Bar } from '@/components/charts/simple-charts';
 import dayjs from 'dayjs';
 
 const { Text } = Typography;

@@ -1,6 +1,6 @@
 import { useErpContext } from '@/context/erp';
 import { erp } from '@/redux/erp/actions';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@/components/icons';
 import {
   Button,
   Checkbox,

@@ -3,14 +3,14 @@ import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import * as React from 'react';
 
-type AntdButtonType = 'default' | 'primary' | 'dashed' | 'link' | 'text' | 'ghost';
-type AntdButtonSize = 'large' | 'middle' | 'small';
-type AntdButtonShape = 'default' | 'circle' | 'round';
+type ButtonType = 'default' | 'primary' | 'dashed' | 'link' | 'text' | 'ghost';
+type ButtonSize = 'large' | 'middle' | 'small';
+type ButtonShape = 'default' | 'circle' | 'round';
 
 export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
-  type?: AntdButtonType;
+  type?: ButtonType;
   htmlType?: 'button' | 'submit' | 'reset';
-  size?: AntdButtonSize;
+  size?: ButtonSize;
   loading?: boolean | { delay?: number };
   icon?: React.ReactNode;
   block?: boolean;
@@ -19,12 +19,12 @@ export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonE
   href?: string;
   target?: string;
   rel?: string;
-  shape?: AntdButtonShape;
+  shape?: ButtonShape;
   children?: React.ReactNode;
 }
 
 function mapVariant(
-  type?: AntdButtonType,
+  type?: ButtonType,
   danger?: boolean,
   ghost?: boolean
 ): 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' {
@@ -36,7 +36,7 @@ function mapVariant(
   return 'outline';
 }
 
-function mapSize(size?: AntdButtonSize): 'default' | 'sm' | 'lg' {
+function mapSize(size?: ButtonSize): 'default' | 'sm' | 'lg' {
   if (size === 'large') return 'lg';
   if (size === 'small') return 'sm';
   return 'default';

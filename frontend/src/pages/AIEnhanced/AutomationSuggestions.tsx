@@ -7,7 +7,7 @@ import {
   RocketOutlined,
   StarOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons';
+} from '@/components/icons';
 import {
   Button,
   Card,

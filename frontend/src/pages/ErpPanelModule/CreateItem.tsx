@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@/components/ui';
 import { Button, Divider, Form, Tag, message } from '@/components/ui';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ import calculate from '@/utils/calculate';
 import { generate as uniqueId } from 'shortid';
 
 import Loading from '@/components/Loading';
-import { ArrowLeftOutlined, CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, CloseCircleOutlined, PlusOutlined } from '@/components/icons';
 
 import { useNavigate } from 'react-router-dom';
 

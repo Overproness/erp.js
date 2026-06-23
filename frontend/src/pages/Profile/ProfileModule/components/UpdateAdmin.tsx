@@ -1,7 +1,7 @@
 import { Button, Col, Form, Row } from '@/components/ui';
 import { useProfileContext } from '@/context/profileContext';
-import { CloseCircleOutlined, SaveOutlined } from '@ant-design/icons';
-import { PageHeader } from '@ant-design/pro-layout';
+import { CloseCircleOutlined, SaveOutlined } from '@/components/icons';
+import { PageHeader } from '@/components/ui';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { generate as uniqueId } from 'shortid';
