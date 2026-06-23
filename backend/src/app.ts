@@ -251,8 +251,10 @@ if (fs.existsSync(frontendBuildPath)) {
 // Ensure Upload Directory Exists
 // ─────────────────────────────────────────────────────────────
 const uploadDir = path.join(__dirname, 'uploads/documents');
-if (!fs.existsSync(uploadDir)) {
+try {
   fs.mkdirSync(uploadDir, { recursive: true });
+} catch (error: any) {
+  console.warn(`Upload directory initialization skipped for ${uploadDir}: ${error.message}`);
 }
 
 export default app;

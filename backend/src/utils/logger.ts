@@ -6,10 +6,19 @@
 const fs = require('fs');
 const path = require('path');
 
-// Create logs directory if it doesn't exist
-const logsDir = path.join(__dirname, '../../logs');
-if (!fs.existsSync(logsDir)) {
+const defaultLogsDir =
+  process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME
+    ? path.join('/tmp', 'erpjs-logs')
+    : path.join(__dirname, '../../logs');
+
+const logsDir = process.env.LOG_DIR || defaultLogsDir;
+let fileLoggingEnabled = false;
+
+try {
   fs.mkdirSync(logsDir, { recursive: true });
+  fileLoggingEnabled = true;
+} catch (error) {
+  console.warn(`File logging disabled: unable to create log directory ${logsDir}`, error.message);
 }
 
 const getTimestamp = () => {
@@ -23,11 +32,14 @@ const formatMessage = (level, message, meta) => {
 };
 
 const writeToFile = (message, level) => {
+  if (!fileLoggingEnabled) return;
+
   try {
     const logFile = path.join(logsDir, `${level}.log`);
     fs.appendFileSync(logFile, message);
   } catch (error) {
-    console.error('Error writing to log file:', error);
+    fileLoggingEnabled = false;
+    console.error('File logging disabled: unable to write log file:', error.message);
   }
 };
 
