@@ -1,9 +1,11 @@
 // @ts-nocheck
 const emailService = require('./emailService');
-const smsService = require('./smsService');
-const Quote = require('../models/appModels/Quote');
-const Client = require('../models/appModels/Client');
-const CompanyOwner = require('../models/coreModels/CompanyOwner');
+const mongoose = require('mongoose');
+
+const Quote = mongoose.model('Quote');
+const CompanyOwner = mongoose.model('CompanyOwner');
+
+const getSmsService = () => require('./smsService');
 
 /**
  * Quote Delivery Service
@@ -78,10 +80,22 @@ class QuoteDeliveryService {
    */
   async sendViaSms(quote, customer, business, quoteUrl = null) {
     try {
+      if (process.env.SMS_ENABLED !== 'true') {
+        return {
+          channel: 'sms',
+          success: false,
+          sentAt: new Date(),
+          recipient: customer.phone,
+          disabled: true,
+          error: 'SMS service is disabled',
+        };
+      }
+
       if (!customer.phone) {
         throw new Error('Customer phone number not available');
       }
 
+      const smsService = getSmsService();
       const result = await smsService.sendQuoteNotification(customer, quote, business, quoteUrl);
 
       return {
@@ -277,7 +291,18 @@ class QuoteDeliveryService {
 
     // Send SMS reminder
     if (channelArray.includes('sms')) {
-      try {
+      if (process.env.SMS_ENABLED !== 'true') {
+        deliveryResults.push({
+          channel: 'sms',
+          success: false,
+          sentAt: new Date(),
+          recipient: customer.phone,
+          disabled: true,
+          error: 'SMS service is disabled',
+        });
+      } else {
+        try {
+        const smsService = getSmsService();
         const result = await smsService.sendQuoteReminder(customer, quote, business, quoteUrl);
         deliveryResults.push({
           channel: 'sms',
@@ -295,6 +320,7 @@ class QuoteDeliveryService {
           recipient: customer.phone,
           error: error.message,
         });
+      }
       }
     }
 

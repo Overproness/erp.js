@@ -7,8 +7,9 @@
 const { CustomerBehavior, TriggerRule, Customer } = require('../models');
 const triggerEvaluator = require('../utils/triggerEvaluator');
 const segmentMatcher = require('../utils/segmentMatcher');
-const campaignExecutor = require('./CampaignExecutor');
 const analyticsService = require('./analyticsService');
+
+const getCampaignExecutor = () => require('./CampaignExecutor');
 
 class BehaviorProcessor {
   constructor() {
@@ -502,6 +503,7 @@ class BehaviorProcessor {
       await targetedCampaign.save();
 
       // Immediately execute the campaign
+      const campaignExecutor = getCampaignExecutor();
       await campaignExecutor.executeCampaign(targetedCampaign);
 
       console.log(

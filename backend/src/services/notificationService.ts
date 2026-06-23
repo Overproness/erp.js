@@ -4,8 +4,10 @@
  * Handles sending notifications to users and teams via Socket.io and MongoDB
  */
 
-const Notification = require('../models/appModels/Notification');
-const CompanyOwner = require('../models/coreModels/CompanyOwner');
+const mongoose = require('mongoose');
+
+const Notification = mongoose.model('Notification');
+const CompanyOwner = mongoose.model('CompanyOwner');
 const sendMail = require('../helpers/sendMail');
 
 class NotificationService {

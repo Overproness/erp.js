@@ -1,10 +1,16 @@
 // @ts-nocheck
-const ReviewResponse = require('../../models/appModels/ReviewResponse');
-const ReviewTemplate = require('../../models/appModels/ReviewTemplate');
-const Review = require('../../models/appModels/Review');
-const Business = require('../../models/appModels/Business');
-const { notificationService } = require('../../services/notificationService');
-const { autoResponseService } = require('../../services/autoResponseService');
+const mongoose = require('mongoose');
+
+const ReviewResponse = mongoose.model('ReviewResponse');
+const ReviewTemplate = mongoose.model('ReviewTemplate');
+const Review = mongoose.model('Review');
+const Business = mongoose.model('Business');
+
+const getNotificationService = () => require('../../services/notificationService').notificationService;
+const getAutoResponseService = () => {
+  const serviceModule = require('../../services/autoResponseService');
+  return serviceModule.autoResponseService || serviceModule;
+};
 
 /**
  * Create a response to a review
@@ -91,6 +97,7 @@ const create = async (req, res) => {
     // Send notification if needed
     if (status === 'pending' && req.user && req.user._id !== ownerId) {
       // Notify owner that a response needs approval
+      const notificationService = getNotificationService();
       await notificationService.notifyReviewApproval(response._id, false, ownerId);
     }
 
@@ -193,10 +200,12 @@ const update = async (req, res) => {
 
       // Send notification to team member who created the response
       if (response.respondent && response.respondent.toString() !== ownerId.toString()) {
+        const notificationService = getNotificationService();
         await notificationService.notifyReviewApproval(response._id, true, response.respondent);
       }
     } else if (status === 'rejected' && response.respondent && response.respondent.toString() !== ownerId.toString()) {
       // Notify respondent of rejection
+      const notificationService = getNotificationService();
       await notificationService.notifyReviewApproval(response._id, false, response.respondent);
     }
 
@@ -517,6 +526,7 @@ const generateAutoResponse = async (req, res) => {
     }
 
     // Generate response using the auto-response service
+    const autoResponseService = getAutoResponseService();
     const autoResponse = await autoResponseService.generateResponse(review);
 
     // Create response entity but don't save it yet (preview mode)

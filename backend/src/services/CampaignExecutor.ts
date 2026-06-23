@@ -7,11 +7,11 @@
 const { Campaign, CustomerSegment, TriggerRule, CustomerBehavior } = require('../models');
 const segmentMatcher = require('../utils/segmentMatcher');
 const campaignScheduler = require('../utils/campaignScheduler');
-const emailService = require('./emailService');
-const smsService = require('./smsService');
-const pushNotificationService = require('./pushNotificationService');
-const socialMediaService = require('./socialMediaService');
 const analyticsService = require('./analyticsService');
+
+const getEmailService = () => require('./emailService');
+const getPushNotificationService = () => require('./pushNotificationService');
+const getSocialMediaService = () => require('./socialMediaService');
 
 class CampaignExecutor {
   constructor() {
@@ -185,6 +185,7 @@ class CampaignExecutor {
       
       try {
         // Using simple email service without template
+        const emailService = getEmailService();
         const result = await emailService.sendTemplateEmail(
           recipient.email,
           campaign.subject || 'Campaign Update',
@@ -224,6 +225,17 @@ class CampaignExecutor {
     const successful = [];
     
     console.log(`Executing SMS campaign for ${recipients.length} recipients`);
+
+    if (process.env.SMS_ENABLED !== 'true') {
+      return {
+        sent: 0,
+        failed: recipients.length,
+        successful,
+        disabled: true
+      };
+    }
+
+    const smsService = require('./smsService');
     
     for (const recipient of recipients) {
       if (!recipient.phone) {
@@ -265,6 +277,7 @@ class CampaignExecutor {
     
     for (const recipientId of recipients) {
       try {
+        const pushNotificationService = getPushNotificationService();
         const result = await pushNotificationService.sendNotification(recipientId, {
           title: campaign.title,
           body: campaign.message,
@@ -313,7 +326,8 @@ class CampaignExecutor {
       if (campaign.media && campaign.media.length > 0) {
         postData.media = campaign.media;
       }
-      
+
+      const socialMediaService = getSocialMediaService();
       await socialMediaService.createPost(postData, campaign.owner);
       
       return {

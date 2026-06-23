@@ -8,9 +8,9 @@ const campaignScheduler = require('../utils/campaignScheduler');
 const segmentMatcher = require('../utils/segmentMatcher');
 const marketingURLHelper = require('../utils/marketingURLHelper');
 const emailService = require('./emailService');
-const smsService = require('./smsService');
-const pushNotificationService = require('./pushNotificationService');
 const analyticsService = require('./analyticsService');
+
+const getPushNotificationService = () => require('./pushNotificationService');
 
 class CampaignExecutorService {
   /**
@@ -327,7 +327,12 @@ class CampaignExecutorService {
       return false;
     }
 
+    if (process.env.SMS_ENABLED !== 'true') {
+      return false;
+    }
+
     try {
+      const smsService = require('./smsService');
       await smsService.sendSMS({
         to: customer.phone,
         body: content,
@@ -356,6 +361,7 @@ class CampaignExecutorService {
     }
 
     try {
+      const pushNotificationService = getPushNotificationService();
       await pushNotificationService.sendNotification({
         tokens: customer.pushTokens,
         title: campaign.subject || campaign.name,

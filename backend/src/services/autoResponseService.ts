@@ -1,11 +1,17 @@
 // @ts-nocheck
-const ReviewTemplate = require('@/models/appModels/ReviewTemplate');
-const Review = require('@/models/appModels/Review');
-const ReviewResponse = require('@/models/appModels/ReviewResponse');
-const Business = require('@/models/appModels/Business');
-const notificationService = require('./notificationService');
+const mongoose = require('mongoose');
+
+const ReviewTemplate = mongoose.model('ReviewTemplate');
+const Review = mongoose.model('Review');
+const ReviewResponse = mongoose.model('ReviewResponse');
+const Business = mongoose.model('Business');
 const sentimentAnalysisService = require('./sentimentAnalysisService');
-const socialMediaService = require('./socialMediaService');
+
+const getNotificationService = () => {
+  const serviceModule = require('./notificationService');
+  return serviceModule.notificationService || serviceModule;
+};
+const getSocialMediaService = () => require('./socialMediaService');
 
 class AutoResponseService {
   constructor() {
@@ -257,6 +263,7 @@ class AutoResponseService {
       await response.save();
       
       // Send response through platform API
+      const socialMediaService = getSocialMediaService();
       const result = await socialMediaService.respondToReview(
         review._id, 
         responseText, 
@@ -275,6 +282,7 @@ class AutoResponseService {
       await review.save();
       
       // Notify business owner about sent response
+      const notificationService = getNotificationService();
       await notificationService.sendNotification(
         'response_sent',
         {
@@ -314,6 +322,7 @@ class AutoResponseService {
    */
   async notifyPendingApproval(review, business, response) {
     try {
+      const notificationService = getNotificationService();
       await notificationService.sendNotification(
         'review_approval',
         {
@@ -378,6 +387,7 @@ class AutoResponseService {
       await response.save();
       
       // Send response through platform API
+      const socialMediaService = getSocialMediaService();
       const result = await socialMediaService.respondToReview(
         review._id, 
         response.responseText, 

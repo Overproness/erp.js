@@ -1,13 +1,15 @@
 // @ts-nocheck
-const SocialAccount = require('@/models/appModels/SocialAccount');
-const SocialPost = require('@/models/appModels/SocialPost');
-const SocialCampaign = require('@/models/appModels/SocialCampaign');
-const SocialAnalytics = require('@/models/appModels/SocialAnalytics');
-const SocialMention = require('@/models/appModels/SocialMention');
-const Review = require('@/models/appModels/Review');
-const ReviewResponse = require('@/models/appModels/ReviewResponse');
-const Business = require('@/models/appModels/Business');
-const ReviewTemplate = require('@/models/appModels/ReviewTemplate');
+const mongoose = require('mongoose');
+
+const SocialAccount = mongoose.model('SocialAccount');
+const SocialPost = mongoose.model('SocialPost');
+const SocialCampaign = mongoose.model('SocialCampaign');
+const SocialAnalytics = mongoose.model('SocialAnalytics');
+const SocialMention = mongoose.model('SocialMention');
+const Review = mongoose.model('Review');
+const ReviewResponse = mongoose.model('ReviewResponse');
+const Business = mongoose.model('Business');
+const ReviewTemplate = mongoose.model('ReviewTemplate');
 
 const facebookService = require('./facebookService');
 const instagramService = require('./instagramService');
