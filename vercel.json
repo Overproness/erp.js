@@ -4,15 +4,11 @@
             "entrypoint": "frontend",
             "routePrefix": "/",
             "framework": "vite"
-        },
-        "backend": {
-            "entrypoint": "backend",
-            "routePrefix": "/_/backend"
         }
     },
     "rewrites": [
         {
-            "source": "/((?!_/backend).*)",
+            "source": "/.*",
             "destination": "/"
         }
     ]
