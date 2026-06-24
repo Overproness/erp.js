@@ -6,10 +6,10 @@
     "node": "20.9.0"
   },
   "scripts": {
-    "start": "node dist/server.js",
+    "build": "tsc && tsc-alias",
+    "start": "node -r module-alias/register dist/server.js",
     "dev": "tsx watch src/server.ts",
     "dev:ts": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
-    "build": "tsc --project tsconfig.json",
     "build:watch": "tsc --project tsconfig.json --watch",
     "typecheck": "tsc --noEmit",
     "production": "NODE_ENV=production",
@@ -117,6 +117,7 @@
     "nodemon": "3.0.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.17",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
