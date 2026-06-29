@@ -1,7 +1,8 @@
-import PaymentUpdate from '@/pages/Payment/PaymentUpdate';
-import Settings from '@/pages/Settings/Settings';
 import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
+
+const PaymentUpdate = lazy(() => import('@/pages/Payment/PaymentUpdate'));
+const Settings = lazy(() => import('@/pages/Settings/Settings'));
 
 // Add a loading component for Suspense fallback
 const LoadingComponent = () => (
@@ -332,17 +333,29 @@ let routes = {
     },
     {
       path: '/payment/update/:id',
-      element: <PaymentUpdate />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <PaymentUpdate />
+        </Suspense>
+      ),
       permissions: ['payment:update'],
     },
     {
       path: '/settings',
-      element: <Settings />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Settings />
+        </Suspense>
+      ),
       permissions: ['settings:read'],
     },
     {
       path: '/settings/edit/:settingsKey',
-      element: <Settings />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Settings />
+        </Suspense>
+      ),
       permissions: ['settings:update'],
     },
     {

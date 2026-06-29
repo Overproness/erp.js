@@ -72,6 +72,9 @@ export default function HomePage() {
               src="/hero-section-3d-model-static.webp"
               alt=""
               aria-hidden="true"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-700"
               style={{ opacity: isModelReady ? 0 : 1 }}
             />

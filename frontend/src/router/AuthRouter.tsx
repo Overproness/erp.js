@@ -3,21 +3,22 @@ import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
-import ForgetPassword from '@/pages/ForgetPassword/ForgetPassword';
-import Login from '@/pages/Login/Login';
 import NotFound from '@/pages/NotFound/NotFound';
-import ResetPassword from '@/pages/ResetPassword/ResetPassword';
-import Signup from '@/pages/Signup/Signup';
 
 // Import team invitation page
 import Loading from '@/components/Loading';
-import AcceptInvitation from '@/pages/Team/AcceptInvitation';
 
-// Import the public redirect handler and preview page
-import RedirectHandler from '@/pages/URL/RedirectHandler';
+// Auth / account pages — lazy-loaded so they don't bloat the bundle
+// for visitors who only hit the public marketing pages.
+const ForgetPassword = lazy(() => import('@/pages/ForgetPassword/ForgetPassword'));
+const Login = lazy(() => import('@/pages/Login/Login'));
+const ResetPassword = lazy(() => import('@/pages/ResetPassword/ResetPassword'));
+const Signup = lazy(() => import('@/pages/Signup/Signup'));
+const AcceptInvitation = lazy(() => import('@/pages/Team/AcceptInvitation'));
 
-// Import public document share viewer
-import PublicDocumentShare from '@/pages/PublicDocumentShare';
+// Public redirect handler and document share viewer — also lazy-loaded
+const RedirectHandler = lazy(() => import('@/pages/URL/RedirectHandler'));
+const PublicDocumentShare = lazy(() => import('@/pages/PublicDocumentShare'));
 
 // Import public survey component
 const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
@@ -100,7 +101,14 @@ export default function AuthRouter() {
         }
         path="/"
       />
-      <Route element={<Login />} path="/login" />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <Login />
+          </Suspense>
+        }
+        path="/login"
+      />
 
       {/* Website pages */}
       <Route
@@ -151,19 +159,61 @@ export default function AuthRouter() {
         }
         path="/terms"
       />
-      <Route element={<Signup />} path="/signup" />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <Signup />
+          </Suspense>
+        }
+        path="/signup"
+      />
       <Route element={<Navigate to="/login" replace />} path="/logout" />
-      <Route element={<ForgetPassword />} path="/forgetpassword" />
-      <Route element={<ResetPassword />} path="/resetpassword/:userId/:resetToken" />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <ForgetPassword />
+          </Suspense>
+        }
+        path="/forgetpassword"
+      />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <ResetPassword />
+          </Suspense>
+        }
+        path="/resetpassword/:userId/:resetToken"
+      />
 
       {/* Special public route for team invitations - accessible when logged out */}
-      <Route element={<AcceptInvitation />} path="/team/invitation/:token" />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <AcceptInvitation />
+          </Suspense>
+        }
+        path="/team/invitation/:token"
+      />
 
       {/* Add public redirect routes here */}
-      <Route element={<RedirectHandler />} path="/s/:shortCode" />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <RedirectHandler />
+          </Suspense>
+        }
+        path="/s/:shortCode"
+      />
 
       {/* Public document share viewer route */}
-      <Route element={<PublicDocumentShare />} path="/share/document/:shortCode" />
+      <Route
+        element={
+          <Suspense fallback={<Loading isLoading={true} />}>
+            <PublicDocumentShare />
+          </Suspense>
+        }
+        path="/share/document/:shortCode"
+      />
 
       {/* Public survey route - accessible without authentication */}
       <Route
