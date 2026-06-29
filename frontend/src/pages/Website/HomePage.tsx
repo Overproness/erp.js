@@ -69,7 +69,7 @@ export default function HomePage() {
           <div className="relative hidden lg:flex justify-center items-center h-[600px] rounded-2xl overflow-hidden">
             {/* Static poster – visible immediately, fades out once 3D canvas is ready */}
             <img
-              src="/hero-section-3d-model-static.webp"
+              src="/hero-section-3d-model-static-removebg-preview.webp"
               alt=""
               aria-hidden="true"
               fetchPriority="high"
