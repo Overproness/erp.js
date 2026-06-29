@@ -75,7 +75,7 @@ export default function HomePage() {
               fetchPriority="high"
               loading="eager"
               decoding="async"
-              className="absolute inset-0 w-full h-full object-contain transition-opacity duration-700"
+              className=" w-[78%] h-[78%] transition-opacity duration-700"
               style={{ opacity: isModelReady ? 0 : 1 }}
             />
             {/* 3D canvas fades in once Three.js has initialised */}
