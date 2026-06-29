@@ -18,7 +18,7 @@ export default function WebsiteNavbar() {
       <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center gap-2.5 no-underline">
-            <img src="/logo-bg-remove.png" alt="ERP.js" className="h-8 w-8 object-contain" />
+            <img src="/logo-bg-remove.webp" alt="ERP.js" className="h-8 w-8 object-contain" />
             <span className="text-2xl font-bold tracking-tighter text-slate-900 font-inter">
               ERP.js
             </span>

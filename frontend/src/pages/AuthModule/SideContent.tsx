@@ -20,7 +20,7 @@ export default function SideContent() {
     >
       <div style={{ width: '100%' }}>
         <img
-          src="/logo-bg-remove.png"
+          src="/logo-bg-remove.webp"
           alt="ERP CRM"
           style={{ margin: '0 0 40px', display: 'block' }}
           height={100}
