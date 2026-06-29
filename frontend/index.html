@@ -5,22 +5,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="generator" content="ERPCRM" />
-  <link rel="icon" type="image/x-icon" href="/logo-bg-remove.ico" />
+  <!-- Fix 3: Use .webp favicon (6.6 KB) instead of .ico (165 KB) -->
+  <link rel="icon" type="image/webp" href="/logo-bg-remove.webp" sizes="32x32" />
   <link rel="preload" as="image" href="/hero-section-3d-model-static-removebg-preview.webp" fetchpriority="high" />
   <title>ERP.js | Automation Suite</title>
   <meta name="description" content="ERP.js | Automation Suite" />
+  <!-- Fix 6: explicit crossorigin="anonymous" so the preconnect is reused by the
+       browser's CORS-mode font fetcher (implicit bare `crossorigin` doesn't always match) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Text fonts: small, needed for first paint, loaded blocking -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <!-- Fix 2: Text fonts loaded non-blocking (media=print trick).
+       Browser renders with system fonts on first paint, then swaps to Google Fonts
+       once the stylesheet arrives. display=swap ensures no invisible text during load. -->
   <link
+    rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400&family=Raleway:wght@600&family=Poppins:wght@400&display=swap"
-    rel="stylesheet" />
-  <!-- Material Symbols: ~1MB (full glyph set) and never the LCP element —
-       loaded non-blocking so it doesn't compete with the critical path. -->
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" />
+    media="print"
+    onload="this.media='all'" />
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400&family=Raleway:wght@600&family=Poppins:wght@400&display=swap" />
+  </noscript>
+  <!-- Material Symbols: ~1MB variable-font icon set — loaded non-blocking.
+       Keeps icons off the critical path entirely. -->
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"

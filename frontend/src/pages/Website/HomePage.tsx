@@ -67,18 +67,22 @@ export default function HomePage() {
 
           {/* 3D Crystal Engine Model */}
           <div className="relative hidden lg:flex justify-center items-center h-[600px] rounded-2xl overflow-hidden">
-            {/* Static poster – visible immediately, fades out once 3D canvas is ready */}
+            {/* Static poster – always visible; acts as placeholder while 3D loads.
+                 Never set to opacity:0 — keeping it visible is what the LCP element
+                 needs so Lighthouse counts it as rendered immediately. */}
             <img
               src="/hero-section-3d-model-static-removebg-preview.webp"
               alt=""
               aria-hidden="true"
               fetchPriority="high"
               loading="eager"
-              decoding="async"
-              className=" w-[78%] h-[78%] transition-opacity duration-700"
-              style={{ opacity: isModelReady ? 0 : 1 }}
+              decoding="sync"
+              width={468}
+              height={468}
+              className="w-[78%] h-[78%] absolute"
+              style={{ opacity: 1 }}
             />
-            {/* 3D canvas fades in once Three.js has initialised */}
+            {/* 3D canvas fades in on top once Three.js has initialised */}
             <div
               className="absolute inset-0 transition-opacity duration-700"
               style={{ opacity: isModelReady ? 1 : 0 }}

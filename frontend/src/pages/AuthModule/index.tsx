@@ -27,7 +27,7 @@ const AuthModule = ({ authContent, AUTH_TITLE, isForRegistre = false }) => {
           >
             {/* Logo */}
             <div className="flex items-center gap-2.5 mb-6">
-              <img src="/logo-bg-remove.webp" alt="ERP.js" className="h-9 w-9 object-contain" />
+              <img src="/logo-bg-remove.webp" alt="ERP.js" width={36} height={36} className="h-9 w-9 object-contain" />
               <span
                 className="text-xl font-bold tracking-tighter font-inter"
                 style={{ color: '#191c1d' }}

@@ -374,7 +374,7 @@ export default function IconSidebar() {
         className="flex items-center gap-2.5 px-5 py-5 cursor-pointer"
         onClick={() => navigate('/')}
       >
-        <img src="/logo-bg-remove.webp" alt="ERP.js" className="h-8 w-8 object-contain" />
+        <img src="/logo-bg-remove.webp" alt="ERP.js" width={32} height={32} className="h-8 w-8 object-contain" />
         <div>
           <span className="text-lg font-bold tracking-tighter" style={{ color: '#191c1d' }}>
             ERP.js
