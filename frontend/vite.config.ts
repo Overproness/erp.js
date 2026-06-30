@@ -150,11 +150,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'monaco-vendor';
             }
 
-            // Ace editor — large, only used in specific code-editor pages.
-            // Kept separate from monaco so neither loads on normal pages.
-            if (id.includes('/ace-builds/') || id.includes('/react-ace/')) {
-              return 'ace-vendor';
-            }
+            // NOTE: ace-builds / react-ace intentionally fall through to the
+            // shared vendor chunk below. react-ace reads React.Component during
+            // module initialisation; isolating it in a separate chunk causes
+            // Rollup to order the chunks such that React is not yet defined
+            // when ace-vendor loads — same root cause as the recharts/emotion TDZ.
 
             // NOTE: moment.js has been replaced by dayjs across the codebase.
             // If any third-party dep still pulls in moment, keep it isolated here.
