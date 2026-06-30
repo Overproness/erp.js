@@ -36,7 +36,8 @@ import {
   InfoCircleOutlined
 } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
-import moment from 'moment';
+// dayjs is a drop-in replacement for moment (~2KB vs ~65KB gzipped)
+import dayjs from 'dayjs';
 
 // Components
 import TriggerConditionBuilder from './components/TriggerConditionBuilder';
@@ -77,12 +78,12 @@ const BehaviorTriggersModule = ({ trigger, onSave, onCancel }) => {
           scheduleType: trigger.settings?.scheduleType || 'immediate',
           delayTime: trigger.settings?.delayTime,
           delayUnit: trigger.settings?.delayUnit || 'minutes',
-          scheduleTime: trigger.settings?.scheduleTime && moment(trigger.settings.scheduleTime),
+          scheduleTime: trigger.settings?.scheduleTime && dayjs(trigger.settings.scheduleTime),
           scheduleRecurring: trigger.settings?.recurringFrequency === 'daily' || trigger.settings?.recurringFrequency === 'weekly' || trigger.settings?.recurringFrequency === 'monthly',
           recurringFrequency: trigger.settings?.recurringFrequency || 'daily',
           activeHours: trigger.settings?.activeHours && {
-            start: trigger.settings.activeHours.start && moment(trigger.settings.activeHours.start, 'HH:mm'),
-            end: trigger.settings.activeHours.end && moment(trigger.settings.activeHours.end, 'HH:mm'),
+            start: trigger.settings.activeHours.start && dayjs(trigger.settings.activeHours.start, 'HH:mm'),
+            end: trigger.settings.activeHours.end && dayjs(trigger.settings.activeHours.end, 'HH:mm'),
           }
         }
       });
@@ -814,7 +815,7 @@ const BehaviorTriggersModule = ({ trigger, onSave, onCancel }) => {
                             format="YYYY-MM-DD HH:mm" 
                             placeholder={translate('Select date and time')} 
                             style={{ width: '100%' }}
-                            disabledDate={(current) => current && current < moment().startOf('day')}
+                            disabledDate={(current) => current && current < dayjs().startOf('day')}
                           />
                         </Form.Item>
 

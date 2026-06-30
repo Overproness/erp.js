@@ -150,18 +150,26 @@ export default ({ mode }: ConfigEnv): UserConfig => {
               return 'monaco-vendor';
             }
 
+            // Ace editor — large, only used in specific code-editor pages.
+            // Kept separate from monaco so neither loads on normal pages.
+            if (id.includes('/ace-builds/') || id.includes('/react-ace/')) {
+              return 'ace-vendor';
+            }
 
-            // Moment.js — large due to locale data
+            // NOTE: moment.js has been replaced by dayjs across the codebase.
+            // If any third-party dep still pulls in moment, keep it isolated here.
             if (id.includes('/moment/')) {
               return 'moment-vendor';
             }
 
-            // Lucide icons
+            // Lucide icons (tree-shaken but still sizeable)
             if (id.includes('/lucide-react/')) {
               return 'lucide-vendor';
             }
 
-            // PDF / canvas — large, rarely needed on load
+            // PDF / canvas — large, rarely needed on load.
+            // jsPDF imports are now dynamic (inside export handlers) so this chunk
+            // will not be fetched on initial page load.
             if (
               id.includes('/jspdf') ||
               id.includes('/html2canvas') ||
@@ -265,11 +273,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             // Media / video
             if (id.includes('/hls.js/') || id.includes('/@mediapipe/')) {
               return 'media-vendor';
-            }
-
-            // Lucide icons (tree-shaken but still sizeable)
-            if (id.includes('/lucide-react/')) {
-              return 'lucide-vendor';
             }
 
             // Everything else in node_modules

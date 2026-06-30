@@ -8,8 +8,7 @@ import RootApp from './RootApp';
 import './style/index.css'; // Make sure to import global styles
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <StrictMode>
-    <RootApp />
-  </StrictMode>
-);
+const app = <RootApp />;
+// StrictMode intentionally double-invokes lifecycle hooks in dev to surface
+// side effects — keep it in dev only to avoid the overhead in production.
+root.render(import.meta.env.DEV ? <StrictMode>{app}</StrictMode> : app);

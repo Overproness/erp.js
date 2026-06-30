@@ -2,7 +2,7 @@ import './style/app.css';
 
 import { ApolloProvider } from '@apollo/client/react';
 import { App } from '@/components/ui';
-import { Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
@@ -14,8 +14,9 @@ import { NotificationProvider } from './context/NotificationContext';
 import apolloClient from './graphql/client';
 import store from './redux/store';
 
-// Import directly instead of using lazy loading initially
-import ErpOs from './apps/ErpOs';
+// Lazy-load the full app so the heavy vendor bundle (Three.js, MUI, routes)
+// stays off the critical path and doesn't block FCP/LCP.
+const ErpOs = lazy(() => import('./apps/ErpOs'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();

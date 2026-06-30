@@ -196,7 +196,11 @@ let routes = {
     },
     {
       path: '/client',
-      element: <Customer />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Customer />
+        </Suspense>
+      ),
       permissions: ['customer:read'],
     },
     {
@@ -277,58 +281,102 @@ let routes = {
     },
     {
       path: '/invoice',
-      element: <Invoice />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Invoice />
+        </Suspense>
+      ),
       permissions: ['invoice:read'],
     },
     {
       path: '/invoice/create',
-      element: <InvoiceCreate />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <InvoiceCreate />
+        </Suspense>
+      ),
       permissions: ['invoice:create'],
     },
     {
       path: '/invoice/read/:id',
-      element: <InvoiceRead />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <InvoiceRead />
+        </Suspense>
+      ),
       permissions: ['invoice:read'],
     },
     {
       path: '/invoice/update/:id',
-      element: <InvoiceUpdate />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <InvoiceUpdate />
+        </Suspense>
+      ),
       permissions: ['invoice:update'],
     },
     {
       path: '/invoice/pay/:id',
-      element: <InvoiceRecordPayment />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <InvoiceRecordPayment />
+        </Suspense>
+      ),
       permissions: ['invoice:update', 'payment:create'],
       requireAll: true,
     },
     {
       path: '/quote',
-      element: <Quote />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Quote />
+        </Suspense>
+      ),
       permissions: ['quote:read'],
     },
     {
       path: '/quote/create',
-      element: <QuoteCreate />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <QuoteCreate />
+        </Suspense>
+      ),
       permissions: ['quote:create'],
     },
     {
       path: '/quote/read/:id',
-      element: <QuoteRead />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <QuoteRead />
+        </Suspense>
+      ),
       permissions: ['quote:read'],
     },
     {
       path: '/quote/update/:id',
-      element: <QuoteUpdate />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <QuoteUpdate />
+        </Suspense>
+      ),
       permissions: ['quote:update'],
     },
     {
       path: '/payment',
-      element: <Payment />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Payment />
+        </Suspense>
+      ),
       permissions: ['payment:read'],
     },
     {
       path: '/payment/read/:id',
-      element: <PaymentRead />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <PaymentRead />
+        </Suspense>
+      ),
       permissions: ['payment:read'],
     },
     {
@@ -400,7 +448,11 @@ let routes = {
     },
     {
       path: '/profile',
-      element: <Profile />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Profile />
+        </Suspense>
+      ),
     },
     {
       path: '/workflow',
@@ -488,73 +540,129 @@ let routes = {
     },
     {
       path: '/ai-assistant/*',
-      element: <AiAssistantModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AiAssistantModule />
+        </Suspense>
+      ),
       permissions: ['ai:read'],
     },
     {
       path: '/ai-assistant/create',
-      element: <CreateAiAssistantModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <CreateAiAssistantModule />
+        </Suspense>
+      ),
       permissions: ['ai:create'],
     },
     {
       path: '/ai-assistant/update/:id',
-      element: <UpdateAiAssistantModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <UpdateAiAssistantModule />
+        </Suspense>
+      ),
       permissions: ['ai:update'],
     },
     {
       path: '/ai-assistant/read/:id',
-      element: <ReadAiAssistantModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <ReadAiAssistantModule />
+        </Suspense>
+      ),
       permissions: ['ai:read'],
     },
     {
       path: '/ai-assistant/chat/:id',
-      element: <AIChatModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AIChatModule />
+        </Suspense>
+      ),
       permissions: ['ai:chat'],
     },
     {
       path: '/ai-assistant/settings',
-      element: <AISettingsModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AISettingsModule />
+        </Suspense>
+      ),
       permissions: ['ai:settings'],
     },
     {
       path: '/ai-assistant/suggestions',
-      element: <AISuggestionsModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AISuggestionsModule />
+        </Suspense>
+      ),
       permissions: ['ai:suggestions'],
     },
     {
       path: '/ai-assistant/analytics',
-      element: <AIAnalyticsModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AIAnalyticsModule />
+        </Suspense>
+      ),
       permissions: ['ai:analytics'],
     },
     {
       path: '/ai-assistant/data-processor',
-      element: <DataProcessorModule />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <DataProcessorModule />
+        </Suspense>
+      ),
       permissions: ['ai:data-processor'],
     },
     // Social Media Routes
     {
       path: '/social-media',
-      element: <SocialMedia />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <SocialMedia />
+        </Suspense>
+      ),
       permissions: ['social:read'],
     },
     {
       path: '/social-media/posts',
-      element: <PostManagement />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <PostManagement />
+        </Suspense>
+      ),
       permissions: ['social:posts'],
     },
     {
       path: '/social-media/analytics',
-      element: <Analytics />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Analytics />
+        </Suspense>
+      ),
       permissions: ['social:analytics'],
     },
     {
       path: '/social-media/mentions',
-      element: <Mentions />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <Mentions />
+        </Suspense>
+      ),
       permissions: ['social:mentions'],
     },
     {
       path: '/social-media/ai-content',
-      element: <AIContent />,
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <AIContent />
+        </Suspense>
+      ),
       permissions: ['social:ai-content'],
     },
     // URL Management Routes

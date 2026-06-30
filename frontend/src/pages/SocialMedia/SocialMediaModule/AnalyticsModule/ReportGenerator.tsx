@@ -30,26 +30,20 @@ import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
 import dummyPosts from '@/data/dummyPostsData';
 
-// Change the import strategy for jsPDF and autoTable
-import jsPDF from 'jspdf';
-// We'll dynamically add the autoTable plugin when needed
-
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const { Title, Text } = Typography;
-
-const loadPdfLibraries = async () => {
+// jsPDF and jspdf-autotable are loaded on-demand (only when the user
+// triggers an export) to keep them out of the initial bundle.
+const loadPdfLibraries = async (): Promise<typeof import('jspdf').default | false> => {
   try {
-    // Dynamically import jspdf-autotable
-    await import('jspdf-autotable');
-    const doc = new jsPDF();
-    
-    // Check if the plugin loaded correctly
-    if (typeof doc.autoTable !== 'function') {
+    const [{ default: jsPDF }] = await Promise.all([
+      import('jspdf'),
+      import('jspdf-autotable'),
+    ]);
+    // Verify the autoTable plugin attached correctly
+    const probe = new jsPDF();
+    if (typeof (probe as any).autoTable !== 'function') {
       throw new Error('autoTable function not available');
     }
-    
-    return true;
+    return jsPDF;
   } catch (error) {
     console.error('Failed to load PDF libraries:', error);
     return false;
@@ -209,8 +203,8 @@ const ReportGenerator = () => {
       }
       
       // Ensure PDF libraries are properly loaded
-      const librariesLoaded = await loadPdfLibraries();
-      if (!librariesLoaded) {
+      const jsPDF = await loadPdfLibraries();
+      if (!jsPDF) {
         message.error('PDF export failed: Could not load PDF generation libraries');
         setGenerating(false);
         return;
