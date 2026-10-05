@@ -148,7 +148,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-24 px-6">
+      {/* <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16">
             <div className="max-w-xl">
@@ -198,7 +198,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 px-6 border-t border-slate-100">

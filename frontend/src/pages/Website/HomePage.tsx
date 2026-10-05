@@ -72,7 +72,10 @@ export default function HomePage() {
               src="/hero-section-3d-model-static-removebg-preview.webp"
               alt=""
               aria-hidden="true"
-              fetchPriority="high"
+              // React 18's DOM renderer doesn't yet recognize the camelCase `fetchPriority`
+              // prop on <img>; it must be passed lowercase to land as a real attribute.
+              // @ts-expect-error -- @types/react types this as fetchPriority (React 19 API)
+              fetchpriority="high"
               loading="eager"
               decoding="sync"
               width={468}
