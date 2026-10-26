@@ -276,6 +276,12 @@ export default function IconSidebar() {
       label: 'Subscription',
       path: '/subscription',
     },
+    {
+      key: 'design-system',
+      icon: 'palette',
+      label: 'Design System',
+      path: '/design-system',
+    },
   ];
 
   const filteredItems = filterItemsByPermissions(menuItems);

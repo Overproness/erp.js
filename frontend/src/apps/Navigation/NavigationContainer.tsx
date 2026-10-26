@@ -801,6 +801,16 @@ function Sidebar({ collapsible, isMobile = false }) {
       ),
       linkpath: '/subscription',
     },
+    {
+      key: 'design-system',
+      icon: <SettingOutlined />,
+      label: (
+        <Link to={'/design-system'} className={getMenuItemClass(currentPath === 'design-system')}>
+          {translate('Master Design System')}
+        </Link>
+      ),
+      linkpath: '/design-system',
+    },
   ];
 
   // Filter items based on permissions

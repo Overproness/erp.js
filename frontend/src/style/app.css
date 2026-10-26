@@ -14,6 +14,7 @@
 @import './partials/dashboard.css';
 @import './partials/reputation.css';
 @import './partials/markdown.css';
+@import './partials/master-layout.css';
 
 @tailwind base;
 @tailwind components;

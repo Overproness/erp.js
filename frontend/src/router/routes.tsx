@@ -158,6 +158,7 @@ const AnalyticsReporting = lazy(() => import('@/pages/Analytics/index'));
 
 // Subscription / Billing
 const SubscriptionPage = lazy(() => import('@/pages/Subscription/index'));
+const MasterLayoutShowcase = lazy(() => import('@/pages/DesignSystem/MasterLayoutShowcase'));
 
 let routes = {
   expense: [],
@@ -967,6 +968,15 @@ let routes = {
       element: (
         <Suspense fallback={<LoadingComponent />}>
           <SubscriptionPage />
+        </Suspense>
+      ),
+      permissions: [],
+    },
+    {
+      path: '/design-system',
+      element: (
+        <Suspense fallback={<LoadingComponent />}>
+          <MasterLayoutShowcase />
         </Suspense>
       ),
       permissions: [],
