@@ -26,4 +26,7 @@ router.put('/reactivate', catchErrors(subscriptionController.reactivateSubscript
 // PUT /api/subscription/plan — change plan
 router.put('/plan', catchErrors(subscriptionController.changePlan));
 
+// POST /api/subscription/request-n8n — request n8n compute allocation
+router.post('/request-n8n', catchErrors(subscriptionController.requestN8nAccess));
+
 module.exports = router;

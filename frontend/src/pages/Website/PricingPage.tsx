@@ -4,28 +4,28 @@ import WebsiteLayout from './components/WebsiteLayout';
 
 const faqs = [
   {
-    q: 'Is there a free trial?',
-    a: 'Yes — every plan includes a 14-day free trial with full access to all features in that tier. No credit card required to start. At the end of your trial you choose a plan or your data is safely archived for 30 days.',
+    q: 'Is ERP.js really 100% free?',
+    a: 'Yes! Every user and organization receives our highest-tier Enterprise plan completely free forever. There are no subscription fees, no hidden costs, and no credit card required to get started.',
   },
   {
-    q: 'Can I switch plans later?',
-    a: 'Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle. If you upgrade, the price difference will be pro-rated for the remainder of the current month.',
+    q: 'Why did you make everything free?',
+    a: 'We believe modern businesses should not be held back by prohibitive enterprise software licensing fees. By making the full CRM, finance, AI, and workflow automation engine open and free, teams of any size can operate and scale without technical debt.',
   },
   {
-    q: 'How long does enterprise setup take?',
-    a: 'Enterprise deployment typically takes 2-4 weeks, depending on the complexity of your custom integrations and data migration requirements. Our solutions engineers will be with you every step of the way.',
+    q: 'How does the n8n workflow integration work?',
+    a: 'Our internal visual workflow builder, trigger rules, and business process automation engine are built directly into the platform and completely free for everyone with unlimited workflows. For external n8n container integration, each instance runs in an isolated Docker container requiring dedicated cluster compute resources. Because compute is limited, n8n instances are allocated to organizations on-demand based on server availability.',
   },
   {
-    q: 'Do you offer educational or non-profit discounts?',
-    a: 'Absolutely. We support organizations making a positive impact. Please reach out to our sales team with your proof of status to receive our non-profit pricing details.',
+    q: 'How can I request dedicated n8n compute access?',
+    a: 'You can request compute allocation directly from your workspace dashboard or the subscription settings tab. As soon as server cluster compute capacity is available, a dedicated n8n container instance will be provisioned for your workspace.',
   },
   {
-    q: 'Is my data secure on the cloud?',
-    a: 'ERP.js uses military-grade encryption for all data at rest and in transit. We are SOC2 Type II compliant and offer advanced security features like SSO and audit logs on our higher-tier plans.',
+    q: 'Are there any hidden limits on users, contacts, or invoices?',
+    a: 'None! Everyone receives unlimited users, unlimited contacts, unlimited invoices, full document management, and complete AI capabilities.',
   },
   {
-    q: 'What payment methods do you accept?',
-    a: 'We accept all major credit cards (Visa, Mastercard, Amex), PayPal, and wire transfers for annual Enterprise plans. All payments are processed securely through Stripe.',
+    q: 'Is my data secure?',
+    a: 'Yes. ERP.js utilizes enterprise-grade encryption for all data at rest and in transit, complete with GDPR compliance tools, audit trails, and role-based access control.',
   },
 ];
 
@@ -99,50 +99,55 @@ const comparisonData: FeatureSection[] = [
     rows: [
       {
         feature: 'Automated Rules',
-        starter: 'Up to 10',
+        starter: 'Unlimited',
         pro: 'Unlimited',
         enterprise: 'Unlimited',
       },
-      { feature: 'Trigger Rules', starter: false, pro: true, enterprise: true },
-      { feature: 'Business Process Engine', starter: false, pro: true, enterprise: true },
+      { feature: 'Trigger Rules', starter: true, pro: true, enterprise: true },
+      { feature: 'Business Process Engine', starter: true, pro: true, enterprise: true },
       { feature: 'Workflow Execution Tracking', starter: true, pro: true, enterprise: true },
-      { feature: 'n8n Visual Workflow Builder', starter: false, pro: false, enterprise: true },
-      { feature: 'Automation Suggestions (AI)', starter: false, pro: false, enterprise: true },
+      {
+        feature: 'n8n Visual Workflow Builder',
+        starter: false,
+        pro: false,
+        enterprise: 'On Request (Compute Limited)',
+      },
+      { feature: 'Automation Suggestions (AI)', starter: false, pro: true, enterprise: true },
     ],
   },
   {
     category: 'Artificial Intelligence',
     rows: [
-      { feature: 'AI Assistant', starter: false, pro: 'Standard', enterprise: 'Advanced' },
-      { feature: 'AI Copilot', starter: false, pro: true, enterprise: true },
-      { feature: 'AI Content Generation', starter: false, pro: true, enterprise: true },
-      { feature: 'AI Text Summarization', starter: false, pro: true, enterprise: true },
-      { feature: 'AI Translation', starter: false, pro: true, enterprise: true },
-      { feature: 'AI Document Tagging', starter: false, pro: true, enterprise: true },
-      { feature: 'OCR & Data Extraction', starter: false, pro: true, enterprise: true },
-      { feature: 'AI Sentiment Analysis', starter: false, pro: true, enterprise: true },
-      { feature: 'Predictive Analytics', starter: false, pro: true, enterprise: true },
-      { feature: 'AI Knowledge Base', starter: false, pro: false, enterprise: true },
-      { feature: 'AI Anomaly Detection', starter: false, pro: false, enterprise: true },
+      { feature: 'AI Assistant', starter: 'Standard', pro: 'Advanced', enterprise: 'Advanced' },
+      { feature: 'AI Copilot', starter: true, pro: true, enterprise: true },
+      { feature: 'AI Content Generation', starter: true, pro: true, enterprise: true },
+      { feature: 'AI Text Summarization', starter: true, pro: true, enterprise: true },
+      { feature: 'AI Translation', starter: true, pro: true, enterprise: true },
+      { feature: 'AI Document Tagging', starter: true, pro: true, enterprise: true },
+      { feature: 'OCR & Data Extraction', starter: true, pro: true, enterprise: true },
+      { feature: 'AI Sentiment Analysis', starter: true, pro: true, enterprise: true },
+      { feature: 'Predictive Analytics', starter: true, pro: true, enterprise: true },
+      { feature: 'AI Knowledge Base', starter: false, pro: true, enterprise: true },
+      { feature: 'AI Anomaly Detection', starter: false, pro: true, enterprise: true },
       {
         feature: 'Multi-Provider AI (OpenAI, Claude, Gemini)',
         starter: false,
-        pro: false,
+        pro: true,
         enterprise: true,
       },
-      { feature: 'Self-Learning Engine', starter: false, pro: false, enterprise: true },
+      { feature: 'Self-Learning Engine', starter: false, pro: true, enterprise: true },
     ],
   },
   {
     category: 'Marketing & Campaigns',
     rows: [
-      { feature: 'Campaign Management', starter: false, pro: true, enterprise: true },
-      { feature: 'Campaign Analytics', starter: false, pro: true, enterprise: true },
-      { feature: 'Email Campaigns', starter: false, pro: true, enterprise: true },
-      { feature: 'A/B Testing', starter: false, pro: true, enterprise: true },
-      { feature: 'Retargeting Engine', starter: false, pro: true, enterprise: true },
-      { feature: 'Behavior Tracking', starter: 'Basic', pro: 'Advanced', enterprise: 'Advanced' },
-      { feature: 'Customer Behavior Analytics', starter: false, pro: true, enterprise: true },
+      { feature: 'Campaign Management', starter: true, pro: true, enterprise: true },
+      { feature: 'Campaign Analytics', starter: true, pro: true, enterprise: true },
+      { feature: 'Email Campaigns', starter: true, pro: true, enterprise: true },
+      { feature: 'A/B Testing', starter: true, pro: true, enterprise: true },
+      { feature: 'Retargeting Engine', starter: true, pro: true, enterprise: true },
+      { feature: 'Behavior Tracking', starter: 'Advanced', pro: 'Advanced', enterprise: 'Advanced' },
+      { feature: 'Customer Behavior Analytics', starter: true, pro: true, enterprise: true },
     ],
   },
   {
@@ -150,18 +155,18 @@ const comparisonData: FeatureSection[] = [
     rows: [
       {
         feature: 'Social Account Management',
-        starter: false,
-        pro: 'Up to 5',
+        starter: 'Unlimited',
+        pro: 'Unlimited',
         enterprise: 'Unlimited',
       },
-      { feature: 'Social Post Scheduling', starter: false, pro: true, enterprise: true },
-      { feature: 'Social Campaign Management', starter: false, pro: true, enterprise: true },
-      { feature: 'Social Analytics', starter: false, pro: true, enterprise: true },
-      { feature: 'Social Mention Monitoring', starter: false, pro: false, enterprise: true },
-      { feature: 'Review Aggregation', starter: false, pro: false, enterprise: true },
-      { feature: 'Review Response Automation', starter: false, pro: false, enterprise: true },
-      { feature: 'Review Analytics & Sentiment', starter: false, pro: false, enterprise: true },
-      { feature: 'Public Reputation Portal', starter: false, pro: false, enterprise: true },
+      { feature: 'Social Post Scheduling', starter: true, pro: true, enterprise: true },
+      { feature: 'Social Campaign Management', starter: true, pro: true, enterprise: true },
+      { feature: 'Social Analytics', starter: true, pro: true, enterprise: true },
+      { feature: 'Social Mention Monitoring', starter: true, pro: true, enterprise: true },
+      { feature: 'Review Aggregation', starter: true, pro: true, enterprise: true },
+      { feature: 'Review Response Automation', starter: true, pro: true, enterprise: true },
+      { feature: 'Review Analytics & Sentiment', starter: true, pro: true, enterprise: true },
+      { feature: 'Public Reputation Portal', starter: true, pro: true, enterprise: true },
     ],
   },
   {
@@ -169,12 +174,12 @@ const comparisonData: FeatureSection[] = [
     rows: [
       { feature: 'Dashboard Statistics', starter: true, pro: true, enterprise: true },
       { feature: 'Module-Level Stats', starter: true, pro: true, enterprise: true },
-      { feature: 'Revenue Analytics', starter: 'Basic', pro: 'Advanced', enterprise: 'Advanced' },
-      { feature: 'Global KPI Dashboard', starter: false, pro: true, enterprise: true },
-      { feature: 'Real-time Analytics', starter: false, pro: true, enterprise: true },
+      { feature: 'Revenue Analytics', starter: 'Advanced', pro: 'Advanced', enterprise: 'Advanced' },
+      { feature: 'Global KPI Dashboard', starter: true, pro: true, enterprise: true },
+      { feature: 'Real-time Analytics', starter: true, pro: true, enterprise: true },
       { feature: 'URL Click Analytics', starter: true, pro: true, enterprise: true },
-      { feature: 'Analytics Data Export', starter: false, pro: false, enterprise: true },
-      { feature: 'Cross-Module Comparison', starter: false, pro: false, enterprise: true },
+      { feature: 'Analytics Data Export', starter: true, pro: true, enterprise: true },
+      { feature: 'Cross-Module Comparison', starter: true, pro: true, enterprise: true },
     ],
   },
   {
@@ -183,17 +188,17 @@ const comparisonData: FeatureSection[] = [
       { feature: 'In-App Notifications', starter: true, pro: true, enterprise: true },
       { feature: 'Internal Team Chat', starter: true, pro: true, enterprise: true },
       { feature: 'Email Notifications', starter: true, pro: true, enterprise: true },
-      { feature: 'Customer Live Chat', starter: false, pro: true, enterprise: true },
-      { feature: 'SMS Notifications', starter: false, pro: true, enterprise: true },
-      { feature: 'Push Notifications', starter: false, pro: true, enterprise: true },
+      { feature: 'Customer Live Chat', starter: true, pro: true, enterprise: true },
+      { feature: 'SMS Notifications', starter: true, pro: true, enterprise: true },
+      { feature: 'Push Notifications', starter: true, pro: true, enterprise: true },
     ],
   },
   {
     category: 'Surveys & Feedback',
     rows: [
-      { feature: 'Survey Builder', starter: 'Up to 3', pro: 'Unlimited', enterprise: 'Unlimited' },
+      { feature: 'Survey Builder', starter: 'Unlimited', pro: 'Unlimited', enterprise: 'Unlimited' },
       { feature: 'Public Survey Links', starter: true, pro: true, enterprise: true },
-      { feature: 'Survey Analytics', starter: 'Basic', pro: 'Advanced', enterprise: 'Advanced' },
+      { feature: 'Survey Analytics', starter: 'Advanced', pro: 'Advanced', enterprise: 'Advanced' },
     ],
   },
   {
@@ -202,27 +207,25 @@ const comparisonData: FeatureSection[] = [
       { feature: 'Basic Audit Trail', starter: true, pro: true, enterprise: true },
       {
         feature: 'Advanced Audit (per-entity, search)',
-        starter: false,
+        starter: true,
         pro: true,
         enterprise: true,
       },
-      { feature: 'Consent Management (GDPR)', starter: false, pro: false, enterprise: true },
-      { feature: 'Data Retention Policies', starter: false, pro: false, enterprise: true },
-      { feature: 'GDPR Data Export / Deletion', starter: false, pro: false, enterprise: true },
-      { feature: 'Compliance Reporting', starter: false, pro: false, enterprise: true },
-      { feature: 'SSO / SAML', starter: false, pro: false, enterprise: true },
-      { feature: 'Custom Branding (White-label)', starter: false, pro: false, enterprise: true },
+      { feature: 'Consent Management (GDPR)', starter: true, pro: true, enterprise: true },
+      { feature: 'Data Retention Policies', starter: true, pro: true, enterprise: true },
+      { feature: 'GDPR Data Export / Deletion', starter: true, pro: true, enterprise: true },
+      { feature: 'Compliance Reporting', starter: true, pro: true, enterprise: true },
+      { feature: 'SSO / SAML', starter: true, pro: true, enterprise: true },
+      { feature: 'Custom Branding (White-label)', starter: true, pro: true, enterprise: true },
     ],
   },
   {
     category: 'Support & API',
     rows: [
-      { feature: 'Email Support', starter: '48h', pro: '12h', enterprise: '1h SLA' },
+      { feature: 'Community & Email Support', starter: 'Standard', pro: 'Priority', enterprise: 'Priority' },
       { feature: 'Knowledge Base Access', starter: true, pro: true, enterprise: true },
-      { feature: 'Onboarding Assistance', starter: false, pro: true, enterprise: true },
-      { feature: 'Personal Account Manager', starter: false, pro: false, enterprise: true },
-      { feature: 'Custom Training Sessions', starter: false, pro: false, enterprise: true },
-      { feature: 'API Access', starter: 'Read-only', pro: 'Full', enterprise: 'Full + Webhooks' },
+      { feature: 'Onboarding Assistance', starter: true, pro: true, enterprise: true },
+      { feature: 'API Access', starter: 'Full', pro: 'Full', enterprise: 'Full + Webhooks' },
     ],
   },
 ];
@@ -236,70 +239,50 @@ function CellContent({ value }: { value: CellValue }) {
         —
       </span>
     );
-  return <span className="text-sm">{value}</span>;
+  return <span className="text-sm font-medium">{value}</span>;
 }
 
 export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
-
-  const starterPrice = billing === 'annual' ? 39 : 49;
-  const proPrice = billing === 'annual' ? 119 : 149;
-  const enterprisePrice = billing === 'annual' ? 319 : 399;
 
   return (
     <WebsiteLayout
-      title="Pricing"
-      description="ERP.js pricing plans for every scale. From startup to enterprise — transparent pricing that grows with your business."
+      title="Pricing — 100% Free Forever"
+      description="ERP.js is 100% free with all highest-tier Enterprise features included. No subscriptions, no credit card required."
       canonicalPath="/pricing"
     >
       <div className="pt-20 pb-24 px-6 max-w-7xl mx-auto font-inter">
         {/* Hero Header */}
         <header className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-[#0058c3] bg-[#d8e2ff] mb-6">
+            <span className="material-symbols-outlined text-sm">celebration</span>
+            100% Free Forever
+          </div>
           <h1
             className="text-5xl md:text-6xl font-extrabold tracking-tighter mb-6"
             style={{ color: '#191c1d' }}
           >
-            Pricing that scales <br />
-            with your growth.
+            Everything is Free. <br />
+            Enterprise Power for Everyone.
           </h1>
           <p className="max-w-2xl mx-auto text-lg mb-8" style={{ color: '#414754' }}>
-            The Crystalline Engine powers enterprises of all sizes. Choose the layer that fits your
-            operational needs. Every plan starts with a 14-day free trial.
+            We have eliminated software licensing fees. Everyone receives full access to our highest-tier
+            Enterprise plan at <strong>$0/month</strong> — unlimited users, full AI Copilot, marketing automation,
+            and real-time analytics. No credit card required.
           </p>
 
-          {/* Billing Toggle */}
           <div
-            className="inline-flex items-center gap-3 p-1 rounded-lg"
-            style={{ background: '#f3f4f5' }}
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-semibold"
+            style={{ background: '#f3f4f5', color: '#191c1d', border: '1px solid #e1e3e4' }}
           >
-            <button
-              onClick={() => setBilling('monthly')}
-              className={`px-4 py-2 rounded-md text-sm font-semibold transition-all border-none cursor-pointer ${
-                billing === 'monthly' ? 'bg-white text-[#191c1d]' : 'bg-transparent'
-              }`}
-              style={billing !== 'monthly' ? { color: '#414754' } : {}}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setBilling('annual')}
-              className={`px-4 py-2 rounded-md text-sm font-semibold transition-all border-none cursor-pointer ${
-                billing === 'annual' ? 'bg-white text-[#191c1d]' : 'bg-transparent'
-              }`}
-              style={billing !== 'annual' ? { color: '#414754' } : {}}
-            >
-              Annual
-              <span className="ml-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0058c3]">
-                Save 20%
-              </span>
-            </button>
+            <span className="material-symbols-outlined text-green-600">verified</span>
+            <span>All Features Unlocked · $0 Forever · No Subscriptions</span>
           </div>
         </header>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch mb-32">
-          {/* Starter Tier */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch mb-16">
+          {/* Starter Plan */}
           <div
             className="p-8 rounded-xl flex flex-col transition-all hover:-translate-y-1 duration-300"
             style={glassCard}
@@ -313,10 +296,10 @@ export default function PricingPage() {
               </span>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>
-                  ${starterPrice}
+                  $0
                 </span>
-                <span className="text-sm" style={{ color: '#414754' }}>
-                  /mo {billing === 'annual' && '(billed annually)'}
+                <span className="text-sm font-semibold text-green-600">
+                  / free forever
                 </span>
               </div>
               <p className="mt-2 text-sm" style={{ color: '#414754' }}>
@@ -325,14 +308,14 @@ export default function PricingPage() {
             </div>
             <ul className="space-y-3.5 mb-10 flex-grow list-none p-0">
               {[
-                'Up to 10 users',
+                'Unlimited team members',
                 'Full CRM & contact management',
                 'Invoicing, quoting & payments',
                 'Task & project management',
                 'Document management & versioning',
-                'Basic workflows (up to 10 rules)',
+                'Native workflow rules & triggers',
                 'Dashboard & module statistics',
-                'Email support (48h)',
+                'Community & email support',
               ].map((item) => (
                 <li
                   key={item}
@@ -346,43 +329,33 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-center text-xs mb-3" style={{ color: '#414754' }}>
-              14-day free trial · No credit card required
+            <p className="text-center text-xs mb-3 text-green-600 font-medium">
+              Free Forever · No credit card required
             </p>
             <Link
               to="/signup?plan=starter"
-              className="w-full text-center py-3 rounded-md font-semibold transition-colors no-underline block"
-              style={{  color: '#191c1d' }}
+              className="w-full text-center py-3 rounded-md font-semibold transition-colors no-underline block border border-[#c1c6d7]"
+              style={{ color: '#191c1d', background: '#ffffff' }}
             >
-              Start Free Trial
+              Get Started Free
             </Link>
           </div>
 
-          {/* Professional Tier (Highlighted) */}
+          {/* Professional Plan */}
           <div
-            className="p-8 rounded-xl flex flex-col relative border-2 border-[#0058c3]/20 z-10 transition-all hover:-translate-y-1 duration-300 md:scale-105"
-            style={{
-              boxShadow: '0 20px 40px rgba(25, 28, 29, 0.06), 0 0 40px rgba(0, 88, 195, 0.12)',
-              background: 'rgba(255,255,255,0.8)',
-              backdropFilter: 'blur(20px)',
-            }}
+            className="p-8 rounded-xl flex flex-col transition-all hover:-translate-y-1 duration-300"
+            style={glassCard}
           >
-            <div
-              className="absolute -top-4 left-1/2 -translate-x-1/2 text-white text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full"
-              style={{ background: 'linear-gradient(135deg, #0058c3, #0070f3)' }}
-            >
-              Most Popular
-            </div>
             <div className="mb-8">
               <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-[#0058c3] bg-[#d8e2ff] px-2 py-1 rounded">
                 Professional
               </span>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>
-                  ${proPrice}
+                  $0
                 </span>
-                <span className="text-sm" style={{ color: '#414754' }}>
-                  /mo {billing === 'annual' && '(billed annually)'}
+                <span className="text-sm font-semibold text-green-600">
+                  / free forever
                 </span>
               </div>
               <p className="mt-2 text-sm" style={{ color: '#414754' }}>
@@ -391,17 +364,16 @@ export default function PricingPage() {
             </div>
             <ul className="space-y-3.5 mb-10 flex-grow list-none p-0">
               {[
-                'Up to 50 users',
+                'Unlimited team members',
                 'Everything in Starter, plus:',
                 'AI Assistant & Copilot',
                 'AI content generation & summarization',
                 'Campaign management & A/B testing',
-                'Social media management (5 accounts)',
-                'Unlimited workflows & triggers',
+                'Social media management & analytics',
+                'Native workflow engine & triggers',
                 'Advanced analytics & real-time KPI',
                 'Customer live chat & SMS',
-                'E-signatures & OCR',
-                'Priority email support (12h)',
+                'E-signatures & OCR data extraction',
               ].map((item, i) => (
                 <li
                   key={item}
@@ -418,59 +390,65 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-center text-xs mb-3" style={{ color: '#414754' }}>
-              14-day free trial · No credit card required
+            <p className="text-center text-xs mb-3 text-green-600 font-medium">
+              Free Forever · No credit card required
             </p>
             <Link
               to="/signup?plan=professional"
-              className="w-full text-center font-bold py-3 rounded-md shadow-lg shadow-[#0058c3]/20 hover:opacity-90 transition-all active:scale-95 no-underline block text-white"
-              style={{ background: 'linear-gradient(135deg, #0058c3, #0070f3)' }}
+              className="w-full text-center py-3 rounded-md font-semibold transition-colors no-underline block border border-[#c1c6d7]"
+              style={{ color: '#191c1d', background: '#ffffff' }}
             >
-              Start Free Trial
+              Get Started Free
             </Link>
           </div>
 
-          {/* Enterprise Tier */}
+          {/* Enterprise Plan (Default / Highlighted) */}
           <div
-            className="p-8 rounded-xl flex flex-col transition-all hover:-translate-y-1 duration-300"
-            style={glassCard}
+            className="p-8 rounded-xl flex flex-col relative border-2 border-[#0058c3]/40 z-10 transition-all hover:-translate-y-1 duration-300 md:scale-105"
+            style={{
+              boxShadow: '0 20px 40px rgba(25, 28, 29, 0.08), 0 0 40px rgba(0, 88, 195, 0.15)',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(20px)',
+            }}
           >
+            <div
+              className="absolute -top-4 left-1/2 -translate-x-1/2 text-white text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full"
+              style={{ background: 'linear-gradient(135deg, #0058c3, #0070f3)' }}
+            >
+              Default Plan For Everyone
+            </div>
             <div className="mb-8">
-              <span
-                className="text-[0.6875rem] font-semibold uppercase tracking-[0.05em] px-2 py-1 rounded"
-                style={{ color: '#414754', background: '#e7e8e9' }}
-              >
+              <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-[#722ed1] bg-[#f9f0ff] px-2 py-1 rounded">
                 Enterprise
               </span>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight" style={{ color: '#191c1d' }}>
-                  ${enterprisePrice}
+                  $0
                 </span>
-                <span className="text-sm" style={{ color: '#414754' }}>
-                  /mo {billing === 'annual' && '(billed annually)'}
+                <span className="text-sm font-semibold text-green-600">
+                  / free forever
                 </span>
               </div>
               <p className="mt-2 text-sm" style={{ color: '#414754' }}>
-                For large organizations needing compliance, custom workflows & full AI.
+                Complete crystalline control with unlimited users, all AI engines & full compliance.
               </p>
             </div>
             <ul className="space-y-3.5 mb-10 flex-grow list-none p-0">
               {[
-                'Unlimited users',
+                'Unlimited team members',
                 'Everything in Professional, plus:',
-                'n8n visual workflow builder (400+ integrations)',
+                'n8n visual workflow builder (compute allocated on request)',
                 'Advanced AI with self-learning engine',
                 'Multi-provider AI (OpenAI, Claude, Gemini)',
                 'AI Knowledge Base & anomaly detection',
                 'Full reputation management suite',
                 'GDPR compliance & data retention',
                 'SSO / SAML & custom branding',
-                'Dedicated account manager',
-                '1h SLA support',
+                'Full API & webhooks access',
               ].map((item, i) => (
                 <li
                   key={item}
-                  className="flex items-center gap-3 text-sm"
+                  className="flex items-center gap-3 text-sm font-medium"
                   style={{ color: '#191c1d' }}
                 >
                   <span className="material-symbols-outlined text-[#0058c3] text-lg">
@@ -480,15 +458,48 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-center text-xs mb-3" style={{ color: '#414754' }}>
-              14-day free trial · No credit card required
+            <p className="text-center text-xs mb-3 text-green-600 font-bold">
+              Included For Everyone · Free Forever
             </p>
             <Link
               to="/signup?plan=enterprise"
-              className="w-full text-center py-3 rounded-md font-semibold transition-colors no-underline block"
-              style={{  color: '#191c1d' }}
+              className="w-full text-center font-bold py-3 rounded-md shadow-lg shadow-[#0058c3]/20 hover:opacity-90 transition-all active:scale-95 no-underline block text-white"
+              style={{ background: 'linear-gradient(135deg, #0058c3, #0070f3)' }}
             >
-              Start Free Trial
+              Get Enterprise Free
+            </Link>
+          </div>
+        </div>
+
+        {/* Compute Resource Notice Banner */}
+        <div
+          className="mb-24 p-8 rounded-2xl border border-[#0058c3]/20 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(0, 88, 195, 0.05) 0%, rgba(0, 112, 243, 0.08) 100%)',
+          }}
+        >
+          <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold text-[#0058c3] bg-[#d8e2ff] mb-3">
+                <span className="material-symbols-outlined text-sm">cloud_sync</span>
+                N8N Workflow Compute Policy
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#191c1d' }}>
+                Dedicated n8n Workflow Integration & Compute Availability
+              </h3>
+              <p className="text-sm leading-relaxed mb-0" style={{ color: '#414754' }}>
+                All core ERP modules, native visual workflow builder tools, and AI features are 100% free and unlimited.
+                Because external n8n pipelines run in isolated, multi-tenant container instances that consume heavy server compute resources,
+                n8n container provisioning is granted on-demand based on cluster compute capacity. You can submit a compute allocation request
+                from your workspace dashboard at any time.
+              </p>
+            </div>
+            <Link
+              to="/signup?plan=enterprise"
+              className="px-6 py-3 rounded-lg font-semibold text-sm text-white no-underline transition-all hover:opacity-90 flex-shrink-0"
+              style={{ background: '#0058c3' }}
+            >
+              Deploy Free Workspace
             </Link>
           </div>
         </div>
@@ -500,7 +511,7 @@ export default function PricingPage() {
               Compare Every Feature
             </h3>
             <p style={{ color: '#414754' }}>
-              A complete breakdown across all tiers. Find exactly what fits your operational goals.
+              Every single tier is free ($0/mo), with all enterprise capabilities unlocked for all accounts.
             </p>
           </div>
           <div className="rounded-xl overflow-hidden overflow-x-auto" style={glassCard}>
@@ -517,22 +528,23 @@ export default function PricingPage() {
                     className="p-5 text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-center w-[22%]"
                     style={{ color: '#414754' }}
                   >
-                    Starter
+                    Starter ($0)
                   </th>
-                  <th className="p-5 text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-center w-[22%] text-[#0058c3]">
-                    Professional
-                  </th>
-                  <th
-                    className="p-5 text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-center w-[22%]"
+                  <th className="p-5 text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-center w-[22%]"
                     style={{ color: '#414754' }}
                   >
-                    Enterprise
+                    Professional ($0)
+                  </th>
+                  <th
+                    className="p-5 text-[0.6875rem] font-semibold uppercase tracking-[0.05em] text-center w-[22%] text-[#0058c3]"
+                  >
+                    Enterprise ($0 · Included)
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {comparisonData.map((section) => (
-                  <>
+                  <tbody key={`section-${section.category}`}>
                     <tr key={`cat-${section.category}`}>
                       <td
                         colSpan={4}
@@ -564,7 +576,7 @@ export default function PricingPage() {
                         </td>
                       </tr>
                     ))}
-                  </>
+                  </tbody>
                 ))}
               </tbody>
             </table>
@@ -577,7 +589,7 @@ export default function PricingPage() {
             <h3 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
               Frequently Asked Questions
             </h3>
-            <p style={{ color: '#414754' }}>Quick answers to common queries about ERP.js</p>
+            <p style={{ color: '#414754' }}>Quick answers regarding our 100% free model and compute allocation</p>
           </div>
           <div className="space-y-4">
             {faqs.map((faq, i) => (

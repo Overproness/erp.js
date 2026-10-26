@@ -1,11 +1,20 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import WebsiteLayout from './components/WebsiteLayout';
+import { canRenderHero3D } from '@/utils/graphicsCapabilities';
 
 const HeroScene = lazy(() => import('@/components/HeroScene'));
 
 export default function HomePage() {
   const [isModelReady, setIsModelReady] = useState(false);
+  const [allow3D, setAllow3D] = useState(false);
+
+  useEffect(() => {
+    // Only enable 3D animation if not a crawler and hardware acceleration is active
+    if (canRenderHero3D()) {
+      setAllow3D(true);
+    }
+  }, []);
 
   return (
     <WebsiteLayout
@@ -53,7 +62,7 @@ export default function HomePage() {
                 to="/signup"
                 className="px-8 py-4 bg-gradient-to-br from-[#0058c3] to-[#0070f3] text-white rounded-xl font-semibold text-lg shadow-xl hover:shadow-[#0058c3]/20 transition-all hover:-translate-y-1 active:scale-95 no-underline"
               >
-                Start Free Trial
+                Get Started Free
               </Link>
               <Link
                 to="/contact"
@@ -65,13 +74,13 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 3D Crystal Engine Model */}
+          {/* 3D Crystal Engine Model or Static Image */}
           <div className="relative hidden lg:flex justify-center items-center h-[600px] rounded-2xl overflow-hidden">
-            {/* Static poster fades out once the 3D scene has rendered. */}
+            {/* Static poster displayed for crawlers and devices with hardware acceleration off, or while 3D is preparing */}
             <img
               src="/hero-section-3d-model-static-removebg-preview.webp"
-              alt=""
-              aria-hidden="true"
+              alt="ERP.js Automation Engine"
+              aria-hidden={allow3D && isModelReady ? 'true' : undefined}
               // React 18's DOM renderer doesn't yet recognize the camelCase `fetchPriority`
               // prop on <img>; it must be passed lowercase to land as a real attribute.
               // @ts-expect-error -- @types/react types this as fetchPriority (React 19 API)
@@ -80,18 +89,20 @@ export default function HomePage() {
               decoding="sync"
               width={468}
               height={468}
-              className="w-[78%] h-[78%] absolute pointer-events-none transition-opacity duration-700"
-              style={{ opacity: isModelReady ? 0 : 1 }}
+              className="w-[78%] h-[78%] absolute pointer-events-none transition-opacity duration-700 object-contain"
+              style={{ opacity: allow3D && isModelReady ? 0 : 1 }}
             />
-            {/* 3D canvas fades in on top once Three.js has initialised */}
-            <div
-              className="absolute inset-0 transition-opacity duration-700"
-              style={{ opacity: isModelReady ? 1 : 0 }}
-            >
-              <Suspense fallback={null}>
-                <HeroScene onReady={() => setIsModelReady(true)} />
-              </Suspense>
-            </div>
+            {/* 3D canvas is conditionally mounted only when hardware acceleration is enabled and client is not a crawler */}
+            {allow3D && (
+              <div
+                className="absolute inset-0 transition-opacity duration-700"
+                style={{ opacity: isModelReady ? 1 : 0 }}
+              >
+                <Suspense fallback={null}>
+                  <HeroScene onReady={() => setIsModelReady(true)} />
+                </Suspense>
+              </div>
+            )}
           </div>
         </div>
       </section>

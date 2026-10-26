@@ -35,8 +35,11 @@ export function usePlan() {
       if (data.success && data.result) {
         dispatch(
           subscriptionActions.setSubscription({
-            plan: data.result.plan ?? 'starter',
-            status: data.result.status ?? null,
+            plan: data.result.plan ?? 'enterprise',
+            status: data.result.status ?? 'active',
+            isFree: data.result.isFree ?? true,
+            n8nAccessEnabled: data.result.n8nAccessEnabled ?? false,
+            n8nRequestStatus: data.result.n8nRequestStatus ?? 'none',
             billingCycle: data.result.billingCycle ?? 'monthly',
             trialEnd: data.result.trialEnd ?? null,
             currentPeriodEnd: data.result.currentPeriodEnd ?? null,
@@ -59,9 +62,26 @@ export function usePlan() {
   }, [auth.isLoggedIn, hasFetched, fetchSubscription]);
 
   const canAccess = useCallback(
-    (featureKey: string): boolean => hasFeatureAccess(plan, featureKey),
-    [plan]
+    (featureKey: string): boolean =>
+      hasFeatureAccess(plan, featureKey, { n8nAccessEnabled: subscription.n8nAccessEnabled }),
+    [plan, subscription.n8nAccessEnabled]
   );
+
+  const requestN8nAccess = useCallback(async () => {
+    try {
+      const res = await axios.post('subscription/request-n8n');
+      if (res.data.success) {
+        dispatch(subscriptionActions.setSubscription({ n8nRequestStatus: 'requested' }));
+        return { success: true, message: res.data.message };
+      }
+      return { success: false, message: res.data.message || 'Request failed' };
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err?.response?.data?.message || err.message || 'Network error',
+      };
+    }
+  }, [dispatch]);
 
   const limit = useCallback(
     (limitKey: string): number => getPlanLimit(plan, limitKey),
@@ -72,6 +92,10 @@ export function usePlan() {
 
   return {
     plan,
+    isFree: subscription.isFree ?? true,
+    n8nAccessEnabled: subscription.n8nAccessEnabled ?? false,
+    n8nRequestStatus: subscription.n8nRequestStatus ?? 'none',
+    requestN8nAccess,
     planName: PLAN_METADATA[plan]?.name ?? plan,
     status: subscription.status,
     isTrialing,

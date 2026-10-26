@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { usePlan } from '../../hooks/usePlan';
 
 export default function TrialBanner() {
-  const { isTrialing, daysLeftInTrial, planName } = usePlan();
+  const { isTrialing, daysLeftInTrial, planName, isFree } = usePlan();
   const navigate = useNavigate();
 
-  if (!isTrialing || daysLeftInTrial > 7) return null;
+  if (isFree || !isTrialing || daysLeftInTrial > 7) return null;
 
   const urgent = daysLeftInTrial <= 3;
 

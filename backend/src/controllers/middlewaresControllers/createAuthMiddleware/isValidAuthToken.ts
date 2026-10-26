@@ -62,13 +62,16 @@ const isValidAuthToken = async (req, res, next) => {
           if (owner) {
             const subscription = await Subscription.findOne({ companyOwner: owner._id }).lean();
             req.subscription = subscription ?? null;
-            req.plan = (subscription && subscription.status !== 'canceled') ? subscription.plan : 'starter';
+            req.plan = (subscription && subscription.plan) ? subscription.plan : 'enterprise';
+            req.n8nAccessEnabled = subscription ? (subscription.n8nAccessEnabled === true) : false;
           } else {
-            req.plan = 'starter';
+            req.plan = 'enterprise';
+            req.n8nAccessEnabled = false;
             req.subscription = null;
           }
         } catch (subErr) {
-          req.plan = 'starter';
+          req.plan = 'enterprise';
+          req.n8nAccessEnabled = false;
           req.subscription = null;
         }
         
@@ -100,9 +103,11 @@ const isValidAuthToken = async (req, res, next) => {
         const Subscription = mongoose.model('Subscription');
         const subscription = await Subscription.findOne({ companyOwner: companyOwner._id }).lean();
         req.subscription = subscription ?? null;
-        req.plan = (subscription && subscription.status !== 'canceled') ? subscription.plan : 'starter';
+        req.plan = (subscription && subscription.plan) ? subscription.plan : 'enterprise';
+            req.n8nAccessEnabled = subscription ? (subscription.n8nAccessEnabled === true) : false;
       } catch (subErr) {
-        req.plan = 'starter';
+        req.plan = 'enterprise';
+        req.n8nAccessEnabled = false;
         req.subscription = null;
       }
 

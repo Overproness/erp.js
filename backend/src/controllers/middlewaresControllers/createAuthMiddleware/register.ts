@@ -160,36 +160,25 @@ const register = async (req, res) => {
       responseData.onboardingComplete = savedUser.onboardingComplete;
       responseData.needsOnboarding = !savedUser.onboardingComplete;
 
-      // Auto-create trial subscription for new CompanyOwner
+      // Auto-create free enterprise subscription for new CompanyOwner
       try {
-        const validPlans = ['starter', 'professional', 'enterprise'];
-        const selectedPlan = validPlans.includes(req.body.plan) ? req.body.plan : 'professional';
         const Subscription = mongoose.model('Subscription');
         await Subscription.create({
           companyOwner: savedUser._id,
-          plan: selectedPlan,
-          status: 'trialing',
+          plan: 'enterprise',
+          status: 'active',
           billingCycle: 'monthly',
-          trialStart: new Date(),
-          trialEnd: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+          isFree: true,
+          n8nAccessEnabled: false,
+          n8nRequestStatus: 'none',
         });
-        console.log('Trial subscription created for CompanyOwner:', savedUser._id, 'plan:', selectedPlan);
+        console.log('Free enterprise subscription created for CompanyOwner:', savedUser._id);
       } catch (subError) {
-        console.error('Failed to create trial subscription:', subError.message);
-        // Don't fail registration if subscription creation fails
+        console.error('Failed to create subscription:', subError.message);
       }
 
-      // Send webhook to n8n instance for company signup
-      try {
-        console.log('Sending webhook to n8n for company signup:', savedUser._id);
-        await axios.post('http://localhost:3000/n8n-instance', {
-          id: savedUser._id.toString(),
-        });
-        console.log('n8n webhook sent successfully');
-      } catch (webhookError) {
-        console.error('Failed to send webhook to n8n:', webhookError.message);
-        // Don't fail the registration if webhook fails
-      }
+      // Note: n8n container instance is not launched automatically on signup to conserve limited compute.
+      // n8n compute allocation is provisioned on request based on cluster availability.
     } else {
       responseData.role = savedUser.role;
       responseData.isInvitationAccepted = savedUser.isInvitationAccepted;

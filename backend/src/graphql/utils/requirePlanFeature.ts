@@ -29,15 +29,26 @@ class PlanLimitReachedError extends Error {
 }
 
 function requirePlanFeature(context, featureKey) {
-  const plan = context.plan ?? 'starter';
-  if (!hasFeatureAccess(plan, featureKey)) {
+  const plan = context.plan ?? 'enterprise';
+  if (!hasFeatureAccess(plan, featureKey, { n8nAccessEnabled: context.n8nAccessEnabled })) {
+    if (featureKey === 'N8N_WORKFLOWS') {
+      const err = new Error(
+        'N8N Workflow Integration requires dedicated compute allocation which is currently limited. Please submit an access request.'
+      );
+      err.extensions = {
+        code: 'N8N_COMPUTE_REQUIRED',
+        computeRequired: true,
+        featureKey,
+      };
+      throw err;
+    }
     const requiredPlan = getMinimumPlan(featureKey);
     throw new PlanUpgradeRequiredError(featureKey, requiredPlan, plan);
   }
 }
 
 function requirePlanLimit(context, limitKey, currentCount) {
-  const plan = context.plan ?? 'starter';
+  const plan = context.plan ?? 'enterprise';
   const limit = getPlanLimit(plan, limitKey);
   if (limit !== Infinity && currentCount >= limit) {
     throw new PlanLimitReachedError(limitKey, limit, currentCount, plan);

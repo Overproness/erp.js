@@ -280,7 +280,7 @@ export default function ContactPage() {
                   to="/pricing"
                   className="text-[#0058c3] font-bold flex items-center gap-2 group no-underline"
                 >
-                  Learn more about Enterprise
+                  Explore Free Enterprise Features
                   <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
                     arrow_forward
                   </span>

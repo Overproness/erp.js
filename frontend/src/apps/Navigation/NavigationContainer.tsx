@@ -5,6 +5,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '@/context/appContext';
 import { usePermissions } from '@/hooks/usePermissions';
+import { usePlan } from '@/hooks/usePlan';
+import N8nComputeModal from '@/components/N8nComputeModal';
 
 import useLanguage from '@/locale/useLanguage';
 
@@ -59,6 +61,8 @@ export function NavigationOld() {
 }
 
 function Sidebar({ collapsible, isMobile = false }) {
+  const { n8nAccessEnabled } = usePlan();
+  const [n8nModalOpen, setN8nModalOpen] = useState(false);
   let location = useLocation();
 
   const { state: stateApp, appContextAction } = useAppContext();
@@ -663,8 +667,10 @@ function Sidebar({ collapsible, isMobile = false }) {
               icon={<ExperimentOutlined />}
               onClick={() => {
                 const companyId = currentAdmin?._id;
-                if (companyId) {
+                if (n8nAccessEnabled && companyId) {
                   window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
+                } else {
+                  setN8nModalOpen(true);
                 }
               }}
               style={{
@@ -913,6 +919,11 @@ function Sidebar({ collapsible, isMobile = false }) {
             scrollbar-color: #dbeafe #ffffff;
           }
       `}</style>
+      <N8nComputeModal
+        open={n8nModalOpen}
+        onClose={() => setN8nModalOpen(false)}
+        companyId={currentAdmin?._id}
+      />
     </aside>
   );
 }

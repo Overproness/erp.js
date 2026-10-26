@@ -96,18 +96,32 @@ export const FEATURE_REQUIREMENTS: Record<string, string> = {
 };
 
 export const PLAN_LIMITS: Record<string, Record<string, number>> = {
-  users: { starter: 10, professional: 50, enterprise: Infinity },
-  workflowRules: { starter: 10, professional: Infinity, enterprise: Infinity },
-  activeSurveys: { starter: 3, professional: Infinity, enterprise: Infinity },
-  socialAccounts: { starter: 0, professional: 5, enterprise: Infinity },
-  monthlyUrlCreates: { starter: 50, professional: Infinity, enterprise: Infinity },
+  users: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  workflowRules: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  activeSurveys: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  socialAccounts: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  monthlyUrlCreates: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+};
+
+export const PLAN_METADATA: Record<string, { name: string; price: number; priceAnnual: number; color: string }> = {
+  starter: { name: 'Starter', price: 0, priceAnnual: 0, color: '#52c41a' },
+  professional: { name: 'Professional', price: 0, priceAnnual: 0, color: '#1890ff' },
+  enterprise: { name: 'Enterprise', price: 0, priceAnnual: 0, color: '#722ed1' },
 };
 
 /** Returns true if plan can access the given feature key */
-export function hasFeatureAccess(plan: string, featureKey: string): boolean {
+export function hasFeatureAccess(
+  plan: string,
+  featureKey: string,
+  options?: { n8nAccessEnabled?: boolean }
+): boolean {
+  // N8N workflow container integration requires dedicated compute, provisioned selectively
+  if (featureKey === 'N8N_WORKFLOWS') {
+    return options?.n8nAccessEnabled === true;
+  }
   const required = FEATURE_REQUIREMENTS[featureKey];
   if (!required) return true;
-  return (TIER_ORDER[plan] ?? 0) >= (TIER_ORDER[required] ?? 99);
+  return (TIER_ORDER[plan] ?? 3) >= (TIER_ORDER[required] ?? 99);
 }
 
 /** Returns the usage cap for a given plan and limit key */

@@ -160,36 +160,30 @@
 
 ### Tier Overview
 
-|            | **Starter**                          | **Professional**          | **Enterprise**                    |
+|            | **Starter**                          | **Professional**          | **Enterprise (Default)**          |
 | ---------- | ------------------------------------ | ------------------------- | --------------------------------- |
-| **Target** | Small teams / Freelancers / Startups | Growing SMBs / Mid-market | Large orgs / Regulated industries |
-| **Price**  | $49/mo                               | $149/mo                   | $399/mo                           |
-| **Users**  | Up to 10                             | Up to 50                  | Unlimited                         |
-| **Trial**  | 14-day free trial                    | 14-day free trial         | 14-day free trial                 |
+| **Target** | Small teams / Freelancers / Startups | Growing SMBs / Mid-market | Everyone / Full platform access   |
+| **Price**  | $0/mo (Free Forever)                 | $0/mo (Free Forever)      | $0/mo (Free Forever)              |
+| **Users**  | Unlimited                            | Unlimited                 | Unlimited                         |
+| **Trial**  | None required (Instant Free Access)  | None (Instant Free)       | None (Instant Free Forever)       |
 
-### Allocation Rationale
+### Allocation & Compute Policy
 
-**Starter ($49/mo)** — "Get the engine running"
-Covers core operational needs: CRM, invoicing, quoting, payments, tasks, documents, basic workflows, and basic analytics. This is a fully functional ERP for small teams that replaces spreadsheets. No AI, no advanced automation, no social media management.
+**100% Free Highest-Tier Model:**
+All organizations automatically receive full access to the Enterprise plan for free. All CRM, invoicing, project management, marketing campaigns, AI Copilot, and native visual workflow tools are completely unlocked at $0/month with no credit card required.
 
-**Professional ($149/mo)** — "Scale with intelligence"
-Unlocks the AI Suite (Assistant, Copilot, content generation, lead scoring), marketing campaigns with A/B testing, social media management, advanced analytics, customer segmentation, and unlimited workflows. This tier is where automated intelligence removes manual work and drives revenue growth.
+**Compute-Allocated n8n Integration:**
+Native workflow builder, trigger rules, and business process automation are 100% free with unlimited workflow executions. External n8n visual pipelines run in dedicated Docker container instances which consume heavy server cluster compute. Because compute resources are limited, n8n instances are allocated to organizations on-demand subject to cluster compute availability.
 
-**Enterprise ($399/mo)** — "Full crystalline control"
-Adds compliance & audit infrastructure (GDPR, data retention, consent management), the n8n visual workflow engine for unlimited custom automations, review/reputation management, custom branding, SSO, dedicated support with SLA, and API access for custom integrations.
+### Value & Compute Allocation
 
-### Value Levers (Upgrade Drivers)
-
-| Lever                   | Starter → Professional                                                             | Professional → Enterprise                                                                   |
+| Lever                   | Platform Core & AI                                                                 | n8n Visual Pipeline Orchestration                                                           |
 | ----------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| **AI Intelligence**     | No AI → Full AI Suite (Assistant, Copilot, content gen, lead scoring, predictions) | Standard AI → Advanced AI with self-learning, multi-provider choice, knowledge base         |
-| **Workflow Automation** | 10 rules max → Unlimited rules + trigger engine + A/B testing                      | Unlimited workflows → n8n visual engine (400+ integrations)                                 |
-| **Marketing**           | No campaigns → Full campaign management + retargeting + social media               | Standard marketing → Review management + reputation monitoring + automation suggestions     |
-| **Analytics**           | Basic dashboard → Advanced analytics + global KPIs + real-time + export            | Advanced analytics → Predictive forecasting + AI insights + anomaly detection               |
-| **Compliance**          | Basic audit trail → —                                                              | Standard security → GDPR suite + consent management + data retention + compliance reporting |
-| **Users**               | 10 users → 50 users                                                                | 50 users → Unlimited                                                                        |
-| **Support**             | Email (48h) → Priority email (12h)                                                 | Priority email → 1h SLA + dedicated account manager                                         |
-| **Branding**            | ERP.js branding → —                                                                | — → Custom branding (white-label)                                                           |
+| **Availability**        | 100% Free & instant for all users                                                  | Provisioned on-demand based on cluster compute availability                                 |
+| **AI Intelligence**     | Full AI Suite (Assistant, Copilot, content gen, lead scoring, predictions)        | External orchestration nodes connectable to n8n pipelines                                   |
+| **Workflow Automation** | Unlimited native rules + visual trigger engine + A/B testing                       | Dedicated multi-tenant n8n container instances (400+ external integrations)                 |
+| **Users**               | Unlimited users across all accounts                                                | Multi-tenant per-organization workspace                                                     |
+| **Data & Compliance**   | Full GDPR compliance + consent management + audit logs + data export               | Isolated container database environment                                                     |
 
 ---
 

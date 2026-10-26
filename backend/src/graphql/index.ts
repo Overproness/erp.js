@@ -102,15 +102,17 @@ async function buildContext({ req, res }: { req: any; res: any }): Promise<Graph
           companyID: (admin as any).companyID || (admin as any)._id.toString(),
         } as unknown as AdminUser;
 
-        // Load subscription for plan-based access control
+        // Load subscription for plan-based access control (all users get Enterprise free)
         try {
           const Subscription = mongoose.model('Subscription');
           const sub = await Subscription.findOne({ companyOwner: (admin as any)._id }).lean();
           context.subscription = sub ?? null;
-          context.plan = (sub && (sub as any).status !== 'canceled') ? (sub as any).plan : 'starter';
+          context.plan = (sub && (sub as any).plan) ? (sub as any).plan : 'enterprise';
+          context.n8nAccessEnabled = sub ? ((sub as any).n8nAccessEnabled === true) : false;
         } catch (subErr) {
           // Subscription model may not be loaded yet during startup
-          context.plan = 'starter';
+          context.plan = 'enterprise';
+          context.n8nAccessEnabled = false;
           context.subscription = null;
         }
       }

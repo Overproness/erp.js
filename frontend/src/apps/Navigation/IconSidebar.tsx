@@ -2,6 +2,7 @@
 import { N8N_URL } from '@/config/serverApiConfig';
 import { usePermissions } from '@/hooks/usePermissions';
 import { usePlan } from '@/hooks/usePlan';
+import N8nComputeModal from '@/components/N8nComputeModal';
 import useLanguage from '@/locale/useLanguage';
 import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import { useEffect, useState } from 'react';
@@ -13,7 +14,8 @@ export default function IconSidebar() {
   const navigate = useNavigate();
   const translate = useLanguage();
   const currentAdmin = useSelector(selectCurrentAdmin);
-  const { canAccess } = usePlan();
+  const { canAccess, n8nAccessEnabled } = usePlan();
+  const [n8nModalOpen, setN8nModalOpen] = useState(false);
 
   const {
     hasPermission,
@@ -307,8 +309,10 @@ export default function IconSidebar() {
   const handleChildClick = (child) => {
     if (child.isExternal && child.key === 'workflow') {
       const companyId = currentAdmin?._id;
-      if (companyId) {
+      if (n8nAccessEnabled && companyId) {
         window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
+      } else {
+        setN8nModalOpen(true);
       }
     } else {
       navigate(child.path);
@@ -558,6 +562,11 @@ export default function IconSidebar() {
           border-radius: 2px;
         }
       `}</style>
+      <N8nComputeModal
+        open={n8nModalOpen}
+        onClose={() => setN8nModalOpen(false)}
+        companyId={currentAdmin?._id}
+      />
     </aside>
   );
 }

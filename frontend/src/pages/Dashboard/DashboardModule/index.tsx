@@ -19,6 +19,8 @@ import PreviewCard from './components/PreviewCard';
 
 import { N8N_URL } from '@/config/serverApiConfig';
 import { selectMoneyFormat } from '@/redux/settings/selectors';
+import { usePlan } from '@/hooks/usePlan';
+import N8nComputeModal from '@/components/N8nComputeModal';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,6 +29,8 @@ export default function DashboardModule() {
   const { moneyFormatter } = useMoney();
   const money_format_settings = useSelector(selectMoneyFormat);
   const navigate = useNavigate();
+  const { n8nAccessEnabled } = usePlan();
+  const [n8nModalOpen, setN8nModalOpen] = useState(false);
 
   const currentAdmin = useSelector(selectCurrentAdmin);
 
@@ -522,8 +526,10 @@ export default function DashboardModule() {
           <button
             onClick={() => {
               const companyId = currentAdmin?._id;
-              if (companyId) {
+              if (n8nAccessEnabled && companyId) {
                 window.open(`http://n8n-${companyId}.${N8N_URL}`, '_blank');
+              } else {
+                setN8nModalOpen(true);
               }
             }}
             style={{
@@ -730,6 +736,11 @@ export default function DashboardModule() {
             </div>
           </Col>
         </Row>
+        <N8nComputeModal
+          open={n8nModalOpen}
+          onClose={() => setN8nModalOpen(false)}
+          companyId={currentAdmin?._id}
+        />
       </div>
     );
   } else {

@@ -69,20 +69,27 @@ export const FEATURE_REQUIREMENTS: Record<string, PlanTier> = {
 };
 
 export const PLAN_LIMITS: Record<string, Record<PlanTier, number>> = {
-  users: { starter: 10, professional: 50, enterprise: Infinity },
-  workflowRules: { starter: 5, professional: 50, enterprise: Infinity },
-  activeSurveys: { starter: 0, professional: 10, enterprise: Infinity },
-  socialAccounts: { starter: 0, professional: 5, enterprise: Infinity },
-  monthlyUrlCreates: { starter: 0, professional: 100, enterprise: Infinity },
+  users: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  workflowRules: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  activeSurveys: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  socialAccounts: { starter: Infinity, professional: Infinity, enterprise: Infinity },
+  monthlyUrlCreates: { starter: Infinity, professional: Infinity, enterprise: Infinity },
 };
 
 export const PLAN_METADATA: Record<PlanTier, { name: string; price: number; priceAnnual: number; color: string }> = {
-  starter: { name: 'Starter', price: 49, priceAnnual: 39, color: '#52c41a' },
-  professional: { name: 'Professional', price: 149, priceAnnual: 119, color: '#1890ff' },
-  enterprise: { name: 'Enterprise', price: 399, priceAnnual: 319, color: '#722ed1' },
+  starter: { name: 'Starter', price: 0, priceAnnual: 0, color: '#52c41a' },
+  professional: { name: 'Professional', price: 0, priceAnnual: 0, color: '#1890ff' },
+  enterprise: { name: 'Enterprise', price: 0, priceAnnual: 0, color: '#722ed1' },
 };
 
-export function hasFeatureAccess(currentPlan: PlanTier, featureKey: string): boolean {
+export function hasFeatureAccess(
+  currentPlan: PlanTier,
+  featureKey: string,
+  options?: { n8nAccessEnabled?: boolean }
+): boolean {
+  if (featureKey === 'N8N_WORKFLOWS') {
+    return options?.n8nAccessEnabled === true;
+  }
   const requiredPlan = FEATURE_REQUIREMENTS[featureKey];
   if (!requiredPlan) return true; // unknown feature → allow
   return TIER_ORDER[currentPlan] >= TIER_ORDER[requiredPlan];

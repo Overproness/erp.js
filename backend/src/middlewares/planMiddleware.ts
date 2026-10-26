@@ -8,8 +8,20 @@ import { getMinimumPlan, getPlanLimit, hasFeatureAccess } from '../config/featur
  */
 export function requireFeature(featureKey: string) {
   return (req: any, res: Response, next: NextFunction) => {
-    const plan: string = req.plan ?? 'starter';
-    if (hasFeatureAccess(plan, featureKey)) return next();
+    const plan: string = req.plan ?? 'enterprise';
+    if (hasFeatureAccess(plan, featureKey, { n8nAccessEnabled: req.n8nAccessEnabled })) return next();
+
+    if (featureKey === 'N8N_WORKFLOWS') {
+      return res.status(403).json({
+        success: false,
+        result: null,
+        message:
+          'N8N Workflow Integration requires dedicated compute allocation which is currently limited. Please submit an access request.',
+        computeRequired: true,
+        n8nRequestStatus: req.subscription?.n8nRequestStatus || 'none',
+        currentPlan: plan,
+      });
+    }
 
     const requiredPlan = getMinimumPlan(featureKey);
     return res.status(403).json({

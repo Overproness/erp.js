@@ -21,23 +21,29 @@ const getSubscription = async (req, res) => {
       return res.status(200).json({
         success: true,
         result: {
-          plan: 'starter',
+          plan: 'enterprise',
           status: 'active',
+          isFree: true,
           billingCycle: 'monthly',
           trialEnd: null,
           currentPeriodEnd: null,
           cancelAtPeriodEnd: false,
+          n8nAccessEnabled: false,
+          n8nRequestStatus: 'none',
         },
-        message: 'No subscription found, using starter defaults',
+        message: 'Free Enterprise plan active by default',
       });
     }
 
     return res.status(200).json({
       success: true,
       result: {
-        plan: subscription.plan,
-        status: subscription.status,
-        billingCycle: subscription.billingCycle,
+        plan: subscription.plan || 'enterprise',
+        status: subscription.status || 'active',
+        isFree: true,
+        billingCycle: subscription.billingCycle || 'monthly',
+        n8nAccessEnabled: subscription.n8nAccessEnabled === true,
+        n8nRequestStatus: subscription.n8nRequestStatus || 'none',
         trialStart: subscription.trialStart,
         trialEnd: subscription.trialEnd,
         currentPeriodStart: subscription.currentPeriodStart,
@@ -85,9 +91,12 @@ const changePlan = async (req, res) => {
     return res.status(200).json({
       success: true,
       result: {
-        plan: subscription.plan,
-        status: subscription.status,
-        billingCycle: subscription.billingCycle,
+        plan: subscription.plan || 'enterprise',
+        status: subscription.status || 'active',
+        isFree: true,
+        billingCycle: subscription.billingCycle || 'monthly',
+        n8nAccessEnabled: subscription.n8nAccessEnabled === true,
+        n8nRequestStatus: subscription.n8nRequestStatus || 'none',
       },
       message: `Plan changed to ${plan} successfully`,
     });
@@ -187,6 +196,49 @@ const createPortalSession = async (req, res) => {
   }
 };
 
+
+const requestN8nAccess = async (req, res) => {
+  try {
+    const ownerId = req.companyOwner?._id || req.admin?._id;
+    if (!ownerId) {
+      return res.status(401).json({ success: false, result: null, message: 'Authentication required' });
+    }
+
+    const Subscription = mongoose.model('Subscription');
+    let subscription = await Subscription.findOne({ companyOwner: ownerId });
+
+    if (!subscription) {
+      subscription = await Subscription.create({
+        companyOwner: ownerId,
+        plan: 'enterprise',
+        status: 'active',
+        billingCycle: 'monthly',
+        isFree: true,
+        n8nAccessEnabled: false,
+        n8nRequestStatus: 'requested',
+        n8nRequestedAt: new Date(),
+      });
+    } else {
+      subscription.n8nRequestStatus = 'requested';
+      subscription.n8nRequestedAt = new Date();
+      await subscription.save();
+    }
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        plan: subscription.plan,
+        n8nAccessEnabled: subscription.n8nAccessEnabled === true,
+        n8nRequestStatus: subscription.n8nRequestStatus,
+      },
+      message: 'N8N compute allocation request received. Access is provisioned based on cluster capacity.',
+    });
+  } catch (error) {
+    console.error('Error requesting n8n access:', error);
+    return res.status(500).json({ success: false, result: null, message: error.message });
+  }
+};
+
 module.exports = {
   getSubscription,
   changePlan,
@@ -194,4 +246,5 @@ module.exports = {
   reactivateSubscription,
   createCheckoutSession,
   createPortalSession,
+  requestN8nAccess,
 };

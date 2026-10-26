@@ -5,6 +5,9 @@ import type { RootState } from '../store';
 interface SubscriptionState {
   plan: PlanTier;
   status: SubscriptionStatus | null;
+  isFree: boolean;
+  n8nAccessEnabled: boolean;
+  n8nRequestStatus: 'none' | 'requested' | 'approved' | 'rejected';
   billingCycle: 'monthly' | 'yearly';
   trialEnd: string | null;
   currentPeriodEnd: string | null;
@@ -14,8 +17,11 @@ interface SubscriptionState {
 }
 
 const initialState: SubscriptionState = {
-  plan: 'starter',
-  status: null,
+  plan: 'enterprise',
+  status: 'active',
+  isFree: true,
+  n8nAccessEnabled: false,
+  n8nRequestStatus: 'none',
   billingCycle: 'monthly',
   trialEnd: null,
   currentPeriodEnd: null,
@@ -48,7 +54,10 @@ export default subscriptionSlice.reducer;
 
 // Selectors
 export const selectSubscription = (state: RootState) => state.subscription;
-export const selectCurrentPlan = (state: RootState): PlanTier => state.subscription?.plan ?? 'starter';
+export const selectCurrentPlan = (state: RootState): PlanTier => state.subscription?.plan ?? 'enterprise';
+export const selectN8nAccessEnabled = (state: RootState): boolean => state.subscription?.n8nAccessEnabled ?? false;
+export const selectN8nRequestStatus = (state: RootState): string => state.subscription?.n8nRequestStatus ?? 'none';
+export const selectIsFree = (state: RootState): boolean => state.subscription?.isFree ?? true;
 export const selectSubscriptionStatus = (state: RootState) => state.subscription?.status;
 export const selectIsTrialing = (state: RootState) => state.subscription?.status === 'trialing';
 export const selectTrialEnd = (state: RootState) => state.subscription?.trialEnd;
