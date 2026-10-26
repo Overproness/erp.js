@@ -93,10 +93,10 @@ const invoiceTypeDefs = gql`
   }
 
   extend type Mutation {
-    invoiceCreate(input: InvoiceCreateInput!): MutationResponse!
-    invoiceUpdate(id: ID!, input: InvoiceUpdateInput!): MutationResponse!
+    invoiceCreate(input: JSON!): MutationResponse!
+    invoiceUpdate(id: ID!, input: JSON!): MutationResponse!
     invoiceDelete(id: ID!): MutationResponse!
-    invoiceBulkCreate(input: [InvoiceCreateInput!]!): MutationResponse!
+    invoiceBulkCreate(input: JSON!): MutationResponse!
     invoiceBulkDelete(ids: [ID!]!): MutationResponse!
     invoiceMail(id: ID!, input: JSON): MutationResponse!
     invoiceGenerateRecurring(id: ID!): MutationResponse!

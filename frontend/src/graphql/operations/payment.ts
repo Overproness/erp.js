@@ -17,13 +17,13 @@ export const PAYMENT_SUMMARY = gql`
 `;
 
 export const CREATE_PAYMENT = gql`
-  mutation CreatePayment($input: PaymentCreateInput!) {
+  mutation CreatePayment($input: JSON!) {
     paymentCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_PAYMENT = gql`
-  mutation UpdatePayment($id: ID!, $input: PaymentUpdateInput!) {
+  mutation UpdatePayment($id: ID!, $input: JSON!) {
     paymentUpdate(id: $id, input: $input) { success result message }
   }
 `;

@@ -59,8 +59,8 @@ const reminderTypeDefs = gql`
   }
 
   extend type Mutation {
-    reminderCreate(input: ReminderCreateInput!): MutationResponse!
-    reminderUpdate(id: ID!, input: ReminderUpdateInput!): MutationResponse!
+    reminderCreate(input: JSON!): MutationResponse!
+    reminderUpdate(id: ID!, input: JSON!): MutationResponse!
     reminderDelete(id: ID!): MutationResponse!
   }
 `;

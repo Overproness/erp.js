@@ -23,6 +23,7 @@ interface ReqResResult {
 }
 
 function createReqRes(args: any, context: GraphQLContext): ReqResResult {
+  const isTeamUser = Boolean((context.admin as any)?.isUser);
   const req: MockRequest = {
     params: {},
     query: {},
@@ -32,15 +33,22 @@ function createReqRes(args: any, context: GraphQLContext): ReqResResult {
     admin: context.admin,
     plan: (context as any).plan ?? 'starter',
     subscription: (context as any).subscription ?? null,
-    companyOwner: context.admin ? {
+    companyOwner: context.admin && !isTeamUser ? {
       _id: context.admin._id,
       companyID: context.admin.companyID,
       email: (context.admin as any).email,
     } : undefined,
-    user: context.admin ? {
+    user: context.admin && isTeamUser ? {
       _id: context.admin._id,
       companyID: context.admin.companyID,
+      permissions: (context.admin as any).permissions || {
+        canCreateClients: true,
+        canViewClients: true,
+        canUpdateClients: true,
+        canDeleteClients: true,
+      },
     } : undefined,
+    userPermissions: (context.admin as any)?.permissions,
     companyID: context.admin?.companyID || '',
   };
 
@@ -100,8 +108,13 @@ function wrapController(controllerMethod: Function) {
       const response = getResponse();
       const data = response.data || { success: false, message: 'No response from controller' };
       // Controllers return result as { items: [...], pagination: {...} }
-      // but ListResponse expects result to be [JSON]. Unwrap items array.
-      if (data.result && !Array.isArray(data.result) && Array.isArray(data.result.items)) {
+      // but ListResponse expects result to be [JSON]. Unwrap items array only for paginated lists.
+      if (
+        data.result &&
+        !Array.isArray(data.result) &&
+        Array.isArray(data.result.items) &&
+        Boolean(data.result.pagination || data.pagination)
+      ) {
         return {
           success: data.success,
           result: data.result.items,
@@ -163,8 +176,13 @@ function generateCRUDResolvers(entityName: string, controller: CRUDController) {
         const data = getResponse().data;
         if (!data) return { success: false, result: [], message: 'No response' };
         // The search controller returns result as { items: [...], pagination: {...} }
-        // but ListResponse expects result to be [JSON]. Unwrap items array.
-        if (data.result && !Array.isArray(data.result) && Array.isArray(data.result.items)) {
+        // but ListResponse expects result to be [JSON]. Unwrap items array only for paginated lists.
+        if (
+          data.result &&
+          !Array.isArray(data.result) &&
+          Array.isArray(data.result.items) &&
+          Boolean(data.result.pagination || data.pagination)
+        ) {
           return {
             success: data.success,
             result: data.result.items,

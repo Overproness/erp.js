@@ -56,10 +56,10 @@ const paymentTypeDefs = gql`
   }
 
   extend type Mutation {
-    paymentCreate(input: PaymentCreateInput!): MutationResponse!
-    paymentUpdate(id: ID!, input: PaymentUpdateInput!): MutationResponse!
+    paymentCreate(input: JSON!): MutationResponse!
+    paymentUpdate(id: ID!, input: JSON!): MutationResponse!
     paymentDelete(id: ID!): MutationResponse!
-    paymentBulkCreate(input: [PaymentCreateInput!]!): MutationResponse!
+    paymentBulkCreate(input: JSON!): MutationResponse!
     paymentBulkDelete(ids: [ID!]!): MutationResponse!
     paymentMail(id: ID!, input: JSON): MutationResponse!
   }

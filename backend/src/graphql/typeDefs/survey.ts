@@ -84,8 +84,8 @@ const surveyTypeDefs = gql`
   }
 
   extend type Mutation {
-    surveyCreate(input: SurveyCreateInput!): MutationResponse!
-    surveyUpdate(id: ID!, input: SurveyUpdateInput!): MutationResponse!
+    surveyCreate(input: JSON!): MutationResponse!
+    surveyUpdate(id: ID!, input: JSON!): MutationResponse!
     surveyDelete(id: ID!): MutationResponse!
     surveyPublish(id: ID!): MutationResponse!
     surveyClose(id: ID!): MutationResponse!

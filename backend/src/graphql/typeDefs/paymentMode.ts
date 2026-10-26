@@ -37,8 +37,8 @@ const paymentModeTypeDefs = gql`
   }
 
   extend type Mutation {
-    paymentModeCreate(input: PaymentModeCreateInput!): MutationResponse!
-    paymentModeUpdate(id: ID!, input: PaymentModeUpdateInput!): MutationResponse!
+    paymentModeCreate(input: JSON!): MutationResponse!
+    paymentModeUpdate(id: ID!, input: JSON!): MutationResponse!
     paymentModeDelete(id: ID!): MutationResponse!
   }
 `;

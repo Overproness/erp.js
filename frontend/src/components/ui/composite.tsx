@@ -86,10 +86,14 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
 
     const clamp = (n: number) => Math.min(max, Math.max(min, n));
 
-    const getDisplayValue = (v: number | null | undefined) => {
-      if (v === null || v === undefined) return '';
-      const str = precision !== undefined ? v.toFixed(precision) : String(v);
-      if (formatter) return formatter(v, { userTyping: false, input: str });
+    const getDisplayValue = (v: number | string | null | undefined) => {
+      if (v === null || v === undefined || v === '') return '';
+      const num = typeof v === 'number' ? v : Number(v);
+      const str =
+        !Number.isNaN(num) && precision !== undefined
+          ? num.toFixed(precision)
+          : String(v);
+      if (formatter) return formatter(v as any, { userTyping: false, input: str });
       return str;
     };
 

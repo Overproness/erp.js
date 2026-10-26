@@ -37,8 +37,8 @@ const taxesTypeDefs = gql`
   }
 
   extend type Mutation {
-    taxesCreate(input: TaxesCreateInput!): MutationResponse!
-    taxesUpdate(id: ID!, input: TaxesUpdateInput!): MutationResponse!
+    taxesCreate(input: JSON!): MutationResponse!
+    taxesUpdate(id: ID!, input: JSON!): MutationResponse!
     taxesDelete(id: ID!): MutationResponse!
   }
 `;

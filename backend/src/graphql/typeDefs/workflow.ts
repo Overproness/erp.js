@@ -68,8 +68,8 @@ const workflowTypeDefs = gql`
   }
 
   extend type Mutation {
-    workflowCreate(input: WorkflowCreateInput!): MutationResponse!
-    workflowUpdate(id: ID!, input: WorkflowUpdateInput!): MutationResponse!
+    workflowCreate(input: JSON!): MutationResponse!
+    workflowUpdate(id: ID!, input: JSON!): MutationResponse!
     workflowDelete(id: ID!): MutationResponse!
   }
 `;

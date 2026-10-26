@@ -74,8 +74,8 @@ const documentTypeDefs = gql`
   }
 
   extend type Mutation {
-    documentCreate(input: DocumentCreateInput!): MutationResponse!
-    documentUpdate(id: ID!, input: DocumentUpdateInput!): MutationResponse!
+    documentCreate(input: JSON!): MutationResponse!
+    documentUpdate(id: ID!, input: JSON!): MutationResponse!
     documentDelete(id: ID!): MutationResponse!
     documentBulkDelete(ids: [ID!]!): MutationResponse!
     documentDownload(id: ID!): MutationResponse!

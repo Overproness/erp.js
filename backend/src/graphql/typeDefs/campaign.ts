@@ -67,8 +67,8 @@ const campaignTypeDefs = gql`
   }
 
   extend type Mutation {
-    campaignCreate(input: CampaignCreateInput!): MutationResponse!
-    campaignUpdate(id: ID!, input: CampaignUpdateInput!): MutationResponse!
+    campaignCreate(input: JSON!): MutationResponse!
+    campaignUpdate(id: ID!, input: JSON!): MutationResponse!
     campaignDelete(id: ID!): MutationResponse!
     campaignBulkDelete(ids: [ID!]!): MutationResponse!
     campaignLaunch(id: ID!): MutationResponse!

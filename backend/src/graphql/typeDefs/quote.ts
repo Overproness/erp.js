@@ -87,10 +87,10 @@ const quoteTypeDefs = gql`
   }
 
   extend type Mutation {
-    quoteCreate(input: QuoteCreateInput!): MutationResponse!
-    quoteUpdate(id: ID!, input: QuoteUpdateInput!): MutationResponse!
+    quoteCreate(input: JSON!): MutationResponse!
+    quoteUpdate(id: ID!, input: JSON!): MutationResponse!
     quoteDelete(id: ID!): MutationResponse!
-    quoteBulkCreate(input: [QuoteCreateInput!]!): MutationResponse!
+    quoteBulkCreate(input: JSON!): MutationResponse!
     quoteBulkDelete(ids: [ID!]!): MutationResponse!
     quoteMail(id: ID!, input: JSON): MutationResponse!
     quoteSend(id: ID!): MutationResponse!

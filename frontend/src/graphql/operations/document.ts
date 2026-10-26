@@ -37,13 +37,13 @@ export const DOCUMENT_AUDIT_TRAIL = gql`
 `;
 
 export const CREATE_DOCUMENT = gql`
-  mutation CreateDocument($input: DocumentCreateInput!) {
+  mutation CreateDocument($input: JSON!) {
     documentCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_DOCUMENT = gql`
-  mutation UpdateDocument($id: ID!, $input: DocumentUpdateInput!) {
+  mutation UpdateDocument($id: ID!, $input: JSON!) {
     documentUpdate(id: $id, input: $input) { success result message }
   }
 `;

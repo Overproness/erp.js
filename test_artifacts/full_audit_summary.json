@@ -1,0 +1,67 @@
+{
+  "startTime": "2026-10-26T18:17:24.386Z",
+  "steps": {
+    "login": {
+      "success": true,
+      "url": "http://localhost:3000/client"
+    },
+    "customerCreated": {
+      "url": "http://localhost:3000/client/read/6adf993fab8a8fb185d749bd",
+      "customer": {
+        "name": "OmniCorp Global 53671",
+        "email": "contact53671@omnicorpglobal.com",
+        "phone": "+1-555-019-3671",
+        "company": "OmniCorp Enterprises 53671"
+      },
+      "success": true
+    },
+    "customerFoundInList": true,
+    "invoiceCreated": {
+      "url": "http://localhost:3000/invoice/read/6adf9952ab8a8fb185d74a34",
+      "id": "6adf9952ab8a8fb185d74a34",
+      "success": true
+    },
+    "paymentRecorded": {
+      "url": "http://localhost:3000/invoice/",
+      "amount": 1000,
+      "invoiceId": "6adf9952ab8a8fb185d74a34",
+      "success": true
+    },
+    "invoicePaymentVerified": {
+      "paidMatches": true,
+      "statusPartially": true
+    },
+    "quoteCreated": {
+      "url": "http://localhost:3000/quote/read/6adf9974ab8a8fb185d74b81",
+      "success": true
+    }
+  },
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Error fetching interactions: JSHandle@error",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Error fetching interactions: JSHandle@error",
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+  ],
+  "pageCrashes": [],
+  "metrics": {
+    "invoice": [
+      "NUMBER CLIENT DATE EXPIRED DATE TOTAL PAID STATUS PAYMENT",
+      "1 testing 07/12/2025 06/01/2026 $112.00 $10.00 Draft Pending",
+      "1 testing 07/12/2025 09/12/2025 $112.00 $0.00 Draft Pending",
+      "2 testing 07/12/2025 06/01/2026 $112.00 $0.00 Draft Pending",
+      "1 testing 07/12/2025 06/01/2026 $112.00 $0.00 Draft Pending",
+      "1 Global Tech Enterprises 37115 26/10/2026 25/11/2026 $3,750.00 $0.00 Draft Pending",
+      "1 Global Tech Enterprises 37115 26/10/2026 25/11/2026 $3,750.00 $0.00 Draft Pending",
+      "1 Global Tech Enterprises 37115 26/10/2026 25/11/2026 $3,750.00 $0.00 Draft Pending",
+      "1 Global Tech Enterprises 37115 26/10/2026 25/11/2026 $3,750.00 $1,000.00 Draft Pending",
+      "1 OmniCorp Global 53671 26/10/2026 25/11/2026 $3,750.00 $0.00 Draft Pending"
+    ],
+    "quote": [
+      "NUMBER CLIENT DATE EXPIRED DATE SUB TOTAL TOTAL STATUS",
+      "1 Global Tech Enterprises 37115 26/10/2026 25/11/2026 $4,800.00 $4,800.00 Draft",
+      "1 OmniCorp Global 53671 26/10/2026 25/11/2026 $4,800.00 $4,800.00 Draft"
+    ]
+  },
+  "endTime": "2026-10-26T18:19:07.450Z"
+}

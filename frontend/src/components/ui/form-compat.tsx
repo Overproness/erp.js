@@ -186,7 +186,29 @@ const FormItem: React.FC<FormItemProps> = ({
 
         let cloned: React.ReactNode = rawChild;
         if (React.isValidElement(rawChild)) {
+          const childOnChange = (rawChild.props as any)?.onChange;
+          const childOnBlur = (rawChild.props as any)?.onBlur;
           const extraProps: any = { ...control };
+          if (childOnChange && control?.onChange) {
+            extraProps.onChange = (...args: any[]) => {
+              try {
+                childOnChange(...args);
+              } catch (e) {
+                console.error(e);
+              }
+              control.onChange(...args);
+            };
+          }
+          if (childOnBlur && control?.onBlur) {
+            extraProps.onBlur = (...args: any[]) => {
+              try {
+                childOnBlur(...args);
+              } catch (e) {
+                console.error(e);
+              }
+              control.onBlur(...args);
+            };
+          }
           if (errors.length > 0) extraProps.status = 'error';
           if (ctxDisabled) extraProps.disabled = true;
           cloned = React.cloneElement(rawChild as React.ReactElement<any>, extraProps);

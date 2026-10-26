@@ -79,10 +79,10 @@ const urlTypeDefs = gql`
   }
 
   extend type Mutation {
-    urlCreate(input: URLCreateInput!): MutationResponse!
-    urlUpdate(id: ID!, input: URLUpdateInput!): MutationResponse!
+    urlCreate(input: JSON!): MutationResponse!
+    urlUpdate(id: ID!, input: JSON!): MutationResponse!
     urlDelete(id: ID!): MutationResponse!
-    urlBulkCreate(input: [URLCreateInput!]!): MutationResponse!
+    urlBulkCreate(input: JSON!): MutationResponse!
     urlBulkDelete(ids: [ID!]!): MutationResponse!
     urlGenerateQR(id: ID!): MutationResponse!
     urlDeactivate(id: ID!): MutationResponse!

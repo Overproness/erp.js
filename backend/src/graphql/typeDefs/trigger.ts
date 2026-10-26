@@ -56,8 +56,8 @@ const triggerTypeDefs = gql`
   }
 
   extend type Mutation {
-    triggerRuleCreate(input: TriggerRuleCreateInput!): MutationResponse!
-    triggerRuleUpdate(id: ID!, input: TriggerRuleUpdateInput!): MutationResponse!
+    triggerRuleCreate(input: JSON!): MutationResponse!
+    triggerRuleUpdate(id: ID!, input: JSON!): MutationResponse!
     triggerRuleDelete(id: ID!): MutationResponse!
     triggerRuleActivate(id: ID!): MutationResponse!
     triggerRuleDeactivate(id: ID!): MutationResponse!

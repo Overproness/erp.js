@@ -43,13 +43,13 @@ export const INVOICE_RECURRING_HISTORY = gql`
 
 // Mutations
 export const CREATE_INVOICE = gql`
-  mutation CreateInvoice($input: InvoiceCreateInput!) {
+  mutation CreateInvoice($input: JSON!) {
     invoiceCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_INVOICE = gql`
-  mutation UpdateInvoice($id: ID!, $input: InvoiceUpdateInput!) {
+  mutation UpdateInvoice($id: ID!, $input: JSON!) {
     invoiceUpdate(id: $id, input: $input) { success result message }
   }
 `;

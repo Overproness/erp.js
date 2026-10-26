@@ -4,6 +4,8 @@ const { gql } = require('graphql-tag');
 const clientTypeDefs = gql`
   type Client {
     _id: ID!
+    name: String
+    customerType: String
     company: String
     managerName: String
     email: String
@@ -86,11 +88,11 @@ const clientTypeDefs = gql`
   }
 
   extend type Mutation {
-    clientCreate(input: ClientCreateInput!): MutationResponse!
-    clientUpdate(id: ID!, input: ClientUpdateInput!): MutationResponse!
+    clientCreate(input: JSON!): MutationResponse!
+    clientUpdate(id: ID!, input: JSON!): MutationResponse!
     clientDelete(id: ID!): MutationResponse!
-    clientBulkCreate(input: [ClientCreateInput!]!): MutationResponse!
-    clientBulkUpdate(ids: [ID!]!, input: ClientUpdateInput!): MutationResponse!
+    clientBulkCreate(input: JSON!): MutationResponse!
+    clientBulkUpdate(ids: [ID!]!, input: JSON!): MutationResponse!
     clientBulkDelete(ids: [ID!]!): MutationResponse!
     clientCalculateLeadScore(id: ID!): MutationResponse!
     clientRecalculateAllLeadScores: MutationResponse!

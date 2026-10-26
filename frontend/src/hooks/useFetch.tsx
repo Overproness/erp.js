@@ -9,8 +9,8 @@ function useFetchData(fetchFunction) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await fetchFunction();
-        setData(data.result);
+        const res = await fetchFunction();
+        setData(res && res.result !== undefined ? res.result : res);
         setSuccess(true);
       } catch (error) {
         setError(error);

@@ -68,8 +68,8 @@ const projectTypeDefs = gql`
   }
 
   extend type Mutation {
-    projectCreate(input: ProjectCreateInput!): MutationResponse!
-    projectUpdate(id: ID!, input: ProjectUpdateInput!): MutationResponse!
+    projectCreate(input: JSON!): MutationResponse!
+    projectUpdate(id: ID!, input: JSON!): MutationResponse!
   }
 `;
 

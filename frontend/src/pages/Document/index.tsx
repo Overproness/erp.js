@@ -460,14 +460,14 @@ export default function Document() {
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
-              <div>
-                <Title level={4} style={{ color: '#6b7280' }}>
+              <span>
+                <span style={{ display: 'block', fontSize: '16px', fontWeight: 600, color: '#6b7280', marginBottom: '4px' }}>
                   {translate('No documents found')}
-                </Title>
-                <Text style={{ color: '#9ca3af' }}>
+                </span>
+                <span style={{ color: '#9ca3af', fontSize: '14px' }}>
                   {translate('Get started by uploading your first document')}
-                </Text>
-              </div>
+                </span>
+              </span>
             }
             style={{ padding: '60px 0' }}
           >

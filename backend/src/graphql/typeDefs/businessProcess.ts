@@ -54,8 +54,8 @@ const businessProcessTypeDefs = gql`
   }
 
   extend type Mutation {
-    businessProcessCreate(input: BusinessProcessCreateInput!): MutationResponse!
-    businessProcessUpdate(id: ID!, input: BusinessProcessUpdateInput!): MutationResponse!
+    businessProcessCreate(input: JSON!): MutationResponse!
+    businessProcessUpdate(id: ID!, input: JSON!): MutationResponse!
     businessProcessDelete(id: ID!): MutationResponse!
     businessProcessAdvanceStep(id: ID!): MutationResponse!
     businessProcessComplete(id: ID!): MutationResponse!

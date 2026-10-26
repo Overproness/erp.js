@@ -29,13 +29,13 @@ export const TASK_SUMMARY = gql`
 `;
 
 export const CREATE_TASK = gql`
-  mutation CreateTask($input: TaskCreateInput!) {
+  mutation CreateTask($input: JSON!) {
     taskCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_TASK = gql`
-  mutation UpdateTask($id: ID!, $input: TaskUpdateInput!) {
+  mutation UpdateTask($id: ID!, $input: JSON!) {
     taskUpdate(id: $id, input: $input) { success result message }
   }
 `;

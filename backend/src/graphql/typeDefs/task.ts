@@ -73,11 +73,11 @@ const taskTypeDefs = gql`
   }
 
   extend type Mutation {
-    taskCreate(input: TaskCreateInput!): MutationResponse!
-    taskUpdate(id: ID!, input: TaskUpdateInput!): MutationResponse!
+    taskCreate(input: JSON!): MutationResponse!
+    taskUpdate(id: ID!, input: JSON!): MutationResponse!
     taskDelete(id: ID!): MutationResponse!
-    taskBulkCreate(input: [TaskCreateInput!]!): MutationResponse!
-    taskBulkUpdate(ids: [ID!]!, input: TaskUpdateInput!): MutationResponse!
+    taskBulkCreate(input: JSON!): MutationResponse!
+    taskBulkUpdate(ids: [ID!]!, input: JSON!): MutationResponse!
     taskBulkDelete(ids: [ID!]!): MutationResponse!
     taskAddCollaborator(id: ID!, userId: ID!): MutationResponse!
     taskDelegate(id: ID!, userId: ID!): MutationResponse!

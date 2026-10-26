@@ -236,7 +236,9 @@ methods.list = async (req, res) => {
 
     const count = await Model.countDocuments(filter);
     const skip = (pageNumber - 1) * itemsPerPage;
-    const sortOptions = { [sortBy]: parseInt(sortValue) };
+    const numericSort = parseInt(sortValue);
+    const resolvedSort = !Number.isNaN(numericSort) ? numericSort : (sortValue === 'asc' || sortValue === 'ascend' ? 1 : -1);
+    const sortOptions = { [sortBy]: resolvedSort };
 
     const result = await Model.find(filter).sort(sortOptions).skip(skip).limit(itemsPerPage).exec();
 

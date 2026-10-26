@@ -17,13 +17,13 @@ export const GET_TAX = gql`
 `;
 
 export const CREATE_TAX = gql`
-  mutation CreateTax($input: TaxesCreateInput!) {
+  mutation CreateTax($input: JSON!) {
     taxesCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_TAX = gql`
-  mutation UpdateTax($id: ID!, $input: TaxesUpdateInput!) {
+  mutation UpdateTax($id: ID!, $input: JSON!) {
     taxesUpdate(id: $id, input: $input) { success result message }
   }
 `;
@@ -51,13 +51,13 @@ export const GET_PAYMENT_MODE = gql`
 `;
 
 export const CREATE_PAYMENT_MODE = gql`
-  mutation CreatePaymentMode($input: PaymentModeCreateInput!) {
+  mutation CreatePaymentMode($input: JSON!) {
     paymentModeCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_PAYMENT_MODE = gql`
-  mutation UpdatePaymentMode($id: ID!, $input: PaymentModeUpdateInput!) {
+  mutation UpdatePaymentMode($id: ID!, $input: JSON!) {
     paymentModeUpdate(id: $id, input: $input) { success result message }
   }
 `;

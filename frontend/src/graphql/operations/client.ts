@@ -41,13 +41,13 @@ export const CLIENT_SUMMARY = gql`
 
 // Mutations
 export const CREATE_CLIENT = gql`
-  mutation CreateClient($input: ClientCreateInput!) {
+  mutation CreateClient($input: JSON!) {
     clientCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_CLIENT = gql`
-  mutation UpdateClient($id: ID!, $input: ClientUpdateInput!) {
+  mutation UpdateClient($id: ID!, $input: JSON!) {
     clientUpdate(id: $id, input: $input) { success result message }
   }
 `;
@@ -59,7 +59,7 @@ export const DELETE_CLIENT = gql`
 `;
 
 export const BULK_CREATE_CLIENTS = gql`
-  mutation BulkCreateClients($input: [ClientCreateInput!]!) {
+  mutation BulkCreateClients($input: JSON!) {
     clientBulkCreate(input: $input) { success result message }
   }
 `;

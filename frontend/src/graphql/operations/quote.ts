@@ -37,13 +37,13 @@ export const QUOTE_DELIVERY_STATUS = gql`
 
 // Mutations
 export const CREATE_QUOTE = gql`
-  mutation CreateQuote($input: QuoteCreateInput!) {
+  mutation CreateQuote($input: JSON!) {
     quoteCreate(input: $input) { success result message }
   }
 `;
 
 export const UPDATE_QUOTE = gql`
-  mutation UpdateQuote($id: ID!, $input: QuoteUpdateInput!) {
+  mutation UpdateQuote($id: ID!, $input: JSON!) {
     quoteUpdate(id: $id, input: $input) { success result message }
   }
 `;

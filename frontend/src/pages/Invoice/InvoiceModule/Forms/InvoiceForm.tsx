@@ -69,10 +69,14 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
     setTotal(Number.parseFloat(currentTotal));
   }, [subTotal, taxRate]);
 
-  const addField = useRef(false);
+  const addField = useRef(null);
+  const hasAddedField = useRef(false);
 
   useEffect(() => {
-    addField.current.click();
+    if (!hasAddedField.current && addField.current) {
+      hasAddedField.current = true;
+      addField.current.click();
+    }
   }, []);
 
   return (
@@ -339,9 +343,10 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           <Col className="gutter-row" span={4} offset={15}>
             <Form.Item
               name="taxRate"
+              initialValue={0}
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: translate('Please select a tax rate'),
                 },
               ]}

@@ -46,8 +46,8 @@ const settingsTypeDefs = gql`
   }
 
   extend type Mutation {
-    settingCreate(input: SettingCreateInput!): MutationResponse!
-    settingUpdate(id: ID!, input: SettingUpdateInput!): MutationResponse!
+    settingCreate(input: JSON!): MutationResponse!
+    settingUpdate(id: ID!, input: JSON!): MutationResponse!
     settingDelete(id: ID!): MutationResponse!
     settingUpdateByKey(settingKey: String!, input: SettingUpdateInput!): MutationResponse!
     settingUpdateMany(input: [SettingUpdateInput!]!): MutationResponse!

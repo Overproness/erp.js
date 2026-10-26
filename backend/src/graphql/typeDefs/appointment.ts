@@ -65,8 +65,8 @@ const appointmentTypeDefs = gql`
   }
 
   extend type Mutation {
-    appointmentCreate(input: AppointmentCreateInput!): MutationResponse!
-    appointmentUpdate(id: ID!, input: AppointmentUpdateInput!): MutationResponse!
+    appointmentCreate(input: JSON!): MutationResponse!
+    appointmentUpdate(id: ID!, input: JSON!): MutationResponse!
     appointmentDelete(id: ID!): MutationResponse!
     appointmentCancel(id: ID!): MutationResponse!
     appointmentReschedule(id: ID!, startTime: DateTime!, endTime: DateTime!): MutationResponse!

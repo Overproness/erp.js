@@ -58,8 +58,8 @@ const teamTypeDefs = gql`
   }
 
   extend type Mutation {
-    teamCreate(input: TeamCreateInput!): MutationResponse!
-    teamUpdate(id: ID!, input: TeamUpdateInput!): MutationResponse!
+    teamCreate(input: JSON!): MutationResponse!
+    teamUpdate(id: ID!, input: JSON!): MutationResponse!
     teamDelete(id: ID!): MutationResponse!
     teamInviteMember(id: ID!, input: TeamMemberInput!): MutationResponse!
     teamAcceptInvitation(token: String!): MutationResponse!

@@ -72,8 +72,8 @@ const abTestTypeDefs = gql`
   }
 
   extend type Mutation {
-    abTestCreate(input: ABTestCreateInput!): MutationResponse!
-    abTestUpdate(id: ID!, input: ABTestUpdateInput!): MutationResponse!
+    abTestCreate(input: JSON!): MutationResponse!
+    abTestUpdate(id: ID!, input: JSON!): MutationResponse!
     abTestDelete(id: ID!): MutationResponse!
     abTestStart(id: ID!): MutationResponse!
     abTestStop(id: ID!): MutationResponse!
