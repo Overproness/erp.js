@@ -18,9 +18,30 @@ logs/
 docs/
 tmp/
 
-
 design_ignore/
 node_modules/
 backend/uploads/
 
 .github/
+
+# Sensitive and Local-Only Credentials
+adminCredentials.txt
+*.new
+temp.env
+*.env.local
+
+# Machine-Specific Artifacts & Test Logs
+test_artifacts/
+audit_*.png
+e2e_all_modules_test.cjs
+e2e_audit_report.json
+openProject.vbs
+backend/src/setup/check.py
+
+# Dynamic n8n factory instances
+WorkflowSystem/n8n-factory/n8n-instances/
+
+# Internal Planning and AI Handoff Notes
+HANDOFF.md
+tasks.md
+implementation_plan.md

@@ -1,0 +1,3 @@
+[submodule "WorkflowSystem/n8n"]
+	path = WorkflowSystem/n8n
+	url = https://github.com/Overproness/n8n.git
