@@ -45,7 +45,7 @@ const paginatedList = async (req, res) => {
     const resultsPromise = Model.find({
       removed: false,
       ...companyFilter,
-      [filter]: equal,
+      ...(filter && equal ? { [filter]: equal } : {}),
       ...fields,
     })
       .skip(skip)
@@ -58,7 +58,7 @@ const paginatedList = async (req, res) => {
     const countPromise = Model.countDocuments({
       removed: false,
       ...companyFilter,
-      [filter]: equal,
+      ...(filter && equal ? { [filter]: equal } : {}),
       ...fields,
     });
 

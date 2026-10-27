@@ -228,12 +228,9 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
     [entity]
   );
 
-  const loadedRef = useRef('');
   useEffect(() => {
-    if (loadedRef.current === entity) return;
-    loadedRef.current = entity;
     dispatch(actions.list({ entity }));
-  }, [entity]);
+  }, [entity, dispatch]);
 
   // --- Search / filter ---
   const filterTable = isNavigateMode

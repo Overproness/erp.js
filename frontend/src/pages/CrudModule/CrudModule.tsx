@@ -110,7 +110,7 @@ function CrudModule({ config, createForm, updateForm, withUpload = false }) {
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    dispatch(crud.resetState());
+    dispatch(crud.resetAction({ actionType: 'current' }));
   }, []);
 
   return (

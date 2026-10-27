@@ -54,21 +54,25 @@ export default function AppointmentsPage() {
   const fetchAppointments = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await apolloClient.query({ query: GET_APPOINTMENTS });
-      if (data.appointmentList?.success) {
+      const { data } = await apolloClient.query({
+        query: GET_APPOINTMENTS,
+        fetchPolicy: 'network-only',
+        errorPolicy: 'all',
+      });
+      if (data?.appointmentList?.success) {
+        setAppointments(data.appointmentList.result || []);
+      } else if (Array.isArray(data?.appointmentList?.result)) {
         setAppointments(data.appointmentList.result);
       }
     } catch (error) {
+      console.error('Failed to fetch appointments:', error);
       message.error('Failed to fetch appointments');
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const loadedRef = useRef(false);
   useEffect(() => {
-    if (loadedRef.current) return;
-    loadedRef.current = true;
     fetchAppointments();
   }, [fetchAppointments]);
 

@@ -22,7 +22,9 @@ const createAppointment = async (req, res) => {
     }
 
     // Create appointment
+    const duration = body.duration || Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
     const appointment = new Appointment({
+      duration,
       ...body,
       organizer: userId,
       createdBy: userId,
@@ -113,7 +115,9 @@ const createAppointment = async (req, res) => {
 // Get all appointments
 const getAppointments = async (req, res) => {
   try {
-    const { page = 1, limit = 10, status, type, startDate, endDate, search } = req.query;
+    const { page = 1, limit = 10, items, status, type, startDate, endDate, search } = req.query;
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(items || limit || 10) || 10;
     const userId = req.companyOwner?._id || req.user?._id;
 
     if (!userId) {
@@ -148,7 +152,7 @@ const getAppointments = async (req, res) => {
       ];
     }
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const skip = (pageNum - 1) * limitNum;
 
     const appointments = await Appointment.find(query)
       .populate('organizer', 'name email photo')
@@ -157,7 +161,7 @@ const getAppointments = async (req, res) => {
       .populate('relatedLead', 'name email')
       .sort({ startTime: 1 })
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(limitNum);
 
     const total = await Appointment.countDocuments(query);
 
@@ -165,10 +169,11 @@ const getAppointments = async (req, res) => {
       success: true,
       result: appointments,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
+        page: pageNum,
+        limit: limitNum,
+        count: total,
         total,
-        pages: Math.ceil(total / parseInt(limit)),
+        pages: Math.ceil(total / limitNum) || 1,
       },
     });
   } catch (error) {

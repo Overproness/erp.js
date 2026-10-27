@@ -29,14 +29,15 @@ const paginatedList = async (req, res) => {
   }
 
   // Add owner filter
-  const ownerFilter = { owner: req.user ? req.user._id : req.companyOwner._id };
-  const companyID = req.user ? req.user.companyID : req.companyOwner.companyID;
+  const companyID = req.user ? req.user.companyID : req.companyOwner?.companyID;
+  const filterByOrg = companyID ? { companyID } : { owner: req.user ? req.user._id : req.companyOwner?._id };
+
 
   const resultsPromise = Model.find({
     removed: false,
-    ...ownerFilter,
-    companyID, // Filter by companyID
-    [filter]: equal,
+    ...filterByOrg,
+
+    ...(filter && equal ? { [filter]: equal } : {}),
     ...fields,
   })
     .skip(skip)
@@ -47,9 +48,9 @@ const paginatedList = async (req, res) => {
 
   const countPromise = Model.countDocuments({
     removed: false,
-    ...ownerFilter,
-    companyID, // Filter by companyID
-    [filter]: equal,
+    ...filterByOrg,
+
+    ...(filter && equal ? { [filter]: equal } : {}),
     ...fields,
   });
 

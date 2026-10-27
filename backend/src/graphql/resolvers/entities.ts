@@ -998,24 +998,8 @@ function createEntitySpecificResolvers(controllers) {
           return { success: false, result: null, message: error.message };
         }
       },
-      appointmentList: async (parent, args, context) => {
-        const { req, res, getResponse } = createReqRes(args, context);
-        try {
-          await controllers.appointmentController.getAppointments(req, res);
-          return getResponse().data;
-        } catch (error) {
-          return { success: false, result: [], message: error.message };
-        }
-      },
-      appointmentListAll: async (parent, args, context) => {
-        const { req, res, getResponse } = createReqRes(args, context);
-        try {
-          await controllers.appointmentController.getAppointments(req, res);
-          return getResponse().data;
-        } catch (error) {
-          return { success: false, result: [], message: error.message };
-        }
-      },
+      appointmentList: wrapController(controllers.appointmentController.getAppointments),
+      appointmentListAll: wrapController(controllers.appointmentController.getAppointments),
       appointmentSearch: async (parent, args, context) => {
         try {
           const Appointment = mongoose.model('Appointment');

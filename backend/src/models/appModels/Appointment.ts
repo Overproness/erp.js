@@ -324,6 +324,14 @@ appointmentSchema.virtual('isPast').get(function () {
   return this.endTime < new Date();
 });
 
+// Pre-validate middleware
+appointmentSchema.pre('validate', function (next) {
+  if (!this.duration && this.startTime && this.endTime) {
+    this.duration = Math.round((new Date(this.endTime).getTime() - new Date(this.startTime).getTime()) / (1000 * 60));
+  }
+  next();
+});
+
 // Pre-save middleware
 appointmentSchema.pre('save', function (next) {
   this.updated = new Date();

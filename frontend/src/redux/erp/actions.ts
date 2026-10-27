@@ -84,9 +84,9 @@ export const erp = {
           const result = {
             items: rawItems,
             pagination: {
-              current: parseInt(pagination?.current || pagination?.page || 1, 10),
+              current: parseInt(pagination?.page || pagination?.current || options?.page || 1, 10),
               pageSize: options?.items || pagination?.pageSize || 10,
-              total: parseInt(pagination?.total || pagination?.count || rawItems.length, 10),
+              total: parseInt(pagination?.count ?? pagination?.total ?? rawItems.length, 10),
             },
           };
           dispatch({
