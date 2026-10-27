@@ -11,7 +11,6 @@ npm-debug.log
 frontend/.env
 backend/.env
 frontend/.env.production
-backend/.env.example
 
 coverage/
 logs/
