@@ -270,18 +270,6 @@ export default function IconSidebar() {
         },
       ],
     },
-    {
-      key: 'subscription',
-      icon: 'credit_card',
-      label: 'Subscription',
-      path: '/subscription',
-    },
-    {
-      key: 'design-system',
-      icon: 'palette',
-      label: 'Design System',
-      path: '/design-system',
-    },
   ];
 
   const filteredItems = filterItemsByPermissions(menuItems);

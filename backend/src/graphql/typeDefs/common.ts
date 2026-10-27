@@ -7,9 +7,9 @@ const commonTypeDefs = gql`
   scalar Upload
 
   type PaginationInfo {
-    page: Int!
-    count: Int!
-    pages: Int!
+    page: Int
+    count: Int
+    pages: Int
     total: Int
   }
 

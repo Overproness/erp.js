@@ -70,17 +70,23 @@ export const erp = {
             sortBy: options.sortBy || 'createdAt',
             sortValue: options.sortValue || 'desc',
           },
-          fetchPolicy: 'cache-first',
+          fetchPolicy: 'network-only',
+          errorPolicy: 'all',
         });
-        const data = gqlData[`${entity}List`];
-        if (data.success === true) {
+        const data = gqlData?.[`${entity}List`];
+        if (data && data.success === true) {
+          const rawItems = Array.isArray(data.result)
+            ? data.result
+            : Array.isArray(data.result?.items)
+            ? data.result.items
+            : [];
           const pagination = data.result?.pagination || data.pagination;
           const result = {
-            items: data.result?.items || data.result,
+            items: rawItems,
             pagination: {
               current: parseInt(pagination?.current || pagination?.page || 1, 10),
               pageSize: options?.items || pagination?.pageSize || 10,
-              total: parseInt(pagination?.total || pagination?.count || 0, 10),
+              total: parseInt(pagination?.total || pagination?.count || rawItems.length, 10),
             },
           };
           dispatch({

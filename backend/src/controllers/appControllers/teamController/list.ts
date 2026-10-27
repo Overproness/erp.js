@@ -73,11 +73,22 @@ const list = async (req, res) => {
         items: teamsWithMemberDetails,
         pagination: {
           current: page,
+          page: page,
           pageSize: limit,
+          limit: limit,
+          count: total,
           total: total,
+          pages: totalPages,
           totalPages: totalPages,
           showSizeChanger: true,
         },
+      },
+      pagination: {
+        page: page,
+        count: total,
+        total: total,
+        pages: totalPages,
+        limit: limit,
       },
       message: 'Teams list retrieved successfully',
     });

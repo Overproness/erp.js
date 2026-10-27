@@ -79,6 +79,16 @@ function createReqRes(args: any, context: GraphQLContext): ReqResResult {
   };
 }
 
+function normalizePagination(rawPag: any, itemsLength: number = 0) {
+  if (!rawPag && itemsLength === 0) return null;
+  const page = parseInt(rawPag?.page ?? rawPag?.current ?? 1, 10) || 1;
+  const count = parseInt(rawPag?.count ?? rawPag?.total ?? itemsLength, 10) || itemsLength;
+  const limit = parseInt(rawPag?.limit ?? rawPag?.pageSize ?? rawPag?.items ?? 10, 10) || 10;
+  const pages = parseInt(rawPag?.pages ?? rawPag?.totalPages ?? Math.ceil(count / limit) ?? 1, 10) || 1;
+  const total = parseInt(rawPag?.total ?? rawPag?.count ?? count, 10) || count;
+  return { page, count, pages, total };
+}
+
 function wrapController(controllerMethod: Function) {
   return async (parent: any, args: any, context: GraphQLContext) => {
     const { req, res, getResponse } = createReqRes(args, context);
@@ -118,8 +128,17 @@ function wrapController(controllerMethod: Function) {
         return {
           success: data.success,
           result: data.result.items,
-          pagination: data.result.pagination || data.pagination,
+          pagination: normalizePagination(data.result.pagination || data.pagination, data.result.items.length),
           message: data.message,
+        };
+      }
+      if (data.pagination || (data.result && !Array.isArray(data.result) && data.result.pagination)) {
+        const rawPag = data.pagination || data.result?.pagination;
+        const items = Array.isArray(data.result) ? data.result : Array.isArray(data.result?.items) ? data.result.items : [];
+        return {
+          ...data,
+          result: items.length > 0 || Array.isArray(data.result) ? items : data.result,
+          pagination: normalizePagination(rawPag, items.length),
         };
       }
       return data;
@@ -186,8 +205,15 @@ function generateCRUDResolvers(entityName: string, controller: CRUDController) {
           return {
             success: data.success,
             result: data.result.items,
-            pagination: data.result.pagination || data.pagination,
+            pagination: normalizePagination(data.result.pagination || data.pagination, data.result.items.length),
             message: data.message,
+          };
+        }
+        if (data.pagination) {
+          const itemsLen = Array.isArray(data.result) ? data.result.length : 0;
+          return {
+            ...data,
+            pagination: normalizePagination(data.pagination, itemsLen),
           };
         }
         return data;

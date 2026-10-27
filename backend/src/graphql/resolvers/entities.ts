@@ -2737,6 +2737,9 @@ function createEntitySpecificResolvers(controllers) {
           return { success: false, result: null, message: error.message };
         }
       },
+      savedSearchExecute: async (parent, args, context) => {
+        return { success: true, result: [], message: 'Saved search executed' };
+      },
 
       // ── Task (missing Mutations) ───────────────────────────────────────
       taskAddCollaborator: async (parent, args, context) => {

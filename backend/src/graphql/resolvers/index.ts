@@ -106,6 +106,7 @@ function initializeResolvers(controllers) {
     { name: 'dataRetentionPolicy', controller: controllers.dataRetentionPolicyController },
     { name: 'auditTrail', controller: controllers.auditTrailController },
     // Misc
+    { name: 'savedSearch', controller: controllers.savedSearchController },
   ];
 
   const mergedQueries = {

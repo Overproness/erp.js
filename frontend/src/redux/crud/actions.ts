@@ -60,17 +60,24 @@ export const crud = {
             sortBy: options.sortBy,
             sortValue: options.sortValue,
           },
-          fetchPolicy: 'cache-first',
+          fetchPolicy: 'network-only',
+          errorPolicy: 'all',
         });
 
         const queryResult = data?.[`${entity}List`];
         if (queryResult?.success) {
+          const rawItems = Array.isArray(queryResult.result)
+            ? queryResult.result
+            : Array.isArray(queryResult.result?.items)
+            ? queryResult.result.items
+            : [];
+          const pagination = queryResult.pagination || queryResult.result?.pagination;
           const result = {
-            items: queryResult.result || [],
+            items: rawItems,
             pagination: {
-              current: parseInt(queryResult.pagination?.page || options.page, 10),
-              pageSize: options?.items || 10,
-              total: parseInt(queryResult.pagination?.count || 0, 10),
+              current: parseInt(pagination?.page || pagination?.current || options.page || 1, 10),
+              pageSize: options?.items || pagination?.pageSize || 10,
+              total: parseInt(pagination?.count || pagination?.total || rawItems.length, 10),
             },
           };
           dispatch({

@@ -1,0 +1,147 @@
+{
+  "startTime": "2026-10-27T01:35:28.224Z",
+  "modulesTested": [
+    {
+      "module": "Customer",
+      "route": "/client",
+      "rowCount": 4,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Quote",
+      "route": "/quote",
+      "rowCount": 2,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Team",
+      "route": "/team",
+      "rowCount": 2,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Invoice",
+      "route": "/invoice",
+      "rowCount": 9,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Payment",
+      "route": "/payment",
+      "rowCount": 3,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Payment Modes",
+      "route": "/payment/mode",
+      "rowCount": 1,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Taxes",
+      "route": "/taxes",
+      "rowCount": 1,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Tasks",
+      "route": "/tasks",
+      "status": "PASSED"
+    },
+    {
+      "module": "Document",
+      "route": "/document",
+      "rowCount": 4,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Appointments",
+      "route": "/appointments",
+      "rowCount": 0,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "URL Shortener",
+      "route": "/url",
+      "rowCount": 10,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "A/B Testing",
+      "route": "/url/ab-testing",
+      "rowCount": 0,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Reputation Reviews",
+      "route": "/reputation",
+      "rowCount": 0,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Reputation Links",
+      "route": "/reputation/links",
+      "rowCount": 0,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Marketing",
+      "route": "/marketing",
+      "rowCount": 3,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Survey",
+      "route": "/survey",
+      "rowCount": 1,
+      "stats": [],
+      "status": "PASSED"
+    },
+    {
+      "module": "Analytics",
+      "route": "/analytics",
+      "status": "PASSED"
+    },
+    {
+      "module": "Settings",
+      "route": "/settings",
+      "status": "PASSED"
+    },
+    {
+      "module": "Dashboard",
+      "route": "/",
+      "stats": [],
+      "status": "PASSED"
+    }
+  ],
+  "sidebarVerification": {
+    "status": "PASSED",
+    "hasSubscription": false,
+    "hasDesignSystem": false
+  },
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Error fetching interactions: JSHandle@error",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Error fetching interactions: JSHandle@error",
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "Failed to fetch analytics: This feature requires the enterprise plan or higher.",
+    "Failed to fetch analytics: This feature requires the enterprise plan or higher."
+  ],
+  "pageCrashes": [],
+  "metricsVerification": {}
+}

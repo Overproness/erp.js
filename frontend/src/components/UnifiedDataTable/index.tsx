@@ -86,8 +86,12 @@ export default function UnifiedDataTable({ config, extra = [], mode = 'panel' })
   const erpCtx = useErpContext();
 
   const { result: listResult, isLoading: listIsLoading } = useSelector(selectListItems);
-  const { pagination, items: dataSource } = listResult || { pagination: {}, items: [] };
-  const safeDataSource = Array.isArray(dataSource) ? dataSource : [];
+  const pagination = listResult?.pagination || {};
+  const safeDataSource = Array.isArray(listResult)
+    ? listResult
+    : Array.isArray(listResult?.items)
+    ? listResult.items
+    : [];
 
   // Build columns from fields config or raw columns
   let dataTableColumns = [];

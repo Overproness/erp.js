@@ -791,26 +791,6 @@ function Sidebar({ collapsible, isMobile = false }) {
         },
       ],
     },
-    {
-      key: 'subscription',
-      icon: <BankOutlined />,
-      label: (
-        <Link to={'/subscription'} className={getMenuItemClass(currentPath === 'subscription')}>
-          {translate('Subscription')}
-        </Link>
-      ),
-      linkpath: '/subscription',
-    },
-    {
-      key: 'design-system',
-      icon: <SettingOutlined />,
-      label: (
-        <Link to={'/design-system'} className={getMenuItemClass(currentPath === 'design-system')}>
-          {translate('Master Design System')}
-        </Link>
-      ),
-      linkpath: '/design-system',
-    },
   ];
 
   // Filter items based on permissions
