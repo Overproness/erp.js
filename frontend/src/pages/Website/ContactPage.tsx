@@ -17,27 +17,71 @@ const contactFaqs = [
   },
 ];
 
+const contactStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ContactPage',
+      '@id': 'https://yourdomain.com/contact#webpage',
+      url: 'https://yourdomain.com/contact',
+      name: 'Contact Engineering | ERP.js Enterprise Automation Suite',
+      description:
+        'Connect with the ERP.js engineering team for technical inquiries, integration support, and enterprise deployments.',
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://yourdomain.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Contact',
+            item: 'https://yourdomain.com/contact',
+          },
+        ],
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://yourdomain.com/contact#faq',
+      mainEntity: contactFaqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.a,
+        },
+      })),
+    },
+  ],
+};
+
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <WebsiteLayout
-      title="Contact Us"
-      description="Connect with the ERP.js engineering team. Whether you're scaling a startup or re-architecting an enterprise, we're ready to help you integrate."
+      title="Contact Engineering and Enterprise Support"
+      description="Connect with the ERP.js engineering team for technical inquiries, integration support, and enterprise self-hosting assistance."
       canonicalPath="/contact"
+      keywords="contact ERP.js, enterprise ERP support, open source ERP contact, ERP integration assistance"
+      structuredData={contactStructuredData}
     >
-      <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-inter">
+      <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-sans">
         {/* Hero Header */}
         <header className="mb-16 text-center md:text-left">
           <h1
-            className="text-5xl font-bold tracking-tight mb-4 leading-tight"
-            style={{ color: '#191c1d' }}
+            className="font-heading text-5xl font-extrabold tracking-tight mb-4 leading-tight text-slate-900"
           >
             Connect with our <span className="text-[#0058c3]">Engineering</span> Team
           </h1>
-          <p className="max-w-2xl leading-relaxed" style={{ color: '#414754' }}>
-            Whether you&apos;re scaling a startup or re-architecting an enterprise, our team is
-            ready to help you integrate the automation engine into your workflow.
+          <p className="max-w-2xl leading-relaxed text-slate-600 text-lg">
+            Whether you are scaling a fast-moving startup or re-architecting an enterprise stack,
+            our team is ready to help you integrate the automation engine into your workflow.
           </p>
         </header>
 
@@ -45,47 +89,23 @@ export default function ContactPage() {
           {/* Section 1: Contact Form */}
           <section className="lg:col-span-7">
             <div
-              className="p-8 rounded-xl shadow-sm"
-              style={{
-                background: 'rgba(255,255,255,0.7)',
-                backdropFilter: 'blur(12px)',
-                borderTop: '1px solid rgba(255,255,255,0.4)',
-                borderLeft: '1px solid rgba(255,255,255,0.4)',
-                borderBottom: '1px solid rgba(0,0,0,0.05)',
-                borderRight: '1px solid rgba(0,0,0,0.05)',
-              }}
+              className="p-8 rounded-xl shadow-sm border border-slate-200/80 bg-white"
             >
-              <h2 className="text-xl font-semibold mb-8" style={{ color: '#191c1d' }}>
+              <h2 className="font-heading text-2xl font-bold mb-8 text-slate-900">
                 Send a Message
               </h2>
               <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="relative">
                     <input
-                      className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
-                      style={{
-                        background: '#e1e3e4',
-                        color: '#191c1d',
-                        border: '1.5px solid transparent',
-                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.border = '1.5px solid #0058c3';
-                        e.target.style.boxShadow =
-                          'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.border = '1.5px solid transparent';
-                        e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
-                      }}
+                      className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all font-sans bg-slate-100 border border-transparent focus:border-[#0058c3] focus:bg-white"
                       id="name"
                       name="name"
                       placeholder="Name"
                       type="text"
                     />
                     <label
-                      className="absolute left-4 top-2 text-[10px] font-medium"
-                      style={{ color: '#414754' }}
+                      className="absolute left-4 top-2 text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
                       htmlFor="name"
                     >
                       Name
@@ -93,101 +113,56 @@ export default function ContactPage() {
                   </div>
                   <div className="relative">
                     <input
-                      className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
-                      style={{
-                        background: '#e1e3e4',
-                        color: '#191c1d',
-                        border: '1.5px solid transparent',
-                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.border = '1.5px solid #0058c3';
-                        e.target.style.boxShadow =
-                          'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.border = '1.5px solid transparent';
-                        e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
-                      }}
+                      className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all font-sans bg-slate-100 border border-transparent focus:border-[#0058c3] focus:bg-white"
                       id="email"
                       name="email"
-                      placeholder="Work Email"
+                      placeholder="Email"
                       type="email"
                     />
                     <label
-                      className="absolute left-4 top-2 text-[10px] font-medium"
-                      style={{ color: '#414754' }}
+                      className="absolute left-4 top-2 text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
                       htmlFor="email"
                     >
-                      Work Email
+                      Email
                     </label>
                   </div>
                 </div>
+
                 <div className="relative">
                   <input
-                    className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all"
-                    style={{
-                      background: '#e1e3e4',
-                      color: '#191c1d',
-                      border: '1.5px solid transparent',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.border = '1.5px solid #0058c3';
-                      e.target.style.boxShadow =
-                        'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.border = '1.5px solid transparent';
-                      e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
-                    }}
-                    id="company"
-                    name="company"
-                    placeholder="Company"
+                    className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all font-sans bg-slate-100 border border-transparent focus:border-[#0058c3] focus:bg-white"
+                    id="subject"
+                    name="subject"
+                    placeholder="Subject"
                     type="text"
                   />
                   <label
-                    className="absolute left-4 top-2 text-[10px] font-medium"
-                    style={{ color: '#414754' }}
-                    htmlFor="company"
+                    className="absolute left-4 top-2 text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
+                    htmlFor="subject"
                   >
-                    Company
+                    Subject
                   </label>
                 </div>
+
                 <div className="relative">
                   <textarea
-                    className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent resize-none text-sm outline-none transition-all"
-                    style={{
-                      background: '#e1e3e4',
-                      color: '#191c1d',
-                      border: '1.5px solid transparent',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.border = '1.5px solid #0058c3';
-                      e.target.style.boxShadow =
-                        'inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,88,195,0.12)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.border = '1.5px solid transparent';
-                      e.target.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.06)';
-                    }}
+                    className="w-full rounded-lg px-4 pt-6 pb-2 placeholder-transparent text-sm outline-none transition-all font-sans bg-slate-100 border border-transparent focus:border-[#0058c3] focus:bg-white resize-y"
                     id="message"
                     name="message"
                     placeholder="Message"
                     rows={5}
                   ></textarea>
                   <label
-                    className="absolute left-4 top-2 text-[10px] font-medium"
-                    style={{ color: '#414754' }}
+                    className="absolute left-4 top-2 text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
                     htmlFor="message"
                   >
                     Message
                   </label>
                 </div>
+
                 <button
-                  className="w-full bg-gradient-to-br from-[#0058c3] to-[#0070f3] text-white px-4 py-3 rounded-lg font-semibold tracking-wide hover:shadow-lg transition-all active:scale-[0.98] border-none cursor-pointer text-base"
                   type="submit"
+                  className="w-full py-4 bg-[#0058c3] text-white rounded-lg font-heading font-bold hover:bg-[#0070f3] transition-all shadow-md active:scale-[0.99] border-none cursor-pointer text-base"
                 >
                   Send Message
                 </button>
@@ -195,135 +170,86 @@ export default function ContactPage() {
             </div>
           </section>
 
-          {/* Sidebar Context */}
-          <div className="lg:col-span-5 space-y-12">
-            {/* Office Locations */}
-            <section>
-              <h3
-                className="text-xs font-semibold mb-6 uppercase tracking-wider flex items-center gap-2"
-                style={{ color: '#414754' }}
-              >
-                <span className="material-symbols-outlined text-[#0058c3] text-sm">public</span>
-                Global Hubs
-              </h3>
-              <div className="grid grid-cols-1 gap-4">
-                {[
-                  {
-                    city: 'San Francisco',
-                    address: 'Market Street, Suite 400',
-                    icon: 'apartment',
-                    color: '#d8e2ff',
-                    iconColor: '#0058c3',
-                  },
-                  {
-                    city: 'London',
-                    address: 'Shoreditch Tech Hub',
-                    icon: 'corporate_fare',
-                    color: '#a6c1fe',
-                    iconColor: '#435d94',
-                  },
-                  {
-                    city: 'Tokyo',
-                    address: 'Minato City Tower',
-                    icon: 'location_city',
-                    color: '#ffdbcd',
-                    iconColor: '#a23d00',
-                  },
-                ].map((office) => (
-                  <div
-                    key={office.city}
-                    className="p-5 rounded-lg flex items-center gap-4 group hover:bg-white transition-colors"
-                    style={{
-                      background: 'rgba(255,255,255,0.7)',
-                      backdropFilter: 'blur(12px)',
-                      borderTop: '1px solid rgba(255,255,255,0.4)',
-                      borderLeft: '1px solid rgba(255,255,255,0.4)',
-                      borderBottom: '1px solid rgba(0,0,0,0.05)',
-                      borderRight: '1px solid rgba(0,0,0,0.05)',
-                    }}
-                  >
-                    <div
-                      className="w-12 h-12 rounded flex items-center justify-center"
-                      style={{ background: office.color, color: office.iconColor }}
-                    >
-                      <span className="material-symbols-outlined">{office.icon}</span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold" style={{ color: '#191c1d' }}>
-                        {office.city}
-                      </h4>
-                      <p className="text-xs" style={{ color: '#414754' }}>
-                        {office.address}
-                      </p>
-                    </div>
-                    <span
-                      className="material-symbols-outlined ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ color: '#c1c6d7' }}
-                    >
-                      north_east
-                    </span>
+          {/* Section 2: Direct Contact Details */}
+          <section className="lg:col-span-5 space-y-6">
+            <div className="p-8 rounded-xl shadow-sm border border-slate-200/80 bg-white">
+              <h2 className="font-heading text-2xl font-bold mb-6 text-slate-900">
+                Direct Channels
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-[#0058c3] flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-xl">mail</span>
                   </div>
-                ))}
+                  <div>
+                    <h3 className="font-heading font-semibold text-slate-900 text-sm">Email Support</h3>
+                    <p className="text-slate-600 text-sm">support@erpjs.com</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-[#0058c3] flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-xl">forum</span>
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-semibold text-slate-900 text-sm">Community Forum</h3>
+                    <p className="text-slate-600 text-sm">community.erpjs.com</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-[#0058c3] flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-xl">code</span>
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-semibold text-slate-900 text-sm">GitHub Repository</h3>
+                    <p className="text-slate-600 text-sm">github.com/ERPjs/ERPjs_project</p>
+                  </div>
+                </div>
               </div>
-            </section>
-
-            {/* Support Card */}
-            <div className="bg-[#0058c3]/5 rounded-xl p-8 border border-[#0058c3]/10 relative overflow-hidden">
-              <div className="relative z-10">
-                <h3 className="font-bold mb-2" style={{ color: '#191c1d' }}>
-                  Priority Support?
-                </h3>
-                <p className="text-sm mb-6" style={{ color: '#414754' }}>
-                  Enterprise customers get a dedicated Slack channel and 1-hour SLA response times.
-                </p>
-                <Link
-                  to="/pricing"
-                  className="text-[#0058c3] font-bold flex items-center gap-2 group no-underline"
-                >
-                  Explore Free Enterprise Features
-                  <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
-                    arrow_forward
-                  </span>
-                </Link>
-              </div>
-              <span
-                className="material-symbols-outlined absolute -right-4 -bottom-4 text-[#0058c3]/10 rotate-12"
-                style={{ fontSize: '120px' }}
-              >
-                support_agent
-              </span>
             </div>
-          </div>
+
+            <div className="p-8 rounded-xl bg-gradient-to-br from-blue-50 to-slate-100 border border-blue-100">
+              <h3 className="font-heading text-xl font-bold mb-2 text-slate-900">Enterprise SLA</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                Deploying mission-critical infrastructure? Our contributor team provides architecture reviews
+                and dedicated response channels.
+              </p>
+              <Link
+                to="/pricing"
+                className="font-heading font-semibold text-sm text-[#0058c3] flex items-center gap-1.5 no-underline hover:underline"
+              >
+                Learn More About Enterprise Access
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </Link>
+            </div>
+          </section>
         </div>
 
         {/* FAQs */}
         <section className="mt-24 max-w-4xl mx-auto">
-          <h2 className="text-xl font-semibold mb-10 text-center" style={{ color: '#191c1d' }}>
+          <h2 className="font-heading text-3xl font-bold mb-10 text-center text-slate-900">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">
             {contactFaqs.map((faq, i) => (
               <div
                 key={i}
-                className="rounded-xl overflow-hidden group"
-                style={{ background: '#f3f4f5' }}
+                className="rounded-xl overflow-hidden bg-white border border-slate-200/80 shadow-sm transition-all"
               >
                 <button
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#edeeef] transition-colors bg-transparent border-none cursor-pointer"
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-semibold" style={{ color: '#191c1d' }}>
+                  <span className="font-heading font-semibold text-slate-900 text-base">
                     {faq.q}
                   </span>
                   <span
-                    className="material-symbols-outlined transition-colors"
-                    style={{ color: openFaq === i ? '#0058c3' : '#414754' }}
+                    className="material-symbols-outlined transition-colors text-slate-500"
                   >
                     {openFaq === i ? 'remove' : 'add'}
                   </span>
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-6 leading-relaxed text-sm" style={{ color: '#414754' }}>
+                  <div className="px-6 pb-6 leading-relaxed text-sm text-slate-600 border-t border-slate-100 pt-4 font-sans">
                     {faq.a}
                   </div>
                 )}
@@ -332,10 +258,6 @@ export default function ContactPage() {
           </div>
         </section>
       </div>
-
-      {/* Decorative Elements */}
-      <div className="fixed top-0 right-0 -z-10 w-1/3 h-1/2 bg-gradient-to-bl from-[#0058c3]/5 to-transparent blur-3xl opacity-50"></div>
-      <div className="fixed bottom-0 left-0 -z-10 w-1/4 h-1/3 bg-gradient-to-tr from-[#435d94]/5 to-transparent blur-3xl opacity-50"></div>
     </WebsiteLayout>
   );
 }

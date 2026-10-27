@@ -30,7 +30,7 @@ export default function DeleteModal({ config }) {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('🚀 ~ useEffect ~ DeleteModal isSuccess:', isSuccess);
+      console.log('useEffect: DeleteModal isSuccess:', isSuccess);
       modal.close();
       dispatch(crud.list({ entity }));
       // dispatch(crud.resetAction({actionType:"delete"})); // check here maybe it wrong

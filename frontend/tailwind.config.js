@@ -93,8 +93,16 @@ export default {
   			xl: 'calc(var(--radius) + 4px)'
   		},
   		fontFamily: {
+  			heading: [
+  				'"Plus Jakarta Sans"',
+  				'Inter',
+  				'system-ui',
+  				'sans-serif'
+  			],
   			sans: [
+  				'Inter',
   				'var(--font-sans)',
+  				'system-ui',
   				'sans-serif'
   			],
   			serif: [

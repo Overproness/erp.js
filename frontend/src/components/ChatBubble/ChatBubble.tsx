@@ -110,7 +110,7 @@ export default function ChatBubble({ module = 'general', context = {} }) {
 
   const displayModelOptions = modelOptions.length > 0 ? modelOptions : defaultModelOptions;
 
-  // console.log('🔍 ChatBubble Debug:', {
+  // console.log('ChatBubble Debug:', {
   //   availableModels,
   //   modelOptions,
   //   displayModelOptions,
@@ -125,10 +125,10 @@ export default function ChatBubble({ module = 'general', context = {} }) {
 
   // Debug log to verify component renders
   useEffect(() => {
-    // console.log('🤖 ChatBubble component mounted');
+    // console.log('ChatBubble component mounted');
     // console.log('ChatBubble isOpen:', isOpen);
     return () => {
-      // console.log('🤖 ChatBubble component unmounted');
+      // console.log('ChatBubble component unmounted');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

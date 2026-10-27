@@ -1,0 +1,7 @@
+# ERP.js robots.txt
+# All crawlers, search engines, and AI agents are fully permitted.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://yourdomain.com/sitemap.xml

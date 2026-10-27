@@ -19,7 +19,7 @@ export default function UpgradePrompt({ featureKey, title, description }: Upgrad
       <>
         <Result
           icon={<CloudServerOutlined style={{ color: '#0058c3' }} />}
-          title={title ?? 'N8N Workflows — Compute Allocation Required'}
+          title={title ?? 'N8N Workflows: Compute Allocation Required'}
           subTitle={
             description ??
             "We have limited compute resources, and the n8n workflow integration is given out to people automatically based on available compute. Right now we don't have enough compute, which is why your account doesn't have it yet. When compute frees up, we'll give it to you immediately!"

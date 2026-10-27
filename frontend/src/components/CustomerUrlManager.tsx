@@ -37,21 +37,20 @@ const { Text, Paragraph } = Typography;
 const { Search } = Input;
 
 const urlTypeIcons = {
-  portal: { icon: '🔐', color: 'blue' },
-  payment: { icon: '💰', color: 'green' },
-  document: { icon: '📄', color: 'orange' },
-  appointment: { icon: '📅', color: 'purple' },
-  survey: { icon: '📝', color: 'cyan' },
-  review: { icon: '⭐', color: 'gold' },
-  quote: { icon: '📋', color: 'geekblue' },
-  invoice: { icon: '💳', color: 'red' },
-  event: { icon: '🎫', color: 'magenta' },
-  general: { icon: '🔗', color: 'default' },
+  portal: { color: 'blue' },
+  payment: { color: 'green' },
+  document: { color: 'orange' },
+  appointment: { color: 'purple' },
+  survey: { color: 'cyan' },
+  review: { color: 'gold' },
+  quote: { color: 'geekblue' },
+  invoice: { color: 'red' },
+  event: { color: 'magenta' },
+  general: { color: 'default' },
 };
 
 const CustomerUrlManager = ({ customerId, customerName }) => {
   const [urls, setUrls] = useState([]);
-  console.log('🚀 ~ CustomerUrlManager ~ urls:', urls);
   const [loading, setLoading] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -121,10 +120,7 @@ const CustomerUrlManager = ({ customerId, customerName }) => {
         return (
           <Tooltip title={type}>
             <Tag color={config.color}>
-              <Space size={4}>
-                <span>{config.icon}</span>
-                <span style={{ textTransform: 'capitalize' }}>{type}</span>
-              </Space>
+              <span style={{ textTransform: 'capitalize' }}>{type}</span>
             </Tag>
           </Tooltip>
         );

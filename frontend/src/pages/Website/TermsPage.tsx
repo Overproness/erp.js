@@ -12,6 +12,37 @@ const sidebarLinks = [
   { id: 'termination', label: '7. Termination' },
 ];
 
+const termsStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://yourdomain.com/terms#webpage',
+      url: 'https://yourdomain.com/terms',
+      name: 'Terms of Service | ERP.js',
+      description:
+        'ERP.js Terms of Service: the agreement governing your use of our platform and services.',
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://yourdomain.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Terms of Service',
+            item: 'https://yourdomain.com/terms',
+          },
+        ],
+      },
+    },
+  ],
+};
+
 export default function TermsPage() {
   const [activeId, setActiveId] = useState('acceptance');
 
@@ -38,10 +69,12 @@ export default function TermsPage() {
   return (
     <WebsiteLayout
       title="Terms of Service"
-      description="ERP.js Terms of Service — the agreement governing your use of our platform and services."
+      description="ERP.js Terms of Service: the agreement governing your use of our platform and services."
       canonicalPath="/terms"
+      keywords="ERP.js terms of service, open source license terms, enterprise terms"
+      structuredData={termsStructuredData}
     >
-      <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 font-inter">
+      <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 font-sans">
         {/* Sticky Sidebar */}
         <aside className="hidden md:block md:col-span-3">
           <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-1">
@@ -99,7 +132,7 @@ export default function TermsPage() {
               Legal Documentation
             </div>
             <h1
-              className="text-4xl md:text-5xl font-black tracking-tighter mb-4"
+              className="font-heading text-4xl md:text-5xl font-extrabold tracking-tight mb-4"
               style={{ color: '#191c1d' }}
             >
               Terms of Service

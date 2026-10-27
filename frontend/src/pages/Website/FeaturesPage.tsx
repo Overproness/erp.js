@@ -1,27 +1,60 @@
 import WebsiteLayout from './components/WebsiteLayout';
 
+const featuresStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://yourdomain.com/features#webpage',
+      url: 'https://yourdomain.com/features',
+      name: 'Features | ERP.js Enterprise Automation Suite',
+      description:
+        'Explore ERP.js platform capabilities: Sales CRM, workflow automation, analytics, and document signing. Engineered for precision and enterprise scale.',
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://yourdomain.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Features',
+            item: 'https://yourdomain.com/features',
+          },
+        ],
+      },
+    },
+  ],
+};
+
 export default function FeaturesPage() {
   return (
     <WebsiteLayout
-      title="Features"
-      description="Explore ERP.js platform capabilities: Sales CRM, workflow automation, analytics, and more. Engineered for precision and enterprise scale."
+      title="Platform Features: Sales CRM, Workflows and Analytics"
+      description="Explore ERP.js platform capabilities: Sales CRM, workflow automation, analytics, and document signing. Engineered for precision and enterprise scale."
       canonicalPath="/features"
+      keywords="CRM features, workflow automation engine, business analytics, document signing, enterprise software, open source ERP features"
+      structuredData={featuresStructuredData}
     >
-      <div className="pt-10 pb-20 overflow-hidden font-inter">
+      <div className="pt-10 pb-20 overflow-hidden font-sans">
         {/* Hero Header */}
         <section className="max-w-7xl mx-auto px-6 mb-24 text-center">
-          <div className="inline-block px-3 py-1 rounded-full bg-[#d8e2ff] text-[#2a467b] text-[0.6875rem] font-bold uppercase tracking-wider mb-6">
+          <div className="inline-block px-3 py-1 rounded-full bg-[#d8e2ff] text-[#004397] text-[11px] font-bold uppercase tracking-wider mb-6">
             Platform Capabilities
           </div>
           <h1
-            className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6"
+            className="font-heading text-5xl md:text-7xl font-extrabold tracking-tight mb-6"
             style={{ color: '#191c1d' }}
           >
             Engineered for <span className="text-[#0058c3]">Precision</span>.
           </h1>
-          <p className="max-w-2xl mx-auto text-lg leading-relaxed" style={{ color: '#414754' }}>
-            Experience the next evolution of enterprise resource planning. A crystalline suite of
-            tools designed for the modern developer-led organization.
+          <p className="max-w-2xl mx-auto text-lg leading-relaxed text-slate-600">
+            Experience the next evolution of enterprise resource planning. A modern suite of
+            tools designed for developer-led organizations and operational excellence.
           </p>
         </section>
 
@@ -32,10 +65,10 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 rounded-xl bg-[#0058c3]/10 flex items-center justify-center mb-6">
                 <span className="material-symbols-outlined text-[#0058c3]">contacts</span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
-                Sales CRM
+              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+                Sales CRM and Deal Pipelines
               </h2>
-              <p className="mb-8 leading-relaxed" style={{ color: '#414754' }}>
+              <p className="mb-8 leading-relaxed text-slate-600">
                 Manage your entire pipeline with surgical precision. Our CRM uses tonal layering to
                 highlight high-priority deals without cluttering your workspace.
               </p>
@@ -47,7 +80,7 @@ export default function FeaturesPage() {
                   <span className="material-symbols-outlined text-[#0058c3] text-lg">
                     check_circle
                   </span>
-                  Automated Lead Scoring
+                  Automated Lead Scoring and Qualification
                 </li>
                 <li
                   className="flex items-center gap-3 text-sm font-medium"
@@ -63,13 +96,7 @@ export default function FeaturesPage() {
             <div className="order-1 md:order-2 relative">
               <div className="absolute -inset-4 bg-gradient-to-tr from-[#0058c3]/20 to-transparent blur-3xl opacity-30 rounded-full"></div>
               <div
-                className="rounded-xl p-4 shadow-2xl relative overflow-hidden border border-[#c1c6d7]/20"
-                style={{
-                  background: 'rgba(255,255,255,0.7)',
-                  backdropFilter: 'blur(12px)',
-                  borderTop: '1px solid rgba(255,255,255,0.4)',
-                  borderLeft: '1px solid rgba(255,255,255,0.4)',
-                }}
+                className="rounded-xl p-4 shadow-xl relative overflow-hidden border border-[#c1c6d7]/20 bg-white"
               >
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex gap-2">
@@ -80,14 +107,14 @@ export default function FeaturesPage() {
                   <div className="h-2 w-32 bg-[#edeeef] rounded-full"></div>
                 </div>
                 <div className="space-y-4">
-                  <div className="h-12 w-full bg-white rounded-lg flex items-center px-4 justify-between border border-[#c1c6d7]/10 shadow-sm">
+                  <div className="h-12 w-full bg-slate-50 rounded-lg flex items-center px-4 justify-between border border-[#c1c6d7]/10 shadow-sm">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-100"></div>
-                      <div className="h-3 w-20 bg-slate-100 rounded"></div>
+                      <div className="w-8 h-8 rounded-full bg-slate-200"></div>
+                      <div className="h-3 w-20 bg-slate-200 rounded"></div>
                     </div>
                     <div className="h-6 w-16 bg-[#0058c3]/10 rounded-full"></div>
                   </div>
-                  <div className="h-24 w-full bg-white/40 rounded-lg border border-white/60 p-4">
+                  <div className="h-24 w-full bg-slate-50 rounded-lg border border-slate-200/60 p-4">
                     <div className="h-2 w-1/2 bg-slate-200 rounded mb-4"></div>
                     <div className="grid grid-cols-4 gap-2">
                       <div className="h-8 bg-[#0058c3]/20 rounded-sm"></div>
@@ -108,39 +135,26 @@ export default function FeaturesPage() {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-bl from-[#435d94]/20 to-transparent blur-3xl opacity-30 rounded-full"></div>
               <div
-                className="rounded-xl p-8 shadow-xl relative overflow-hidden border border-[#c1c6d7]/20"
-                style={{ background: '#f3f4f5' }}
+                className="rounded-xl p-8 shadow-xl relative overflow-hidden border border-[#c1c6d7]/20 bg-white"
               >
                 <div className="grid grid-cols-2 gap-4">
                   <div
-                    className="p-4 rounded-lg"
-                    style={{
-                      background: 'rgba(255,255,255,0.7)',
-                      backdropFilter: 'blur(12px)',
-                    }}
+                    className="p-4 rounded-lg bg-slate-50 border border-slate-100"
                   >
                     <span className="material-symbols-outlined text-[#0058c3] mb-2">mail</span>
                     <div className="h-2 w-16 bg-slate-300 rounded mb-2"></div>
-                    <div className="h-1.5 w-full bg-slate-100 rounded"></div>
+                    <div className="h-1.5 w-full bg-slate-200 rounded"></div>
                   </div>
                   <div
-                    className="p-4 rounded-lg transform translate-y-8"
-                    style={{
-                      background: 'rgba(255,255,255,0.7)',
-                      backdropFilter: 'blur(12px)',
-                    }}
+                    className="p-4 rounded-lg transform translate-y-6 bg-slate-50 border border-slate-100"
                   >
                     <span className="material-symbols-outlined text-[#0058c3] mb-2">bolt</span>
                     <div className="h-2 w-16 bg-slate-300 rounded mb-2"></div>
-                    <div className="h-1.5 w-full bg-slate-100 rounded"></div>
+                    <div className="h-1.5 w-full bg-slate-200 rounded"></div>
                   </div>
                 </div>
                 <div
-                  className="mt-12 p-4 rounded-lg"
-                  style={{
-                    background: 'rgba(255,255,255,0.7)',
-                    backdropFilter: 'blur(12px)',
-                  }}
+                  className="mt-10 p-4 rounded-lg bg-slate-50 border border-slate-100"
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-10 h-10 rounded bg-[#0070f3]"></div>
@@ -149,7 +163,7 @@ export default function FeaturesPage() {
                       <div className="h-1.5 w-32 bg-slate-200 rounded"></div>
                     </div>
                   </div>
-                  <div className="h-2 w-full bg-slate-100 rounded"></div>
+                  <div className="h-2 w-full bg-slate-200 rounded"></div>
                 </div>
               </div>
             </div>
@@ -157,30 +171,28 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 rounded-xl bg-[#435d94]/10 flex items-center justify-center mb-6">
                 <span className="material-symbols-outlined text-[#435d94]">smart_toy</span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
-                Marketing Automation
+              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+                Multi-Channel Automation
               </h2>
-              <p className="mb-8 leading-relaxed" style={{ color: '#414754' }}>
-                Trigger multi-channel campaigns based on user behavior. Our automation engine is an
-                isometric workspace where logic flows like light through a prism.
+              <p className="mb-8 leading-relaxed text-slate-600">
+                Trigger multi-channel campaigns based on user behavior. Our automation engine
+                provides an intuitive canvas where operational logic executes reliably at scale.
               </p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg" style={{}}>
-                  <div className="text-xl font-bold text-[#0058c3] mb-1">98%</div>
+                <div className="p-4 rounded-lg bg-white border border-slate-200">
+                  <div className="font-heading text-2xl font-bold text-[#0058c3] mb-1">98%</div>
                   <div
-                    className="text-[0.6875rem] font-bold uppercase tracking-wider"
-                    style={{ color: '#414754' }}
+                    className="text-[11px] font-bold uppercase tracking-wider text-slate-500"
                   >
                     Deliverability
                   </div>
                 </div>
-                <div className="p-4 rounded-lg" style={{}}>
-                  <div className="text-xl font-bold text-[#0058c3] mb-1">12x</div>
+                <div className="p-4 rounded-lg bg-white border border-slate-200">
+                  <div className="font-heading text-2xl font-bold text-[#0058c3] mb-1">12x</div>
                   <div
-                    className="text-[0.6875rem] font-bold uppercase tracking-wider"
-                    style={{ color: '#414754' }}
+                    className="text-[11px] font-bold uppercase tracking-wider text-slate-500"
                   >
-                    ROI Increase
+                    Efficiency Boost
                   </div>
                 </div>
               </div>
@@ -188,67 +200,62 @@ export default function FeaturesPage() {
           </div>
         </section>
 
-        {/* Feature Block 3: Reputation Management */}
+        {/* Feature Block 3: Analytics and Reputation */}
         <section className="max-w-7xl mx-auto px-6 mb-32">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="order-2 md:order-1">
               <div className="w-12 h-12 rounded-xl bg-[#a23d00]/10 flex items-center justify-center mb-6">
                 <span className="material-symbols-outlined text-[#a23d00]">verified</span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
-                Reputation Management
+              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+                Reputation and Customer Sentiment
               </h2>
-              <p className="mb-8 leading-relaxed" style={{ color: '#414754' }}>
-                Monitor sentiment across the web. Our AI Assistant distills complex feedback into
-                actionable insights, visualised through high-contrast glass dashboards.
+              <p className="mb-8 leading-relaxed text-slate-600">
+                Monitor sentiment and feedback across customer touchpoints. Our AI Assistant
+                distills operational feedback into actionable, high-impact insights.
               </p>
-              <button className="flex items-center gap-2 text-[#0058c3] font-semibold text-sm hover:gap-3 transition-all bg-transparent border-none cursor-pointer">
-                Explore Insights
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </button>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-[#0058c3]">insights</span>
+                <span className="font-heading font-semibold text-sm text-[#0058c3]">Continuous Real-time Evaluation</span>
+              </div>
             </div>
             <div className="order-1 md:order-2">
               <div
-                className="rounded-xl p-6 shadow-xl border border-[#c1c6d7]/10"
-                style={{
-                  background: 'rgba(255,255,255,0.7)',
-                  backdropFilter: 'blur(12px)',
-                }}
+                className="rounded-xl p-6 shadow-xl border border-slate-200 bg-white"
               >
                 <div className="flex gap-4 mb-6">
-                  <div className="w-full h-32 bg-white/50 rounded-lg flex flex-col items-center justify-center border border-white/80">
+                  <div className="w-full h-32 bg-slate-50 rounded-lg flex flex-col items-center justify-center border border-slate-100">
                     <span
-                      className="material-symbols-outlined text-4xl text-amber-400"
+                      className="material-symbols-outlined text-4xl text-amber-500"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       star
                     </span>
-                    <div className="text-2xl font-bold mt-2">4.9</div>
+                    <div className="font-heading text-2xl font-bold mt-2 text-slate-900">4.9</div>
                   </div>
-                  <div className="w-full h-32 bg-white/50 rounded-lg border border-white/80 p-4 space-y-3">
-                    <div className="h-1.5 w-full bg-slate-100 rounded overflow-hidden">
+                  <div className="w-full h-32 bg-slate-50 rounded-lg border border-slate-100 p-4 space-y-3">
+                    <div className="h-1.5 w-full bg-slate-200 rounded overflow-hidden">
                       <div className="h-full w-4/5 bg-emerald-500"></div>
                     </div>
-                    <div className="h-1.5 w-full bg-slate-100 rounded overflow-hidden">
+                    <div className="h-1.5 w-full bg-slate-200 rounded overflow-hidden">
                       <div className="h-full w-1/5 bg-amber-500"></div>
                     </div>
-                    <div className="h-1.5 w-full bg-slate-100 rounded overflow-hidden">
+                    <div className="h-1.5 w-full bg-slate-200 rounded overflow-hidden">
                       <div className="h-full w-[2%] bg-red-500"></div>
                     </div>
                   </div>
                 </div>
-                <div className="p-4 bg-[#0058c3]/5 rounded-lg border border-[#0058c3]/10">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-[#0058c3] text-sm">
                       auto_awesome
                     </span>
-                    <span className="text-[0.6875rem] font-bold text-[#0058c3] uppercase tracking-widest">
-                      AI Insight
+                    <span className="text-[11px] font-bold text-[#0058c3] uppercase tracking-wider">
+                      Sentiment Analysis
                     </span>
                   </div>
-                  <p className="text-xs" style={{ color: '#414754' }}>
-                    &ldquo;Sentiment is trending positive in the EMEA region following the latest
-                    launch.&rdquo;
+                  <p className="text-xs text-slate-700">
+                    Sentiment metrics trend positive across all business accounts following release cycle.
                   </p>
                 </div>
               </div>
@@ -260,28 +267,27 @@ export default function FeaturesPage() {
         <section className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="relative group">
-              <div className="absolute -inset-10 bg-[#0058c3]/5 blur-3xl rounded-full transition-opacity group-hover:opacity-100 opacity-50"></div>
-              <div className="relative bg-white border border-[#c1c6d7]/30 rounded-xl p-8 shadow-2xl">
-                <div className="flex justify-between items-start mb-10">
+              <div className="absolute -inset-10 bg-[#0058c3]/5 blur-3xl rounded-full"></div>
+              <div className="relative bg-white border border-slate-200 rounded-xl p-8 shadow-xl">
+                <div className="flex justify-between items-start mb-8">
                   <div className="space-y-2">
                     <div className="h-4 w-32 bg-slate-900 rounded"></div>
                     <div className="h-2 w-24 bg-slate-200 rounded"></div>
                   </div>
                   <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ background: '#edeeef' }}
+                    className="w-12 h-12 rounded-full flex items-center justify-center bg-slate-100"
                   >
-                    <span className="material-symbols-outlined text-slate-400">draw</span>
+                    <span className="material-symbols-outlined text-slate-500">draw</span>
                   </div>
                 </div>
-                <div className="space-y-3 mb-12">
+                <div className="space-y-3 mb-8">
                   <div className="h-2 w-full bg-slate-100 rounded"></div>
                   <div className="h-2 w-full bg-slate-100 rounded"></div>
                   <div className="h-2 w-2/3 bg-slate-100 rounded"></div>
                 </div>
-                <div className="h-20 w-full border-2 border-dashed border-[#0058c3]/20 rounded-lg flex items-center justify-center bg-[#0058c3]/[0.02]">
-                  <span className="text-[#0058c3] text-xs font-mono italic">
-                    Click to sign electronically
+                <div className="h-20 w-full border-2 border-dashed border-[#0058c3]/30 rounded-lg flex items-center justify-center bg-blue-50/50">
+                  <span className="text-[#0058c3] text-xs font-mono font-medium">
+                    Cryptographic Electronic Signature Area
                   </span>
                 </div>
               </div>
@@ -290,33 +296,31 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center mb-6">
                 <span className="material-symbols-outlined text-white">history_edu</span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
-                Document Signing
+              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+                Integrated Document Signing
               </h2>
-              <p className="mb-8 leading-relaxed" style={{ color: '#414754' }}>
-                Close deals faster with integrated e-signatures. Legally binding, cryptographically
+              <p className="mb-8 leading-relaxed text-slate-600">
+                Close deals faster with integrated e-signatures. Legally recognized, cryptographically
                 secure, and natively embedded into your ERP workflows.
               </p>
               <div className="flex items-center gap-6">
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold" style={{ color: '#191c1d' }}>
+                  <span className="font-heading text-2xl font-bold text-slate-900">
                     SOC2
                   </span>
                   <span
-                    className="text-[0.6875rem] uppercase font-bold tracking-widest"
-                    style={{ color: '#414754' }}
+                    className="text-[11px] uppercase font-bold tracking-widest text-slate-500"
                   >
-                    Compliant
+                    Ready Architecture
                   </span>
                 </div>
-                <div className="h-10 w-[1px]" style={{ background: '#c1c6d7' }}></div>
+                <div className="h-10 w-[1px] bg-slate-200"></div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold" style={{ color: '#191c1d' }}>
+                  <span className="font-heading text-2xl font-bold text-slate-900">
                     AES-256
                   </span>
                   <span
-                    className="text-[0.6875rem] uppercase font-bold tracking-widest"
-                    style={{ color: '#414754' }}
+                    className="text-[11px] uppercase font-bold tracking-widest text-slate-500"
                   >
                     Encryption
                   </span>

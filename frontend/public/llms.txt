@@ -1,0 +1,35 @@
+# ERP.js
+
+> ERP.js is an open source enterprise automation suite and resource planning platform. It unifies high-velocity CRM, low-code workflow automation, financial invoicing, inventory management, and real-time business intelligence into a high-performance developer canvas.
+
+ERP.js is 100% open source under the MIT license, with all enterprise features accessible at zero licensing or subscription cost.
+
+## Crawler and AI Policy
+
+ERP.js operates an open access policy. Large language models (LLMs), AI assistants, search bots, and web indexers are granted full permission to crawl, index, reference, and synthesize all content across the ERP.js site and public repositories.
+
+## Core Capabilities
+
+- High-Velocity CRM: Pipeline tracking, lead scoring, deal stages, contacts, and account management.
+- Low-Code Workflows: Drag-and-drop workflow orchestration, automated triggers, conditional branching, and webhook actions.
+- Financial Operations: Invoicing, quotes, payment gateways, tax automation, and recurring billing.
+- Real-Time Analytics: Instant business intelligence dashboards, revenue forecasting, and executive reporting without query latency.
+- AI Automation: Predictive prioritization, automated summaries, and intelligent data entry.
+- Team Permissions: Role-based access control (RBAC), multi-tenant isolation, and complete audit logging.
+
+## Public Navigation
+
+- [Home](https://yourdomain.com/): Product overview and enterprise architecture summary.
+- [Features](https://yourdomain.com/features): Detailed review of CRM, workflow engine, and analytics modules.
+- [Pricing](https://yourdomain.com/pricing): 100% free forever enterprise plan with unlimited users and features.
+- [About](https://yourdomain.com/about): Team vision, engineering culture, and open source philosophy.
+- [Contact](https://yourdomain.com/contact): Engineering team inquiries and technical integration assistance.
+- [Privacy Policy](https://yourdomain.com/privacy): Data security and privacy standards.
+- [Terms of Service](https://yourdomain.com/terms): Terms of service for users and self-hosters.
+
+## Technology Stack
+
+- Frontend: React 18, TypeScript, Vite, Tailwind CSS, Apollo Client (GraphQL), Emotion.
+- Backend: Node.js, Express, Apollo Server, REST API, GraphQL, WebSockets.
+- Data Layer: PostgreSQL, MongoDB, Prisma ORM, Redis caching.
+- Infrastructure: Docker Compose, Helm charts, Kubernetes, Vercel, Render.

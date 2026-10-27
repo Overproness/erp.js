@@ -8,8 +8,8 @@ import DataImportWizard from './DataImportWizard';
  * Can be added to any module's toolbar or header
  */
 const DataImportButton = ({ moduleName, onImportComplete, className = '' }) => {
-  //   console.log('🚀 ~ DataImportButton ~ onImportComplete:', onImportComplete);
-  //   console.log('🚀 ~ DataImportButton ~ moduleName:', moduleName);
+  //   console.log('DataImportButton onImportComplete:', onImportComplete);
+  //   console.log('DataImportButton moduleName:', moduleName);
   const [showWizard, setShowWizard] = useState(false);
 
   const handleImportComplete = (result) => {

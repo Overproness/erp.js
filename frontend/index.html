@@ -4,24 +4,101 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="generator" content="ERPCRM" />
-  <!-- Tiny webp favicon instead of heavy .ico -->
+  <meta name="generator" content="ERP.js" />
+
+  <!-- Primary SEO Meta Tags -->
+  <title>ERP.js | Open Source ERP, CRM and Workflow Automation Suite</title>
+  <meta name="title" content="ERP.js | Open Source ERP, CRM and Workflow Automation Suite" />
+  <meta name="description" content="ERP.js is an open-source enterprise resource planning and automation platform unifying CRM, low-code workflows, invoicing, inventory, and real-time business intelligence." />
+  <meta name="keywords" content="open source ERP, CRM system, workflow automation, business process automation, enterprise software, open source CRM, billing software, inventory management, low code automation" />
+  <meta name="author" content="ERP.js" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="theme-color" content="#0058c3" />
+
+  <!-- Canonical and Sitemap -->
+  <link rel="canonical" href="https://yourdomain.com/" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
+  <!-- Favicon and Brand Icons -->
   <link rel="icon" type="image/webp" href="/logo-bg-remove.webp" sizes="32x32" />
-  <!-- Preload LCP hero image so the browser fetches it at the highest priority -->
+  <link rel="apple-touch-icon" href="/logo-bg-remove.png" />
+
+  <!-- Preload LCP hero image for fast render on human viewports -->
   <link rel="preload" as="image" href="/hero-section-3d-model-static-removebg-preview.webp" fetchpriority="high" />
-  <title>ERP.js | Automation Suite</title>
-  <meta name="description" content="ERP.js | Automation Suite" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com/" />
+  <meta property="og:site_name" content="ERP.js" />
+  <meta property="og:title" content="ERP.js | Open Source ERP, CRM and Workflow Automation Suite" />
+  <meta property="og:description" content="Unify CRM, workflows, invoicing, and analytics into a single high-performance canvas. Built for developers, scaled for enterprise." />
+  <meta property="og:image" content="https://yourdomain.com/logo-bg-remove.png" />
+  <meta property="og:image:alt" content="ERP.js Enterprise Automation Engine" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://yourdomain.com/" />
+  <meta name="twitter:title" content="ERP.js | Open Source ERP, CRM and Workflow Automation Suite" />
+  <meta name="twitter:description" content="Unify CRM, workflows, invoicing, and analytics into a single high-performance canvas. Built for developers, scaled for enterprise." />
+  <meta name="twitter:image" content="https://yourdomain.com/logo-bg-remove.png" />
+  <meta name="twitter:image:alt" content="ERP.js Enterprise Automation Engine" />
+
+  <!-- Structured Data (JSON-LD) for Search Engines -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://yourdomain.com/#website",
+        "url": "https://yourdomain.com/",
+        "name": "ERP.js",
+        "description": "Open Source Enterprise Resource Planning and Automation Platform",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://yourdomain.com/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://yourdomain.com/#software",
+        "name": "ERP.js",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Complete open source enterprise suite unifying CRM, low-code automation, billing, and real-time analytics."
+      }
+    ]
+  }
+  </script>
 
   <!--
-    Critical above-the-fold CSS — inlined to eliminate the render-blocking
-    network request for the full stylesheet on first paint.
+    Critical above-the-fold CSS: inlined to eliminate render-blocking network requests on first paint.
   -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     #root { min-height: 100vh; }
-    /* System-font stack prevents invisible text while Inter loads */
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    :root {
+      --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      font-family: var(--font-sans);
+      color: #191c1d;
+      background: #f8f9fa;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+    }
   </style>
 
   <!-- Preconnect so the first font request skips DNS + TCP + TLS overhead -->
@@ -29,27 +106,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 
   <!--
-    Text fonts: loaded non-blocking via the media=print trick.
-    Browser renders with system fonts on first paint, then swaps once the
-    Google Fonts stylesheet arrives. display=swap prevents invisible text.
-    Trimmed to Inter + Roboto only (Raleway and Poppins were unused above-fold).
+    Fonts: Plus Jakarta Sans for prominent geometric headings, Inter for clean UI typography.
+    Loaded non-blocking via media=print swap pattern.
   -->
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Roboto:wght@400&display=swap"
     media="print"
     onload="this.media='all'" />
   <noscript>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400&display=swap" />
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Roboto:wght@400&display=swap" />
   </noscript>
 
   <!--
-    Material Symbols: loaded non-blocking.
-    Axis range narrowed from the full variable range (wght 100-700, FILL 0-1)
-    to a fixed opsz=24, wght=400 with FILL 0-1 only — cuts the woff2 download
-    from ~1.1 MB to ~120 KB, a ~90% size reduction.
+    Material Symbols: loaded non-blocking with fixed opsz=24, wght=400.
   -->
   <link
     rel="stylesheet"
@@ -65,11 +137,6 @@
 
 <body>
   <div id="root"></div>
-  <!--
-    type="module" scripts are deferred by default in modern browsers,
-    but the explicit `defer` attribute makes the intent clear and ensures
-    the script doesn't block HTML parsing or delay the LCP image.
-  -->
   <script type="module" defer src="/src/main.tsx"></script>
 </body>
 

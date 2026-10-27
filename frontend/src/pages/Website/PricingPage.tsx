@@ -236,22 +236,67 @@ function CellContent({ value }: { value: CellValue }) {
   if (value === false)
     return (
       <span className="text-xs" style={{ color: '#414754' }}>
-        —
+        -
       </span>
     );
   return <span className="text-sm font-medium">{value}</span>;
 }
+
+const pricingStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://yourdomain.com/pricing#webpage',
+      url: 'https://yourdomain.com/pricing',
+      name: 'Pricing: 100% Free Forever Enterprise Suite | ERP.js',
+      description:
+        'ERP.js is 100% free with all highest-tier Enterprise features included. No subscriptions, no credit card required.',
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://yourdomain.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Pricing',
+            item: 'https://yourdomain.com/pricing',
+          },
+        ],
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://yourdomain.com/pricing#faq',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.a,
+        },
+      })),
+    },
+  ],
+};
 
 export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <WebsiteLayout
-      title="Pricing — 100% Free Forever"
+      title="Pricing: 100% Free Forever Enterprise Suite"
       description="ERP.js is 100% free with all highest-tier Enterprise features included. No subscriptions, no credit card required."
       canonicalPath="/pricing"
+      keywords="free ERP, open source ERP pricing, enterprise suite pricing, free CRM, free workflow automation"
+      structuredData={pricingStructuredData}
     >
-      <div className="pt-20 pb-24 px-6 max-w-7xl mx-auto font-inter">
+      <div className="pt-20 pb-24 px-6 max-w-7xl mx-auto font-sans">
         {/* Hero Header */}
         <header className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-[#0058c3] bg-[#d8e2ff] mb-6">
@@ -259,15 +304,15 @@ export default function PricingPage() {
             100% Free Forever
           </div>
           <h1
-            className="text-5xl md:text-6xl font-extrabold tracking-tighter mb-6"
+            className="font-heading text-5xl md:text-6xl font-extrabold tracking-tight mb-6"
             style={{ color: '#191c1d' }}
           >
             Everything is Free. <br />
             Enterprise Power for Everyone.
           </h1>
-          <p className="max-w-2xl mx-auto text-lg mb-8" style={{ color: '#414754' }}>
+          <p className="max-w-2xl mx-auto text-lg mb-8 text-slate-600">
             We have eliminated software licensing fees. Everyone receives full access to our highest-tier
-            Enterprise plan at <strong>$0/month</strong> — unlimited users, full AI Copilot, marketing automation,
+            Enterprise plan at <strong>$0/month</strong> with unlimited users, full AI Copilot, marketing automation,
             and real-time analytics. No credit card required.
           </p>
 
@@ -507,9 +552,9 @@ export default function PricingPage() {
         {/* Feature Comparison Table */}
         <section className="mb-32">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+            <h2 className="font-heading text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
               Compare Every Feature
-            </h3>
+            </h2>
             <p style={{ color: '#414754' }}>
               Every single tier is free ($0/mo), with all enterprise capabilities unlocked for all accounts.
             </p>
@@ -586,9 +631,9 @@ export default function PricingPage() {
         {/* FAQ Section */}
         <section className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
+            <h2 className="font-heading text-3xl font-bold tracking-tight mb-4" style={{ color: '#191c1d' }}>
               Frequently Asked Questions
-            </h3>
+            </h2>
             <p style={{ color: '#414754' }}>Quick answers regarding our 100% free model and compute allocation</p>
           </div>
           <div className="space-y-4">

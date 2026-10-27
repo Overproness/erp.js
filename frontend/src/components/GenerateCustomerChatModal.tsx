@@ -50,7 +50,7 @@ const GenerateCustomerChatModal = ({
 
       const { request } = await import('@/request');
       const response = await request.post(`/customer-chat/${customerId}/generate`, payload);
-      console.log('🚀 ~ handleGenerate ~ response:', response);
+      console.log('handleGenerate response:', response);
 
       if (response.success) {
         setGeneratedUrl(response.result);

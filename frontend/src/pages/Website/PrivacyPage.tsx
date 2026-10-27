@@ -10,6 +10,37 @@ const sections = [
   { id: 'rights', label: 'User Rights' },
 ];
 
+const privacyStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://yourdomain.com/privacy#webpage',
+      url: 'https://yourdomain.com/privacy',
+      name: 'Privacy Policy | ERP.js',
+      description:
+        'ERP.js Privacy Policy: how we collect, use, and protect your personal data.',
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://yourdomain.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Privacy Policy',
+            item: 'https://yourdomain.com/privacy',
+          },
+        ],
+      },
+    },
+  ],
+};
+
 export default function PrivacyPage() {
   const [activeId, setActiveId] = useState('introduction');
 
@@ -36,10 +67,12 @@ export default function PrivacyPage() {
   return (
     <WebsiteLayout
       title="Privacy Policy"
-      description="ERP.js Privacy Policy — how we collect, use, and protect your personal data."
+      description="ERP.js Privacy Policy: how we collect, use, and protect your personal data."
       canonicalPath="/privacy"
+      keywords="ERP.js privacy policy, enterprise data protection, GDPR compliance"
+      structuredData={privacyStructuredData}
     >
-      <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-inter">
+      <div className="pt-10 pb-20 px-6 max-w-7xl mx-auto font-sans">
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Sidebar Navigation */}
           <aside className="hidden lg:block w-64 shrink-0">
@@ -97,7 +130,7 @@ export default function PrivacyPage() {
                 Last Updated: October 24, 2024
               </span>
               <h1
-                className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 leading-tight"
+                className="font-heading text-4xl md:text-5xl font-extrabold tracking-tight mb-6 leading-tight"
                 style={{ color: '#191c1d' }}
               >
                 Privacy <span className="text-[#0070f3]">Policy</span>

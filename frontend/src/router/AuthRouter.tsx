@@ -8,7 +8,7 @@ import NotFound from '@/pages/NotFound/NotFound';
 // Import team invitation page
 import Loading from '@/components/Loading';
 
-// Auth / account pages — lazy-loaded so they don't bloat the bundle
+// Auth / account pages: lazy-loaded so they do not bloat the bundle
 // for visitors who only hit the public marketing pages.
 const ForgetPassword = lazy(() => import('@/pages/ForgetPassword/ForgetPassword'));
 const Login = lazy(() => import('@/pages/Login/Login'));
@@ -16,7 +16,7 @@ const ResetPassword = lazy(() => import('@/pages/ResetPassword/ResetPassword'));
 const Signup = lazy(() => import('@/pages/Signup/Signup'));
 const AcceptInvitation = lazy(() => import('@/pages/Team/AcceptInvitation'));
 
-// Public redirect handler and document share viewer — also lazy-loaded
+// Public redirect handler and document share viewer: also lazy-loaded
 const RedirectHandler = lazy(() => import('@/pages/URL/RedirectHandler'));
 const PublicDocumentShare = lazy(() => import('@/pages/PublicDocumentShare'));
 
@@ -26,7 +26,7 @@ const PublicSurvey = lazy(() => import('@/pages/PublicSurvey'));
 // Import customer chat page
 const CustomerChatPage = lazy(() => import('@/pages/CustomerChatPage'));
 
-// Website pages — lazy-loaded so Three.js and other heavy page deps
+// Website pages: lazy-loaded so Three.js and other heavy page deps
 // only load when the user actually navigates to that route.
 const HomePage = lazy(() => import('@/pages/Website/HomePage'));
 const FeaturesPage = lazy(() => import('@/pages/Website/FeaturesPage'));

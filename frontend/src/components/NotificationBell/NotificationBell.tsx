@@ -69,20 +69,20 @@ const NotificationBell = () => {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'success':
-        return '✅';
+        return '[OK]';
       case 'warning':
-        return '⚠️';
+        return '[!]';
       case 'error':
       case 'negative_review':
-        return '❌';
+        return '[X]';
       case 'task_assigned':
-        return '📝';
+        return '[Task]';
       case 'new_review':
-        return '⭐';
+        return '[Review]';
       case 'ai_response':
-        return '🤖';
+        return '[AI]';
       default:
-        return 'ℹ️';
+        return '[i]';
     }
   };
 
@@ -188,7 +188,7 @@ const NotificationBell = () => {
       {!connected && (
         <div className="notification-status">
           <Text type="warning" style={{ fontSize: 12 }}>
-            ⚠️ Real-time notifications disconnected
+            Real-time notifications disconnected
           </Text>
         </div>
       )}

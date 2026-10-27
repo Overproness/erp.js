@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 
 export default function WebsiteFooter() {
   return (
-    <footer className="bg-white border-t border-slate-100 font-inter">
+    <footer className="bg-white border-t border-slate-200/80 font-sans">
       <div className="max-w-7xl mx-auto py-12 px-6 flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-xs">
-          <span className="font-bold text-slate-900 text-2xl tracking-tighter mb-4 block">
+          <span className="font-heading font-extrabold text-slate-900 text-2xl tracking-tighter mb-4 block">
             ERP.js
           </span>
           <p className="text-slate-500 text-sm leading-relaxed mb-6">
@@ -24,7 +24,7 @@ export default function WebsiteFooter() {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-12 md:gap-24">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-16">
           <div className="flex flex-col gap-4">
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
               Platform
@@ -74,10 +74,37 @@ export default function WebsiteFooter() {
               Terms
             </Link>
           </div>
+          <div className="flex flex-col gap-4">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              Crawlers and AI
+            </p>
+            <a
+              href="/sitemap.xml"
+              className="text-slate-500 hover:text-blue-600 transition-colors text-sm no-underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              XML Sitemap
+            </a>
+            <a
+              href="/llms.txt"
+              className="text-slate-500 hover:text-blue-600 transition-colors text-sm no-underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LLMs.txt
+            </a>
+            <a
+              href="/sitemap.html"
+              className="text-slate-500 hover:text-blue-600 transition-colors text-sm no-underline"
+            >
+              HTML Sitemap
+            </a>
+          </div>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 py-8 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <p className="text-slate-500 text-xs">&copy; {new Date().getFullYear()} ERP.js Inc.</p>
+      <div className="max-w-7xl mx-auto px-6 py-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p className="text-slate-500 text-xs">&copy; {new Date().getFullYear()} ERP.js Inc. All rights reserved.</p>
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-2 text-xs text-slate-500">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>

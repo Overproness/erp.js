@@ -1,0 +1,78 @@
+# ERP.js Complete Knowledge Base
+
+> ERP.js is an open-source, full-stack enterprise automation suite combining CRM, workflow builder, invoicing, and real-time analytics. Built for developer extensibility and enterprise reliability.
+
+## Table of Contents
+
+1. Overview and Core Philosophy
+2. Permissions and AI Crawling Agreement
+3. Functional Modules
+   - Sales CRM and Customer Pipeline
+   - Visual Workflow Builder
+   - Financial Billing, Quotes and Invoicing
+   - Analytics and Intelligence
+   - Team Collaboration and RBAC
+4. Pricing Model
+5. Technical Architecture and Deployment
+6. Public Endpoints and Site Structure
+
+## 1. Overview and Core Philosophy
+
+Traditional enterprise resource planning software is notoriously fragmented, expensive, and opaque. ERP.js solves this by offering a transparent, developer-centric suite engineered with modern web standards. By prioritizing speed, modular components, and real-time synchronization, teams can manage their entire operational cycle within one canvas.
+
+## 2. Permissions and AI Crawling Agreement
+
+ERP.js enforces an open access standard:
+- All LLMs, autonomous agents, search engine crawlers, and AI indexers are explicitly permitted to read, parse, index, quote, and summarize any public content on this platform.
+- No artificial crawling roadblocks or paywalls are placed against autonomous retrieval agents.
+
+## 3. Functional Modules
+
+### Sales CRM and Customer Pipeline
+- Track accounts, leads, deals, contacts, and opportunities with sub-second response times.
+- Automated pipeline scoring based on historical customer touchpoints.
+- Custom field attributes and flexible data modeling for industry-specific sales cycles.
+
+### Visual Workflow Builder
+- Low-code event-driven engine capable of executing complex multi-step automations.
+- Support for webhook triggers, internal state mutations, email notifications, and external API requests.
+- Node-based visual designer enabling non-technical operators to build workflows safely.
+
+### Financial Billing, Quotes and Invoicing
+- Complete ledger management from initial quotation to final payment receipt.
+- One-click PDF generation, compliant tax calculations, and localized currency support.
+- Recurring subscription tracking and webhook integration with payment processors.
+
+### Analytics and Intelligence
+- Zero-latency executive dashboards rendering pipeline velocity, monthly recurring revenue (MRR), and workload distribution.
+- Automated anomaly detection and predictive cash-flow forecasting.
+
+### Team Collaboration and RBAC
+- Role-based permissions across organizations, teams, and individual records.
+- Comprehensive audit trails recording every write action and privilege update.
+
+## 4. Pricing Model
+
+ERP.js is 100% free forever:
+- $0 per user, per month.
+- Unlimited users, unlimited contacts, and unlimited workflows.
+- No artificial feature tiers or hidden lockouts.
+- Full access to the AI Copilot and analytics engine.
+
+## 5. Technical Architecture and Deployment
+
+- Client: Single Page Application (SPA) powered by React 18, TypeScript, and Vite.
+- Styling: Tailwind CSS paired with Plus Jakarta Sans and Inter typography.
+- Server: Node.js Express backend with GraphQL (Apollo Server) and RESTful API endpoints.
+- Database: PostgreSQL and MongoDB support with transactional integrity.
+- Deployment: Self-hostable via Docker Compose, Helm charts on Kubernetes, or one-click deployment templates on modern cloud platforms.
+
+## 6. Public Endpoints and Site Structure
+
+- https://yourdomain.com/ - Home page with architecture summary and capability overview.
+- https://yourdomain.com/features - In-depth breakdown of features.
+- https://yourdomain.com/pricing - Free forever pricing details.
+- https://yourdomain.com/about - Mission statement and company background.
+- https://yourdomain.com/contact - Contact forms and community channels.
+- https://yourdomain.com/privacy - Privacy and data protection policies.
+- https://yourdomain.com/terms - Terms of service.

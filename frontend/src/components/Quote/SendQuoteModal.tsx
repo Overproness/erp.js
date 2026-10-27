@@ -231,7 +231,7 @@ const DeliveryHistoryModal = ({ visible, onClose, quoteId, quoteNumber }) => {
             >
               <div style={{ marginBottom: '12px' }}>
                 <strong>
-                  {entry.type === 'reminder' ? '🔔 Reminder' : '📧 Quote'} sent on{' '}
+                  {entry.type === 'reminder' ? 'Reminder' : 'Quote'} sent on{' '}
                   {new Date(entry.sentAt).toLocaleString()}
                 </strong>
               </div>

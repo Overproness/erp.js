@@ -14,12 +14,12 @@ export default function WebsiteNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 h-16">
+    <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 h-16">
       <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center gap-2.5 no-underline">
-            <img src="/logo-bg-remove.webp" alt="ERP.js" width={32} height={32} className="h-8 w-8 object-contain" />
-            <span className="text-2xl font-bold tracking-tighter text-slate-900 font-inter">
+            <img src="/logo-bg-remove.webp" alt="ERP.js Logo" width={32} height={32} className="h-8 w-8 object-contain" />
+            <span className="text-2xl font-heading font-extrabold tracking-tighter text-slate-900">
               ERP.js
             </span>
           </Link>
@@ -30,7 +30,7 @@ export default function WebsiteNavbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`font-inter text-[15px] font-medium tracking-tight no-underline transition-colors ${
+                  className={`font-sans text-[15px] font-medium tracking-tight no-underline transition-colors ${
                     isActive
                       ? 'text-blue-600 border-b-2 border-blue-600'
                       : 'text-slate-600 hover:text-blue-500'
@@ -46,19 +46,20 @@ export default function WebsiteNavbar() {
         <div className="flex items-center gap-4">
           <Link
             to="/login"
-            className="text-slate-600 hover:text-blue-500 transition-colors font-inter text-[15px] font-medium no-underline hidden sm:inline"
+            className="text-slate-600 hover:text-blue-500 transition-colors font-sans text-[15px] font-medium no-underline hidden sm:inline"
           >
             Sign In
           </Link>
           <Link
             to="/signup"
-            className="bg-gradient-to-br from-[#0058c3] to-[#0070f3] text-white px-5 py-2 rounded-lg text-[15px] font-semibold hover:opacity-90 transition-all active:scale-95 shadow-sm no-underline font-inter"
+            className="bg-gradient-to-br from-[#0058c3] to-[#0070f3] text-white px-5 py-2 rounded-lg text-[15px] font-semibold hover:opacity-90 transition-all active:scale-95 shadow-sm no-underline font-sans"
           >
             Get Started
           </Link>
           <button
             className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-slate-100 transition-colors border-none bg-transparent cursor-pointer"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation menu"
           >
             <span className="material-symbols-outlined text-slate-700">
               {mobileOpen ? 'close' : 'menu'}

@@ -76,7 +76,7 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
 
     // Connection events
     socket.on('connect', () => {
-      console.log('💬 Connected to chat server');
+      console.log('Connected to chat server');
       setIsConnected(true);
 
       // Join the room
@@ -84,13 +84,13 @@ const CustomerChatInterface = ({ roomId, accessToken, userType = 'employee' }) =
     });
 
     socket.on('disconnect', () => {
-      console.log('👋 Disconnected from chat server');
+      console.log('Disconnected from chat server');
       setIsConnected(false);
     });
 
     // Chat events
     socket.on('chat:joined', (data) => {
-      console.log('✅ Joined chat room:', data);
+      console.log('Joined chat room:', data);
       setRoomInfo(data.room);
       setMessages(data.messages || []);
       setLoading(false);
