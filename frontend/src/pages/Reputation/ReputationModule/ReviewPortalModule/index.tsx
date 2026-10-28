@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, Row, Col, Typography, Button, Tabs, Tag, Divider, Statistic, Space, Form, Input, Select, Switch, message, Modal, Radio, Tooltip, Upload } from '@/components/ui';
 import { 
   ApiOutlined, 
@@ -31,24 +31,6 @@ const { TabPane } = Tabs;
 const { Option } = Select;  
 const { TextArea } = Input;
 
-// Sample data for platforms
-const samplePlatforms = [
-  {
-    id: 'google',
-    name: 'Google',
-    connected: true,
-    reviewCount: 3,
-    syncing: false
-  },
-  {
-    id: 'facebook',
-    name: 'Facebook',
-    connected: true,
-    reviewCount: 2,
-    syncing: false
-  }
-];
-
 const ReviewPortalModule = () => {
   const translate = useLanguage();
   const [activeTab, setActiveTab] = useState('settings');
@@ -56,6 +38,28 @@ const ReviewPortalModule = () => {
   const [customLinkForm] = Form.useForm();
   const [emailConfigForm] = Form.useForm();
   
+  const [platforms, setPlatforms] = useState<any[]>([]);
+  const [loadingPlatforms, setLoadingPlatforms] = useState(false);
+
+  const fetchPlatforms = async () => {
+    setLoadingPlatforms(true);
+    try {
+      const { request } = await import('@/request');
+      const res = await request.get({ entity: 'marketing/reputation/platforms' });
+      if (res?.result) {
+        setPlatforms(res.result);
+      }
+    } catch (err) {
+      console.warn('Failed to load reputation platforms:', err);
+    } finally {
+      setLoadingPlatforms(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlatforms();
+  }, []);
+
   // State for modals
   const [customLinkModalVisible, setCustomLinkModalVisible] = useState(false);
   const [qrCodeModalVisible, setQrCodeModalVisible] = useState(false);
@@ -74,12 +78,6 @@ const ReviewPortalModule = () => {
   // Email configuration state
   const [emailTemplate, setEmailTemplate] = useState('default');
   const [emailSubject, setEmailSubject] = useState('Please leave us a review');
-  
-  // This would come from Redux or API in a real implementation
-  const platformStatuses = [
-    { platform: 'Google', status: 'connected', lastSync: '2023-10-15T10:30:00Z' },
-    { platform: 'Facebook', status: 'connected', lastSync: '2023-10-14T08:15:00Z' },
-  ];
   
   const handleTabChange = (key) => {
     setActiveTab(key);
@@ -136,16 +134,35 @@ const ReviewPortalModule = () => {
     }
   ];
   
-  const handlePlatformConnect = (platformId) => {
-    console.log('Connect platform:', platformId);
+  const handlePlatformConnect = (platformId: string) => {
+    window.location.href = '/marketing/integrations';
   };
 
-  const handlePlatformSync = (platformId) => {
-    console.log('Sync platform:', platformId);
+  const handlePlatformSync = async (platformId: string) => {
+    try {
+      setPlatforms((prev) =>
+        prev.map((p) => (p.id === platformId ? { ...p, syncing: true } : p))
+      );
+      const { request } = await import('@/request');
+      const res = await request.create({
+        entity: 'marketing/reputation/sync',
+        jsonData: { platforms: [platformId] },
+      });
+      message.success(res?.message || translate('Platform synchronized successfully'));
+      await fetchPlatforms();
+    } catch (err: any) {
+      message.error(err?.message || translate('Failed to sync platform'));
+    } finally {
+      setPlatforms((prev) =>
+        prev.map((p) => (p.id === platformId ? { ...p, syncing: false } : p))
+      );
+    }
   };
 
-  const handlePlatformDisconnect = (platformId) => {
-    console.log('Disconnect platform:', platformId);
+  const handlePlatformDisconnect = (platformId: string) => {
+    setPlatforms((prev) =>
+      prev.map((p) => (p.id === platformId ? { ...p, connected: false } : p))
+    );
     message.success(`${platformId} disconnected successfully`);
   };
 
@@ -445,9 +462,13 @@ const ReviewPortalModule = () => {
   
   return (
     <div>
+      <PlatformIntegrationStatus 
+        platforms={platforms} 
+        onConnect={handlePlatformConnect}
+        onSync={handlePlatformSync}
+        onDisconnect={handlePlatformDisconnect}
+      />
       <Row gutter={[24, 24]}>
-        {/* REMOVE: Platform Integrations section */}
-        
         {/* Review Portal */}
         <Col xs={24} lg={16}>
           <Card 

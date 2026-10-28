@@ -79,6 +79,9 @@ import ReviewLink from './appModels/ReviewLink';
 import ReviewResponse from './appModels/ReviewResponse';
 import ReviewTemplate from './appModels/ReviewTemplate';
 import Appointment from './appModels/Appointment';
+import MarketingIntegration from './appModels/MarketingIntegration';
+import RetargetingCampaign from './appModels/RetargetingCampaign';
+import AdCampaign from './appModels/AdCampaign';
 export {
   // Core Models
   CompanyOwner,
@@ -152,4 +155,7 @@ export {
   ReviewResponse,
   ReviewTemplate,
   Appointment,
+  MarketingIntegration,
+  RetargetingCampaign,
+  AdCampaign,
 };

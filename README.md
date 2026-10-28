@@ -1,4 +1,4 @@
-# ERP.js — The Automation Engine for Modern Teams
+# ERP.js  -  The Automation Engine for Modern Teams
 
 <div align="center">
 
@@ -18,33 +18,33 @@
   Engineered with high-contrast glassmorphism, reactive real-time WebSockets, visual workflow graphs, multi-channel marketing, and enterprise compliance.
 </p>
 
-[**Explore Features**](#-core-capabilities--functional-modules) •
-[**System Architecture**](#-system-architecture) •
-[**Quick Start**](#-getting-started) •
-[**Tier Matrix**](#-saas-tier-access-matrix) •
-[**API & GraphQL**](#-api-and-graphql-integration) •
-[**Design System**](#-the-crystalline-engine-design-system)
+[**Explore Features**](#core-capabilities--functional-modules) •
+[**System Architecture**](#system-architecture) •
+[**Quick Start**](#getting-started) •
+[**Tier Matrix**](#saas-tier-access-matrix) •
+[**API & GraphQL**](#api-and-graphql-integration) •
+[**Design System**](#the-crystalline-engine-design-system)
 
 ---
 
 </div>
 
-## 📌 Executive Overview
+## Executive Overview
 
 **ERP.js** is a next-generation enterprise resource planning and business automation platform engineered for high-growth businesses and developer-led organizations. Moving away from rigid, legacy, and fragmented business software, ERP.js converges:
 
-1. **Intelligent Sales CRM & Financial Billing** — Lead scoring, customer journeys, touchpoints, quotes, invoicing, recurring billing, and automated tax accounting.
-2. **Multi-Provider AI Intelligence** — Integrations with OpenAI (GPT-4), Anthropic (Claude), Google (Gemini / Vertex AI), Azure OpenAI, and Hugging Face for context-aware assistance, automated document OCR, and self-learning feedback loops.
-3. **Visual Workflow Automation Engine** — Native ReactFlow drag-and-drop workflow canvas (15+ node types) combined with self-hosted enterprise **n8n** orchestration and Traefik container clustering.
-4. **Behavioral Marketing & Omnichannel Engagement** — Event-driven retargeting, multi-channel broadcast (Email/SMS/Push), split URL & campaign A/B testing, and real-time click attribution.
-5. **Unified Social Media & Brand Reputation** — Multi-platform publishing (Facebook, Twitter/X, Instagram), Google & Facebook review aggregation, sentiment classification, and automated AI response drafting.
-6. **Live Communication & Dynamic Interaction** — WebSocket live customer chat with agent queues, URL shortener with geo/device analytics, and dynamic public surveys.
-7. **Document Lifecycle & Enterprise Compliance** — Collaborative rich-text editor, revision history, cryptographic E-Signatures, GDPR/HIPAA compliance validator, and automated data retention policies.
-8. **Multi-Tenant SaaS Licensing** — Dynamic 3-tier subscription gating (Starter, Professional, Enterprise) enforced at both GraphQL/REST API middleware and React UI layers.
+1. **Intelligent Sales CRM & Financial Billing**  -  Lead scoring, customer journeys, touchpoints, quotes, invoicing, recurring billing, and automated tax accounting.
+2. **Multi-Provider AI Intelligence**  -  Integrations with OpenAI (GPT-4), Anthropic (Claude), Google (Gemini / Vertex AI), Azure OpenAI, and Hugging Face for context-aware assistance, automated document OCR, and self-learning feedback loops.
+3. **Visual Workflow Automation Engine**  -  Native ReactFlow drag-and-drop workflow canvas (15+ node types) combined with self-hosted enterprise **n8n** orchestration and Traefik container clustering.
+4. **Behavioral Marketing & Omnichannel Engagement**  -  Event-driven retargeting, multi-channel broadcast (Email/SMS/Push), split URL & campaign A/B testing, and real-time click attribution.
+5. **Unified Social Media & Brand Reputation**  -  Multi-platform publishing (Facebook, Twitter/X, Instagram), Google & Facebook review aggregation, sentiment classification, and automated AI response drafting.
+6. **Live Communication & Dynamic Interaction**  -  WebSocket live customer chat with agent queues, URL shortener with geo/device analytics, and dynamic public surveys.
+7. **Document Lifecycle & Enterprise Compliance**  -  Collaborative rich-text editor, revision history, cryptographic E-Signatures, GDPR/HIPAA compliance validator, and automated data retention policies.
+8. **Multi-Tenant SaaS Licensing**  -  Dynamic 3-tier subscription gating (Starter, Professional, Enterprise) enforced at both GraphQL/REST API middleware and React UI layers.
 
 ---
 
-## 🏛 System Architecture
+## System Architecture
 
 ERP.js is structured as a decoupled full-stack monorepo featuring a high-throughput Node.js/Express/Apollo backend, a reactive React 18 single-page application powered by Vite, and a dedicated containerized workflow orchestration cluster.
 
@@ -106,9 +106,9 @@ flowchart TD
 
 ---
 
-## 🚀 Core Capabilities & Functional Modules
+## Core Capabilities & Functional Modules
 
-### 1. 💼 Sales CRM & Pipeline Intelligence
+### 1.  Sales CRM & Pipeline Intelligence
 Full customer lifecycle management from lead acquisition to revenue realization.
 - **Client & Contact Directory:** Comprehensive CRUD operations, custom metadata, lifecycle statuses, communication history, and contact segmentation.
 - **5-Factor Weighted Lead Scoring:** Dynamically computes lead quality using:
@@ -122,7 +122,7 @@ Full customer lifecycle management from lead acquisition to revenue realization.
 - **Automated Follow-Up Engine:** Event-triggered and schedule-based follow-up task generation.
 - **Integrated Appointment Scheduling:** Calendar booking with timezone alignment, status lifecycle (scheduled, completed, cancelled), and CRM association.
 
-### 2. 💳 Invoicing, Quotes & Financial Control
+### 2.  Invoicing, Quotes & Financial Control
 Comprehensive billing automation built to handle modern SaaS and service-based models.
 - **Interactive Invoicing:** Create, edit, and send professional invoices with line items, dynamic discounts, and customizable tax rules.
 - **Quotes & Proposals:** Draft and dispatch quotes with bulk delivery capabilities (`quoteDeliveryService`) and **one-click conversion into invoices**.
@@ -131,7 +131,7 @@ Comprehensive billing automation built to handle modern SaaS and service-based m
 - **Server-Side PDF Generation:** Automated high-resolution PDF rendering for invoices and quotes using HTML-to-PDF, PDFKit, and pdf-lib.
 - **Tax Management:** Granular jurisdiction tax definitions applied per line-item or per transaction.
 
-### 3. 🧠 Multi-Provider AI Suite & Cognitive Intelligence
+### 3.  Multi-Provider AI Suite & Cognitive Intelligence
 Pluggable, multi-provider generative intelligence running across every business module.
 - **Multi-Provider LLM Integration:** Switch seamlessly or route requests across:
   - **OpenAI:** GPT-4, GPT-4o, GPT-3.5-Turbo
@@ -145,7 +145,7 @@ Pluggable, multi-provider generative intelligence running across every business 
 - **Predictive Analytics:** ML-driven churn prediction, deal closing probability scoring, and sales revenue projections.
 - **Global Copilot Module:** Floating omni-present conversational workspace assistant accessible anywhere inside the application.
 
-### 4. ⚡ Visual Workflow Automation Engine
+### 4.  Visual Workflow Automation Engine
 End-to-end event-driven orchestration combining an in-house visual canvas with enterprise n8n power.
 - **Drag-and-Drop Node Canvas:** ReactFlow-powered interactive designer (`WorkflowDesigner.tsx`) supporting 15+ node types:
   - *Trigger* • *Webhook* • *HTTP Request* • *Condition / If-Else* • *Delay*
@@ -156,7 +156,7 @@ End-to-end event-driven orchestration combining an in-house visual canvas with e
 - **Automated Cron Scheduler:** Distributed background cron scheduler for recurring tasks, periodic sweeps, and deadline reminders (`reminderScheduler.ts`).
 - **Enterprise n8n Cluster Integration:** Built-in bridge to a dedicated multi-tenant n8n factory running behind a Traefik load balancer for advanced enterprise ETL pipelines.
 
-### 5. 🎯 Behavioral Marketing & Omnichannel Campaigns
+### 5.  Behavioral Marketing & Omnichannel Campaigns
 Sophisticated marketing automation driven by real-time customer behavior.
 - **Visual Campaign Builder:** Drag-and-drop multi-stage campaign sequence builder.
 - **Omnichannel Dispatch:** Native support for bulk personalized Email (SendGrid, Resend, Nodemailer/SMTP), SMS (Twilio), and Web Push notifications.
@@ -165,7 +165,7 @@ Sophisticated marketing automation driven by real-time customer behavior.
 - **Campaign A/B Testing:** Multi-variant split testing for message templates, subject lines, and URLs with statistical winner calculation.
 - **AI-Powered Campaign Optimization:** Machine learning suggestions for optimal send times, automated subject line generation, and copy variants (`AIOptimizer.ts`).
 
-### 6. 📱 Social Media Publishing & Reputation Management
+### 6.  Social Media Publishing & Reputation Management
 Unified social presence and automated online reputation governance.
 - **Multi-Platform Social Publishing:** Direct scheduling and cross-posting to Facebook, Twitter/X (API v2), and Instagram.
 - **AI Social Content Generator:** Generates engaging captions, target audience hashtags, and creative post variations (`socialAIService.ts`).
@@ -175,7 +175,7 @@ Unified social presence and automated online reputation governance.
 - **AI Auto-Response Generation:** One-click AI drafting of tailored, polite responses to reviews based on customer sentiment and rating.
 - **Public Reputation Portal:** Branded, public-facing portal showcasing verified client testimonials and high-rating reviews.
 
-### 7. 💬 Live Customer Communication & URL Tracking
+### 7.  Live Customer Communication & URL Tracking
 Modern communication tools designed for seamless customer acquisition and support.
 - **Embeddable Customer Live Chat:** Lightweight, branded embeddable chat widget (`chatSocket.ts`) communicating over real-time WebSockets.
 - **Intelligent Chat Queuing:** Agent routing, queue wait-time estimation, and chat history archival (`chatQueueService.ts`).
@@ -186,7 +186,7 @@ Modern communication tools designed for seamless customer acquisition and suppor
   - *Full UTM campaign attribution and referrers*
 - **Dynamic Survey Builder:** Design multi-question surveys with single/multi-choice, rating, and free-text prompts, with public unauthenticated submission links and completion funnels.
 
-### 8. 📄 Document Control, E-Signatures & Compliance
+### 8.  Document Control, E-Signatures & Compliance
 Enterprise-grade document lifecycle governance with strict regulatory alignment.
 - **Rich Document Editor:** Collaborative rich-text editor supporting formatting, embedded media, and template re-use.
 - **Revision History & Version Control:** Immutable document snapshots with side-by-side version comparison (`DocumentVersion.ts`).
@@ -197,7 +197,7 @@ Enterprise-grade document lifecycle governance with strict regulatory alignment.
 
 ---
 
-## 💎 "The Crystalline Engine" Design System
+## "The Crystalline Engine" Design System
 
 ERP.js introduces **The Crystalline Engine** (also known as *The Technical Prism*), an editorial design system engineered for high-density information architecture without visual clutter:
 
@@ -218,7 +218,7 @@ ERP.js introduces **The Crystalline Engine** (also known as *The Technical Prism
 
 ---
 
-## 📊 SaaS Tier Access Matrix
+## SaaS Tier Access Matrix
 
 ERP.js includes native multi-tenant subscription gating configured via `backend/src/config/featureMap.ts` and enforced on the frontend through `<PlanGating />`:
 
@@ -228,31 +228,31 @@ ERP.js includes native multi-tenant subscription gating configured via `backend/
 | **Workflow Rules Limit** | 10 Active Rules | Unlimited | **Unlimited** |
 | **Core CRM & Invoicing** | Included | Included | Included |
 | **Quotes & Recurring Billing** | Basic | Advanced | Enterprise |
-| **E-Signatures on Documents** | — | Included | Included |
-| **AI Assistant & Copilot (Base)** | — | Included | Included |
-| **AI Knowledge Base & Semantic Indexing** | — | — | **Included** |
-| **AI Anomaly & Fraud Detection** | — | — | **Included** |
-| **AI Self-Learning Optimization Loop** | — | — | **Included** |
-| **Multi-Channel Marketing Campaigns** | — | Included | Included |
-| **Behavioral Retargeting & A/B Testing** | — | Included | Included |
-| **Social Media Scheduler** | — | Included | Included |
-| **Social Mention Monitoring** | — | — | **Included** |
-| **Review Aggregation & AI Responses** | — | — | **Included** |
-| **Reputation Public Portal** | — | — | **Included** |
-| **Global Analytics & Real-Time KPIs** | — | Included | Included |
-| **Custom Report Builder & Data Export** | — | — | **Included** |
-| **Visual Workflow Designer** | — | Included | Included |
-| **n8n Containerized Orchestration** | — | — | **Included** |
-| **Customer Live Chat & Agent Queue** | — | Included | Included |
+| **E-Signatures on Documents** |  -  | Included | Included |
+| **AI Assistant & Copilot (Base)** |  -  | Included | Included |
+| **AI Knowledge Base & Semantic Indexing** |  -  |  -  | **Included** |
+| **AI Anomaly & Fraud Detection** |  -  |  -  | **Included** |
+| **AI Self-Learning Optimization Loop** |  -  |  -  | **Included** |
+| **Multi-Channel Marketing Campaigns** |  -  | Included | Included |
+| **Behavioral Retargeting & A/B Testing** |  -  | Included | Included |
+| **Social Media Scheduler** |  -  | Included | Included |
+| **Social Mention Monitoring** |  -  |  -  | **Included** |
+| **Review Aggregation & AI Responses** |  -  |  -  | **Included** |
+| **Reputation Public Portal** |  -  |  -  | **Included** |
+| **Global Analytics & Real-Time KPIs** |  -  | Included | Included |
+| **Custom Report Builder & Data Export** |  -  |  -  | **Included** |
+| **Visual Workflow Designer** |  -  | Included | Included |
+| **n8n Containerized Orchestration** |  -  |  -  | **Included** |
+| **Customer Live Chat & Agent Queue** |  -  | Included | Included |
 | **GDPR Consent, Retention & Audit Trail** | Basic | Advanced | **Enterprise Full** |
-| **SSO / SAML Authentication** | — | — | **Included** |
-| **Custom White-Label Branding** | — | — | **Included** |
+| **SSO / SAML Authentication** |  -  |  -  | **Included** |
+| **Custom White-Label Branding** |  -  |  -  | **Included** |
 | **Full REST & GraphQL API Access** | Read-Only | Full Access | Full Access |
-| **Outbound Webhooks Engine** | — | — | **Included** |
+| **Outbound Webhooks Engine** |  -  |  -  | **Included** |
 
 ---
 
-## 🛠 Technology Stack Breakdown
+## Technology Stack Breakdown
 
 <div align="center">
   <table>
@@ -309,7 +309,7 @@ ERP.js includes native multi-tenant subscription gating configured via `backend/
 
 ---
 
-## 📂 Repository Directory Structure
+## Repository Directory Structure
 
 ```
 ERPjs_project/
@@ -366,16 +366,56 @@ ERPjs_project/
 │
 ├── .github/workflows/deploy.yml     # Automated VPS CI/CD deployment pipeline via SSH & PM2
 ├── codegen.ts                       # Apollo GraphQL TypeScript code generation config
-├── deploy.bat                       # Automated Windows build, version bump & git deployment
-├── DESIGN.md                        # Official "The Crystalline Engine" design system spec
-├── FEATURE_TAXONOMY.md              # Complete feature catalog and dependency map
-├── PRICING_STRATEGY.md              # Subscription plans & feature allocation taxonomy
+├── docker-compose.yml               # Multi-container orchestration (Mongo, Redis, API, UI)
+├── .env.example                     # Root production environment configuration template
+├── DEVELOPER_ACCOUNTS_SETUP_GUIDE.md# BYOC step-by-step API integration guide
+├── MARKETING_INTEGRATION_PLAN.md    # Architecture and progress roadmap
 └── vercel.json                      # Vercel deployment and SPA routing rewrite rules
 ```
 
 ---
 
-## ⚡ Getting Started
+## Getting Started
+
+### 1-Command Docker Compose Quickstart (Recommended)
+
+The fastest and most reliable way to spin up the entire ERP.js stack (MongoDB, Redis, Node.js API, and Nginx frontend) is via Docker Compose:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Overproness/quickmation.git ERPjs
+cd ERPjs
+
+# 2. Copy the environment configuration template
+cp .env.example .env
+
+# 3. Start all services in detached mode
+docker compose up -d --build
+```
+
+Once running:
+- **Web Application:** `http://localhost`
+- **Backend REST & GraphQL API:** `http://localhost:8888`
+- **GraphQL Playground:** `http://localhost:8888/graphql`
+
+---
+
+### Bring Your Own Credentials (BYOC) Architecture
+
+ERP.js follows a **100% Bring Your Own Credentials (BYOC)** model, similar to self-hosted platforms like n8n or Supabase.
+
+1. **Zero Mandatory Corporate Developer Accounts:**  
+   You do not need to register complex commercial developer accounts to evaluate the platform. Out of the box, ERP.js operates in **Sandbox / Simulation Mode**.
+2. **Realistic Simulation Telemetry:**  
+   On public demos or local tests without API keys, advertising metrics, conversion events, post analytics, and customer reviews render realistically with synthetic telemetry.
+3. **Live Production Upgrades:**  
+   When you wish to publish live social posts, stream real conversions, run Meta/Google/TikTok ad campaigns, or manage real Google Business reviews, simply input your own API keys in the Settings UI or `.env` file. All secrets are envelope-encrypted at rest using **AES-256-GCM**.
+4. **Step-by-Step Platform Guides:**  
+   Detailed credential setup instructions for every supported platform are available in [DEVELOPER_ACCOUNTS_SETUP_GUIDE.md](DEVELOPER_ACCOUNTS_SETUP_GUIDE.md).
+
+---
+
+### Manual Local Development Setup
 
 ### Prerequisites
 
@@ -443,8 +483,8 @@ cd ERPjs
    ```bash
    npm run dev
    ```
-   > 🚀 The backend will start on **`http://localhost:8888`**  
-   > 📚 GraphQL Playground / Endpoint available at **`http://localhost:8888/graphql`**
+   >  The backend will start on **`http://localhost:8888`**  
+   >  GraphQL Playground / Endpoint available at **`http://localhost:8888/graphql`**
 
 ---
 
@@ -472,7 +512,7 @@ cd ERPjs
    ```bash
    npm run dev
    ```
-   > 💻 The frontend interface will launch on **`http://localhost:3000`**
+   >  The frontend interface will launch on **`http://localhost:3000`**
 
 ---
 
@@ -488,7 +528,7 @@ Once the database is seeded using `npm run setup`, you can authenticate immediat
 
 ---
 
-## 📡 API and GraphQL Integration
+## API and GraphQL Integration
 
 ERP.js offers a hybrid **GraphQL (Apollo Server 4)** and **RESTful Express** architecture:
 
@@ -503,16 +543,16 @@ The primary data fetching layer for queries, mutations, and deep entity graphs.
 
 ### 2. Selective REST Endpoints
 Dedicated endpoints for binary streams, file uploads, third-party webhooks, and public routes:
-- `POST /api/login` & `POST /api/logout` — Authentication
-- `POST /api/client/create`, `GET /api/client/list` — Entity CRUD endpoints
-- `POST /api/pdf/invoice` — Dynamic PDF invoice download
-- `POST /api/upload` — Multipart document uploads via `express-fileupload`
-- `GET /url/:shortCode` — Dynamic link redirection with geo-tracking
-- `POST /api/webhook/social` — Webhook receivers for social media platforms
+- `POST /api/login` & `POST /api/logout`  -  Authentication
+- `POST /api/client/create`, `GET /api/client/list`  -  Entity CRUD endpoints
+- `POST /api/pdf/invoice`  -  Dynamic PDF invoice download
+- `POST /api/upload`  -  Multipart document uploads via `express-fileupload`
+- `GET /url/:shortCode`  -  Dynamic link redirection with geo-tracking
+- `POST /api/webhook/social`  -  Webhook receivers for social media platforms
 
 ---
 
-## 🧪 Testing & Quality Assurance
+## Testing & Quality Assurance
 
 The codebase includes verification checks, model smoke tests, and frontend test suites:
 
@@ -522,6 +562,15 @@ cd backend
 
 # Run comprehensive smoke tests (Model integrity + ESM loaders + App startup)
 npm run test:smoke
+
+# Run full marketing regression suite (BYOC, CAPI, Audiences, Ads, Reputation)
+npm run test:marketing:regression
+
+# Run Playwright Chromium E2E browser test
+npm run test:marketing:e2e
+
+# Run all marketing verification phases (1 to 6)
+npm run test:marketing:all
 
 # TypeScript compilation check (no emit)
 npm run typecheck
@@ -547,7 +596,7 @@ npm run build
 
 ---
 
-## 🚢 Deployment & DevOps
+## Deployment & DevOps
 
 ### 1. Automated VPS CI/CD via GitHub Actions
 A production deployment pipeline is included in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Pushing to the `main` branch automatically:
@@ -560,15 +609,15 @@ A production deployment pipeline is included in [`.github/workflows/deploy.yml`]
 ### 2. Vercel Frontend Deployment
 A configured [`vercel.json`](vercel.json) allows zero-configuration deployment of the frontend to Vercel with single-page application (SPA) client routing rewrites.
 
-### 3. One-Click Windows Deployment Script
-Windows developers can use the included [`deploy.bat`](deploy.bat) script to increment build numbers, compile TypeScript, run git operations, and push to main:
-```cmd
-deploy.bat "Release version 4.1.0 feature updates"
+### 3. Production Docker & Container Deployment
+For containerized self-hosting, ERP.js includes multi-stage container configurations for production deployment with Docker Compose:
+```bash
+docker compose up -d
 ```
 
 ---
 
-## 🔒 Security & Enterprise Compliance
+## Security & Enterprise Compliance
 
 - **Authentication:** Salted hash passwords using `bcryptjs` (12 rounds) and signed `jsonwebtoken` (JWT) cookies & bearer headers.
 - **Access Control:** Multi-tier role permissions separating `CompanyOwner`, `Admin`, and `User`.
@@ -579,7 +628,7 @@ deploy.bat "Release version 4.1.0 feature updates"
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome community contributions! Please follow these steps:
 
@@ -592,7 +641,7 @@ We welcome community contributions! Please follow these steps:
 
 ---
 
-## 📄 License
+## License
 
 ERP.js is released under the **AGPL-3.0 License** (or optional Enterprise Commercial License).  
 See the [`LICENSE`](LICENSE) file for complete details.

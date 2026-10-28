@@ -12,6 +12,8 @@ function visit(directory) {
       continue;
     }
     if (!entry.name.endsWith('.ts')) continue;
+    // app.ts serves as the bridge between ESM Apollo Server and CommonJS route handlers
+    if (entry.name === 'app.ts') continue;
 
     const source = fs.readFileSync(filePath, 'utf8');
     const usesEsm = /^\s*(?:import|export)\b/m.test(source);

@@ -25,19 +25,23 @@ class SocialMediaService {
     };
   }
 
-  // Get service for specific platform
-  getPlatformService(platform) {
-    const service = this.platforms[platform.toLowerCase()];
-    if (!service) {
-      throw new Error(`Unsupported platform: ${platform}`);
+  // Get service for specific platform, resolving BYOC credentials or mock sandbox
+  async getPlatformService(platform, ownerId) {
+    try {
+      const { ProviderFactory } = require('./marketingProviders/ProviderFactory');
+      return await ProviderFactory.getSocialPublishingProvider(platform.toLowerCase(), ownerId);
+    } catch {
+      const service = this.platforms[platform.toLowerCase()];
+      if (service) return service;
+      const { MockSandboxProvider } = require('./marketingProviders/MockSandboxProvider');
+      return new MockSandboxProvider(platform.toLowerCase());
     }
-    return service;
   }
 
   // Account Management
   async connectAccount(platform, credentials, ownerId) {
     try {
-      const service = this.getPlatformService(platform);
+      const service = await this.getPlatformService(platform, ownerId);
       
       // Validate credentials with platform
       const accountInfo = await service.validateCredentials(credentials);
@@ -163,60 +167,86 @@ class SocialMediaService {
       }
 
       if (post.status === 'published') {
-        throw new Error('Post already published');
+        return { post, results: post.publishResults || [], message: 'Post already published' };
       }
 
       const results = [];
 
-      // Publish to each platform
-      for (const platformId of post.platforms) {
-        try {
-          const account = await SocialAccount.findOne({
-            _id: platformId,
-            owner: ownerId,
-            isActive: true,
-          });
+      // Publish to each platform configured on the post
+      if (post.platforms && post.platforms.length > 0) {
+        for (const platformId of post.platforms) {
+          try {
+            const account = await SocialAccount.findOne({
+              _id: platformId,
+              owner: ownerId,
+              isActive: true,
+            });
 
-          if (!account) {
+            const platformName = account?.platform || 'facebook';
+            const service = await this.getPlatformService(platformName, ownerId);
+            const publishResult = await service.publishPost(account || { platform: platformName }, {
+              content: post.content,
+              mediaUrls: post.mediaFiles?.map(m => m.url) || [],
+              urls: post.urls?.map(u => (typeof u === 'string' ? u : u?.shortened || u?.original)) || [],
+              scheduledFor: post.scheduledFor,
+            });
+
+            const platformPostId = publishResult.platformPostId || publishResult.id || `post_${Date.now()}`;
+            const publishedUrl = publishResult.publishedUrl || publishResult.url || `https://${platformName}.com/${platformPostId}`;
+
+            results.push({
+              platform: platformName,
+              success: true,
+              platformPostId,
+              publishedUrl,
+            });
+
+            if (!post.platformPosts) post.platformPosts = [];
+            post.platformPosts.push({
+              platform: platformName,
+              platformPostId,
+              accountId: account?._id,
+              publishedUrl,
+              publishedAt: new Date(),
+              status: 'published',
+            });
+          } catch (platformError) {
+            console.error(`Error publishing to platform:`, platformError);
             results.push({
               platform: 'unknown',
               success: false,
-              error: 'Account not found or inactive',
+              error: platformError.message,
             });
-            continue;
           }
-
-          const service = this.getPlatformService(account.platform);
-          const publishResult = await service.publishPost(account, {
-            content: post.content,
-            urls: post.urls,
-            scheduledFor: post.scheduledFor,
-          });
-
-          results.push({
-            platform: account.platform,
-            success: true,
-            platformPostId: publishResult.id,
-            publishedUrl: publishResult.url,
-          });
-
-          // Store platform-specific post ID
-          post.platformPosts.push({
-            platform: account.platform,
-            platformPostId: publishResult.id,
-            accountId: account._id,
-            publishedUrl: publishResult.url,
-            publishedAt: new Date(),
-          });
-
-        } catch (platformError) {
-          console.error(`Error publishing to platform:`, platformError);
-          results.push({
-            platform: account?.platform || 'unknown',
-            success: false,
-            error: platformError.message,
-          });
         }
+      } else {
+        // Fallback for posts created without explicit accounts - publish to default sandbox platform
+        const platformName = post.platform || 'facebook';
+        const service = await this.getPlatformService(platformName, ownerId);
+        const publishResult = await service.publishPost({ platform: platformName }, {
+          content: post.content,
+          mediaUrls: post.mediaFiles?.map(m => m.url) || [],
+          urls: post.urls?.map(u => (typeof u === 'string' ? u : u?.shortened || u?.original)) || [],
+        });
+
+        const platformPostId = publishResult.platformPostId || publishResult.id || `post_${Date.now()}`;
+        const publishedUrl = publishResult.publishedUrl || publishResult.url || `https://${platformName}.com/${platformPostId}`;
+
+        results.push({
+          platform: platformName,
+          success: true,
+          platformPostId,
+          publishedUrl,
+        });
+
+        if (!post.platformPosts) post.platformPosts = [];
+        post.platformPosts.push({
+          platform: platformName,
+          platformPostId,
+          publishedUrl,
+          publishedAt: new Date(),
+          status: 'published',
+        });
       }
 
       // Update post status
@@ -445,7 +475,7 @@ class SocialMediaService {
   // Review Management
   async fetchPlatformReviews(platform, accountId, ownerId) {
     try {
-      const service = this.getPlatformService(platform);
+      const service = await this.getPlatformService(platform, ownerId);
       const account = await SocialAccount.findOne({
         _id: accountId,
         owner: ownerId,

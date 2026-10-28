@@ -16,10 +16,12 @@ import {
   FacebookOutlined,
   GoogleOutlined,
   InstagramOutlined,
+  LinkedinOutlined,
   PlusOutlined,
   SyncOutlined,
   TwitterOutlined,
   UserOutlined,
+  VideoCameraOutlined,
 } from '@/components/icons';
 import {
   Avatar,
@@ -27,7 +29,9 @@ import {
   Button,
   Card,
   Col,
+  Empty,
   Input,
+  message,
   Modal,
   Row,
   Space,
@@ -46,73 +50,42 @@ const { confirm } = Modal;
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-// Dummy fallbacks when store data is empty - moved outside component to prevent re-creation
-const dummyAudiences = [
-  {
-    _id: 'aud_1',
-    name: 'High-Intent Website Visitors',
-    description: 'Visited pricing/checkout in last 30 days',
-    size: 8420,
-    platforms: ['facebook', 'instagram', 'twitter', 'google'],
-    status: 'active',
-    createdAt: new Date(Date.now() - 86400000 * 15).toISOString(), // 15 days ago
-  },
-  {
-    _id: 'aud_2',
-    name: 'Engaged Email Subscribers',
-    description: 'Opened or clicked emails in last 60 days',
-    size: 5310,
-    platforms: ['facebook', 'instagram', 'google'],
-    status: 'active',
-    createdAt: new Date(Date.now() - 86400000 * 45).toISOString(), // 45 days ago
-  },
-  {
-    _id: 'aud_3',
-    name: 'All Customers',
-    description: 'All customers in our database',
-    size: 15000,
-    platforms: ['facebook', 'google'],
-    status: 'active',
-    createdAt: new Date(Date.now() - 86400000 * 60).toISOString(), // 60 days ago
-  },
-];
-
-const dummyPlatforms = {
-  lastSyncTime: Date.now() - 3600 * 1000 * 8, // 8 hours ago
-  connections: {
-    facebook: { name: 'Facebook', connected: true, lastSync: Date.now() - 3600 * 1000 * 8 },
-    instagram: { name: 'Instagram', connected: true, lastSync: Date.now() - 3600 * 1000 * 12 },
-    twitter: { name: 'Twitter', connected: true, lastSync: Date.now() - 3600 * 1000 * 24 },
-    google: { name: 'Google', connected: true, lastSync: Date.now() - 3600 * 1000 * 4 },
-  },
-};
-
 export default function RetargetingAudiences() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const translate = useLanguage();
 
-  const audiences = useSelector(selectRetargetingLists);
+  const audiences = useSelector(selectRetargetingLists) || [];
   const isLoading = useSelector(selectRetargetingListsLoading);
   const platforms = useSelector(selectRetargetingPlatforms);
-  const isSyncing = useSelector((state) => state.retargeting?.platforms?.syncing);
+  const isSyncing = useSelector((state: any) => state.retargeting?.platforms?.syncing);
 
   const [searchText, setSearchText] = useState('');
-  const [filteredAudiences, setFilteredAudiences] = useState([]);
-  const [editingAudience, setEditingAudience] = useState(null);
+  const [filteredAudiences, setFilteredAudiences] = useState<any[]>([]);
+  const [editingAudience, setEditingAudience] = useState<any>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('audiences');
 
-  // Use real data from Redux if available, otherwise use dummy data - memoized to prevent infinite re-renders
+  // Live audience data directly from Redux store with clean empty fallback
   const audiencesData = useMemo(() => {
-    return audiences && audiences.length ? audiences : dummyAudiences;
-  }, [audiences, dummyAudiences]);
+    return Array.isArray(audiences) ? audiences : [];
+  }, [audiences]);
 
+  // Live platform connection states with sensible defaults
   const platformsData = useMemo(() => {
-    return platforms && Object.keys(platforms).length && platforms.connections
-      ? platforms
-      : dummyPlatforms;
-  }, [platforms, dummyPlatforms]);
+    const defaultConnections = {
+      facebook: { name: 'Facebook', connected: false, lastSync: null },
+      google: { name: 'Google Ads', connected: false, lastSync: null },
+      linkedin: { name: 'LinkedIn', connected: false, lastSync: null },
+      tiktok: { name: 'TikTok Ads', connected: false, lastSync: null },
+    };
+    return {
+      lastSyncTime: platforms?.lastSyncTime || null,
+      connections: platforms?.connections
+        ? { ...defaultConnections, ...platforms.connections }
+        : defaultConnections,
+    };
+  }, [platforms]);
 
   useEffect(() => {
     dispatch(fetchRetargetingLists());
@@ -121,8 +94,8 @@ export default function RetargetingAudiences() {
   useEffect(() => {
     setFilteredAudiences(
       audiencesData.filter(
-        (audience) =>
-          audience.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        (audience: any) =>
+          audience.name?.toLowerCase().includes(searchText.toLowerCase()) ||
           (audience.description &&
             audience.description.toLowerCase().includes(searchText.toLowerCase()))
       )
@@ -138,7 +111,7 @@ export default function RetargetingAudiences() {
     setIsModalVisible(true);
   };
 
-  const handleEditAudience = (audience) => {
+  const handleEditAudience = (audience: any) => {
     setEditingAudience(audience);
     setIsModalVisible(true);
   };
@@ -148,10 +121,10 @@ export default function RetargetingAudiences() {
     setEditingAudience(null);
   };
 
-  const showDeleteConfirm = (audienceId, audienceName) => {
+  const showDeleteConfirm = (audienceId: string, audienceName: string) => {
     confirm({
       title: translate('Delete Audience'),
-      content: translate('Are you sure you want to delete this audience?') + ` "${audienceName}"`,
+      content: `${translate('Are you sure you want to delete this audience?')} "${audienceName}"`,
       icon: <ExclamationCircleOutlined />,
       okText: translate('Yes'),
       okType: 'danger',
@@ -162,17 +135,33 @@ export default function RetargetingAudiences() {
     });
   };
 
-  const handleSyncPlatform = (platform) => {
-    dispatch(syncPlatformAudiences(platform));
+  const handleSyncPlatform = async (platform: string) => {
+    try {
+      message.loading({
+        content: `${translate('Syncing audience with')} ${platform}...`,
+        key: `sync-${platform}`,
+      });
+      await (dispatch as any)(syncPlatformAudiences(platform)).unwrap();
+      message.success({
+        content: `${translate('Audience sync initiated for')} ${platform}`,
+        key: `sync-${platform}`,
+      });
+    } catch (err: any) {
+      message.error({
+        content: err || `${translate('Failed to sync')} ${platform}`,
+        key: `sync-${platform}`,
+      });
+    }
   };
 
-  const getPlatformIcon = (platform) => {
-    const icons = {
+  const getPlatformIcon = (platform: string) => {
+    const icons: Record<string, React.ReactNode> = {
       facebook: <FacebookOutlined style={{ color: '#1877f2' }} />,
       google: <GoogleOutlined style={{ color: '#ea4335' }} />,
       twitter: <TwitterOutlined style={{ color: '#1da1f2' }} />,
       instagram: <InstagramOutlined style={{ color: '#E1306C' }} />,
-      // LinkedIn removed
+      linkedin: <LinkedinOutlined style={{ color: '#0a66c2' }} />,
+      tiktok: <VideoCameraOutlined style={{ color: '#000000' }} />,
     };
     return icons[platform] || <UserOutlined />;
   };
@@ -182,7 +171,7 @@ export default function RetargetingAudiences() {
       title: translate('Name'),
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => (
+      render: (text: string, record: any) => (
         <div>
           <div style={{ fontWeight: '600', color: '#2c2c2c' }}>{text}</div>
           {record.description && (
@@ -195,9 +184,9 @@ export default function RetargetingAudiences() {
       title: translate('Size'),
       dataIndex: 'size',
       key: 'size',
-      render: (size) => (
+      render: (size: number) => (
         <div>
-          {size.toLocaleString()} {translate('users')}
+          {(size || 0).toLocaleString()} {translate('users')}
         </div>
       ),
     },
@@ -205,9 +194,9 @@ export default function RetargetingAudiences() {
       title: translate('Platforms'),
       dataIndex: 'platforms',
       key: 'platforms',
-      render: (platforms) => (
+      render: (platformsList: string[]) => (
         <Space>
-          {platforms.map((platform) => (
+          {(platformsList || []).map((platform) => (
             <Avatar key={platform} icon={getPlatformIcon(platform)} size="small" />
           ))}
         </Space>
@@ -217,27 +206,41 @@ export default function RetargetingAudiences() {
       title: translate('Status'),
       dataIndex: 'status',
       key: 'status',
-      render: (status) => {
-        const statusColors = {
+      render: (status: string) => {
+        const statusColors: Record<string, 'success' | 'processing' | 'error' | 'default' | 'warning'> = {
           active: 'success',
+          synced: 'success',
           syncing: 'processing',
+          pending: 'warning',
           error: 'error',
+          failed: 'error',
           draft: 'default',
         };
-        return <Badge status={statusColors[status] || 'default'} text={translate(status)} />;
+        return <Badge status={statusColors[status] || 'default'} text={translate(status || 'active')} />;
       },
     },
     {
       title: translate('Created'),
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
+      render: (date: string) => (
+        <span>{date ? new Date(date).toLocaleDateString() : '-'}</span>
+      ),
     },
     {
       title: translate('Actions'),
       key: 'actions',
-      render: (_, record) => (
+      render: (_: any, record: any) => (
         <Space size="small">
+          <Button
+            type="text"
+            icon={<SyncOutlined spin={isSyncing} />}
+            title={translate('Sync to Platforms')}
+            onClick={() => {
+              const platform = (record.platforms && record.platforms[0]) || 'facebook';
+              handleSyncPlatform(platform);
+            }}
+          />
           <Button type="text" icon={<EditOutlined />} onClick={() => handleEditAudience(record)} />
           <Button
             type="text"
@@ -280,7 +283,7 @@ export default function RetargetingAudiences() {
           <Card style={{ borderRadius: '10px', boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)' }}>
             <Statistic
               title={translate('Total Reach')}
-              value={audiencesData.reduce((sum, audience) => sum + (audience.size || 0), 0)}
+              value={audiencesData.reduce((sum: number, audience: any) => sum + (audience.size || 0), 0)}
               prefix={<UserOutlined style={{ color: '#10b981' }} />}
               valueStyle={{ color: '#10b981' }}
             />
@@ -290,7 +293,9 @@ export default function RetargetingAudiences() {
           <Card style={{ borderRadius: '10px', boxShadow: '0 2px 8px rgba(139, 92, 246, 0.06)' }}>
             <Statistic
               title={translate('Connected Platforms')}
-              value={Object.values(platformsData.connections).filter((p) => p.connected).length}
+              value={
+                Object.values(platformsData.connections).filter((p: any) => p.connected).length
+              }
               prefix={<UserOutlined style={{ color: '#f59e0b' }} />}
               valueStyle={{ color: '#f59e0b' }}
             />
@@ -312,7 +317,7 @@ export default function RetargetingAudiences() {
         </Col>
       </Row>
 
-      {/* Audiences Table Card - Only one tab */}
+      {/* Audiences Table Card */}
       <Card
         style={{
           borderRadius: '12px',
@@ -335,19 +340,47 @@ export default function RetargetingAudiences() {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateAudience}>
-            {translate('Create Audience')}
-          </Button>
+          <Space>
+            <Button
+              icon={<SyncOutlined spin={isSyncing} />}
+              loading={isSyncing}
+              onClick={() => handleSyncPlatform('facebook')}
+            >
+              {translate('Sync All Platforms')}
+            </Button>
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateAudience}>
+              {translate('Create Audience')}
+            </Button>
+          </Space>
         </div>
 
-        {/* Audiences Table */}
-        <Table
-          columns={columns}
-          dataSource={filteredAudiences}
-          rowKey="_id"
-          loading={isLoading}
-          pagination={{ pageSize: 10 }}
-        />
+        {/* Audiences Table with Empty State */}
+        {audiencesData.length === 0 && !isLoading ? (
+          <Empty
+            style={{ padding: '48px 0' }}
+            description={
+              <span>
+                {translate('No retargeting audiences configured.')}
+                <br />
+                <Text type="secondary">
+                  {translate('Create your first audience to begin syncing with Meta, Google, LinkedIn, and TikTok.')}
+                </Text>
+              </span>
+            }
+          >
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateAudience}>
+              {translate('Create Audience')}
+            </Button>
+          </Empty>
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={filteredAudiences}
+            rowKey="_id"
+            loading={isLoading}
+            pagination={{ pageSize: 10 }}
+          />
+        )}
       </Card>
 
       {/* Audience Editor Modal */}
@@ -363,6 +396,7 @@ export default function RetargetingAudiences() {
           onSave={() => {
             setIsModalVisible(false);
             setEditingAudience(null);
+            dispatch(fetchRetargetingLists());
           }}
           onCancel={handleModalCancel}
         />

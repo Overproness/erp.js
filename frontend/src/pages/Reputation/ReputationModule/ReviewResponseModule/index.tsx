@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Tabs, Empty, List, Avatar, Rate, Typography, Tag, Button, Input, Space, Divider, Row, Col, Select, Badge } from '@/components/ui';
 import { 
   UserOutlined, 
@@ -8,7 +8,8 @@ import {
   SendOutlined,
   SaveOutlined,
   ExclamationCircleOutlined,
-  FilterOutlined
+  FilterOutlined,
+  BulbOutlined,
 } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 
@@ -16,67 +17,6 @@ const { TabPane } = Tabs;
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
-
-// Updated pending reviews from ReviewMonitoringModule (reviews with responded: false)
-const pendingReviews = [
-  {
-    id: '2',
-    customer: 'Jane Smith',
-    rating: 2,
-    date: '2023-04-10',
-    content: 'Poor experience. Long wait times and staff was not attentive.',
-    platform: 'Facebook',
-    responded: false,
-    sentiment: 'negative'
-  },
-  {
-    id: '4',
-    customer: 'Emily Davis',
-    rating: 1,
-    date: '2023-04-02',
-    content: 'Very disappointed with the service. Will not be returning.',
-    platform: 'Google',
-    responded: false,
-    sentiment: 'negative'
-  }
-];
-
-// Responded reviews from ReviewMonitoringModule (reviews with responded: true)
-const respondedReviews = [
-  {
-    id: '1',
-    customer: 'John Doe',
-    rating: 5,
-    date: '2023-04-15',
-    content: 'Excellent service! The team was very professional and helpful. Would highly recommend.',
-    platform: 'Google',
-    responded: true,
-    sentiment: 'positive',
-    response: 'Thank you for your kind words! We\'re delighted that you enjoyed your experience with us. We strive to provide excellent service to all our customers. Looking forward to serving you again soon!'
-  },
-  {
-    id: '3',
-    customer: 'Robert Johnson',
-    rating: 4,
-    date: '2023-04-05',
-    content: 'Good overall, but could improve on communication.',
-    platform: 'Google',
-    responded: true,
-    sentiment: 'neutral',
-    response: 'Thank you for your feedback, Robert. We appreciate you taking the time to share your experience. We\'re constantly working to improve our communication and will take your suggestions into account. Please don\'t hesitate to reach out if you have any other feedback.'
-  },
-  {
-    id: '5',
-    customer: 'Michael Brown',
-    rating: 5,
-    date: '2023-03-28',
-    content: 'Amazing experience! The staff went above and beyond.',
-    platform: 'Facebook',
-    responded: true,
-    sentiment: 'positive',
-    response: 'We\'re thrilled to hear about your amazing experience, Michael! Our team works hard to provide exceptional service, and we\'re glad it showed. Thank you for your kind words and support. We hope to see you again soon!'
-  }
-];
 
 const responseTemplates = [
   {
@@ -105,7 +45,65 @@ const ReviewResponseModule = () => {
   const [selectedReview, setSelectedReview] = useState(null);
   const [responseText, setResponseText] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-  
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const { request } = await import('@/request');
+        const res = await request.get({ entity: 'marketing/reputation/reviews' });
+        if (isMounted && res?.result && res.result.length > 0) {
+          const mapped = res.result.map((r: any) => ({
+            id: r._id || r.platformReviewId,
+            customer: r.client?.name || 'Customer',
+            rating: r.rating || 5,
+            date: r.publishedAt ? new Date(r.publishedAt).toLocaleDateString() : 'Recent',
+            content: r.comment || '',
+            platform: r.platform ? r.platform.charAt(0).toUpperCase() + r.platform.slice(1) : 'Google',
+            responded: r.status === 'responded' || !!r.response?.text,
+            sentiment: r.sentiment?.category || 'positive',
+            response: r.response?.text || '',
+          }));
+          setReviews(mapped);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch reviews for response module:', err);
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const pendingReviews = reviews.filter((r) => !r.responded);
+  const respondedReviews = reviews.filter((r) => r.responded);
+
+  // Handle AI Response Generation
+  const handleAIGenerate = async () => {
+    if (!selectedReview) return;
+    setIsGeneratingAI(true);
+    try {
+      const { request } = await import('@/request');
+      const res = await request.create({
+        entity: `marketing/reputation/reviews/${selectedReview.id}/generate-ai-reply`,
+        jsonData: {
+          authorName: selectedReview.customer,
+          rating: selectedReview.rating,
+          comment: selectedReview.content,
+        },
+      });
+      if (res?.result?.draft) {
+        setResponseText(res.result.draft);
+      }
+    } catch (err: any) {
+      console.warn('AI generation error:', err);
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
+
   // Handle template selection
   const handleTemplateChange = (templateId) => {
     const template = responseTemplates.find(t => t.id === templateId);
@@ -116,15 +114,32 @@ const ReviewResponseModule = () => {
   };
   
   // Handle response submission
-  const handleSubmitResponse = () => {
-    console.log('Submitting response for review:', selectedReview?.id);
-    console.log('Response text:', responseText);
-    // This would be replaced with an actual API call
-    
-    // Reset state after submission
-    setResponseText('');
-    setSelectedTemplate(null);
-    setSelectedReview(null);
+  const handleSubmitResponse = async () => {
+    if (!selectedReview || !responseText.trim()) return;
+
+    try {
+      const { request } = await import('@/request');
+      await request.create({
+        entity: `marketing/reputation/reviews/${selectedReview.id}/reply`,
+        jsonData: {
+          replyText: responseText,
+          platform: selectedReview.platform?.toLowerCase() || 'google',
+        },
+      });
+
+      setReviews((prev) =>
+        prev.map((r) =>
+          r.id === selectedReview.id
+            ? { ...r, responded: true, response: responseText }
+            : r
+        )
+      );
+      setResponseText('');
+      setSelectedTemplate(null);
+      setSelectedReview(null);
+    } catch (err: any) {
+      console.error('Submit response error:', err);
+    }
   };
   
   // Get badge color based on sentiment
@@ -320,11 +335,21 @@ const ReviewResponseModule = () => {
                   <>
                     <Divider />
                     
-                    <div style={{ marginBottom: '16px' }}>
+                    <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Text strong>{translate('Select Response Template')}</Text>
+                      <Button
+                        type="dashed"
+                        icon={<BulbOutlined />}
+                        loading={isGeneratingAI}
+                        onClick={handleAIGenerate}
+                      >
+                        {translate('AI Suggest Reply')}
+                      </Button>
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
                       <Select
                         placeholder={translate('Select a template')}
-                        style={{ width: '100%', marginTop: '8px' }}
+                        style={{ width: '100%' }}
                         onChange={handleTemplateChange}
                         value={selectedTemplate?.id || undefined}
                       >

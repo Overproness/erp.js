@@ -2,6 +2,11 @@
 const express = require('express');
 const router = express.Router();
 const { catchErrors } = require('@/handlers/errorHandlers');
+const {
+  verifyMetaWebhook,
+  handleMetaWebhook,
+  handleInboundConversionWebhook,
+} = require('@/controllers/appControllers/marketingWebhookController');
 
 // Public webhook handlers for social media platforms
 const handleFacebookWebhook = async (req, res) => {
@@ -208,8 +213,15 @@ const getStatus = async (req, res) => {
 
 // Webhook routes (no authentication required)
 router.route('/webhooks/facebook')
-  .get(catchErrors(handleFacebookWebhook))  // Verification
-  .post(catchErrors(handleFacebookWebhook)); // Event handling
+  .get(catchErrors(verifyMetaWebhook))  // Verification
+  .post(catchErrors(handleMetaWebhook)); // Event handling
+
+router.route('/webhooks/meta')
+  .get(catchErrors(verifyMetaWebhook))  // Verification
+  .post(catchErrors(handleMetaWebhook)); // Event handling
+
+router.route('/webhooks/conversion')
+  .post(catchErrors(handleInboundConversionWebhook)); // Inbound conversion events
 
 router.route('/webhooks/instagram')
   .get(catchErrors(handleInstagramWebhook))  // Verification

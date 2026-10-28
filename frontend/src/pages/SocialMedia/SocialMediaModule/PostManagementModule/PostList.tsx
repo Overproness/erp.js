@@ -1,4 +1,3 @@
-import dummyPosts from '@/data/dummyPostsData';
 import { usePostManagement } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
 import {
@@ -39,21 +38,17 @@ const PostList = ({ onEditPost, onPreviewPost }) => {
   const [dateRange, setDateRange] = useState(null);
 
   const loadedRef = useRef(false);
-  // Use dummy data or API data based on what's available
   useEffect(() => {
     if (loadedRef.current) return;
     loadedRef.current = true;
     if (typeof refreshPosts === 'function') {
       refreshPosts();
     }
-
-    // Initialize with dummy data
-    setFilteredPosts(dummyPosts);
   }, []);
 
   // Apply filters when they change
   useEffect(() => {
-    const postsToFilter = Array.isArray(posts) && posts.length > 0 ? posts : dummyPosts;
+    const postsToFilter = Array.isArray(posts) ? posts : [];
     let filtered = [...postsToFilter];
 
     // Apply search

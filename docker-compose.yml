@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: erpjs-mongodb
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: erpjs-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: erpjs-backend
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - '8888:8888'
+    environment:
+      - NODE_ENV=production
+      - PORT=8888
+      - DATABASE=mongodb://mongodb:27017/erp-crm
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:-erpjs_production_jwt_master_secret_2026}
+      - MARKETING_ENCRYPTION_SECRET=${MARKETING_ENCRYPTION_SECRET:-erpjs_marketing_vault_master_key_256}
+      # BYOC Integrations (optional overrides; can also be configured via Web UI Vault)
+      - META_APP_ID=${META_APP_ID:-}
+      - META_APP_SECRET=${META_APP_SECRET:-}
+      - GOOGLE_ADS_DEVELOPER_TOKEN=${GOOGLE_ADS_DEVELOPER_TOKEN:-}
+      - LINKEDIN_CLIENT_ID=${LINKEDIN_CLIENT_ID:-}
+      - LINKEDIN_CLIENT_SECRET=${LINKEDIN_CLIENT_SECRET:-}
+      - TIKTOK_APP_ID=${TIKTOK_APP_ID:-}
+      - TIKTOK_APP_SECRET=${TIKTOK_APP_SECRET:-}
+      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN:-}
+      - YELP_API_KEY=${YELP_API_KEY:-}
+      - TRUSTPILOT_API_KEY=${TRUSTPILOT_API_KEY:-}
+    volumes:
+      - backend_uploads:/app/dist/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: erpjs-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - '80:80'
+      - '443:443'
+
+volumes:
+  mongo_data:
+  redis_data:
+  backend_uploads:

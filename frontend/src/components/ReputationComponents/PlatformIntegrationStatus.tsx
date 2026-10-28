@@ -17,21 +17,24 @@ const PlatformIntegrationStatus = ({ platforms = [], onConnect, onSync, onDiscon
 
   // Get platform icon based on platform ID
   const getPlatformIcon = (platformId) => {
-    switch (platformId.toLowerCase()) {
+    switch ((platformId || '').toLowerCase()) {
       case 'google':
         return <GoogleOutlined style={{ fontSize: '24px', color: '#4285F4' }} />;
       case 'facebook':
         return <FacebookOutlined style={{ fontSize: '24px', color: '#1877F2' }} />;
+      case 'trustpilot':
+        return <StarOutlined style={{ fontSize: '24px', color: '#00b67a' }} />;
+      case 'yelp':
+        return <StarOutlined style={{ fontSize: '24px', color: '#d32323' }} />;
       default:
         return <GlobalOutlined style={{ fontSize: '24px', color: '#1890ff' }} />;
     }
   };
 
-  // Update all platforms to be connected
-  const connectedPlatforms = platforms.map((platform) => ({
+  const platformList = platforms.map((platform) => ({
     ...platform,
-    status: 'connected',
-    connected: true,
+    status: platform.status || (platform.connected ? 'connected' : 'disconnected'),
+    connected: platform.connected ?? (platform.status === 'connected'),
   }));
 
   return (
@@ -46,8 +49,8 @@ const PlatformIntegrationStatus = ({ platforms = [], onConnect, onSync, onDiscon
       style={{ marginBottom: '24px' }}
     >
       <Row gutter={[16, 16]}>
-        {connectedPlatforms.map((platform) => (
-          <Col xs={24} sm={12} md={8} key={platform.id}>
+        {platformList.map((platform) => (
+          <Col xs={24} sm={12} md={6} key={platform.id}>
             <Card size="small" hoverable styles={{ body: { padding: '16px', height: '120px' } }}>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
                 <div style={{ marginRight: '12px' }}>{getPlatformIcon(platform.id)}</div>
@@ -55,7 +58,10 @@ const PlatformIntegrationStatus = ({ platforms = [], onConnect, onSync, onDiscon
                   <Title level={5} style={{ margin: 0 }}>
                     {platform.name}
                   </Title>
-                  <Badge status="success" text={translate('Connected')} />
+                  <Badge 
+                    status={platform.connected ? 'success' : 'default'} 
+                    text={platform.connected ? translate('Connected') : translate('Not Connected')} 
+                  />
                 </div>
               </div>
 

@@ -1,30 +1,32 @@
-# Use official Node.js runtime as parent image
-FROM node:20.9.0-alpine
+# Multi-stage Dockerfile for ERP.js Frontend
+FROM node:20.9.0-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Set environment variables
-ENV NODE_ENV=production
-ENV NODE_OPTIONS=--max-old-space-size=8192
+ENV NODE_OPTIONS=--max-old-space-size=4096
 
-# Copy package files
-COPY package.json package-lock.json ./
+# Copy package definitions and install dependencies
+COPY package*.json ./
+RUN npm ci --no-audit --no-fund
 
-# Install dependencies with specific flags for memory optimization
-RUN npm ci --only=production --no-optional --no-fund --no-audit
-
-# Copy source code
+# Copy frontend source code
 COPY . .
 
-# Build the application
-RUN npm run build:render
+# Build production bundle
+RUN npm run build
 
-# Install serve to serve static files
-RUN npm install -g serve
+# Production runtime stage using lightweight Nginx
+FROM nginx:1.25-alpine AS runner
 
-# Expose port
-EXPOSE 3000
+# Remove default nginx html
+RUN rm -rf /usr/share/nginx/html/*
 
-# Start the application
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Copy build artifacts from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom Nginx configuration with SPA fallback and API proxy
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

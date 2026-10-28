@@ -21,6 +21,15 @@
     "check:model-esm": "node scripts/check-model-esm.cjs",
     "smoke:models": "tsx scripts/model-loading-smoke.ts",
     "smoke:app": "tsx scripts/app-startup-smoke.ts",
+    "test:marketing:phase1": "tsx tests/marketingPhase1Verification.ts",
+    "test:marketing:phase2": "tsx tests/marketingPhase2Verification.ts",
+    "test:marketing:phase3": "tsx tests/marketingPhase3Verification.ts",
+    "test:marketing:phase4": "tsx tests/marketingPhase4Verification.ts",
+    "test:marketing:phase5": "tsx tests/marketingPhase5Verification.ts",
+    "test:marketing:phase6": "tsx tests/marketingPhase6Verification.ts",
+    "test:marketing:regression": "tsx tests/marketingFullRegression.ts",
+    "test:marketing:e2e": "tsx tests/marketingE2EBrowserValidation.ts",
+    "test:marketing:all": "npm run test:marketing:phase1 && npm run test:marketing:phase2 && npm run test:marketing:phase3 && npm run test:marketing:phase4 && npm run test:marketing:phase5 && npm run test:marketing:phase6 && npm run test:marketing:regression",
     "test:smoke": "npm run check:model-esm && npm run smoke:models && npm run smoke:app"
   },
   "dependencies": {

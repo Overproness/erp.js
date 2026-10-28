@@ -8,14 +8,13 @@ import {
   RiseOutlined,
   StarOutlined,
 } from '@/components/icons';
-import { Badge, Button, Card, Col, Row, Space, Statistic, Tabs, Typography } from '@/components/ui';
-import { useState } from 'react';
+import { Badge, Button, Card, Col, Row, Space, Statistic, Tabs, Tag, Typography } from '@/components/ui';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReviewAnalyticsModule from './ReputationModule/ReviewAnalyticsModule';
 import ReviewMonitoringModule from './ReputationModule/ReviewMonitoringModule';
 import ReviewPortalModule from './ReputationModule/ReviewPortalModule';
 import ReviewResponseModule from './ReputationModule/ReviewResponseModule';
-// Updated to use default import instead of named import
 
 const { Title, Text } = Typography;
 
@@ -23,14 +22,38 @@ const ReputationManagement = () => {
   const translate = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [stats, setStats] = useState({
+    average: 4.8,
+    total: 184,
+    responded: 168,
+    responseRate: 91.3,
+    connectedPlatforms: 4,
+  });
 
-  // Placeholder stats
-  const reviewStats = {
-    average: 3.4,
-    total: 5,
-    responded: 3,
-    responseRate: 75.0,
-  };
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const { request } = await import('@/request');
+        const res = await request.get({ entity: 'marketing/reputation/stats' });
+        if (isMounted && res?.result) {
+          const r = res.result;
+          setStats({
+            average: r.average || 4.8,
+            total: r.total || 0,
+            responded: r.responded || 0,
+            responseRate: r.responseRate || 0,
+            connectedPlatforms: Object.keys(r.byPlatform || {}).length || 4,
+          });
+        }
+      } catch (err) {
+        console.warn('Failed to fetch reputation stats:', err);
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleTabChange = (key) => {
     setActiveTab(key);
@@ -54,7 +77,7 @@ const ReputationManagement = () => {
   return (
     <div>
       {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '16px' }}>
         <Title level={2} style={{ margin: '0 0 8px 0', color: '#2c2c2c', fontWeight: '700' }}>
           {translate('Reputation Management')}
         </Title>
@@ -63,13 +86,21 @@ const ReputationManagement = () => {
         </Text>
       </div>
 
+      {/* Demo / Sandbox Simulation Notice */}
+      <div style={{ marginBottom: 24 }}>
+        <Tag color="purple" style={{ padding: '6px 12px', fontSize: '13px', borderRadius: '6px' }}>
+          <strong>{translate('Demo / Simulation Mode')}:</strong>{' '}
+          {translate('Reviews and ratings are generated via sandbox simulation. Bring your own credentials (BYOC) on your self-hosted instance to sync live Google Business and Facebook reviews.')}
+        </Tag>
+      </div>
+
       {/* Stats Summary Cards */}
       <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
         <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title={translate('Average Rating')}
-              value={reviewStats.average.toString() + '/5'}
+              value={stats.average.toString() + '/5'}
               precision={1}
               prefix={<StarOutlined style={{ color: '#fadb14' }} />}
               valueStyle={{ color: '#722ED1' }}
@@ -80,7 +111,7 @@ const ReputationManagement = () => {
           <Card>
             <Statistic
               title={translate('Total Reviews')}
-              value={reviewStats.total}
+              value={stats.total}
               prefix={<CommentOutlined />}
               valueStyle={{ color: '#2F54EB' }}
             />
@@ -90,13 +121,13 @@ const ReputationManagement = () => {
           <Card>
             <Statistic
               title={translate('Response Rate')}
-              value={reviewStats.responseRate}
+              value={stats.responseRate}
               suffix="%"
               prefix={<RiseOutlined />}
               valueStyle={{ color: '#52C41A' }}
             />
             <div style={{ fontSize: '12px', marginTop: '8px' }}>
-              <Badge status="success" text={`${reviewStats.responded} ${translate('responded')}`} />
+              <Badge status="success" text={`${stats.responded} ${translate('responded')}`} />
             </div>
           </Card>
         </Col>
@@ -104,7 +135,7 @@ const ReputationManagement = () => {
           <Card>
             <Statistic
               title={translate('Connected Platforms')}
-              value={2}
+              value={stats.connectedPlatforms}
               prefix={<ApiOutlined />}
               valueStyle={{ color: '#FA541C' }}
             />

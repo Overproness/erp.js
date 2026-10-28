@@ -1436,8 +1436,88 @@ function createEntitySpecificResolvers(controllers) {
       },
       socialAnalyticsOverview: async (parent, args, context) => {
         requirePlanFeature(context, 'SOCIAL_MANAGEMENT');
+        const ownerId = context.companyOwner?._id || context.admin?._id;
         try {
-          return { success: true, result: { data: [] }, message: 'Social analytics overview retrieved' };
+          const SocialPost = mongoose.model('SocialPost');
+          const SocialAccount = mongoose.model('SocialAccount');
+
+          const posts = await SocialPost.find({
+            owner: ownerId,
+            removed: false,
+          })
+            .sort({ createdAt: -1 })
+            .lean();
+
+          const accounts = await SocialAccount.find({
+            owner: ownerId,
+            removed: false,
+            isActive: true,
+          }).lean();
+
+          const totalPosts = posts.length;
+          const publishedPosts = posts.filter((p) => p.status === 'published');
+          const scheduledPosts = posts.filter((p) => p.status === 'scheduled');
+
+          let totalLikes = 0;
+          let totalComments = 0;
+          let totalShares = 0;
+          let totalImpressions = 0;
+          let totalReach = 0;
+
+          posts.forEach((p) => {
+            if (p.engagement) {
+              totalLikes += p.engagement.likes || 0;
+              totalComments += p.engagement.comments || 0;
+              totalShares += p.engagement.shares || 0;
+              totalImpressions += p.engagement.impressions || 0;
+              totalReach += p.engagement.reach || 0;
+            }
+          });
+
+          const platformCounts = {
+            facebook: 0,
+            instagram: 0,
+            twitter: 0,
+            linkedin: 0,
+            tiktok: 0,
+          };
+
+          posts.forEach((p) => {
+            if (p.platformPosts && Array.isArray(p.platformPosts)) {
+              p.platformPosts.forEach((pp) => {
+                if (platformCounts[pp.platform] !== undefined) {
+                  platformCounts[pp.platform]++;
+                }
+              });
+            }
+          });
+
+          const totalEngagement = totalLikes + totalComments + totalShares;
+          const totalFollowers = accounts.reduce(
+            (sum, acc) => sum + (acc.followerCount || acc.accountInfo?.followersCount || 0),
+            0
+          );
+
+          return {
+            success: true,
+            result: {
+              overview: {
+                totalPosts,
+                publishedPosts: publishedPosts.length,
+                scheduledPosts: scheduledPosts.length,
+                totalFollowers,
+                totalEngagement,
+                reach: totalReach,
+                impressions: totalImpressions,
+                engagementRate: totalReach > 0 ? Number(((totalEngagement / totalReach) * 100).toFixed(2)) : 0,
+              },
+              platformCounts,
+              connectedAccountsCount: accounts.length,
+              recentPosts: publishedPosts.slice(0, 5),
+              upcomingPosts: scheduledPosts.slice(0, 5),
+            },
+            message: 'Social analytics overview retrieved',
+          };
         } catch (error) {
           return { success: false, result: null, message: error.message };
         }
@@ -3499,30 +3579,30 @@ function createEntitySpecificResolvers(controllers) {
       },
       socialPostPublish: async (parent, args, context) => {
         requirePlanFeature(context, 'SOCIAL_MANAGEMENT');
-        const { req, res, getResponse } = createReqRes(args, context);
-        req.params.id = args.id;
+        const ownerId = context.companyOwner?._id || context.admin?._id;
         try {
-          if (controllers.socialPostController?.update) {
-            req.body = { status: 'published' };
-            await controllers.socialPostController.update(req, res);
-            return getResponse().data;
-          }
-          return { success: false, result: null, message: 'Not available' };
+          const socialMediaService = require('@/services/socialMediaService');
+          const publishRes = await socialMediaService.publishPost(args.id, ownerId);
+          return {
+            success: true,
+            result: publishRes.post,
+            message: 'Post successfully published across configured platforms',
+          };
         } catch (error) {
           return { success: false, result: null, message: error.message };
         }
       },
       socialPostSchedule: async (parent, args, context) => {
         requirePlanFeature(context, 'SOCIAL_MANAGEMENT');
-        const { req, res, getResponse } = createReqRes(args, context);
-        req.params.id = args.id;
-        req.body = { scheduledFor: args.scheduledFor, status: 'scheduled' };
+        const ownerId = context.companyOwner?._id || context.admin?._id;
         try {
-          if (controllers.socialPostController?.update) {
-            await controllers.socialPostController.update(req, res);
-            return getResponse().data;
-          }
-          return { success: false, result: null, message: 'Not available' };
+          const socialMediaService = require('@/services/socialMediaService');
+          const scheduleRes = await socialMediaService.schedulePost(args.id, args.scheduledFor, ownerId);
+          return {
+            success: true,
+            result: scheduleRes,
+            message: 'Post successfully scheduled',
+          };
         } catch (error) {
           return { success: false, result: null, message: error.message };
         }
@@ -3613,11 +3693,18 @@ function createEntitySpecificResolvers(controllers) {
         const { req, res, getResponse } = createReqRes(args, context);
         req.body = args.input;
         try {
-          if (controllers.retargetingController?.createCampaign) {
-            await controllers.retargetingController.createCampaign(req, res);
+          const handler =
+            controllers.retargetingController?.createAudience ||
+            controllers.retargetingController?.createCampaign;
+          if (handler) {
+            await handler.call(controllers.retargetingController, req, res);
             return getResponse().data;
           }
-          return { success: false, result: null, message: 'Not available' };
+          const RetargetingModel = mongoose.model('RetargetingCampaign');
+          const ownerId = context.companyOwner?._id || context.admin?._id;
+          const doc = new RetargetingModel({ ...args.input, owner: ownerId });
+          await doc.save();
+          return { success: true, result: doc, message: 'Retargeting audience created' };
         } catch (error) {
           return { success: false, result: null, message: error.message };
         }

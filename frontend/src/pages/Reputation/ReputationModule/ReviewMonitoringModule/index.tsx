@@ -29,74 +29,13 @@ import {
   Typography,
   message,
 } from '@/components/ui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 const { Option } = Select;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
-
-// Sample data for reviews with responses matching ReviewResponseModule
-const sampleReviews = [
-  {
-    id: '1',
-    customer: 'John Doe',
-    rating: 5,
-    date: '2023-04-15',
-    content:
-      'Excellent service! The team was very professional and helpful. Would highly recommend.',
-    platform: 'Google',
-    responded: true,
-    sentiment: 'positive',
-    response:
-      "Thank you for your kind words! We're delighted that you enjoyed your experience with us. We strive to provide excellent service to all our customers. Looking forward to serving you again soon!",
-  },
-  {
-    id: '2',
-    customer: 'Jane Smith',
-    rating: 2,
-    date: '2023-04-10',
-    content: 'Poor experience. Long wait times and staff was not attentive.',
-    platform: 'Facebook',
-    responded: false,
-    sentiment: 'negative',
-  },
-  {
-    id: '3',
-    customer: 'Robert Johnson',
-    rating: 4,
-    date: '2023-04-05',
-    content: 'Good overall, but could improve on communication.',
-    platform: 'Google',
-    responded: true,
-    sentiment: 'neutral',
-    response:
-      "Thank you for your feedback, Robert. We appreciate you taking the time to share your experience. We're constantly working to improve our communication and will take your suggestions into account. Please don't hesitate to reach out if you have any other feedback.",
-  },
-  {
-    id: '4',
-    customer: 'Emily Davis',
-    rating: 1,
-    date: '2023-04-02',
-    content: 'Very disappointed with the service. Will not be returning.',
-    platform: 'Google',
-    responded: false,
-    sentiment: 'negative',
-  },
-  {
-    id: '5',
-    customer: 'Michael Brown',
-    rating: 5,
-    date: '2023-03-28',
-    content: 'Amazing experience! The staff went above and beyond.',
-    platform: 'Facebook',
-    responded: true,
-    sentiment: 'positive',
-    response:
-      "We're thrilled to hear about your amazing experience, Michael! Our team works hard to provide exceptional service, and we're glad it showed. Thank you for your kind words and support. We hope to see you again soon!",
-  },
-];
 
 // Response templates for quick replies
 const responseTemplates = [
@@ -126,9 +65,38 @@ const responseTemplates = [
 const ReviewMonitoringModule = () => {
   const translate = useLanguage();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [reviews, setReviews] = useState(sampleReviews);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [sortField, setSortField] = useState('date');
   const [sortOrder, setSortOrder] = useState('descend');
+
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const { request } = await import('@/request');
+        const res = await request.get({ entity: 'marketing/reputation/reviews' });
+        if (isMounted && res?.result && res.result.length > 0) {
+          const mapped = res.result.map((r: any) => ({
+            id: r._id || r.platformReviewId,
+            customer: r.client?.name || 'Customer',
+            rating: r.rating || 5,
+            date: r.publishedAt ? new Date(r.publishedAt).toLocaleDateString() : 'Recent',
+            content: r.comment || '',
+            platform: r.platform ? r.platform.charAt(0).toUpperCase() + r.platform.slice(1) : 'Google',
+            responded: r.status === 'responded' || !!r.response?.text,
+            sentiment: r.sentiment?.category || 'positive',
+            response: r.response?.text || '',
+          }));
+          setReviews(mapped);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch live reviews:', err);
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // State for modals
   const [replyModalVisible, setReplyModalVisible] = useState(false);
@@ -179,23 +147,36 @@ const ReviewMonitoringModule = () => {
   };
 
   // Handle submit response
-  const handleSubmitResponse = () => {
+  const handleSubmitResponse = async () => {
     if (!selectedReview || !responseText.trim()) return;
 
-    // Update the review in the state
-    const updatedReviews = reviews.map((review) =>
-      review.id === selectedReview.id
-        ? { ...review, responded: true, response: responseText }
-        : review
-    );
+    try {
+      const { request } = await import('@/request');
+      await request.create({
+        entity: `marketing/reputation/reviews/${selectedReview.id}/reply`,
+        jsonData: {
+          replyText: responseText,
+          platform: selectedReview.platform?.toLowerCase() || 'google',
+        },
+      });
 
-    setReviews(updatedReviews);
-    setReplyModalVisible(false);
-    setResponseText('');
-    setSelectedTemplate(null);
+      // Update the review in the state
+      const updatedReviews = reviews.map((review) =>
+        review.id === selectedReview.id
+          ? { ...review, responded: true, response: responseText }
+          : review
+      );
 
-    // Show success message
-    message.success('Response submitted successfully');
+      setReviews(updatedReviews);
+      setReplyModalVisible(false);
+      setResponseText('');
+      setSelectedTemplate(null);
+
+      // Show success message
+      message.success('Response submitted successfully');
+    } catch (err: any) {
+      message.error(err?.message || 'Failed to submit response');
+    }
   };
 
   // Handle save edited review

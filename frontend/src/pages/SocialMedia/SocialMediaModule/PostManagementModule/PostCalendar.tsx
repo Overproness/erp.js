@@ -1,4 +1,3 @@
-import dummyPosts from '@/data/dummyPostsData';
 import { usePostManagement } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
 import {
@@ -69,7 +68,7 @@ const PostCalendar = ({ onEditPost, onCreatePost }) => {
   // Get posts for a specific date
   const getPostsForDate = (date) => {
     // Apply filters to posts
-    const postsToUse = Array.isArray(posts) && posts.length > 0 ? posts : dummyPosts;
+    const postsToUse = Array.isArray(posts) ? posts : [];
     let filteredPosts = [...postsToUse];
 
     // Apply platform filter

@@ -33,56 +33,17 @@ const CampaignAnalysisModule = ({ campaignId }) => {
 
   const campaigns = useSelector(selectCampaigns);
 
-  // Fallback dummy campaigns (consistent with other modules)
-  const dummyCampaigns = useMemo(() => ([
-    {
-      id: 'cmp_1',
-      name: 'Spring Sale 2025',
-      description: 'Promotional email series for spring collection.',
-      status: 'active',
-      type: 'email',
-      audience: { name: 'All Subscribers' },
-      startDate: '2025-03-01',
-      endDate: '2025-03-31',
-      sentCount: 12000,
-      openCount: 4800,
-      createdAt: '2025-02-10',
-      channels: ['email', 'sms', 'push']
-    },
-    {
-      id: 'cmp_2',
-      name: 'Social Boost - April',
-      description: 'Paid social media push to increase awareness.',
-      status: 'paused',
-      type: 'social',
-      audienceCount: 8400,
-      startDate: '2025-04-05',
-      endDate: '2025-04-20',
-      sentCount: 0,
-      openCount: 0,
-      createdAt: '2025-04-01',
-      channels: ['email', 'sms']
-    },
-    {
-      id: 'cmp_3',
-      name: 'Re-engagement SMS',
-      description: 'Win-back campaign for inactive users.',
-      status: 'completed',
-      type: 'sms',
-      audience: { name: 'Inactive Users' },
-      startDate: '2025-01-10',
-      endDate: '2025-01-20',
-      sentCount: 5000,
-      openCount: 0,
-      createdAt: '2024-12-30',
-      channels: ['sms']
-    },
-  ]), []);
-
-  const currentCampaign =
-    (campaigns || []).find(c => String(c.id) === String(resolvedId)) ||
-    dummyCampaigns.find(c => String(c.id) === String(resolvedId)) ||
-    null;
+  // Resolved campaign directly from live Redux state
+  const currentCampaign = useMemo(() => {
+    if (!campaigns || !campaigns.length) return null;
+    if (resolvedId) {
+      return (
+        campaigns.find((c: any) => String(c._id || c.id) === String(resolvedId)) ||
+        campaigns[0]
+      );
+    }
+    return campaigns[0];
+  }, [campaigns, resolvedId]);
 
   const [timeframe, setTimeframe] = useState('30d');
   const [dateRange, setDateRange] = useState(null);
@@ -365,6 +326,14 @@ const CampaignAnalysisModule = ({ campaignId }) => {
             {translate('Refresh')}
           </Button>
         </div>
+      </div>
+
+      {/* Demo / Sandbox Simulation Notice */}
+      <div style={{ marginBottom: 16 }}>
+        <Tag color="purple" style={{ padding: '6px 12px', fontSize: '13px', borderRadius: '6px' }}>
+          <strong>{translate('Demo / Simulation Mode')}:</strong>{' '}
+          {translate('Analytics currently run in sandbox mode. Self-host with your own credentials (BYOC) to stream live ad network spend & conversion data.')}
+        </Tag>
       </div>
 
       {/* Campaign Details */}

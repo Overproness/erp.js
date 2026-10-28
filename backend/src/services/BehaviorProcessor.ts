@@ -329,6 +329,11 @@ class BehaviorProcessor {
         await this.executeWebhookAction(action, customer, trigger, events);
         break;
 
+      case 'sendConversionEvent':
+      case 'conversionEvent':
+        await this.executeConversionEventAction(action, customer, trigger, events);
+        break;
+
       default:
         console.warn(`Unknown action type: ${action.type}`);
     }
@@ -685,6 +690,116 @@ class BehaviorProcessor {
     } catch (error) {
       console.error('Error sending webhook:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Maps internal ERP / CRM event names to standard CAPI conversion event names
+   * @param {string} internalEvent Name or type of internal event
+   * @returns {string} Standardized conversion event name (e.g. Purchase, Lead, AddToCart)
+   */
+  mapInternalActionToConversionEvent(internalEvent) {
+    if (!internalEvent || typeof internalEvent !== 'string') return 'Custom';
+    const normalized = internalEvent.toLowerCase().replace(/[-_]/g, '');
+
+    if (
+      normalized.includes('invoicepaid') ||
+      normalized.includes('dealwon') ||
+      normalized.includes('payment') ||
+      normalized.includes('orderplaced') ||
+      normalized.includes('purchase')
+    ) {
+      return 'Purchase';
+    }
+
+    if (
+      normalized.includes('leadcapture') ||
+      normalized.includes('leadcreated') ||
+      normalized.includes('contactform') ||
+      normalized.includes('quoterequest') ||
+      normalized.includes('formsubmit')
+    ) {
+      return 'Lead';
+    }
+
+    if (
+      normalized.includes('cartabandon') ||
+      normalized.includes('addtocart') ||
+      normalized.includes('cartitem')
+    ) {
+      return 'AddToCart';
+    }
+
+    if (
+      normalized.includes('checkout') ||
+      normalized.includes('initiatecheckout')
+    ) {
+      return 'InitiateCheckout';
+    }
+
+    if (
+      normalized.includes('signup') ||
+      normalized.includes('register') ||
+      normalized.includes('accountcreated')
+    ) {
+      return 'CompleteRegistration';
+    }
+
+    if (
+      normalized.includes('productview') ||
+      normalized.includes('pageview') ||
+      normalized.includes('viewcontent')
+    ) {
+      return 'ViewContent';
+    }
+
+    return 'Custom';
+  }
+
+  /**
+   * Execute server-to-server conversion event action across CAPI integrations
+   * @param {Object} action Action configuration
+   * @param {Object} customer Customer data
+   * @param {Object} trigger Trigger that initiated the action
+   * @param {Array} events Events that triggered the rule
+   */
+  async executeConversionEventAction(action, customer, trigger, events) {
+    try {
+      const { ConversionsGateway } = load('./conversions/ConversionsGateway');
+      const latestEvent = events && events.length > 0 ? events[events.length - 1] : {};
+
+      const eventName =
+        action.eventName ||
+        this.mapInternalActionToConversionEvent(latestEvent.eventName || latestEvent.eventType || trigger.name);
+
+      const ownerId = customer.owner || customer.companyID || latestEvent.owner;
+
+      await ConversionsGateway.getInstance().trackConversion({
+        ownerId,
+        eventName,
+        user: {
+          email: customer.email,
+          phone: customer.phone,
+          clientIp: latestEvent.context?.ip || latestEvent.properties?.ip,
+          clientUserAgent: latestEvent.context?.userAgent || latestEvent.properties?.userAgent,
+          fbp: latestEvent.properties?.fbp,
+          fbc: latestEvent.properties?.fbc,
+          ttclid: latestEvent.properties?.ttclid,
+          gclid: latestEvent.properties?.gclid,
+        },
+        customData: {
+          currency: action.currency || latestEvent.properties?.currency || 'USD',
+          value: action.value !== undefined ? action.value : (latestEvent.properties?.value || latestEvent.properties?.amount || 0),
+          orderId: action.orderId || latestEvent.properties?.orderId || latestEvent.properties?.invoiceId,
+        },
+        sourceUrl: latestEvent.url,
+        actionSource: 'system',
+        async: true,
+      });
+
+      console.log(`Conversion event ${eventName} triggered for customer ${customer._id}`);
+    } catch (error) {
+      console.error('Error executing conversion event action:', error);
     }
   }
 

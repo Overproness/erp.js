@@ -1,4 +1,3 @@
-import dummyPosts from '@/data/dummyPostsData';
 import { usePlatformIntegration, useSocialMedia } from '@/hooks/useSocialMedia';
 import useLanguage from '@/locale/useLanguage';
 import {
@@ -25,7 +24,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Doughnut, Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,97 +44,104 @@ const { Title: AntTitle, Text } = Typography;
 const SocialMediaDashboard = () => {
   const translate = useLanguage();
   const navigate = useNavigate();
-  const { analytics, loading } = useSocialMedia();
-  // Update to show all platforms as connected
+  const { accounts, posts, analytics, loading } = useSocialMedia();
   const { connectedPlatforms, getConnectedPlatforms = () => ['facebook', 'instagram', 'twitter'] } =
     usePlatformIntegration();
 
-  // Calculate statistics from dummy data
-  const calculateStatistics = () => {
-    const totalPosts = dummyPosts.length; // Should be 156
+  const postList = useMemo(() => {
+    if (Array.isArray(posts)) return posts;
+    if (posts?.result && Array.isArray(posts.result)) return posts.result;
+    return [];
+  }, [posts]);
 
-    // Count published posts
-    const publishedPosts = dummyPosts.filter((post) => post.status === 'published');
+  const accountList = useMemo(() => {
+    if (Array.isArray(accounts)) return accounts;
+    if (accounts?.result && Array.isArray(accounts.result)) return accounts.result;
+    return [];
+  }, [accounts]);
 
-    // Calculate total engagement
+  const dashboardData = useMemo(() => {
+    const totalPosts = postList.length;
+    const publishedPosts = postList.filter((post) => post.status === 'published');
+    const scheduledPosts = postList.filter((post) => post.status === 'scheduled');
+
     const totalEngagement = publishedPosts.reduce(
-      (sum, post) => sum + (post.performance?.engagement || 0),
+      (sum, post) => sum + (post.performance?.engagement || post.engagement?.likes || 0),
       0
     );
 
-    // Calculate total reach
     const totalReach = publishedPosts.reduce(
-      (sum, post) => sum + (post.performance?.reach || 0),
+      (sum, post) => sum + (post.performance?.reach || post.engagement?.reach || 0),
       0
     );
 
-    // Calculate impressions
     const impressions = publishedPosts.reduce(
-      (sum, post) => sum + (post.performance?.impressions || 0),
+      (sum, post) => sum + (post.performance?.impressions || post.engagement?.impressions || 0),
       0
     );
 
-    // Count posts by platform
     const platformCounts = {
       facebook: 0,
       instagram: 0,
       twitter: 0,
+      linkedin: 0,
     };
 
-    dummyPosts.forEach((post) => {
-      post.platforms.forEach((platform) => {
-        if (platformCounts[platform] !== undefined) {
-          platformCounts[platform]++;
+    postList.forEach((post) => {
+      const plats = Array.isArray(post.platforms) ? post.platforms : [post.platform].filter(Boolean);
+      plats.forEach((p) => {
+        const platName = typeof p === 'string' ? p.toLowerCase() : (p?.platform || '').toLowerCase();
+        if (platformCounts[platName] !== undefined) {
+          platformCounts[platName]++;
         }
       });
     });
 
-    // Get recent posts
+    const totalFollowers = accountList.reduce(
+      (sum, acc) => sum + (acc.followerCount || acc.accountInfo?.followersCount || 0),
+      0
+    );
+
     const recentPosts = publishedPosts
-      .sort((a, b) => new Date(b.scheduledAt) - new Date(a.scheduledAt))
+      .sort((a, b) => new Date(b.publishedAt || b.createdAt || 0).getTime() - new Date(a.publishedAt || a.createdAt || 0).getTime())
       .slice(0, 3)
       .map((post) => ({
         id: post._id,
         content: post.content,
-        platform: post.platforms[0],
-        engagement: post.performance.engagement,
-        reach: post.performance.reach,
-        publishedAt: post.scheduledAt,
+        platform: (post.platforms && post.platforms[0]) || post.platform || 'facebook',
+        engagement: post.performance?.engagement || post.engagement?.likes || 0,
+        reach: post.performance?.reach || post.engagement?.reach || 0,
+        publishedAt: post.publishedAt || post.createdAt,
       }));
 
-    // Get upcoming posts
-    const upcomingPosts = dummyPosts
-      .filter((post) => post.status === 'scheduled')
-      .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt))
+    const upcomingPosts = scheduledPosts
+      .sort((a, b) => new Date(a.scheduledFor || 0).getTime() - new Date(b.scheduledFor || 0).getTime())
       .slice(0, 5)
       .map((post) => ({
         id: post._id,
         content: post.content,
-        platforms: post.platforms,
-        scheduledFor: post.scheduledAt,
+        platforms: post.platforms || [post.platform || 'facebook'],
+        scheduledFor: post.scheduledFor,
       }));
 
     return {
       overview: {
-        totalFollowers: 12500,
+        totalFollowers: totalFollowers,
         totalPosts: totalPosts,
         totalEngagement: totalEngagement,
-        engagementRate: ((totalEngagement / totalReach) * 100).toFixed(1),
+        engagementRate: totalReach > 0 ? ((totalEngagement / totalReach) * 100).toFixed(1) : '0.0',
         reach: totalReach,
         impressions: impressions,
       },
       recentPosts,
       upcomingPosts,
       platformStats: {
-        facebook: { followers: 5200, engagement: 6.8, posts: platformCounts.facebook },
-        instagram: { followers: 4800, engagement: 9.2, posts: platformCounts.instagram },
-        twitter: { followers: 2500, engagement: 5.5, posts: platformCounts.twitter },
+        facebook: { followers: 0, engagement: 0, posts: platformCounts.facebook },
+        instagram: { followers: 0, engagement: 0, posts: platformCounts.instagram },
+        twitter: { followers: 0, engagement: 0, posts: platformCounts.twitter },
       },
     };
-  };
-
-  // Sample data - now calculated from our dummy posts
-  const [dashboardData] = useState(calculateStatistics());
+  }, [postList, accountList]);
 
   const getPlatformIcon = (platform) => {
     const icons = {
@@ -159,16 +165,22 @@ const SocialMediaDashboard = () => {
     ],
   };
 
-  const platformDistributionData = {
-    labels: ['Facebook', 'Instagram', 'Twitter'],
-    datasets: [
-      {
-        data: [41.6, 38.4, 20],
-        backgroundColor: ['#1877f2', '#E4405F', '#1DA1F2'],
-        borderWidth: 0,
-      },
-    ],
-  };
+  const platformDistributionData = useMemo(() => {
+    const fb = dashboardData.platformStats.facebook.posts;
+    const ig = dashboardData.platformStats.instagram.posts;
+    const tw = dashboardData.platformStats.twitter.posts;
+    const total = fb + ig + tw;
+    return {
+      labels: ['Facebook', 'Instagram', 'Twitter'],
+      datasets: [
+        {
+          data: total > 0 ? [fb, ig, tw] : [0, 0, 0],
+          backgroundColor: ['#1877f2', '#E4405F', '#1DA1F2'],
+          borderWidth: 0,
+        },
+      ],
+    };
+  }, [dashboardData]);
 
   const recentPostsColumns = [
     {

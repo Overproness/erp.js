@@ -53,15 +53,84 @@ export default function CampaignBuilder() {
     setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1));
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     setLoading(true);
 
-    // Mock submission - in reality this would call a Redux action
-    setTimeout(() => {
+    try {
+      const payload = {
+        name:
+          formData?.name ||
+          formData?.basicInfo?.name ||
+          `Ad Campaign ${new Date().toLocaleDateString()}`,
+        description: formData?.description || formData?.basicInfo?.description || '',
+        objective: formData?.objective || 'OUTCOME_TRAFFIC',
+        platforms: formData?.channels || formData?.platforms || ['facebook', 'google'],
+        budget: {
+          amount: Number(formData?.budget?.amount || formData?.budget || 50),
+          type: 'DAILY',
+          currency: 'USD',
+        },
+        targeting: formData?.audience || formData?.targeting || {},
+        creatives: [
+          {
+            headline: formData?.content?.subject || formData?.name || 'Special Offer',
+            body:
+              formData?.content?.body ||
+              formData?.description ||
+              'Discover our latest solutions and offers.',
+            destinationUrl: formData?.content?.destinationUrl || window.location.origin,
+            callToAction: 'LEARN_MORE',
+          },
+        ],
+      };
+
+      const { request } = await import('@/request');
+      const response = await request.create({
+        entity: 'marketing/ad-campaigns',
+        jsonData: payload,
+      });
+
+      if (response?.success) {
+        message.success(translate('Ad campaign deployed successfully!'));
+        navigate('/marketing');
+      } else {
+        throw new Error(response?.message || 'Failed to deploy campaign');
+      }
+    } catch (err: any) {
+      console.error('Campaign creation error:', err);
+      message.error(err?.message || translate('Failed to launch campaign'));
+    } finally {
       setLoading(false);
-      message.success(translate('Campaign created successfully!'));
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    try {
+      const payload = {
+        name:
+          formData?.name ||
+          formData?.basicInfo?.name ||
+          `Draft Campaign ${new Date().toLocaleDateString()}`,
+        description: formData?.description || formData?.basicInfo?.description || '',
+        objective: formData?.objective || 'OUTCOME_TRAFFIC',
+        platforms: formData?.channels || formData?.platforms || ['facebook'],
+        budget: {
+          amount: Number(formData?.budget?.amount || formData?.budget || 25),
+          type: 'DAILY',
+          currency: 'USD',
+        },
+        status: 'DRAFT',
+      };
+      const { request } = await import('@/request');
+      await request.create({
+        entity: 'marketing/ad-campaigns',
+        jsonData: payload,
+      });
+      message.success(translate('Campaign saved as draft'));
       navigate('/marketing');
-    }, 1000);
+    } catch (err: any) {
+      message.error(err?.message || translate('Failed to save draft'));
+    }
   };
 
   return (
@@ -135,7 +204,7 @@ export default function CampaignBuilder() {
               <>
                 <Button
                   icon={<SaveOutlined />}
-                  onClick={() => message.info(translate('Campaign saved as draft'))}
+                  onClick={handleSaveDraft}
                 >
                   {translate('Save as Draft')}
                 </Button>

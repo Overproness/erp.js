@@ -30,6 +30,10 @@ const dataEntryRoutes = require('./routes/dataEntryRoutes');
 const documentRouter = require('./routes/appRoutes/documentRoutes');
 const statisticsRoutes = require('./routes/appRoutes/statisticsRoutes');
 const subscriptionRoutes = require('./routes/appRoutes/subscriptionRoutes');
+const marketingIntegrationRoutes = require('./routes/appRoutes/marketingIntegrationRoutes');
+const retargetingRoutes = require('./routes/appRoutes/retargetingRoutes');
+const adCampaignRoutes = require('./routes/appRoutes/adCampaignRoutes');
+const reputationRoutes = require('./routes/appRoutes/reputationManagementRoutes');
 
 // ─────────────────────────────────────────────────────────────
 // Load All Mongoose Models (must be before anything else)
@@ -204,6 +208,10 @@ app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/document', adminAuth.isValidAuthToken, fileUploadMiddleware, validateFileUpload, documentRouter);
 app.use('/api/data-entry', adminAuth.isValidAuthToken, dataEntryRoutes);
 app.use('/api/stats', adminAuth.isValidAuthToken, statisticsRoutes);
+app.use('/api/marketing/integrations', marketingIntegrationRoutes);
+app.use('/api/marketing/retargeting', retargetingRoutes);
+app.use('/api/marketing/ad-campaigns', adCampaignRoutes);
+app.use('/api/marketing/reputation', reputationRoutes);
 
 // ─────────────────────────────────────────────────────────────
 // GraphQL Endpoint (handles all CRUD and business logic)

@@ -28,7 +28,7 @@ import {
 } from '@/components/icons';
 import useLanguage from '@/locale/useLanguage';
 import dayjs from 'dayjs';
-import dummyPosts from '@/data/dummyPostsData';
+import { usePostManagement } from '@/hooks/useSocialMedia';
 
 // jsPDF and jspdf-autotable are loaded on-demand (only when the user
 // triggers an export) to keep them out of the initial bundle.
@@ -52,6 +52,7 @@ const loadPdfLibraries = async (): Promise<typeof import('jspdf').default | fals
 
 const ReportGenerator = () => {
   const translate = useLanguage();
+  const { posts } = usePostManagement();
   const [form] = Form.useForm();
   const [generating, setGenerating] = useState(false);
   const [previewData, setPreviewData] = useState(null);
@@ -90,7 +91,7 @@ const ReportGenerator = () => {
       const calculateAnalytics = () => {
         // Filter posts by date range if available
         const dateRange = values.dateRange;
-        let filteredPosts = [...dummyPosts];
+        let filteredPosts = Array.isArray(posts) ? [...posts] : [];
         
         if (dateRange && dateRange.length === 2) {
           filteredPosts = filteredPosts.filter(post => {
