@@ -12,7 +12,10 @@ interface WebsiteLayoutProps {
   structuredData?: Record<string, any> | Array<Record<string, any>>;
 }
 
-const BASE_URL = (import.meta as any).env?.VITE_APP_URL || 'https://yourdomain.com';
+const BASE_URL =
+  (import.meta as any).env?.VITE_APP_URL ||
+  (import.meta as any).env?.VITE_FRONTEND_URL ||
+  'https://erp-js.vercel.app';
 
 const DEFAULT_DESCRIPTION =
   'ERP.js unifies your CRM, workflows, and analytics into a single high-performance platform. Built for developers, scaled for enterprise.';

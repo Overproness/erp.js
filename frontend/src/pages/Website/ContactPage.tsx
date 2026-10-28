@@ -22,8 +22,8 @@ const contactStructuredData = {
   '@graph': [
     {
       '@type': 'ContactPage',
-      '@id': 'https://yourdomain.com/contact#webpage',
-      url: 'https://yourdomain.com/contact',
+      '@id': 'https://erp-js.vercel.app/contact#webpage',
+      url: 'https://erp-js.vercel.app/contact',
       name: 'Contact Engineering | ERP.js Enterprise Automation Suite',
       description:
         'Connect with the ERP.js engineering team for technical inquiries, integration support, and enterprise deployments.',
@@ -34,20 +34,20 @@ const contactStructuredData = {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://yourdomain.com/',
+            item: 'https://erp-js.vercel.app/',
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Contact',
-            item: 'https://yourdomain.com/contact',
+            item: 'https://erp-js.vercel.app/contact',
           },
         ],
       },
     },
     {
       '@type': 'FAQPage',
-      '@id': 'https://yourdomain.com/contact#faq',
+      '@id': 'https://erp-js.vercel.app/contact#faq',
       mainEntity: contactFaqs.map((faq) => ({
         '@type': 'Question',
         name: faq.q,

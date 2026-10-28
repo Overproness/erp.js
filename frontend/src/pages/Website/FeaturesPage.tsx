@@ -5,8 +5,8 @@ const featuresStructuredData = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://yourdomain.com/features#webpage',
-      url: 'https://yourdomain.com/features',
+      '@id': 'https://erp-js.vercel.app/features#webpage',
+      url: 'https://erp-js.vercel.app/features',
       name: 'Features | ERP.js Enterprise Automation Suite',
       description:
         'Explore ERP.js platform capabilities: Sales CRM, workflow automation, analytics, and document signing. Engineered for precision and enterprise scale.',
@@ -17,13 +17,13 @@ const featuresStructuredData = {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://yourdomain.com/',
+            item: 'https://erp-js.vercel.app/',
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Features',
-            item: 'https://yourdomain.com/features',
+            item: 'https://erp-js.vercel.app/features',
           },
         ],
       },

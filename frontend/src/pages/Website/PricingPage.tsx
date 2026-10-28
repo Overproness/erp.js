@@ -247,8 +247,8 @@ const pricingStructuredData = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://yourdomain.com/pricing#webpage',
-      url: 'https://yourdomain.com/pricing',
+      '@id': 'https://erp-js.vercel.app/pricing#webpage',
+      url: 'https://erp-js.vercel.app/pricing',
       name: 'Pricing: 100% Free Forever Enterprise Suite | ERP.js',
       description:
         'ERP.js is 100% free with all highest-tier Enterprise features included. No subscriptions, no credit card required.',
@@ -259,20 +259,20 @@ const pricingStructuredData = {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://yourdomain.com/',
+            item: 'https://erp-js.vercel.app/',
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Pricing',
-            item: 'https://yourdomain.com/pricing',
+            item: 'https://erp-js.vercel.app/pricing',
           },
         ],
       },
     },
     {
       '@type': 'FAQPage',
-      '@id': 'https://yourdomain.com/pricing#faq',
+      '@id': 'https://erp-js.vercel.app/pricing#faq',
       mainEntity: faqs.map((faq) => ({
         '@type': 'Question',
         name: faq.q,

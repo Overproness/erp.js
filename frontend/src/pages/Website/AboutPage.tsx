@@ -6,8 +6,8 @@ const aboutStructuredData = {
   '@graph': [
     {
       '@type': 'AboutPage',
-      '@id': 'https://yourdomain.com/about#webpage',
-      url: 'https://yourdomain.com/about',
+      '@id': 'https://erp-js.vercel.app/about#webpage',
+      url: 'https://erp-js.vercel.app/about',
       name: 'About Us | ERP.js Enterprise Automation Engine',
       description:
         'Meet the team and mission behind ERP.js. Decentralizing enterprise operational power with an open, modular, developer-first automation suite.',
@@ -18,23 +18,23 @@ const aboutStructuredData = {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://yourdomain.com/',
+            item: 'https://erp-js.vercel.app/',
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'About',
-            item: 'https://yourdomain.com/about',
+            item: 'https://erp-js.vercel.app/about',
           },
         ],
       },
     },
     {
       '@type': 'Organization',
-      '@id': 'https://yourdomain.com/#organization',
+      '@id': 'https://erp-js.vercel.app/#organization',
       name: 'ERP.js',
-      url: 'https://yourdomain.com/',
-      logo: 'https://yourdomain.com/logo-bg-remove.png',
+      url: 'https://erp-js.vercel.app/',
+      logo: 'https://erp-js.vercel.app/logo-bg-remove.png',
       description:
         'Open source enterprise resource planning and workflow automation suite.',
     },

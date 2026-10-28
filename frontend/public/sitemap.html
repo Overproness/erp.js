@@ -4,60 +4,304 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sitemap | ERP.js</title>
-  <meta name="description" content="Overview and sitemap of all public pages on ERP.js." />
+  <meta name="description" content="Complete overview and sitemap of all public pages, tools, and resources on ERP.js." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://yourdomain.com/sitemap.html" />
+  <link rel="canonical" href="https://erp-js.vercel.app/sitemap.html" />
+  <link rel="icon" type="image/webp" href="/logo-bg-remove.webp" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/logo-bg-remove.png" />
   <style>
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
-      color: #191c1d;
-      background: #f8f9fa;
+    :root {
+      --primary: #0058c3;
+      --primary-hover: #004397;
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
-    h1 { font-size: 2rem; margin-bottom: 8px; color: #0058c3; }
-    p { color: #414754; margin-bottom: 24px; }
-    ul { list-style: none; padding: 0; }
-    li { margin-bottom: 16px; padding: 12px; background: #fff; border-radius: 8px; border: 1px solid #e1e3e4; }
-    a { color: #0058c3; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
-    a:hover { text-decoration: underline; }
-    .desc { font-size: 0.9rem; color: #414754; margin-top: 4px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .brand img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+    .meta-badge {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 32px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0, 88, 195, 0.08);
+      transform: translateY(-2px);
+    }
+    .card a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    .card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .badge {
+      align-self: flex-start;
+      margin-top: 10px;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      background: #f1f5f9;
+      color: #64748b;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>ERP.js Sitemap</h1>
-  <p>Index of public pages and resources available on ERP.js.</p>
-  <ul>
-    <li>
-      <a href="/">Home</a>
-      <div class="desc">The Automation Engine for Modern Teams. Unified CRM, workflows, and analytics canvas.</div>
-    </li>
-    <li>
-      <a href="/features">Features</a>
-      <div class="desc">Platform capabilities including sales CRM, workflow automation, and real-time business intelligence.</div>
-    </li>
-    <li>
-      <a href="/pricing">Pricing</a>
-      <div class="desc">100% Free Forever Enterprise suite with unlimited users and zero subscription costs.</div>
-    </li>
-    <li>
-      <a href="/about">About Us</a>
-      <div class="desc">Mission, vision, core values, and the team engineering the ERP.js platform.</div>
-    </li>
-    <li>
-      <a href="/contact">Contact</a>
-      <div class="desc">Get in touch with our engineering team for technical inquiries and integrations.</div>
-    </li>
-    <li>
-      <a href="/privacy">Privacy Policy</a>
-      <div class="desc">Our data collection, usage, and privacy compliance guidelines.</div>
-    </li>
-    <li>
-      <a href="/terms">Terms of Service</a>
-      <div class="desc">Terms governing access to and usage of the ERP.js platform.</div>
-    </li>
-  </ul>
+  <div class="container">
+    <header>
+      <a href="/" class="brand">
+        <img src="/logo-bg-remove.webp" alt="ERP.js Logo" />
+        <span>ERP.js</span>
+      </a>
+      <h1>Website Sitemap</h1>
+      <p class="subtitle">Complete hierarchical directory of public pages, platform capabilities, and machine endpoints.</p>
+      <span class="meta-badge">Canonical Host: https://erp-js.vercel.app • Updated October 2026</span>
+    </header>
+
+    <main>
+      <!-- Core Platform -->
+      <h2 class="section-title">Core Platform</h2>
+      <div class="grid">
+        <div class="card">
+          <div>
+            <a href="/">Home</a>
+            <p>The Automation Engine for Modern Teams. Unified CRM, workflows, and analytics canvas.</p>
+          </div>
+          <span class="badge">Priority 1.0 • Daily</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/features">Features</a>
+            <p>Platform capabilities including sales CRM, low-code workflow automation, and real-time business intelligence.</p>
+          </div>
+          <span class="badge">Priority 0.9 • Weekly</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/pricing">Pricing</a>
+            <p>100% Free Forever Enterprise suite with unlimited users, full feature access, and zero subscription costs.</p>
+          </div>
+          <span class="badge">Priority 0.9 • Weekly</span>
+        </div>
+      </div>
+
+      <!-- Company & Support -->
+      <h2 class="section-title">Company & Support</h2>
+      <div class="grid">
+        <div class="card">
+          <div>
+            <a href="/about">About Us</a>
+            <p>Mission, vision, core values, engineering philosophy, and open source development culture.</p>
+          </div>
+          <span class="badge">Priority 0.8 • Monthly</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/contact">Contact</a>
+            <p>Get in touch with our engineering team for technical inquiries, bug reports, and integrations.</p>
+          </div>
+          <span class="badge">Priority 0.8 • Monthly</span>
+        </div>
+      </div>
+
+      <!-- User Portals & Access -->
+      <h2 class="section-title">User Portals & Access</h2>
+      <div class="grid">
+        <div class="card">
+          <div>
+            <a href="/login">Sign In</a>
+            <p>Access your ERP.js workspace, active customer pipeline, invoices, and analytics dashboard.</p>
+          </div>
+          <span class="badge">Priority 0.7 • Monthly</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/signup">Sign Up</a>
+            <p>Create a new enterprise account and start automating your organization workflows.</p>
+          </div>
+          <span class="badge">Priority 0.7 • Monthly</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/forgetpassword">Password Recovery</a>
+            <p>Self-service password reset and recovery for registered workspace members.</p>
+          </div>
+          <span class="badge">Priority 0.5 • Monthly</span>
+        </div>
+      </div>
+
+      <!-- Legal & Policies -->
+      <h2 class="section-title">Legal & Policies</h2>
+      <div class="grid">
+        <div class="card">
+          <div>
+            <a href="/privacy">Privacy Policy</a>
+            <p>Comprehensive data protection, telemetry disclosure, cookie policy, and GDPR/CCPA standards.</p>
+          </div>
+          <span class="badge">Priority 0.5 • Monthly</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/terms">Terms of Service</a>
+            <p>Terms and governing conditions for cloud hosting, open source licensing, and self-hosted deployments.</p>
+          </div>
+          <span class="badge">Priority 0.5 • Monthly</span>
+        </div>
+      </div>
+
+      <!-- Machine & Feeds -->
+      <h2 class="section-title">Machine Feeds & Crawler Specs</h2>
+      <div class="grid">
+        <div class="card">
+          <div>
+            <a href="/sitemap.xml" target="_blank" rel="noopener">XML Sitemap</a>
+            <p>Standardized sitemaps.org XML schema feed for search engine crawlers and bots.</p>
+          </div>
+          <span class="badge">Protocol 0.9 XML</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/robots.txt" target="_blank" rel="noopener">Robots.txt</a>
+            <p>Crawler instructions and indexer permissions declaring open access for search engines and AI agents.</p>
+          </div>
+          <span class="badge">Robots Directive</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/llms.txt" target="_blank" rel="noopener">LLMs.txt</a>
+            <p>Structured summary feed designed for LLMs, AI agents, and context-window ingestion.</p>
+          </div>
+          <span class="badge">AI Spec</span>
+        </div>
+        <div class="card">
+          <div>
+            <a href="/llms-full.txt" target="_blank" rel="noopener">LLMs-full.txt</a>
+            <p>Detailed technical documentation, schema outlines, and architecture summary for AI assistants.</p>
+          </div>
+          <span class="badge">AI Spec Full</span>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div>&copy; 2026 ERP.js Inc. All rights reserved.</div>
+      <div>
+        <a href="/">Back to Home</a> •
+        <a href="/sitemap.xml">XML Feed</a> •
+        <a href="/privacy">Privacy</a> •
+        <a href="/terms">Terms</a>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>

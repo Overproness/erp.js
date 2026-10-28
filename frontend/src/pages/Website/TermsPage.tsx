@@ -17,8 +17,8 @@ const termsStructuredData = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://yourdomain.com/terms#webpage',
-      url: 'https://yourdomain.com/terms',
+      '@id': 'https://erp-js.vercel.app/terms#webpage',
+      url: 'https://erp-js.vercel.app/terms',
       name: 'Terms of Service | ERP.js',
       description:
         'ERP.js Terms of Service: the agreement governing your use of our platform and services.',
@@ -29,13 +29,13 @@ const termsStructuredData = {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://yourdomain.com/',
+            item: 'https://erp-js.vercel.app/',
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Terms of Service',
-            item: 'https://yourdomain.com/terms',
+            item: 'https://erp-js.vercel.app/terms',
           },
         ],
       },

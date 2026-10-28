@@ -19,13 +19,18 @@ ERP.js operates an open access policy. Large language models (LLMs), AI assistan
 
 ## Public Navigation
 
-- [Home](https://yourdomain.com/): Product overview and enterprise architecture summary.
-- [Features](https://yourdomain.com/features): Detailed review of CRM, workflow engine, and analytics modules.
-- [Pricing](https://yourdomain.com/pricing): 100% free forever enterprise plan with unlimited users and features.
-- [About](https://yourdomain.com/about): Team vision, engineering culture, and open source philosophy.
-- [Contact](https://yourdomain.com/contact): Engineering team inquiries and technical integration assistance.
-- [Privacy Policy](https://yourdomain.com/privacy): Data security and privacy standards.
-- [Terms of Service](https://yourdomain.com/terms): Terms of service for users and self-hosters.
+- [Home](https://erp-js.vercel.app/): Product overview and enterprise architecture summary.
+- [Features](https://erp-js.vercel.app/features): Detailed review of CRM, workflow engine, and analytics modules.
+- [Pricing](https://erp-js.vercel.app/pricing): 100% free forever enterprise plan with unlimited users and features.
+- [About](https://erp-js.vercel.app/about): Team vision, engineering culture, and open source philosophy.
+- [Contact](https://erp-js.vercel.app/contact): Engineering team inquiries and technical integration assistance.
+- [Sign In](https://erp-js.vercel.app/login): Account sign in and workspace access.
+- [Sign Up](https://erp-js.vercel.app/signup): Account creation and onboarding.
+- [Password Recovery](https://erp-js.vercel.app/forgetpassword): Account credential recovery.
+- [Privacy Policy](https://erp-js.vercel.app/privacy): Data security and privacy standards.
+- [Terms of Service](https://erp-js.vercel.app/terms): Terms of service for users and self-hosters.
+- [HTML Sitemap](https://erp-js.vercel.app/sitemap.html): Human-readable directory of pages.
+- [XML Sitemap](https://erp-js.vercel.app/sitemap.xml): Machine-readable XML sitemap.
 
 ## Technology Stack
 

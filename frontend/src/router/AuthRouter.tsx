@@ -168,6 +168,7 @@ export default function AuthRouter() {
         path="/signup"
       />
       <Route element={<Navigate to="/login" replace />} path="/logout" />
+      <Route element={<Navigate to="/forgetpassword" replace />} path="/forgot-password" />
       <Route
         element={
           <Suspense fallback={<Loading isLoading={true} />}>

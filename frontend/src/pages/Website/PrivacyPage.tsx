@@ -15,8 +15,8 @@ const privacyStructuredData = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://yourdomain.com/privacy#webpage',
-      url: 'https://yourdomain.com/privacy',
+      '@id': 'https://erp-js.vercel.app/privacy#webpage',
+      url: 'https://erp-js.vercel.app/privacy',
       name: 'Privacy Policy | ERP.js',
       description:
         'ERP.js Privacy Policy: how we collect, use, and protect your personal data.',
@@ -27,13 +27,13 @@ const privacyStructuredData = {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://yourdomain.com/',
+            item: 'https://erp-js.vercel.app/',
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Privacy Policy',
-            item: 'https://yourdomain.com/privacy',
+            item: 'https://erp-js.vercel.app/privacy',
           },
         ],
       },

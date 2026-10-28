@@ -69,10 +69,17 @@ ERP.js is 100% free forever:
 
 ## 6. Public Endpoints and Site Structure
 
-- https://yourdomain.com/ - Home page with architecture summary and capability overview.
-- https://yourdomain.com/features - In-depth breakdown of features.
-- https://yourdomain.com/pricing - Free forever pricing details.
-- https://yourdomain.com/about - Mission statement and company background.
-- https://yourdomain.com/contact - Contact forms and community channels.
-- https://yourdomain.com/privacy - Privacy and data protection policies.
-- https://yourdomain.com/terms - Terms of service.
+- https://erp-js.vercel.app/ - Home page with architecture summary and capability overview.
+- https://erp-js.vercel.app/features - In-depth breakdown of features.
+- https://erp-js.vercel.app/pricing - Free forever pricing details.
+- https://erp-js.vercel.app/about - Mission statement and company background.
+- https://erp-js.vercel.app/contact - Contact forms and community channels.
+- https://erp-js.vercel.app/login - User workspace login portal.
+- https://erp-js.vercel.app/signup - New user registration portal.
+- https://erp-js.vercel.app/forgetpassword - Account password recovery.
+- https://erp-js.vercel.app/privacy - Privacy and data protection policies.
+- https://erp-js.vercel.app/terms - Terms of service.
+- https://erp-js.vercel.app/sitemap.html - Complete human-readable HTML sitemap.
+- https://erp-js.vercel.app/sitemap.xml - Standard XML sitemap feed.
+- https://erp-js.vercel.app/robots.txt - Search crawler specifications.
+- https://erp-js.vercel.app/llms.txt - Condensed AI context.

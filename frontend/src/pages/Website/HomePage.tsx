@@ -33,19 +33,19 @@ const structuredData = {
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': 'https://yourdomain.com/#website',
-      url: 'https://yourdomain.com/',
+      '@id': 'https://erp-js.vercel.app/#website',
+      url: 'https://erp-js.vercel.app/',
       name: 'ERP.js',
       description: 'Open Source Enterprise Resource Planning and Automation Platform',
       potentialAction: {
         '@type': 'SearchAction',
-        target: 'https://yourdomain.com/?s={search_term_string}',
+        target: 'https://erp-js.vercel.app/?s={search_term_string}',
         'query-input': 'required name=search_term_string',
       },
     },
     {
       '@type': 'SoftwareApplication',
-      '@id': 'https://yourdomain.com/#software',
+      '@id': 'https://erp-js.vercel.app/#software',
       name: 'ERP.js',
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'All',
@@ -67,7 +67,7 @@ const structuredData = {
     },
     {
       '@type': 'FAQPage',
-      '@id': 'https://yourdomain.com/#faq',
+      '@id': 'https://erp-js.vercel.app/#faq',
       mainEntity: homeFaqs.map((faq) => ({
         '@type': 'Question',
         name: faq.q,
