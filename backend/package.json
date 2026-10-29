@@ -133,7 +133,6 @@
     "@": "dist"
   },
   "main": "server.js",
-  "author": "Muntazar&Wasif",
-  "email": "mwasifshkeel@gmail.com",
+  "author": "Overproness",
   "license": "Fair-code License"
 }

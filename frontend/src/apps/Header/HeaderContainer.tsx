@@ -1,7 +1,7 @@
 import { Avatar, Dropdown, Layout, Space } from '@/components/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { LogoutOutlined, ToolOutlined, UserOutlined } from '@/components/icons';
 
@@ -16,9 +16,19 @@ export default function HeaderContent() {
   const currentAdmin = useSelector(selectCurrentAdmin);
   const { Header } = Layout;
   const navigate = useNavigate();
+  const location = useLocation();
   const translate = useLanguage();
   const [searchFocused, setSearchFocused] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const currentPath = location.pathname.toLowerCase();
+  const isMarketingStack =
+    currentPath.startsWith('/marketing') ||
+    currentPath.startsWith('/social-media') ||
+    currentPath.startsWith('/reputation') ||
+    currentPath.startsWith('/campaign') ||
+    currentPath.startsWith('/retargeting') ||
+    currentPath.startsWith('/behavior');
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -211,47 +221,49 @@ export default function HeaderContent() {
         </kbd>
       </div>
 
-      {/* Public Demo / Simulation Mode Indicator */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '4px 12px',
-          background: '#e6f7ff',
-          border: '1px solid #91d5ff',
-          borderRadius: '20px',
-          fontSize: '12px',
-          color: '#0050b3',
-          fontWeight: 500,
-        }}
-        title="Running in Demo / Sandbox Simulation Mode. Marketing metrics are simulated. Clone from GitHub to self-host with your own live API keys."
-      >
-        <span
+      {/* Public Demo / Simulation Mode Indicator (Only shown in marketing stack modules) */}
+      {isMarketingStack && (
+        <div
           style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            background: '#1890ff',
-            display: 'inline-block',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '4px 12px',
+            background: '#e6f7ff',
+            border: '1px solid #91d5ff',
+            borderRadius: '20px',
+            fontSize: '12px',
+            color: '#0050b3',
+            fontWeight: 500,
           }}
-        />
-        <span>Demo Simulation Mode</span>
-        <a
-          href="https://github.com/mwasifshakeel/ERPjs"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            marginLeft: '4px',
-            color: '#096dd9',
-            fontWeight: 600,
-            textDecoration: 'underline',
-            fontSize: '11px',
-          }}
+          title="Running in Demo / Sandbox Simulation Mode. Marketing metrics are simulated. Clone from GitHub to self-host with your own live API keys."
         >
-          Self-Host
-        </a>
-      </div>
+          <span
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: '#1890ff',
+              display: 'inline-block',
+            }}
+          />
+          <span>Demo Simulation Mode</span>
+          <a
+            href="https://github.com/Overproness/ERPjs"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              marginLeft: '4px',
+              color: '#096dd9',
+              fontWeight: 600,
+              textDecoration: 'underline',
+              fontSize: '11px',
+            }}
+          >
+            Self-Host
+          </a>
+        </div>
+      )}
 
       <Space size="middle" align="center">
         <NotificationBell />
