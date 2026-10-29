@@ -249,7 +249,7 @@ export default function HeaderContent() {
           />
           <span>Demo Simulation Mode</span>
           <a
-            href="https://github.com/Overproness/ERPjs"
+            href="https://github.com/Overproness/ERP.js"
             target="_blank"
             rel="noopener noreferrer"
             style={{

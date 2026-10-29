@@ -201,7 +201,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-heading font-semibold text-slate-900 text-sm">GitHub Repository</h3>
-                    <p className="text-slate-600 text-sm">github.com/Overproness/ERPjs</p>
+                    <p className="text-slate-600 text-sm">github.com/Overproness/ERP.js</p>
                   </div>
                 </div>
               </div>

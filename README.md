@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-4.1.0-blue.svg?style=for-the-badge)](https://github.com/Overproness/ERPjs)
+[![Version](https://img.shields.io/badge/version-4.1.0-blue.svg?style=for-the-badge)](https://github.com/Overproness/ERP.js)
 [![Node.js](https://img.shields.io/badge/Node.js-20.9.0-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
@@ -383,7 +383,7 @@ The fastest and most reliable way to spin up the entire ERP.js stack (MongoDB, R
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Overproness/ERPjs.git ERPjs
+git clone https://github.com/Overproness/ERP.js.git ERPjs
 cd ERPjs
 
 # 2. Copy the environment configuration template
@@ -430,7 +430,7 @@ Ensure you have the following installed on your host machine:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/Overproness/ERPjs.git ERPjs
+git clone https://github.com/Overproness/ERP.js.git ERPjs
 cd ERPjs
 ```
 
